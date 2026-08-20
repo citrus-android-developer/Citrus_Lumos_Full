@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # get.sh — 遠端一鍵裝:clone Lumos 後整段委派 bootstrap(機器層+專案層自動接線)。
-# 用法:  curl -fsSL https://raw.githubusercontent.com/EnzoHsieh-Android/Lumos/main/get.sh | bash
+# 用法:  curl -fsSL https://raw.githubusercontent.com/citrus-android-developer/Citrus_Lumos_Full/main/get.sh | bash
 #   旗標: --pull(既有 clone 也拉最新)/--init(無 vault 的 repo 免確認建圖譜)
 #         curl -fsSL <url> | bash -s -- --pull --init
 #   環境變數:LUMOS_HOME(預設 ~/harness/lumos-toolchain)、LUMOS_URL(預設 GitHub)
 # 站在專案 repo 內跑 → bootstrap 會問「要建成 lumos 專案嗎?」(y 才建;非互動跳過)。
 set -euo pipefail
 LUMOS_HOME="${LUMOS_HOME:-$HOME/harness/lumos-toolchain}"
-LUMOS_URL="${LUMOS_URL:-https://github.com/EnzoHsieh-Android/Lumos}"
+LUMOS_URL="${LUMOS_URL:-https://github.com/citrus-android-developer/Citrus_Lumos_Full}"
 
 # 迴圈解析(舊碼單點比對 $1,並帶兩旗標會無聲吃掉第二個);未知旗標 warn 忽略
 ARGS=()

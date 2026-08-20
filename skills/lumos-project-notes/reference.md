@@ -74,7 +74,7 @@ lumos 提供圖譜感知能力（backlinks、links、orphans、contracts、合�
 - **decisions 翻盤/新增** → `lumos decision-supersede` / `decision-add`（surgical 巢狀;**非 ruamel**——ruamel round-trip 會 reflow、破壞最小 diff）
 - **白名單外的 frontmatter 寫入**（`summary` block 改某行、`alternatives_considered` 子清單編輯）→ lumos 目前無對應,走下節 obsidian `processFrontMatter` eval 或手動 Edit
 
-**安裝 / 生命週期**（操作工具鏈本身,不碰圖譜資料;唯一源 = 公開 repo `EnzoHsieh-Android/Lumos`，預設 clone 到 `~/harness/lumos-toolchain`）：
+**安裝 / 生命週期**（操作工具鏈本身,不碰圖譜資料;唯一源 = 公開 repo `citrus-android-developer/Citrus_Lumos_Full`，預設 clone 到 `~/harness/lumos-toolchain`）：
 
 | 操作 | 指令 | 說明 |
 |---|---|---|

@@ -70,7 +70,7 @@ Then **restart your Claude Code session** (L1/L3 hooks load at session start).
 **① Once per machine** (remote, clones Lumos automatically):
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/EnzoHsieh-Android/Lumos/main/get.sh | bash
+curl -fsSL https://raw.githubusercontent.com/citrus-android-developer/Citrus_Lumos_Full/main/get.sh | bash
 # then restart your Claude Code session
 ```
 
@@ -87,7 +87,7 @@ cd <your-project> && lumos init       # slug defaults to folder name; customize 
 <details><summary>Advanced / offline: manual install-graph-toolchain</summary>
 
 ```bash
-git clone https://github.com/EnzoHsieh-Android/Lumos ~/harness/lumos-toolchain
+git clone https://github.com/citrus-android-developer/Citrus_Lumos_Full ~/harness/lumos-toolchain
 cd ~/harness/lumos-toolchain && ./install.sh        # user-scope skills (symlinked)
 python3 scripts/lumos install                       # (optional) global `lumos` on PATH
 scripts/install-graph-toolchain.sh --target <your-project> --slug <name>
@@ -98,7 +98,7 @@ scripts/install-graph-toolchain.sh --target <your-project> --slug <name>
 Prerequisites: Git for Windows (bundles bash for git hooks), python on PATH, Claude Code.
 
 ```powershell
-irm https://raw.githubusercontent.com/EnzoHsieh-Android/Lumos/main/get.ps1 | iex
+irm https://raw.githubusercontent.com/citrus-android-developer/Citrus_Lumos_Full/main/get.ps1 | iex
 # restart your Claude Code session (L1/L3 load at session start)
 # if `lumos` isn't found: add %USERPROFILE%\.local\bin to PATH
 cd <your-project>; lumos init

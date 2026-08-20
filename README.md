@@ -72,7 +72,7 @@ python3 scripts/lumos bootstrap     # 自動:clone Lumos(若缺)+ user-scope ski
 
 ```bash
 cd <你的專案>
-curl -fsSL https://raw.githubusercontent.com/EnzoHsieh-Android/Lumos/main/get.sh | bash
+curl -fsSL https://raw.githubusercontent.com/citrus-android-developer/Citrus_Lumos_Full/main/get.sh | bash
 # 會問「要把 <路徑> 建成 lumos 專案嗎? [y/N]」→ 按 y 即建圖譜+工具+hooks;然後重啟 Claude Code session
 ```
 
@@ -85,7 +85,7 @@ curl -fsSL https://raw.githubusercontent.com/EnzoHsieh-Android/Lumos/main/get.sh
 <details><summary>進階/離線:手動 install-graph-toolchain</summary>
 
 ```bash
-git clone https://github.com/EnzoHsieh-Android/Lumos ~/harness/lumos-toolchain
+git clone https://github.com/citrus-android-developer/Citrus_Lumos_Full ~/harness/lumos-toolchain
 cd ~/harness/lumos-toolchain && ./install.sh        # user-scope skills(symlink)
 python3 scripts/lumos install                       # (選用)全域 `lumos` 上 PATH
 scripts/install-graph-toolchain.sh --target <專案路徑> --slug <名稱>
@@ -96,7 +96,7 @@ scripts/install-graph-toolchain.sh --target <專案路徑> --slug <名稱>
 前置:Git for Windows(自帶 bash 跑 git hooks)、python on PATH、Claude Code。
 
 ```powershell
-irm https://raw.githubusercontent.com/EnzoHsieh-Android/Lumos/main/get.ps1 | iex
+irm https://raw.githubusercontent.com/citrus-android-developer/Citrus_Lumos_Full/main/get.ps1 | iex
 # 重啟 Claude Code session(L1/L3 在 session start 載入)
 # 若 lumos 找不到:把 %USERPROFILE%\.local\bin 加進 PATH
 cd <你的專案>; lumos init

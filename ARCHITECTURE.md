@@ -6,7 +6,7 @@
 
 ```mermaid
 flowchart TB
-    subgraph SRC["🟢 Lumos repo (唯一源 · 公開 EnzoHsieh-Android/Lumos · ~/harness/lumos-toolchain)"]
+    subgraph SRC["🟢 Lumos repo (唯一源 · 公開 citrus-android-developer/Citrus_Lumos_Full · ~/harness/lumos-toolchain)"]
         direction TB
         CLI["scripts/lumos<br/>(python3 標準庫單檔 CLI)"]
         TEST["scripts/test_lumos.py"]

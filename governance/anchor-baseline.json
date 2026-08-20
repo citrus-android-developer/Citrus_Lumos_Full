@@ -1,12 +1,12 @@
 {
   "version": 1,
   "anchors": {
-    "scripts/test_lumos.py": "7510a2047d27d749c8d68fc4cd4219b7c8d07289769c4ad881ec9fdccbce536c",
+    "scripts/test_lumos.py": "8280f8a3cbccf7066ae42b7739b316f326c85ed174c416ad39aa9e03387406e9",
     "scripts/test_autonomous_loop.py": "a2b44da407687e669a91fd5937530f7c5fc3d2d098a37d77da9395590ea402da",
     "scripts/hooks/pre-commit": "5fdf28a4dc74d41e2473ba964d6412991ff318c507488094aa79974ae38a16a2",
     "scripts/hooks/pre-push": "c48670931bbd541552c63906dd4901e1a9a6e456d21f56d42cf1b5dd5edc333c",
     "scripts/hooks/post-commit": "49151b91a726b3303829a29df8c6957932b2261d4ee7489e1f33aa9f7443a389"
   },
-  "approved_at": "2026-08-19T08:17:47+08:00",
-  "note": "self-origin 單審折入:身分探針+行為級解析鏈測試(9 斷言)"
+  "approved_at": "2026-08-20T11:55:58+08:00",
+  "note": "鏡像安裝入口去上游耦合:test_lumos.py 的 _bootstrap_url 第四段斷言改指本 repo(2026-08-20)"
 }

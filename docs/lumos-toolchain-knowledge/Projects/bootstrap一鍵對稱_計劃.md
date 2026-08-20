@@ -2,7 +2,7 @@
 type: project
 status: done
 created: 2026-07-25
-updated: 2026-07-25
+updated: 2026-08-20
 tags:
   - type/project
   - status/done
@@ -122,3 +122,7 @@ bash 從 stdin 讀腳本 → python 繼承同一條管線 → 直接 `input()` �
 - **F4**：`cmd_init` 對「vault 建到一半」（如 KeyboardInterrupt 後）無自癒——有 vault 就 early-return 輕路徑，不補缺的子目錄/gitignore。既有行為，修要動 init 本體（範圍刀外）。
 - **F9**：`docs/knowledge`／standalone vault 佈局下 `cmd_init` 反推不出 slug、reinject 會把 `{{KG}}` 寫成 `docs/<repo>-knowledge/`（錯路徑）。既有行為；bootstrap 分流靠 `_vault_in` 不受此影響，但 init 輕路徑在這類佈局有此病。
 - **F10**：Windows 官方入口 `get.ps1` 只做機器層＋手動 init——本案範圍明縮 **POSIX（get.sh）**，Windows 一鍵化另立。
+
+## 結案後迭代
+
+- **2026-08-20 鏡像安裝入口去上游耦合**([[Verification/2026-08-20_鏡像安裝入口去上游耦合]]):本計劃讓 `get.sh` 委派 `bootstrap`,但 `get.sh` 自己的 `LUMOS_URL` 仍寫死上游——對**鏡像交付庫**而言,一鍵安裝那條路等於繞過 2026-08-19 的鏡像自足(`_self_repo_origin` 只在「已有 clone」時生效)。本次把安裝入口的活路徑(get.sh/get.ps1/README/ONBOARDING/ARCHITECTURE/解析鏈第四段)一律改指本 repo。★殘留:上游單向同步會洗掉,無機械守衛,見驗證節點★。

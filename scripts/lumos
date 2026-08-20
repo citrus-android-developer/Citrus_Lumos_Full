@@ -9026,7 +9026,7 @@ def _bootstrap_url(lumos_url=None, script=None):
     > 硬編碼上游。抽成函式=解析順序可被行為測試釘住(單審抓到原字串包含斷言=假綠)。"""
     import os
     return (lumos_url or os.environ.get("LUMOS_URL") or _self_repo_origin(script=script)
-            or "https://github.com/EnzoHsieh-Android/Lumos")
+            or "https://github.com/citrus-android-developer/Citrus_Lumos_Full")
 
 
 def cmd_bootstrap(lumos_url=None, lumos_home=None, pull=False, init=False, allow_stale=False):

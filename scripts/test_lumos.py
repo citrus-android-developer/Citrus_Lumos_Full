@@ -20800,7 +20800,7 @@ def t_bootstrap_url_self_origin():
               m._bootstrap_url("https://flag.example/y.git", script=repo / "scripts" / "lumos") == "https://flag.example/y.git", "")
         del _os.environ["LUMOS_URL"]
         check("self-origin: 解析鏈④無訊號退硬編碼上游",
-              m._bootstrap_url(script=plain / "lumos") == "https://github.com/EnzoHsieh-Android/Lumos", "")
+              m._bootstrap_url(script=plain / "lumos") == "https://github.com/citrus-android-developer/Citrus_Lumos_Full", "")
     finally:
         if old_env is not None:
             _os.environ["LUMOS_URL"] = old_env
