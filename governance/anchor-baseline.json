@@ -1,12 +1,12 @@
 {
   "version": 1,
   "anchors": {
-    "scripts/test_lumos.py": "3de2d70655927a0f636530bf3eace85c7c63389fe07c11bbe601f29ed85a80e0",
+    "scripts/test_lumos.py": "e9e97a5b288d200039372c8bcec66ea2e9497ee70b66690a610f733c5a1bac2a",
     "scripts/test_autonomous_loop.py": "9b6938e2d1ea2af9a411060524d9ff3b8e30eaaad97d0f78cafa18220f1ebbaf",
     "scripts/hooks/pre-commit": "b40132f441db6e4114a219250d0cd0df72747c5bfb2e3624a4162db287eb65dd",
     "scripts/hooks/pre-push": "29a30ebe5c170e21ab68ff10cb84be7668c3976c18e114f2452b0f4ec624cf85",
     "scripts/hooks/post-commit": "640440f062e7bcfb95dbc6139f9b3ebc994452d6e7ebdad6bc466ef41b70b1ed"
   },
-  "approved_at": "2026-08-26T14:49:15+08:00",
-  "note": "術語改名 222135b:圖譜→架構圖 全 repo 取代掃到這 5 個錨點檔。逐檔以 b30bae4 版本套用同一取代後比對,全部 byte-equal——僅註解/字串用詞變更,驗證邏輯零改動。全套測試 2866 passed/0 failed。"
+  "approved_at": "2026-08-26T15:37:33+08:00",
+  "note": "delguard 超時分類修復 25fe31e 的 TDD 新增:t_delguard +8 條(TimeoutExpired 歸 reason=timeout、三條降級路徑須自陳未實際守衛)。屬擴充非弱化——既有 85 條一條未動、一條未放寬;全量 2874 passed/0 failed(基線 2866+8)。先紅後綠已補證。"
 }
