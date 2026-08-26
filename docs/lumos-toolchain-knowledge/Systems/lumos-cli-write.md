@@ -2,7 +2,7 @@
 type: system
 status: done
 created: 2026-06-26
-updated: 2026-08-11
+updated: 2026-08-26
 self_audit: sonnet/2026-07-24
 tags:
   - type/system
@@ -19,6 +19,7 @@ summary: |-
   KEY:[2026-08-05]`new verification <名> --plan <計劃> --systems <A,B>` 一鍵雙向——建檔當下填 plan_refs+對每個 Systems append verified_by(寫後自驗沿 cmd_append);指到不存在節點 rc2 且不建檔(不留半套);把「事後 sync-verified-by 撿漏」變「寫入時就對」 [test:t_new_verification_bidirectional]
   FLOW:set/append/self-audit/decision-*→load_raw_for_edit(讀raw,拒BOM/CRLF)→line-based改fm→atomic_write_verify(寫tmp→re-parse自驗值正確+無新lint指紋→os.replace)→敗則tmp丟棄原檔不動
   KEY:[2026-08-11]新增 `remove <note> <key> <value>`=append 逆操作(T1 list 項移除)。缺口來自實戰:死背書(verified_by 指向已 superseded 的驗證)與降格後殘留 core_refs,都只能靠移除 list 項來收,而 set 只收純量、append 只能加,唯一退路 obsidian processFrontMatter 需 Obsidian 執行中→實務無路可走。比對沿用 link_target()(精確 target,不做前綴/basename 匹配);★不命中一律 rc=2★(靜默 no-op 回成功=呼叫端以為清乾淨了,比報錯危險);清空後連 key 行一併移除(裸鍵被 YAML 解成 null 比沒鍵更糟);core_refs 納入 LIST_KEYS(升格加/降格拆兩向都走 T1)。★不支援巢狀 dict 型 list 項★(core-knowledge facet 的 implements 需 T3 手術層,非本次範圍)。實戰驗收:LandmarkMember doctor E1 死背書 14→0、C 指針轉「無」。詳 [[Verification/2026-08-11_T1_remove_list項移除]]
+  KEY:[2026-08-26]decision-add 補齊 ADR 四欄位——新增 `--alternatives`(可重複→`alternatives_considered` 巢狀清單,項縮排 sub+2)與 `--trade-offs`;欄位順序對齊 lumos-project-notes reference 的 ADR 完整版範例(content/id/context/alternatives_considered/why_chosen/trade_offs/decided/valid)。先前只有 context/why_chosen,規範要求的四欄位寫不進 frontmatter,「為什麼不選 B」與「代價」只能塞本文——而那正是 ADR 的價值所在。★兩條 block 組裝路徑抽成單一源 `_decision_block`★(無 decisions 新建 / append 既有,原本各組裝一次,欄位一多必分歧——同 2026-08-01 被代碼審抓到的分支簿記形態);寫後自驗升級到驗四欄位(只驗 id+content 的話,巢狀縮排寫錯會靜默成假成功;實測植入 sub+2→sub 壞法,自驗擋下、原檔零變動) [test:t_decision_add_four_field_adr,t_decision_add_alternatives_parse_back,t_decision_add_four_field_no_existing_decisions,t_decision_add_four_field_lint_clean]
   KEY:8個寫入原語(set/append/remove/new/archive/decision-add/decision-supersede/self-audit)是「專案層」圖譜寫入的唯一安全路徑,取代手改 frontmatter / obsidian property:set
   KEY:T1 寫後自驗 atomic——所有 fm mutation 經 atomic_write_verify:寫 .lumos-tmp → re-parse 斷言該 key 寫成目標值 + 無引入新 lint 指紋 → os.replace 原子換入;任一步失敗 tmp 丟棄、原檔零變動 [test:t_set_minimal_diff,t_append_exact_dedup]
   KEY:set 走 SCALAR_KEYS 白名單{status,updated,created,type,self_audit,signed_off,regen[M1 2026-07-16 from-scratch守衛宣告欄]}、append 走 LIST_KEYS{verified_by,plan_refs,related,tags};白名單外 key 直接 rc2(list 用 append、decisions 翻盤/新增走 decision-*) [test:t_append_block_key_rejected]
@@ -61,6 +62,7 @@ verified_by:
   - "[[Verification/2026-08-05_流程優化六件落地]]"
   - "[[Verification/2026-08-05_標籤結構收編落地]]"
   - "[[Verification/2026-08-11_T1_remove_list項移除]]"
+  - "[[Verification/2026-08-26_decision-add四欄位ADR]]"
 ---
 # lumos-cli-write
 

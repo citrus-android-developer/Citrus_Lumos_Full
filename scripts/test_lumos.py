@@ -1955,6 +1955,95 @@ def t_decision_add_no_existing():
     check("decision-add 無 decisions 時建立", "decisions:" in txt and "首條決策" in txt, txt)
 
 
+def t_decision_add_four_field_adr():
+    """ADR 四欄位:--alternatives(可重複)+ --trade-offs 寫進 frontmatter,順序對齊
+    reference.md ADR 完整版範例(content/id/context/alternatives_considered/
+    why_chosen/trade_offs/decided/valid)。"""
+    v, p = _vault_with_decisions()
+    r = run(v, "decision-add", "X", "採 MSSQL 樂觀鎖", "--decided", "2026-08-26",
+            "--context", "POS 尖峰 1200 RPS,既有架構沒 Redis",
+            "--alternatives", "Redis 分散式鎖:要新增基礎設施",
+            "--alternatives", "悲觀鎖:長交易卡連線池",
+            "--why", "用既有 DB,無新依賴",
+            "--trade-offs", "高衝突場景重試成本高(實測衝突率 <0.1%)")
+    check("四欄位 decision-add rc=0", r.returncode == 0, r.stderr)
+    txt = read(p)
+    check("寫出 alternatives_considered 鍵", "alternatives_considered:" in txt, txt)
+    check("寫出 trade_offs 值",
+          "trade_offs: " in txt and "高衝突場景重試成本高" in txt, txt)
+    check("兩個 --alternatives 都寫入",
+          "悲觀鎖:長交易卡連線池" in txt, txt)
+    # 冒號★不接空白★是合法 plain scalar,不該多加引號(過度引號化 = 無謂 diff 噪音)
+    check("冒號未接空白→保持 plain(不多餘引號)",
+          "- Redis 分散式鎖:要新增基礎設施" in txt, txt)
+    # ★順序只在新決策自己的 block 內比對★——fixture 既有決策也有 alternatives_considered,
+    # 對全文 index() 會抓到別條的欄位(本測試初版就踩了這個,留註記防後人重蹈)
+    blk = txt[txt.index("- content: 採 MSSQL 樂觀鎖"):]
+    blk = blk[:blk.index("valid: true") + len("valid: true")]
+    i_ctx = blk.index("context: POS 尖峰")
+    i_alt = blk.index("alternatives_considered:")
+    i_why = blk.index("why_chosen: 用既有 DB")
+    i_tro = blk.index("trade_offs: ")
+    i_dec = blk.index("decided: 2026-08-26")
+    check("欄位順序對齊 ADR 規範",
+          i_ctx < i_alt < i_why < i_tro < i_dec,
+          f"ctx={i_ctx} alt={i_alt} why={i_why} tro={i_tro} dec={i_dec}")
+
+
+def t_decision_add_alternatives_parse_back():
+    """寫出的 alternatives_considered 必須被 parse_decisions 讀回成 list(不是字串)。
+    ★這是「寫得出來」與「讀得回來」的差別★——只驗文字包含會漏掉縮排錯誤。"""
+    v, p = _vault_with_decisions()
+    run(v, "decision-add", "X", "解析回讀驗證", "--decided", "2026-08-26",
+        "--alternatives", "方案甲", "--alternatives", "方案乙",
+        "--trade-offs", "取捨敘述", expect_rc=0)
+    m = _load_lumos_module()
+    raw = read(p)
+    fm = raw.split("---")[1].splitlines()
+    ds = m.parse_decisions(fm)
+    tgt = [d for d in ds if "解析回讀驗證" in str(d.get("content", ""))]
+    check("目標決策解析得到", len(tgt) == 1, str(ds))
+    alt = tgt[0].get("alternatives_considered")
+    check("alternatives_considered 解析為 list", isinstance(alt, list), repr(alt))
+    check("list 內容正確", alt == ["方案甲", "方案乙"], repr(alt))
+    check("trade_offs 解析為純量", tgt[0].get("trade_offs") == "取捨敘述",
+          repr(tgt[0].get("trade_offs")))
+
+
+def t_decision_add_four_field_no_existing_decisions():
+    """★分支簿記守衛★:cmd_decision_add 有兩條 block 組裝路徑(無 decisions 時新建 /
+    append 到既有)。只改一邊會讓「首篇決策」與「後續決策」欄位分歧——本測試釘住
+    無 decisions 那條路徑同樣寫得出四欄位。"""
+    v = mkvault()
+    p = write(v, "Systems/Y.md", "type: system\nstatus: done")
+    run(v, "decision-add", "Y", "首條四欄位決策", "--decided", "2026-08-26",
+        "--context", "背景敘述", "--alternatives", "候選甲",
+        "--why", "選這個", "--trade-offs", "代價敘述", expect_rc=0)
+    txt = read(p)
+    check("無 decisions 分支:建立 decisions", "decisions:" in txt, txt)
+    check("無 decisions 分支:寫出 alternatives_considered",
+          "alternatives_considered:" in txt and "候選甲" in txt, txt)
+    check("無 decisions 分支:寫出 trade_offs", "trade_offs: 代價敘述" in txt, txt)
+
+
+def t_decision_add_four_field_lint_clean():
+    """四欄位寫入後 lint 必須 0 問題——巢狀清單曾造成 decisions 結構守衛假陽性
+    (2026-08-05 修),此處釘住新寫入路徑不重蹈。"""
+    v = mkvault()
+    write(v, "Systems/L.md",
+          "type: system\nstatus: done\naliases: []\n"
+          "summary: |-\n  KEY:四欄位 lint 驗證用節點")
+    # 含「冒號+空白」→ 必須自動引號化,否則 YAML 解析破格(鐵則3)
+    run(v, "decision-add", "L", "lint 乾淨驗證", "--decided", "2026-08-26",
+        "--alternatives", "候選甲: 要新增基礎設施", "--alternatives", "候選乙",
+        "--why", "理由", "--trade-offs", "取捨: 有代價", expect_rc=0)
+    txt = read(v / "Systems/L.md")
+    check("冒號+空白→自動引號(鐵則3)",
+          '- "候選甲: 要新增基礎設施"' in txt and 'trade_offs: "取捨: 有代價"' in txt, txt)
+    r = run(v, "lint", "L")
+    check("四欄位寫入後 lint rc=0", r.returncode == 0, r.stdout + r.stderr)
+
+
 # ══ T3 第三輪審計回歸:複雜巢狀案例 ══
 
 def _complex_decisions_vault():

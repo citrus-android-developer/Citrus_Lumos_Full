@@ -7322,6 +7322,34 @@ def _fmt_decision_value(v):
     return v
 
 
+def _decision_block(content, new_id, decided, item_indent, sub,
+                    context=None, alternatives=None, why=None, trade_offs=None):
+    """組裝一條 ADR 決策的 frontmatter 行。
+
+    ★單一組裝源★——cmd_decision_add 有兩條路徑(無 decisions 時新建 / append 到既有),
+    原本各自組裝一次 block。欄位一多,「只改一邊」就會讓首篇決策與後續決策欄位分歧
+    (本專案 2026-08-01 才因同型的分支簿記漏一條被代碼審抓到)。抽成單一源後,新增
+    欄位天生對兩條路徑同時成立,不靠人記得改兩處。
+
+    欄位順序對齊 lumos-project-notes reference.md 的 ADR 完整版範例:
+    content / id / context / alternatives_considered / why_chosen / trade_offs /
+    decided / valid。巢狀清單項縮排 = sub + 2。
+    """
+    ip, sp = " " * item_indent, " " * sub
+    block = [f"{ip}- content: {_fmt_decision_value(content)}", f"{sp}id: {new_id}"]
+    if context:
+        block.append(f"{sp}context: {_fmt_decision_value(context)}")
+    if alternatives:
+        block.append(f"{sp}alternatives_considered:")
+        block += [f"{sp}  - {_fmt_decision_value(a)}" for a in alternatives]
+    if why:
+        block.append(f"{sp}why_chosen: {_fmt_decision_value(why)}")
+    if trade_offs:
+        block.append(f"{sp}trade_offs: {_fmt_decision_value(trade_offs)}")
+    block += [f"{sp}decided: {decided}", f"{sp}valid: true"]
+    return block
+
+
 def cmd_decision_supersede(env, rel, match, by, ended=None):
     """T3 巢狀手術:把 decisions[] 中 content 含 match 的決策標 valid:false + 補
     superseded_by/ended。surgical line-based(不重序列化,最小 diff;優於 ruamel reflow)。
@@ -7422,10 +7450,14 @@ def _max_decision_id(fm_lines):
     return mx
 
 
-def cmd_decision_add(env, rel, content, decided, context=None, why=None):
+def cmd_decision_add(env, rel, content, decided, context=None, why=None,
+                     alternatives=None, trade_offs=None):
     """T3 巢狀手術:append 一條新 ADR 決策到 decisions[](無則建)。surgical line-based。
     [M1/P2]:指派穩定 id d<max+1> 並回傳 (rc, 全域決策id <rel>#d<N>);dispatcher 解包後
-    CLI 對外仍只回整數 rc。"""
+    CLI 對外仍只回整數 rc。
+    [2026-08-26] ADR 四欄位補齊:alternatives_considered(巢狀清單)+ trade_offs。
+    先前只支援 context/why_chosen,規範要求的四欄位寫不進 frontmatter,重大決策的
+    「為什麼不選 B」與「代價是什麼」只能塞本文——而那正是 ADR 的價值所在。"""
     if not DATE_RE.match(decided):
         raise ValueError(f"--decided 需 YYYY-MM-DD,得到: {decided}")
     path = env.vault / rel
@@ -7435,24 +7467,13 @@ def cmd_decision_add(env, rel, content, decided, context=None, why=None):
     new_id = f"d{_max_decision_id(fm) + 1}"
     if loc is None:
         # 無 decisions key → 在 fm 末尾建
-        item_indent, sub = 2, 4
-        block = [f'{" "*item_indent}- content: {_fmt_decision_value(content)}',
-                 f"{' '*sub}id: {new_id}"]
-        if context:
-            block.append(f'{" "*sub}context: {_fmt_decision_value(context)}')
-        if why:
-            block.append(f'{" "*sub}why_chosen: {_fmt_decision_value(why)}')
-        block += [f"{' '*sub}decided: {decided}", f"{' '*sub}valid: true"]
+        block = _decision_block(content, new_id, decided, 2, 4, context=context,
+                                alternatives=alternatives, why=why, trade_offs=trade_offs)
         fm = fm + ["decisions:"] + block
     else:
         _, e_block, items, item_indent, sub = loc
-        ip, sp = " " * item_indent, " " * sub
-        block = [f"{ip}- content: {_fmt_decision_value(content)}", f"{sp}id: {new_id}"]
-        if context:
-            block.append(f"{sp}context: {_fmt_decision_value(context)}")
-        if why:
-            block.append(f"{sp}why_chosen: {_fmt_decision_value(why)}")
-        block += [f"{sp}decided: {decided}", f"{sp}valid: true"]
+        block = _decision_block(content, new_id, decided, item_indent, sub, context=context,
+                                alternatives=alternatives, why=why, trade_offs=trade_offs)
         last = items[-1][1] if items else e_block
         fm[last + 1:last + 1] = block
     new_lines = lines[:1] + fm + lines[e_fm:]
@@ -7460,9 +7481,23 @@ def cmd_decision_add(env, rel, content, decided, context=None, why=None):
 
     def _check(_fields):
         # [M1] ID 精確驗證:新 id 那條存在且 content 相符(取代純 content 子字串——重疊時驗錯項)
-        return any(str(d.get("id", "")).strip() == new_id
-                   and needle in nfc(str(d.get("content", "")))
-                   for d in parse_decisions(_fm_of(new_lines)))
+        for d in parse_decisions(_fm_of(new_lines)):
+            if str(d.get("id", "")).strip() != new_id:
+                continue
+            if needle not in nfc(str(d.get("content", ""))):
+                return False
+            # [2026-08-26] 四欄位寫後自驗:★寫了就要讀得回來★。只驗 id+content 的話,
+            # 巢狀清單縮排寫錯會靜默通過(YAML 解成別的東西或吞進上一鍵),呼叫端拿到
+            # rc=0 卻沒有 alternatives——同 remove「不命中回成功」那類最危險的假成功。
+            if alternatives:
+                got = d.get("alternatives_considered")
+                if not isinstance(got, list) or \
+                        [nfc(str(x)) for x in got] != [nfc(a.strip()) for a in alternatives]:
+                    return False
+            if trade_offs and nfc(str(d.get("trade_offs", ""))).strip() != nfc(trade_offs.strip()):
+                return False
+            return True
+        return False
     atomic_write_verify(path, new_lines, "decisions", _check)
     print(f"✓ decision-add {rel}: 「{content[:30]}」(id={new_id}, valid:true)")
     return 0, f"{rel}#{new_id}"
@@ -14422,7 +14457,11 @@ def main():
     p.add_argument("content")
     p.add_argument("--decided", required=True, help="決策日期 YYYY-MM-DD")
     p.add_argument("--context", help="背景/痛點")
+    p.add_argument("--alternatives", action="append", metavar="方案",
+                   help="alternatives_considered 考慮過的方案(可重複,一次一個)")
     p.add_argument("--why", help="why_chosen 為何選這個")
+    p.add_argument("--trade-offs", dest="trade_offs", metavar="取捨",
+                   help="trade_offs 這個選擇的代價")
 
     p = sub.add_parser("install", help="symlink 到 ~/.local/bin → 全域可用")
     p.add_argument("--force", action="store_true", help="覆寫既有")
@@ -14952,7 +14991,9 @@ def main():
                         print(f"CASCADE-ERROR {_e}", file=sys.stderr)
                 return rc
             rc, _decision_id = cmd_decision_add(env, rel, args.content, args.decided,
-                                                context=args.context, why=args.why)
+                                                context=args.context, why=args.why,
+                                                alternatives=args.alternatives,
+                                                trade_offs=args.trade_offs)
             return rc
         except (ValueError, RuntimeError, OSError) as e:   # [code-loop 最終 delta A] 補 OSError:
             # 單節點 decision-supersede/add/reindex 皆走 atomic_write_verify 寫檔,IO 例外(磁碟滿/
