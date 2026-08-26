@@ -18,10 +18,10 @@ related:
   - "[[Systems/drift-history]]"
 summary: |-
   FLOW:doctor 掃 Systems 節點正文的 inline-code→篩「方法/類別形狀」→比對 code haystack→查無則軟提醒
-  KEY:★守的是成因 D「寫的時候就錯」★——code 從沒變過也會發生,故 ★diff-based 守衛(delguard)結構上抓不到★。與 delguard 分工:delguard 驗「被刪的符號圖譜還在講」(diff-based、commit 時);Y 驗「圖譜提到的符號 repo 有沒有」(全量、隨時)
+  KEY:★守的是成因 D「寫的時候就錯」★——code 從沒變過也會發生,故 ★diff-based 守衛(delguard)結構上抓不到★。與 delguard 分工:delguard 驗「被刪的符號架構圖還在講」(diff-based、commit 時);Y 驗「架構圖提到的符號 repo 有沒有」(全量、隨時)
   KEY:★首發實績★=抓到活動報名寫 ActivityService.RegisterAsync(實為 SubmitRegistrationAsync)、滿額贈寫 ListAvailableAsync/GetOrdersForRedeemAsync(實為 GetActivitiesAsync/GetOrderSelectionAsync)——★這三條在同日 10 個 agent 的兩階段交叉審計中全被漏掉★(實證員驗了行為、沒挑方法名)
   KEY:★只掃 Systems★是語意決定不是調參——只有 Systems 宣稱「現在長怎樣」;Projects 提未來方法、Verification/Issues 記歷史狀態,對它們報「查無」是誤報。實測:全型別 37 命中 → 限 Systems 4 命中
-  KEY:★否定語境豁免★=節點常「正確地記錄某符號已不存在」(「X 全庫零命中」「原記 X 無此方法」),對這種行報錯是把正確紀錄當錯誤;此為★唯一★誤報來源(2026-08-12 補足詞彙後真實圖譜誤報歸零),清單含 零命中/已移除/查無/無此/原記/舊名/改名/棄用/不使用/廢棄/停用 等
+  KEY:★否定語境豁免★=節點常「正確地記錄某符號已不存在」(「X 全庫零命中」「原記 X 無此方法」),對這種行報錯是把正確紀錄當錯誤;此為★唯一★誤報來源(2026-08-12 補足詞彙後真實架構圖誤報歸零),清單含 零命中/已移除/查無/無此/原記/舊名/改名/棄用/不使用/廢棄/停用 等
   DEP:[[Systems/lumos-cli-read]]
   TEST:5 條牙齒測試(含否定語境豁免、Projects 不掃、形狀過濾擋環境變數/範例ID/檔名)
 verified_by:
@@ -37,7 +37,7 @@ verified_by:
 
 | | delguard | Check Y |
 |---|---|---|
-| 問題 | 「**被刪的**符號，圖譜還在講」 | 「圖譜**提到的**符號，repo 有沒有」 |
+| 問題 | 「**被刪的**符號，架構圖還在講」 | 「架構圖**提到的**符號，repo 有沒有」 |
 | 時機 | commit 時（staged diff） | 隨時（全量） |
 | 抓得到「一開始就寫錯」嗎 | ❌ | ✅ |
 
@@ -45,7 +45,7 @@ verified_by:
 
 2026-08-12 上線當天抓到三條**真錯**：
 
-| 節點 | 圖譜寫 | 實際 |
+| 節點 | 架構圖寫 | 實際 |
 |---|---|---|
 | 活動報名 | `ActivityService.RegisterAsync` | `SubmitRegistrationAsync` |
 | 滿額贈 | `ListAvailableAsync` | `GetActivitiesAsync` |
@@ -67,7 +67,7 @@ verified_by:
 
 ### ② 形狀過濾——擋掉不是符號的東西
 
-寬鬆抽法（任何 PascalCase inline-code）在真實圖譜 **7% 未命中（74/930）**，抽樣多為：
+寬鬆抽法（任何 PascalCase inline-code）在真實架構圖 **7% 未命中（74/930）**，抽樣多為：
 環境變數（`ADMIN_LOG_VIEWER_KEY`）、DB 欄位（`TBmemberdisc.WelcomeCouponNo`）、
 會員編號範例（`LM00001226`）、別 repo 頁面（`MemberDisc.aspx`）。
 
@@ -83,7 +83,7 @@ verified_by:
 對這種行報「repo 查無」是**把正確的紀錄當成錯誤**。清單：
 `零命中 / 已移除 / 不存在 / 查無 / 已刪 / 從未 / 已退役 / 移除 / 無此 / 原記 / 舊名 / 改名 / removed / no longer / deleted / renamed`
 
-> 諷刺的是：**2026-08-12 訂正圖譜時，我們自己寫的訂正句就觸發了這類誤報**——這正好證明了它必須豁免。
+> 諷刺的是：**2026-08-12 訂正架構圖時，我們自己寫的訂正句就觸發了這類誤報**——這正好證明了它必須豁免。
 
 ## 已知限制
 

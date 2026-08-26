@@ -8,7 +8,7 @@ tags:
   - status/doing
 summary: |
   KEY:hook 紅燈殘餘 6 筆收尾——pre-flight 勘誤:僅 3 筆真斷鏈(B 群,D2 家族訊號全覆蓋)、3 筆=已 direct 被閾砍且保底未觸發(A 群);關鍵推論=光補鏈救不動(補進來照樣被砍),綁定約束=保底觸發過保守 → 兩件並進:S1 候選生成+人裁補鏈(零 LLM,D1 實證標的=train E20)、S2 觸發放寬至「free 內 direct<N 即補至水位」(考卷 A/B 裁決)
-  KEY:`lumos link-candidates <file>` 唯讀恆 rc0,不寫檔;人裁後補標準引用=正常圖譜編輯,反查自然吃到;考卷誠實界線=通用規則全庫生成+實質關係人裁,labels 不動,補鏈後數字變動如實記
+  KEY:`lumos link-candidates <file>` 唯讀恆 rc0,不寫檔;人裁後補標準引用=正常架構圖編輯,反查自然吃到;考卷誠實界線=通用規則全庫生成+實質關係人裁,labels 不動,補鏈後數字變動如實記
   KEY:刻意不做——LLM 候選(v2+反證預篩)/Drift 符號錨(另立)/自動寫入(人閘省不掉,pbt-oracle 教訓)
   FLAG:DECISION
 ---
@@ -16,7 +16,7 @@ summary: |
 
 > 緣起:[[Projects/hook必看召回修復_計劃]] 收斂後殘餘——held 必看 miss 6 筆全屬死法③(節點無機械可抓的 code 引用),週閘 hook P@8 0.6944 距 0.70 差 0.0056,多救一筆即翻綠。第三帖藥:候選生成+人裁補連結。
 
-PRIOR-ART: ① 最小解層級——新增**唯讀候選生成子命令**(觀測,不動任何排序/閘),補的連結=正常圖譜編輯(引用寫進節點 body,反查自然吃到,零新消費端);姿勢 borrow 自家 [[Projects/pitfalls網搜補漏_計劃]](候選→人放行→進圖譜,人閘省不掉)。② 世界解:TLR(LLM 連結恢復,arXiv 2509.05585/2508.12232)——LLM 在迴圈=不可重算,僅離線候選+人裁姿勢合法;v1 甚至不用 LLM,兩個決定論偵測器夠用(見實驗)。Drift 符號錨(路徑#符號@sha)=另一題(錨定格式升級),本計劃不做。③ Growth test 三問:事故=週閘紅燈+驗屍 6 筆死法③(機械留痕);非風格偏好;既有機制(quote-check/refcheck/seat-check/reverse-lookup)全是消費端無一做候選挖掘——蓋不住,新讀取面成立。④ 裁定=borrow-design。
+PRIOR-ART: ① 最小解層級——新增**唯讀候選生成子命令**(觀測,不動任何排序/閘),補的連結=正常架構圖編輯(引用寫進節點 body,反查自然吃到,零新消費端);姿勢 borrow 自家 [[Projects/pitfalls網搜補漏_計劃]](候選→人放行→進架構圖,人閘省不掉)。② 世界解:TLR(LLM 連結恢復,arXiv 2509.05585/2508.12232)——LLM 在迴圈=不可重算,僅離線候選+人裁姿勢合法;v1 甚至不用 LLM,兩個決定論偵測器夠用(見實驗)。Drift 符號錨(路徑#符號@sha)=另一題(錨定格式升級),本計劃不做。③ Growth test 三問:事故=週閘紅燈+驗屍 6 筆死法③(機械留痕);非風格偏好;既有機制(quote-check/refcheck/seat-check/reverse-lookup)全是消費端無一做候選挖掘——蓋不住,新讀取面成立。④ 裁定=borrow-design。
 
 ## 前置實驗(2026-08-07;★pre-flight 勘誤後以 live impact 反查為準,原表 3 筆誤判已更正★)
 殘餘 6 筆 miss 經 `lumos impact --json` direct 清單重放,實況分兩群:
@@ -26,7 +26,7 @@ PRIOR-ART: ① 最小解層級——新增**唯讀候選生成子命令**(觀測
 | B(真斷鏈,3 筆) | Verification/2026-07-10_檢索排序v1、Projects/主動影響幅度偵測_計劃、Projects/pitfalls事故觸發_計劃 | 零機械可抓引用;皆有 D2 家族訊號(鄰居引同檔/標題共詞幹) |
 
 另 train 卷 E20(convergence-evidence-gate ← cross_audit.py)=純文字提及無反引號,D1 可抓。
-→ **關鍵推論(改寫本計劃範圍)**:B 群補鏈後變成「direct 但 L≈0」——照現行閾值照樣被砍,且同題有 direct 存活時保底不觸發 → **光補鏈救不動 held 數字**。綁定約束=保底觸發條件過保守(hook必看召回修復 刻意保守的已知代價,當時如實記錄)。故本計劃兩件並進:S1 補鏈工具(圖譜衛生+D1/E20 型)+S2 觸發條件放寬(考卷 A/B 裁決)。
+→ **關鍵推論(改寫本計劃範圍)**:B 群補鏈後變成「direct 但 L≈0」——照現行閾值照樣被砍,且同題有 direct 存活時保底不觸發 → **光補鏈救不動 held 數字**。綁定約束=保底觸發條件過保守(hook必看召回修復 刻意保守的已知代價,當時如實記錄)。故本計劃兩件並進:S1 補鏈工具(架構圖衛生+D1/E20 型)+S2 觸發條件放寬(考卷 A/B 裁決)。
 
 ## 規格
 
@@ -39,7 +39,7 @@ PRIOR-ART: ① 最小解層級——新增**唯讀候選生成子命令**(觀測
 - **D1 純文字提及**:剝 inline-code 與 fenced block 後,節點可見文字含目標檔完整路徑/檔名/去副檔名詞幹(詞幹須 ≥6 字元且非常用詞,防 `lumos`/`eval` 這類短詞洪水)→ 候選,標 `signal: plain-text`+證據行摘錄(實證標的:train 卷 E20 型)。
 - **D2 鄰居家族**:目標檔的 direct 引用節點集 D 的 wikilink 一階鄰居(related/body wikilink 雙向),且滿足任一:(a) 與某 d∈D 標題共享 ≥4 字元 CJK 詞幹 (b) plan_refs/verified_by 鏈相連 → 候選,標 `signal: neighbor-family`+經由哪個 d。
 - 已是 direct(有 inline-code 引用)的節點不出候選(去重);兩訊號同中標 both。
-- 輸出:逐候選 `{node, signal, via/evidence}`;無候選印「無」。**不寫任何檔**——補引用=人裁後的正常圖譜編輯。
+- 輸出:逐候選 `{node, signal, via/evidence}`;無候選印「無」。**不寫任何檔**——補引用=人裁後的正常架構圖編輯。
 - `--all-goldset`:對 goldset edit 卷全部 file 掃一輪出彙總(驗收用)。
 
 ### 人裁協定(省不掉的閘)

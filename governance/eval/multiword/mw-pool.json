@@ -107,7 +107,7 @@
   "n_pool": 16
  },
  "M06": {
-  "query": "圖譜 同步 閘",
+  "query": "架構圖 同步 閘",
   "pool": [
    "Systems/lumos-deinit.md",
    "Projects/社群演算法補強_調研.md",

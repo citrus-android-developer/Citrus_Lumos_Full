@@ -1,6 +1,6 @@
 # Code Review — design-loop 重設計 T1-T7（r1-s1）
 
-審查對象：`code-dloop-redesign-r1-s1.patch`（AGENTS.md/README* 計數同步、`docs/lumos-toolchain-knowledge/*` 圖譜節點、`governance/eval/canary_calibration.py`〔新檔〕、`scripts/lumos`、`scripts/test_lumos.py`、`skills/lumos-{code,design}-loop/*`）。逐 hunk 讀完，聚焦新邏輯（T1 record 六選配欄、T2 quote-check、T3 反循環快照、T4 `--disposal` 四合取、T6 留痕強制、T7 離線校準）。
+審查對象：`code-dloop-redesign-r1-s1.patch`（AGENTS.md/README* 計數同步、`docs/lumos-toolchain-knowledge/*` 架構圖節點、`governance/eval/canary_calibration.py`〔新檔〕、`scripts/lumos`、`scripts/test_lumos.py`、`skills/lumos-{code,design}-loop/*`）。逐 hunk 讀完，聚焦新邏輯（T1 record 六選配欄、T2 quote-check、T3 反循環快照、T4 `--disposal` 四合取、T6 留痕強制、T7 離線校準）。
 
 ---
 

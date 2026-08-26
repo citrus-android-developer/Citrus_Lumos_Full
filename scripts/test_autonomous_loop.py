@@ -353,8 +353,8 @@ class TestDifficulty(unittest.TestCase):
                   "所有公開介面簽名維持不變。此重構不影響任何使用者可見的行為,"
                   "不改變資料庫欄位定義,亦不涉及任何第三方系統整合。"
                   "整體變更範圍限定於程式庫內部實作細節的整理與清理作業。")
-        md = ("# t\n## 目標\n更新 `圖譜即合約-對外論述.md` 的段落說明,內容為文檔措辭。" + filler + "\n"
-              "## 組件\n見 圖譜即合約-對外論述.md 檔。" + filler + "\n"
+        md = ("# t\n## 目標\n更新 `架構圖即合約-對外論述.md` 的段落說明,內容為文檔措辭。" + filler + "\n"
+              "## 組件\n見 架構圖即合約-對外論述.md 檔。" + filler + "\n"
               "## 其他\n無風險詞的內部整理。" + filler + "\n")
         self.assertEqual(self.d.assess_spec(md)["tier"], "standard")  # 檔名「對外」不得誤觸
 

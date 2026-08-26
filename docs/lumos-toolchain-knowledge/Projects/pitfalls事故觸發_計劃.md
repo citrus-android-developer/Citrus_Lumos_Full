@@ -13,7 +13,7 @@ plan_refs:
   - "[[pitfalls-lint-integration_計劃]]"
 summary: |-
   FLAG:DECISION
-  KEY:pitfalls-lint-integration ④ 事故語料進圖譜——專案自己踩過的具體坑(linter 沒有、多為既有 Issues)加機械 pattern-trigger → lumos impact 多算 incidents 段 → 既有 impact PreToolUse hook 一併進場自動餵(像 refcheck manifest)。原 pitfalls-code-loop v2
+  KEY:pitfalls-lint-integration ④ 事故語料進架構圖——專案自己踩過的具體坑(linter 沒有、多為既有 Issues)加機械 pattern-trigger → lumos impact 多算 incidents 段 → 既有 impact PreToolUse hook 一併進場自動餵(像 refcheck manifest)。原 pitfalls-code-loop v2
   KEY:與 impact 分工=impact 撈「引用該檔的結構節點」(file-specific);④ 補「跨檔按主題觸發」(pattern-trigger)impact 撈不到的
   KEY:trigger 表示=事故節點 frontmatter `pitfall_when` list,兩型前綴:`glob:**/*Repository*.cs`(比被碰檔路徑)、`content:SELECT\s.*FROM`(grep 被碰檔內容 regex);新建 Write 無內容→只 glob
   FLOW:被碰 code 檔 → impact hook → lumos impact(算 direct/indirect + _match_incident_triggers 掃全圖 pitfall_when 節點比 glob/content)→ --json 加頂層 incidents 段 → hook 併注入
@@ -26,7 +26,7 @@ verified_by:
 ---
 # pitfalls 事故觸發_計劃(block ④)
 
-> 解 [[pitfalls-lint-integration_計劃]] 的 ④ 事故語料進圖譜。原 pitfalls-code-loop v2。**與 ③/impact 分工釐清**:③=網搜通則坑(skill);impact=撈「引用該檔的結構節點」(file-specific);**④=補「跨檔按主題 pattern-trigger」impact 撈不到的**(如「凡碰 raw SQL 都看 N+1 事故」)。
+> 解 [[pitfalls-lint-integration_計劃]] 的 ④ 事故語料進架構圖。原 pitfalls-code-loop v2。**與 ③/impact 分工釐清**:③=網搜通則坑(skill);impact=撈「引用該檔的結構節點」(file-specific);**④=補「跨檔按主題 pattern-trigger」impact 撈不到的**(如「凡碰 raw SQL 都看 N+1 事故」)。
 
 ## §1 架構
 
@@ -65,7 +65,7 @@ verified_by:
 - `_match_incident_triggers` 單元:glob 命中/content-regex 命中/都不命中/新建檔只 glob/多節點;`as_list` str-list。
 - `lumos impact --json` incidents 段 schema + 去重(節點既結構又 trigger 命中只列 incidents)。
 - hook 注入含 incidents 段、空 incidents 不注入該段。
-- 回歸:現有無 `pitfall_when` 的圖譜跑 impact → incidents 空、不誤傷(基線測試全綠)。
+- 回歸:現有無 `pitfall_when` 的架構圖跑 impact → incidents 空、不誤傷(基線測試全綠)。
 
 ## 落地後回指
 實作 Verification `plan_refs` 回指;本節點 TEST 更新;`pitfalls-lint-integration_計劃` ④ 標 done → roadmap ①②③④ 全 done。

@@ -45,7 +45,7 @@
 
 ## 知識同步影響
 
-- `docs/methodology/圖譜即合約.md` / `圖譜即合約-對外論述.md`:無影響(未改方法論語義,只強化既有 maker≠checker 的派工措辭)。
+- `docs/methodology/架構圖即合約.md` / `架構圖即合約-對外論述.md`:無影響(未改方法論語義,只強化既有 maker≠checker 的派工措辭)。
 - skills:**`skills/lumos-design-loop/SKILL.md` 本身就是被改對象**(step 3 framing 句)——改動即同步,無額外 drift。
 - KG:無新節點;本 spec 屬「機制提示打磨」,落地後可於 `Systems/design-loop` 與 `Systems/finding-refute` 內文補一句「審計派工採第三方投稿框架」(放行時順手,非必須)。
 

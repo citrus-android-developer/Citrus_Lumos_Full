@@ -1,19 +1,19 @@
 ---
 name: lumos-pitfalls-gapfill
-description: linter 未收錄的新坑用網搜補漏——WebSearch 找某 stack 的新 gotcha/pitfall(linter 沒抓的)→ 反證預篩(派 refuter 駁倒即丟)→ 駁不倒進候選(非定論)→ 人輕量放行 → 進圖譜 linter-gap 實務隱患節點(節點自去重)。邊角、量少、無機械 oracle 人閘省不掉。觸發詞:網搜補漏、linter 沒收錄的坑、pitfalls 網搜、新 gotcha 補漏、偏科層補殘餘。
+description: linter 未收錄的新坑用網搜補漏——WebSearch 找某 stack 的新 gotcha/pitfall(linter 沒抓的)→ 反證預篩(派 refuter 駁倒即丟)→ 駁不倒進候選(非定論)→ 人輕量放行 → 進架構圖 linter-gap 實務隱患節點(節點自去重)。邊角、量少、無機械 oracle 人閘省不掉。觸發詞:網搜補漏、linter 沒收錄的坑、pitfalls 網搜、新 gotcha 補漏、偏科層補殘餘。
 ---
 
 # lumos-pitfalls-gapfill:linter 未收錄新坑的網搜補漏(block ③)
 
-**Claude 編排,人放行,圖譜存放。** pitfalls 偏科層靠 linter 吃大宗;這個 skill 只補**linter 還沒收錄的殘餘新坑**。無 lumos 新指令——只用既有 `lumos new issue`/`append`/`context`/`search` 讀寫節點。
+**Claude 編排,人放行,架構圖存放。** pitfalls 偏科層靠 linter 吃大宗;這個 skill 只補**linter 還沒收錄的殘餘新坑**。無 lumos 新指令——只用既有 `lumos new issue`/`append`/`context`/`search` 讀寫節點。
 
 > ⚠ **邊角、量少、別過度跑**:linter(`.lumos/lint.json`)已覆蓋大宗,這只補殘餘。**不是每次 code-loop 都掃**;在「寫某 stack 的 spec / 進某 stack 的 code-loop、感覺 linter 可能沒蓋到某類新坑」時才調用。
 
 ## 何時用 / 何時跳
 - **用**:針對某 stack(Kotlin/C#/Vue…),懷疑有 linter 未收錄的**新**慣用坑(新版框架 API 陷阱、社群近期熱議的 footgun),想補進專案 pitfalls。
-- **跳**:linter(detekt/eslint/VSTHRD…)已能抓的 → 走 lint-adapter,不在這裡重找;專案自己踩過的具體事故 → 走 ④ 事故語料(寫圖譜節點),不是網搜。
+- **跳**:linter(detekt/eslint/VSTHRD…)已能抓的 → 走 lint-adapter,不在這裡重找;專案自己踩過的具體事故 → 走 ④ 事故語料(寫架構圖節點),不是網搜。
 
-## 前置(圖譜先行)
+## 前置(架構圖先行)
 每專案一個 `Issues/linter-gap實務隱患.md`(type issue)。**先讀它**(去重基準):
 ```
 lumos context linter-gap實務隱患        # 無 → lumos new issue "linter-gap實務隱患"

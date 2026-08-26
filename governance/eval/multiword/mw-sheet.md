@@ -97,7 +97,7 @@
 - Systems/lint-version-watch.md
 - Systems/reversibility-governance-ledger.md
 
-## M06｜查詢:「圖譜 同步 閘」
+## M06｜查詢:「架構圖 同步 閘」
 - Systems/lumos-deinit.md
 - Projects/社群演算法補強_調研.md
 - Projects/cochange守衛_計劃.md

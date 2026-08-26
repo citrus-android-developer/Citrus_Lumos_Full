@@ -91,7 +91,7 @@ SSOT 掃描」
 skills/lumos-code-loop/SKILL.md` 現在**都是 rc1**，各自跑出 30+ 條 `reverse-omission`/`value-drift`
 警告（例如 design-loop 那份：「body 有「--disposal」summary 無」等）。diff 與 Verification 節點裡都
 沒有任何一句提到跑過這個掃描、或對這些警告做過 triage（很可能是因為 SKILL.md 的 frontmatter 沒有
-`summary` 欄位，`fold-check` 設計給圖譜節點用、套在 SKILL.md 上大概率是雜訊）。這件事本身不影響
+`summary` 欄位，`fold-check` 設計給架構圖節點用、套在 SKILL.md 上大概率是雜訊）。這件事本身不影響
 功能行為，但計畫寫的驗收步驟沒有被履行或記載結果。
 
 ### 6. T6 定錨收緊 —— **做了**

@@ -418,15 +418,15 @@ git commit -m "feat(skill): lumos-design-loop 接 refcheck——步驟 2.5 機�
 ### Task 4: 知識同步 — methodology ×2 + lumos-project-notes 指令表
 
 **Files:**
-- Modify: `docs/methodology/圖譜即合約.md`(§四「設計前審計 loop」表格)
-- Modify: `docs/methodology/圖譜即合約-對外論述.md`(:152「跨家族」段後)
+- Modify: `docs/methodology/架構圖即合約.md`(§四「設計前審計 loop」表格)
+- Modify: `docs/methodology/架構圖即合約-對外論述.md`(:152「跨家族」段後)
 - Modify: `skills/lumos-project-notes/SKILL.md`(讀取/巡檢表 + 子命令全覽行)
 
 **Interfaces:**
 - Consumes: Task 1 的指令語意(存在性機械化、LLM 只判語意)。
 - Produces: 純文檔,無接口。
 
-- [ ] **Step 1: 圖譜即合約.md — 設計前審計 loop 表格加一列**
+- [ ] **Step 1: 架構圖即合約.md — 設計前審計 loop 表格加一列**
 
 old(「### 設計前審計 loop」表格內):
 ```
@@ -474,17 +474,17 @@ new:
 
 - [ ] **Step 4: 驗證 + Commit**
 
-Run: `grep -c "refcheck" docs/methodology/圖譜即合約.md docs/methodology/圖譜即合約-對外論述.md skills/lumos-project-notes/SKILL.md`
+Run: `grep -c "refcheck" docs/methodology/架構圖即合約.md docs/methodology/架構圖即合約-對外論述.md skills/lumos-project-notes/SKILL.md`
 Expected: 三檔各 ≥1。
 
 ```bash
-git add docs/methodology/圖譜即合約.md docs/methodology/圖譜即合約-對外論述.md skills/lumos-project-notes/SKILL.md
+git add docs/methodology/架構圖即合約.md docs/methodology/架構圖即合約-對外論述.md skills/lumos-project-notes/SKILL.md
 git commit -m "docs(sync): refcheck 知識同步——methodology 確定性軸 + 對外白話段 + project-notes 指令表"
 ```
 
 ---
 
-### Task 5: 圖譜節點 — Systems/lumos-refcheck + Verification(收尾,controller 可自跑)
+### Task 5: 架構圖節點 — Systems/lumos-refcheck + Verification(收尾,controller 可自跑)
 
 **Files:**
 - Create: `docs/lumos-toolchain-knowledge/Systems/lumos-refcheck.md`
@@ -542,7 +542,7 @@ design-loop/跨家族複核最吃重的「地面事實查證」恰是 LLM 最不
 ## 三個消費端
 - 自動 loop:`governance/autonomous_loop/orchestrator-prompt.md` §2 步驟 2.8(植 canary 後、spawn auditor 前對工作副本跑;missing/超界=機械 finding 修原稿留痕)+ auditor/judge prompt 附 manifest + §2.5a ground_truth 機械底座(不得刪減,散文規範)。
 - 手動 loop:`skills/lumos-design-loop/SKILL.md` 步驟 2.5 同款 + (d) 型 canary 裸檔名校準規則。
-- 方法論:`docs/methodology/圖譜即合約.md` 設計前審計 loop 表「機械 refcheck」列。
+- 方法論:`docs/methodology/架構圖即合約.md` 設計前審計 loop 表「機械 refcheck」列。
 
 ## 相關
 - 設計稿:`docs/design/2026-07-02-spec-refcheck.md`(design-loop 3 輪收斂;qwen disputed 經人裁機械反證後放行)。
@@ -583,7 +583,7 @@ Run: `./scripts/lumos lint Systems/lumos-refcheck && ./scripts/lumos lint Verifi
 Expected: 兩檔皆過(無裸合約/格式錯)。
 
 Run: `./scripts/lumos doctor 2>&1 | tail -3`
-Expected: `✓ 圖譜健康 — 0 issues`。
+Expected: `✓ 架構圖健康 — 0 issues`。
 
 ```bash
 git add docs/lumos-toolchain-knowledge/

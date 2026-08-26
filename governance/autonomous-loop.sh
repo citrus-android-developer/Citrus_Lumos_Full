@@ -9,7 +9,7 @@ MAXR="${2:-6}"
 # (Systems/nested-agent-permission-scope,planned)落地前,confused-deputy 已知漏洞
 # 不留可執行入口——--pr 直接拒跑。解禁條件:read-only child isolation 落地+過 code-loop。
 if [ "$MODE" != "--dry-run" ]; then
-  echo "autonomous-loop: 非 dry-run 已停用(2026-07-29 裁定,詳見圖譜 nested-agent-permission-scope);dry-run 照常" >&2
+  echo "autonomous-loop: 非 dry-run 已停用(2026-07-29 裁定,詳見架構圖 nested-agent-permission-scope);dry-run 照常" >&2
   exit 2
 fi
 TODAY="$(date +%F)"

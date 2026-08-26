@@ -18,7 +18,7 @@ summary: |-
   TEST:設計級測試策略——mine 給合成 git fixture repo、run monkeypatch call_claude_sonnet 驗算分(不燒 token)、label 純人工不自動測；尚無實作測試(t_-prefixed 未建)
   VERIFY:無(design-only,無真機/測試數證據)
 decisions:
-  - content: diff_text 必須是「動了 code 的 commit 之完整 diff」(不過濾 code/md/yaml)，純圖譜 status→stale commit 不是 L3 場景；overturn_commit 自身有 code diff 則用它，否則時間窗回溯(30 天內或最近 10 個 code commit)找動到節點 valid_under 符號的 commit，皆無則 null+drop
+  - content: diff_text 必須是「動了 code 的 commit 之完整 diff」(不過濾 code/md/yaml)，純架構圖 status→stale commit 不是 L3 場景；overturn_commit 自身有 code diff 則用它，否則時間窗回溯(30 天內或最近 10 個 code commit)找動到節點 valid_under 符號的 commit，皆無則 null+drop
     id: d1
     context: design-loop R2 兩個 blocker 推翻 R1 自己的修法——F1:L3 的 get_diff_text() 跑 git diff HEAD~1..HEAD 完全不過濾、餵 prompt 的是整個 commit 完整 diff，且因 hook 對無 code 變動 commit 早退(if not code_files: return 0)、L3 只在動 code 的 commit 上跑；F2:Verification 記符號的欄位是 valid_under，不是 Systems 才有的 verified_by(R1 用錯欄位=死碼)
     why_chosen: 餵進 LLM 的料必須跟線上一致才量得準；R1 的「code-only diff」框架與「verified_by 回溯」都偏離 hook 實際行為，會讓 recall 系統性失真
@@ -39,7 +39,7 @@ decisions:
 ---
 # verification-rot-eval
 
-量化 L3 腐化偵測命中率的 **prototype 評測尺**。拿 LandmarkMember 圖譜自己的 git 史造一組**有標準答案**的「失效題」，重放 L3(`verification-rot-check.py`)現用的判斷，量出真實的 **recall / precision**，把 `CONFIDENCE_THRESHOLD = 0.7` 從「拍腦袋」變成「從門檻敏感性表挑」。
+量化 L3 腐化偵測命中率的 **prototype 評測尺**。拿 LandmarkMember 架構圖自己的 git 史造一組**有標準答案**的「失效題」，重放 L3(`verification-rot-check.py`)現用的判斷，量出真實的 **recall / precision**，把 `CONFIDENCE_THRESHOLD = 0.7` 從「拍腦袋」變成「從門檻敏感性表挑」。
 
 > 源起:日報 2026-06-19 gap 1 ——「第三道腐化偵測本質上會漏掉約一半的隱性失效，而信心門檻是猜的、沒被量過」。外部依據:STALE 評測(arXiv 2605.06527)指最強模型也只認得出約 55% 的「舊資訊已被新事實推翻」。
 

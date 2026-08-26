@@ -47,10 +47,10 @@ tags:
 既有 296 案例全數維持綠（向後相容無回歸）。
 
 ## 測試方式
-`python3 scripts/test_lumos.py`（退出碼 0）。多平台案例以暫存目錄建「主 repo（圖譜）+ sibling 後端 repo」雙 root fixture 驗跨 repo discover。
+`python3 scripts/test_lumos.py`（退出碼 0）。多平台案例以暫存目錄建「主 repo（架構圖）+ sibling 後端 repo」雙 root fixture 驗跨 repo discover。
 
 ## 天花板（同計劃）
-Check T 只驗測試識別子存在、不驗跑綠（CI 的事）；E2E 要裝置/瀏覽器（無裝置才 skip）；跨 repo 只讀不寫。T6 圖譜補建 + T7 docs 為落地收尾，尚未 git commit。
+Check T 只驗測試識別子存在、不驗跑綠（CI 的事）；E2E 要裝置/瀏覽器（無裝置才 skip）；跨 repo 只讀不寫。T6 架構圖補建 + T7 docs 為落地收尾，尚未 git commit。
 
 ## 相關模組
 - [[Systems/test-profile-multiplatform]]

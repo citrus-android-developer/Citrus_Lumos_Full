@@ -84,7 +84,7 @@ def _disposal_export(log_path, out_path):
 ### 進一步核對:這個 hunk 有機械層面的異常,不只是風格問題
 
 1. **這個 hunk 的行數頭跟本體對不上**:標頭寫 `@@ -3264,8 +3338,18 @@`(宣稱舊檔 8 行、新檔 18 行),但實際逐行數過本體是舊檔 **7** 行、新檔 **21** 行——`git apply --check` 對整份 patch 直接回報 `error: corrupt patch at line 766`(766 正好落在這個 hunk 內)。我用腳本逐一核對這份 diff 對 `scripts/lumos` 的**全部 11 個 hunk**,只有這一個算不出來,其餘 10 個 header/本體行數完全吻合(見下方核對記錄)。
-2. **`git log --all -S "_disposal_export"` 與 `-S "dsp_export_v1"` 在整個 repo 歷史(含所有分支)都是零命中**——這個函式從未出現在任何一次真正的 commit 裡。對照之下,同一份 diff 裡其他新增符號(`_quote_norm`/`_quote_rows`/`_loop_status_disposal`/`cmd_quote_check`/T1 六個新參數……)都能在目前 repo(`scripts/lumos` 現況,`ba3ae1f`/`f9aec4b`)裡逐字找到,行為也用真的二進位重現過(見 Finding 1)。**只有這個函式是例外:它既不在現在的檔案裡,也不在任何歷史 commit 裡,而且在同一份 diff 的 argparse 區塊(`main()` 那幾個 hunk)裡也完全沒有被接上任何子命令、沒有被任何測試呼叫、沒有被任何圖譜/skill 文件提到**——即使照這份 diff 原樣套用,它也是個進不了任何入口的孤兒函式。
+2. **`git log --all -S "_disposal_export"` 與 `-S "dsp_export_v1"` 在整個 repo 歷史(含所有分支)都是零命中**——這個函式從未出現在任何一次真正的 commit 裡。對照之下,同一份 diff 裡其他新增符號(`_quote_norm`/`_quote_rows`/`_loop_status_disposal`/`cmd_quote_check`/T1 六個新參數……)都能在目前 repo(`scripts/lumos` 現況,`ba3ae1f`/`f9aec4b`)裡逐字找到,行為也用真的二進位重現過(見 Finding 1)。**只有這個函式是例外:它既不在現在的檔案裡,也不在任何歷史 commit 裡,而且在同一份 diff 的 argparse 區塊(`main()` 那幾個 hunk)裡也完全沒有被接上任何子命令、沒有被任何測試呼叫、沒有被任何架構圖/skill 文件提到**——即使照這份 diff 原樣套用,它也是個進不了任何入口的孤兒函式。
 
 核對記錄(對 `scripts/lumos` 段每個 `@@` 逐行數,OK=標頭與本體一致):
 ```

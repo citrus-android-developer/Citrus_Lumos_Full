@@ -15,7 +15,7 @@
 | 方案 | 內容 | 判定 |
 |---|---|---|
 | **A(選)** | 零參數確定性分級:風險關鍵字類(複用 Check H 的 `IRREVERSIBLE_HINT_PATTERNS` 先例,中英雙語擴充)命中任一類 → high;wrapper 注入 need/cap 參數 + brainstorm 後 spec 層 ratchet(只升不降)+ 收檔時 wrapper 重跑 gate 機械重驗 | **選**:每一步都是確定性核對(regex 命中/rc 比對),零權重參數;假陽性偏嚴格方向(多審不放水);複用既有 `--need`(`scripts/lumos:4075`)與 `--gate` 機械件,新 code 面極小;順手堵掉 wrapper 盲信自報 converged 的既有洞 |
-| B(否決) | LLM 自評難度:orchestrator 或 judge 對 gap 打難度分,依分調參 | 否決:**正是 gap 引 RHB 指的病灶**——最可能在難題上放水的 agent 被要求自己宣告題目難不難,等於把「要不要被嚴審」交給被審者;motivational not mechanical,違反圖譜即合約設計原則(機械判準優先) |
+| B(否決) | LLM 自評難度:orchestrator 或 judge 對 gap 打難度分,依分調參 | 否決:**正是 gap 引 RHB 指的病灶**——最可能在難題上放水的 agent 被要求自己宣告題目難不難,等於把「要不要被嚴審」交給被審者;motivational not mechanical,違反架構圖即合約設計原則(機械判準優先) |
 | C(否決) | 一律拉滿:全部 gap 都 K=3、cap=8、關 fail-open | 否決:每天多燒 2+ 輪 opus 審計,無人看顧場景成本不可持續;且不回應 gap 的差異化要求(「簡單 gap 才走快路」)——安全余量靠均攤成本買,遲早被砍回去 |
 
 ## 前提與既驗事實(逐字查證,2026-07-03)
@@ -42,7 +42,7 @@
   - `prod-irreversible`:prod/production/遷移/migration/不可逆/DROP TABLE/DELETE FROM/上架
   - `self-governance`:錨點/anchor verify/收斂判準/canary/審計閘/pre-push hook——**動 loop 自己的守衛面=審查強度最該拉滿的面**(守衛被改壞,之後每一輪的「綠」都是假的)
 - `assess(text) -> {"tier": "high"|"standard", "hits": [{"class","pattern","excerpt"}]}`:任一類命中 → high;**無權重、無計分、無閾值**——二值、確定性、同輸入恆同輸出。
-- `assess_spec(md_text)`(r2-F1):spec 文本專用入口——先以 `##` 標題機械切分,**操作定義=黑名單剝除**(r4-F2 定死:剝除標題子字串命中「方案評比/canary 相容性/誠實天花板/審計修正紀錄」的樣板節——必含 self-governance 詞,餵全文會近全開火;其餘節一律保留)。「前提與既驗事實」節不入黑名單、按實質設計節處理(r7-F2 辯方實測:14 份含此節真 spec 經剝除後 8 份 standard、6 份 high 全為守衛面真陽性——含守衛面引述的前提命中 high 是設計意圖、非坍縮;天花板 1 認領此假陽性族)。**選黑名單不選白名單**:黑名單詞對本 repo 真 spec 標題全數子字串命中(白名單詞「範圍組件」對真標題「範圍(五組件)」反而錯配),且錯配方向=多保留=偏嚴(over-fire),與天花板 1 的「假陽性偏嚴」姿態一致;白名單錯配=剝主內容=靜默降級,方向危險。**防呆**:剝除後餘文近空(節數<2 或字元<200)→ 回退全文 assess(偏嚴)並印告警。節名錨定誠實化(r7-F3+r8-F4):黑名單四詞中「誠實天花板/審計修正紀錄」在 orchestrator-prompt 步驟 1 節名清單、「方案評比/canary 相容性」為本 loop 慣例標題——但**四者同屬 prompt 層散文自律**(步驟 1 清單無機械 assert,同天花板 5 的可漂移性;「契約錨」一詞下修為「清單錨」),標題漂移=不剝除=偏嚴方向;測試補標題變異案。再對餘文**先剝除反引號 inline-code token 與檔名路徑引用**(r3-F2:知識同步表裡「圖譜即合約-對外論述.md」這類檔名會污染 external-send 類——13 份既有 spec 因它假陽性)再走 `assess`。**組件 ② 收檔重算與組件 ③ ratchet 一律經 `assess_spec`**——同一函數、構造上一致,②③ 輸入**定義**(切法/剝除規則)不可能發散;**輸入版本仍有時差**(r5-F3 顯式化):③ 跑在草稿與逐輪折入後、② 跑在最終文本,folding 可能使 assess_spec(最終)>assess_spec(草稿);且切分依賴的 `##` 節集合本身隨 spec 成熟度演化(r8-F3:草稿期「審計修正紀錄」僅空殼標題、黑名單命中節數少於收檔時)——「同函數構造一致」指定義不指逐輪輸出,發散方向仍偏嚴(只升不降+gap 下限兜底)。緩解:③ 的觸發點=「brainstorm 後+**每輪折入後(步驟 7 尾)重跑**」,升級即刻生效——收檔與最後一次 ratchet 的文本僅差 §2.5c 收尾折入,殘餘由天花板 3 的 cap-損耗族認領、r3-F4 歸因訊息呈現(後期升級擋下時 LINE 註明,人一眼可辨非參數謊報)。gap 文本(非 markdown spec)仍走 `assess`。
+- `assess_spec(md_text)`(r2-F1):spec 文本專用入口——先以 `##` 標題機械切分,**操作定義=黑名單剝除**(r4-F2 定死:剝除標題子字串命中「方案評比/canary 相容性/誠實天花板/審計修正紀錄」的樣板節——必含 self-governance 詞,餵全文會近全開火;其餘節一律保留)。「前提與既驗事實」節不入黑名單、按實質設計節處理(r7-F2 辯方實測:14 份含此節真 spec 經剝除後 8 份 standard、6 份 high 全為守衛面真陽性——含守衛面引述的前提命中 high 是設計意圖、非坍縮;天花板 1 認領此假陽性族)。**選黑名單不選白名單**:黑名單詞對本 repo 真 spec 標題全數子字串命中(白名單詞「範圍組件」對真標題「範圍(五組件)」反而錯配),且錯配方向=多保留=偏嚴(over-fire),與天花板 1 的「假陽性偏嚴」姿態一致;白名單錯配=剝主內容=靜默降級,方向危險。**防呆**:剝除後餘文近空(節數<2 或字元<200)→ 回退全文 assess(偏嚴)並印告警。節名錨定誠實化(r7-F3+r8-F4):黑名單四詞中「誠實天花板/審計修正紀錄」在 orchestrator-prompt 步驟 1 節名清單、「方案評比/canary 相容性」為本 loop 慣例標題——但**四者同屬 prompt 層散文自律**(步驟 1 清單無機械 assert,同天花板 5 的可漂移性;「契約錨」一詞下修為「清單錨」),標題漂移=不剝除=偏嚴方向;測試補標題變異案。再對餘文**先剝除反引號 inline-code token 與檔名路徑引用**(r3-F2:知識同步表裡「架構圖即合約-對外論述.md」這類檔名會污染 external-send 類——13 份既有 spec 因它假陽性)再走 `assess`。**組件 ② 收檔重算與組件 ③ ratchet 一律經 `assess_spec`**——同一函數、構造上一致,②③ 輸入**定義**(切法/剝除規則)不可能發散;**輸入版本仍有時差**(r5-F3 顯式化):③ 跑在草稿與逐輪折入後、② 跑在最終文本,folding 可能使 assess_spec(最終)>assess_spec(草稿);且切分依賴的 `##` 節集合本身隨 spec 成熟度演化(r8-F3:草稿期「審計修正紀錄」僅空殼標題、黑名單命中節數少於收檔時)——「同函數構造一致」指定義不指逐輪輸出,發散方向仍偏嚴(只升不降+gap 下限兜底)。緩解:③ 的觸發點=「brainstorm 後+**每輪折入後(步驟 7 尾)重跑**」,升級即刻生效——收檔與最後一次 ratchet 的文本僅差 §2.5c 收尾折入,殘餘由天花板 3 的 cap-損耗族認領、r3-F4 歸因訊息呈現(後期升級擋下時 LINE 註明,人一眼可辨非參數謊報)。gap 文本(非 markdown spec)仍走 `assess`。
 - `params(tier) -> {"need": 3, "maxr": 8}`(high)/ `{"need": 2, "maxr": 6}`(standard)。high 的 maxr 實際取 `max(維運指定 MAXR, 8)`——不因 wrapper 傳小值而縮水。
 
 ### ② wrapper 接線 + 收檔機械重驗(`governance/autonomous-loop.sh`)
@@ -117,8 +117,8 @@
 |---|---|
 | `governance/autonomous_loop/orchestrator-prompt.md` | §1 尾補 ratchet 步驟;§2 cap 行與步驟 8 `--need` 改佔位符;§2.5c 補 high 級條文(degraded/endorsed-after-refute 不放行);§3 輸出 JSON 增 tier/tier_escalated/need/maxr |
 | `governance/autonomous-loop.sh` | 選 gap 後 assess+注入;收檔前 gate 重驗 + cross_verdict 字串核對 |
-| `docs/methodology/圖譜即合約.md` | 自主 loop 節補「風險分級審查」原則:審查強度跟風險面走、分級必須零參數機械、fail-open 寬容只給低風險級 |
-| `docs/methodology/圖譜即合約-對外論述.md` | 白話:越危險的改動(碰錢、對外發東西、動守衛本身),機器自動多審幾輪、關掉寬容通道;而且收工前機器自己重驗一次,不信 AI 的一面之詞 |
+| `docs/methodology/架構圖即合約.md` | 自主 loop 節補「風險分級審查」原則:審查強度跟風險面走、分級必須零參數機械、fail-open 寬容只給低風險級 |
+| `docs/methodology/架構圖即合約-對外論述.md` | 白話:越危險的改動(碰錢、對外發東西、動守衛本身),機器自動多審幾輪、關掉寬容通道;而且收工前機器自己重驗一次,不信 AI 的一面之詞 |
 | `skills/lumos-design-loop/SKILL.md` | 補一句軟建議:高風險 spec(金流/對外/守衛面)手動 loop 建議 `--need 3` |
 | memory `autonomous-iteration-loop` | 補:tier 機制(high→K=3/cap=8/關 fail-open/收檔 gate 重驗);wrapper 不再盲信自報 converged |
 | `governance/autonomous_loop/confidence_report.py` | 報告增 tier + hits 呈現 |

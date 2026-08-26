@@ -22,7 +22,7 @@ schema migration、既有慣例、前端 `api()` helper、CSS 選擇器特異性
 | `LandmarkMember.Server/appsettings.json` | clean | 同上。 |
 | `LandmarkMember.Server/wwwroot/admin/logs/index.html`（SMS 查詢 / 會員統計 / RWD 基礎架構） | clean | tab 切換、URL 還原（`switchTab`/`restoreUrl`/onMounted 刷新分支）三處都同步加了新 tab 的 loader，沒有漏掛；`.fit` class 用 CSS specificity（`table.fit` > `table`）正確覆蓋 mobile `display:block`。 |
 | `LandmarkMember.Server/wwwroot/admin/logs/index.html`（table.fit 覆蓋範圍） | minor | 見 finding F2：同一支檔案裡結構相同（窄欄位）的既有表格未一併套用 `.fit`，RWD 覆蓋不完整。 |
-| `docs/landmark-knowledge/Systems/維運儀表板.md`（各次更新） | clean | 每個 commit 的圖譜同步內容與程式碼實際改動一致，無落後或臆測。 |
+| `docs/landmark-knowledge/Systems/維運儀表板.md`（各次更新） | clean | 每個 commit 的架構圖同步內容與程式碼實際改動一致，無落後或臆測。 |
 | `docs/landmark-knowledge/Systems/認證與註冊.md` | clean | RegisterSource 修正的脈絡記錄完整，含事故規模與回填方式。 |
 | `docs/landmark-knowledge/Systems/SMS簡訊.md` | clean | 5→15→5 兩次改動都同步記錄，最終文件與最終程式碼值一致。 |
 | `LandmarkMember.Pos/appsettings.json`（ReconSelfHeal 排程） | clean | 純 config 時間调整（22:30→23:00），有 prod 實測依據；`appsettings.Production.json` 未覆蓋此 key，故繼承 base 值，行為符合預期（非本次引入的分層問題）。 |

@@ -4,7 +4,7 @@ status: pass
 date: 2026-07-21
 valid_under:
   - "show 掛 links/backlinks/context/map 派發組(args.note 命名),cmd_decisions 無條件 fallback 前有 show if 分支"
-  - "唯讀語意=不改圖譜節點檔;usage-log 事件帳為預期副作用(同 context)"
+  - "唯讀語意=不改架構圖節點檔;usage-log 事件帳為預期副作用(同 context)"
 revalidate_when:
   - "動 scripts/lumos 派發組(9656 一帶)或 split_frontmatter"
   - "動 _usage_log 簽章或讀側合約措辭"
@@ -24,4 +24,4 @@ summary: |-
 `lumos show <node> [--body-only]` 落地驗證。spec：[[Projects/lumos-show讀取入口_計劃]]（light 首戰 → ratchet → standard panel 實質收斂）。
 
 - 測試：`python3 scripts/test_lumos.py -k t_show` → 11 checks 綠；全套 1268 passed 0 failed。
-- 圖譜同步（同 commit）：`Systems/lumos-cli-read` 六處零副作用措辭＋12→13＋23→24＋show 條目＋doctor 寫者順手修真；`reference.md:85` 44→49（含漏列四指令歸類，加總自洽）；`README.md:42` 44→49；`lumos-project-notes` SKILL 禁 Read 段補 show 出口。
+- 架構圖同步（同 commit）：`Systems/lumos-cli-read` 六處零副作用措辭＋12→13＋23→24＋show 條目＋doctor 寫者順手修真；`reference.md:85` 44→49（含漏列四指令歸類，加總自洽）；`README.md:42` 44→49；`lumos-project-notes` SKILL 禁 Read 段補 show 出口。

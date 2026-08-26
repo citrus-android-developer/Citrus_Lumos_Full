@@ -9,7 +9,7 @@ tags:
 related:
   - "[[Systems/pitfalls-code-loop]]"
 summary: |-
-  FLOW:brainstorm 收斂(2026-07-04)→ 四塊有序落地(①lint adapter+SARIF → ②每日 linter 版本偵測 → ③網搜補漏 → ④事故語料進圖譜),各塊獨立 spec→design-loop→實作→merge
+  FLOW:brainstorm 收斂(2026-07-04)→ 四塊有序落地(①lint adapter+SARIF → ②每日 linter 版本偵測 → ③網搜補漏 → ④事故語料進架構圖),各塊獨立 spec→design-loop→實作→merge
   KEY:核心認知重定位——pitfalls 不是規則庫,是「提問層 + lint 整合器 + loop 接線」。通則(requests timeout/open-with)ruff S113/SIM115 已有且 AST 級更準;偏科(LazyColumn key/主執行緒)compose-rules/detekt/eslint 已有;兩者都該讓給社群 linter(composition over invention)
   KEY:整合共通格式=SARIF(OASIS 標準,ESLint/detekt/Roslyn/Sonar 皆可輸出)——lumos 只解析 SARIF 一種格式(stdlib json)、跨棧跨工具收進單一 pitfalls manifest
   KEY:一棧多 linter 並存(C#:Roslyn+StyleCop+Sonar+Roslynator;Vue:ESLint+plugins;Android:Lint+detekt+ktlint)→ adapter 要「一棧一組指令」、各輸出 SARIF 再合併
@@ -57,8 +57,8 @@ Compose 重組效能(SARIF linter 蓋不到的偏科坑)——吃 Compose Compil
 linter 還沒收錄的新坑,量少。反證預篩(駁倒即丟)+ 駁不倒進候選 + 人輕量放行。無機械 oracle,人的閘省不掉。
 **落地**:`lumos-pitfalls-gapfill` skill(on-demand,無 lumos 新碼)+ `Issues/linter-gap實務隱患`(每專案,兩段自去重)。見 [[pitfalls網搜補漏_計劃]] / [[2026-07-05_pitfalls網搜補漏]]。
 
-### ④ 事故語料進圖譜 ✅ DONE(2026-07-05)
-專案自己踩過的具體坑(linter 沒有)→ 寫成圖譜節點 + 觸發條件 → 實作進場自動餵(像 refcheck manifest)。原 pitfalls-code-loop spec 的 v2。
+### ④ 事故語料進架構圖 ✅ DONE(2026-07-05)
+專案自己踩過的具體坑(linter 沒有)→ 寫成架構圖節點 + 觸發條件 → 實作進場自動餵(像 refcheck manifest)。原 pitfalls-code-loop spec 的 v2。
 **落地**:pattern-trigger 機制——事故節點 `pitfall_when`(glob/content-regex)→ lumos impact `incidents` 段 → 復用 impact hook 進場自動餵。補 impact「跨檔按主題觸發」缺口。見 [[pitfalls事故觸發_計劃]] / [[2026-07-05_pitfalls事故觸發]]。
 
 ## 相關

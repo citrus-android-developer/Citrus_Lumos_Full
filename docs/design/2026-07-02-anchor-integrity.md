@@ -12,8 +12,8 @@
 
 ## 前提與既驗事實(grep/Read 驗於 2026-07-02)
 
-- **本 repo 沒有 CI workflow**(無 `.github/`、無 yml):方法論說的「CI 跑測試是錨點」(`docs/methodology/圖譜即合約.md:83`)與「真錨點=把測試真的跑綠+人拍板」(`docs/methodology/圖譜即合約-全景圖.md:110`)在本 repo 的實體是**本機跑** `python3 scripts/test_lumos.py`(1960 行,stdlib-only,rc=0/1)與 `scripts/test_autonomous_loop.py`(227 行)。
-- **驗證器全部 agent 可寫**:`scripts/test_lumos.py` 的 `check()`/`run()`(斷言與評分都在同檔)、`scripts/hooks/pre-commit`(L2 圖譜同步硬擋)、`scripts/hooks/pre-push`(doctor 把關)、`scripts/hooks/post-commit`(bypass 留痕器,`docs/.bypass-log.jsonl` 的唯一寫者)——改掉任何一個,對應的「綠/放行/留痕」就是無聲假訊號。hooks 生效機制=`git config core.hooksPath scripts/hooks`(已驗證當前設定)。
+- **本 repo 沒有 CI workflow**(無 `.github/`、無 yml):方法論說的「CI 跑測試是錨點」(`docs/methodology/架構圖即合約.md:83`)與「真錨點=把測試真的跑綠+人拍板」(`docs/methodology/架構圖即合約-全景圖.md:110`)在本 repo 的實體是**本機跑** `python3 scripts/test_lumos.py`(1960 行,stdlib-only,rc=0/1)與 `scripts/test_autonomous_loop.py`(227 行)。
+- **驗證器全部 agent 可寫**:`scripts/test_lumos.py` 的 `check()`/`run()`(斷言與評分都在同檔)、`scripts/hooks/pre-commit`(L2 架構圖同步硬擋)、`scripts/hooks/pre-push`(doctor 把關)、`scripts/hooks/post-commit`(bypass 留痕器,`docs/.bypass-log.jsonl` 的唯一寫者)——改掉任何一個,對應的「綠/放行/留痕」就是無聲假訊號。hooks 生效機制=`git config core.hooksPath scripts/hooks`(已驗證當前設定)。
 - **既有近親機制不覆蓋此洞**:`core-invariant-baseline`(設計擱置)守核心知識節點語意欄位 hash,不守 repo 驗證器檔;`spec-refcheck` 驗 spec→repo 指涉存在性;doctor Check 系列全是 vault 導向。「驗證器自身完整性」目前零覆蓋。
 - **vault-free 指令有前例**:`lumos refcheck`(`scripts/lumos` `cmd_refcheck(md_path, repo=None, as_json=False)`)不吃 `--vault`,本 spec 的 `anchor` 同型。
 - **governance-log 寫者宣稱**:`scripts/lumos:336` `_append_governance_log` docstring 明言「doctor --ci 唯一寫者」。本 spec 的 `anchor approve` 要留痕就成為第二寫者——必須連動改該 docstring(這是宣稱變更,記入實作 checklist,不是靜默擴權)。
@@ -94,9 +94,9 @@ tempdir 造假 repo——**複用 `_mk_git_vault` 慣例(`scripts/test_lumos.py:
 
 | 受影響文件 | 需同步什麼 |
 |---|---|
-| `docs/methodology/圖譜即合約.md` | 把關表加一行「anchor verify(pre-push/loop 入口,硬擋)」;`圖譜即合約.md:83` ★COMBO★ 行「CI 跑才是錨點」補後綴:錨點自身完整性由 anchor baseline 守 |
-| `docs/methodology/圖譜即合約-全景圖.md` | §真錨點(:110)補:「測試真的跑綠」成立的前提=批改程式沒被動過,anchor verify 把這前提變成可核對宣稱 |
-| `docs/methodology/圖譜即合約-對外論述.md` | 白話:考卷可信的前提是「改答案的學生不能同時改批改程式」;我們給批改程式拍了指紋,動過就要簽名留痕 |
+| `docs/methodology/架構圖即合約.md` | 把關表加一行「anchor verify(pre-push/loop 入口,硬擋)」;`架構圖即合約.md:83` ★COMBO★ 行「CI 跑才是錨點」補後綴:錨點自身完整性由 anchor baseline 守 |
+| `docs/methodology/架構圖即合約-全景圖.md` | §真錨點(:110)補:「測試真的跑綠」成立的前提=批改程式沒被動過,anchor verify 把這前提變成可核對宣稱 |
+| `docs/methodology/架構圖即合約-對外論述.md` | 白話:考卷可信的前提是「改答案的學生不能同時改批改程式」;我們給批改程式拍了指紋,動過就要簽名留痕 |
 | `skills/lumos-project-notes/SKILL.md` | 指令表加 `lumos anchor verify/approve` |
 | `governance/autonomous_loop/orchestrator-prompt.md` | 無需改(orchestrator 不直接信任測試綠;入口 verify 在 wrapper `autonomous-loop.sh`) |
 | memory `lumos-governance-tag-rigor` | 補:治理帳寫者從 doctor --ci 單一擴為 +anchor approve |

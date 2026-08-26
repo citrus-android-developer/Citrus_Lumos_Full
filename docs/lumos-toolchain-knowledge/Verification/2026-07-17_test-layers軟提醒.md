@@ -20,7 +20,7 @@ related:
   - "[[test-layers軟提醒_實作計畫]]"
 summary: |-
   TEST:全量 1224 passed 0 failed(t_testlayers_units 純函式+t_testlayers_cmd e2e:無宣告靜默rc0/命中提醒/壞range fail-open/缺--diff rc2/CJK 檔名命中/--json fail-open 各分支合約一致/--diff 參數注入 guard);bash -n pre-push OK;anchor approve 過(pre-push+test_lumos.py)
-  VERIFY:T1 純函式(config 載入 fail-open+棧命中去重保序)/T2 cmd_test_layers 子命令+argparse 接線(JSON/人讀雙輸出)/T3 pre-push advisory 段(|| true 隔離,恆 rc0,anchor approve 已過)/T4 本節點(code-loop skill test-layers 鏡頭併入+圖譜收尾)——四 task 對應 [[test-layers軟提醒_實作計畫]]
+  VERIFY:T1 純函式(config 載入 fail-open+棧命中去重保序)/T2 cmd_test_layers 子命令+argparse 接線(JSON/人讀雙輸出)/T3 pre-push advisory 段(|| true 隔離,恆 rc0,anchor approve 已過)/T4 本節點(code-loop skill test-layers 鏡頭併入+架構圖收尾)——四 task 對應 [[test-layers軟提醒_實作計畫]]
   KEY:valid_under=cmd_test_layers 簽名與 .lumos/test-layers.json schema 不變、pre-push advisory 段未動;revalidate_when=schema 改動/pre-push 呼叫段改動/_testlayers_* 函式改動
   VERIFY:code-loop r1 折入 3 findings(quotepath major/json 分支 minor/參數注入 minor)+測試 check() 化
   VERIFY:code-loop r2 折入 2 群findings(pitfalls quotepath major 類級收口/--diff 注入 guard 三站補齊 rc2)

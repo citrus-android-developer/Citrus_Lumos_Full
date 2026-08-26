@@ -40,7 +40,7 @@ CODE_EXTS = {
 # === 即使副檔名對也要排除的路徑/檔名 ===
 # 同源:check-graph-sync.py EXCLUDE_PATH_CONTAINS / EXCLUDE_FILENAMES
 EXCLUDE_PATH_CONTAINS = (
-    "/docs/",            # 圖譜本身 + 一般文件
+    "/docs/",            # 架構圖本身 + 一般文件
     "/node_modules/",
     "/bin/", "/obj/",
     "/.git/",
@@ -241,7 +241,7 @@ def extract_delta_query(payload: dict, cap_tokens: int = 512, cap_chars: int = 8
 
 
 _INJECT_INSTRUCTION = (
-    "動手前先判上列直接/間接節點會不會被你這次改動影響、需不需要同步更新圖譜。"
+    "動手前先判上列直接/間接節點會不會被你這次改動影響、需不需要同步更新架構圖。"
     "消掉不相關的,對真正受影響的:該同步就同步,不確定就記一句。"
 )
 
@@ -479,7 +479,7 @@ def main() -> int:
     if rc == 3:
         # vault 找不到 → 印一行 debug,不注入,放行
         print(
-            f"[impact-hook] vault 未找到 (rc=3)。非圖譜專案或 --repo={repo} 路徑下無 docs/*-knowledge/。",
+            f"[impact-hook] vault 未找到 (rc=3)。非架構圖專案或 --repo={repo} 路徑下無 docs/*-knowledge/。",
             file=sys.stderr,
         )
         return 0

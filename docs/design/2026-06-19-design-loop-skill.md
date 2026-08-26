@@ -13,7 +13,7 @@
 
 - B = **一個 user-scope Claude skill**,目錄 `skills/lumos-design-loop/`(放 lumos-toolchain repo,跟其他 lumos skill 一起 symlink 進 `~/.claude/skills/`)。
 - **Claude 編排,lumos 出原語**:Claude 用 Agent tool 派審計員、判讀、修 spec;lumos 出 `canary record`/`loop status` 記錄與算收斂。**lumos 不 spawn agent**。
-- v1 對象 = **設計/spec 的對抗審計**(對齊 A + canary v1 範圍)。不含圖譜自足性審計。
+- v1 對象 = **設計/spec 的對抗審計**(對齊 A + canary v1 範圍)。不含架構圖自足性審計。
 
 ## 2. 觸發 / 閘
 
@@ -61,7 +61,7 @@
 ## 7. 範圍 / YAGNI(v1 不做)
 
 - ❌ lumos spawn agent(編排在 skill)。
-- ❌ 圖譜自足性審計 loop(v1 只設計/spec)。
+- ❌ 架構圖自足性審計 loop(v1 只設計/spec)。
 - ❌ 自動 canary 生成工具(Claude 從 skill 內的小型 canary 類型清單挑)。
 - ❌ 改 brainstorming/writing-plans skill 本體。
 

@@ -105,8 +105,8 @@ index 780214f..82d9302 100644
  
  ## 範圍聲明
  
--本包是**功能子集**：只保留維護圖譜本身要用的 26 支指令（讀取／導航、寫入、健康巡檢 `doctor`/`lint`、合約守衛 `guard`、刪除傳播守衛 `delguard`）；不含反覆對抗審查、程式碼變更風險掃描、linter 版本追蹤、CI 狀態回拉、跨專案核心圖譜等進階治理功能。
-+本包是**功能子集**：只保留維護圖譜本身要用的 26 支指令(另有 `lumos update` 為攔截式入口——★刻意不列在 `--help` 清單裡★,用 `--help` 核對裝沒裝到 update 會看不到,以〈更新方式〉節為準)（讀取／導航、寫入、健康巡檢 `doctor`/`lint`、合約守衛 `guard`、刪除傳播守衛 `delguard`）；不含反覆對抗審查、程式碼變更風險掃描、linter 版本追蹤、CI 狀態回拉、跨專案核心圖譜等進階治理功能。
+-本包是**功能子集**：只保留維護架構圖本身要用的 26 支指令（讀取／導航、寫入、健康巡檢 `doctor`/`lint`、合約守衛 `guard`、刪除傳播守衛 `delguard`）；不含反覆對抗審查、程式碼變更風險掃描、linter 版本追蹤、CI 狀態回拉、跨專案核心架構圖等進階治理功能。
++本包是**功能子集**：只保留維護架構圖本身要用的 26 支指令(另有 `lumos update` 為攔截式入口——★刻意不列在 `--help` 清單裡★,用 `--help` 核對裝沒裝到 update 會看不到,以〈更新方式〉節為準)（讀取／導航、寫入、健康巡檢 `doctor`/`lint`、合約守衛 `guard`、刪除傳播守衛 `delguard`）；不含反覆對抗審查、程式碼變更風險掃描、linter 版本追蹤、CI 狀態回拉、跨專案核心架構圖等進階治理功能。
  
  ★**移除的是入口不是全部程式碼**★——被砍的是那些功能對應的頂層指令入口；它們共用的底層程式碼（helper 函式）有些仍留在檔案裡供保留指令呼叫，**別誤讀成「功能其實還在,只是沒寫在說明裡」**。凡是這份 README 或技能說明沒教的操作，一律視為沒有。
  
@@ -153,14 +153,14 @@ index dc8668e..add84dc 100644
 +++ b/slim/skills/lumos-project-notes/reference.md
 @@ -15,7 +15,7 @@
  
- repo 內的 `scripts/lumos`（python3 標準庫，零 Obsidian 依賴）是**日常操作圖譜的主要工具**。讀取、寫入、巡檢、歸檔一律先用 lumos；Obsidian CLI 只保留給 lumos 沒有的少數場景（見下節）。
+ repo 內的 `scripts/lumos`（python3 標準庫，零 Obsidian 依賴）是**日常操作架構圖的主要工具**。讀取、寫入、巡檢、歸檔一律先用 lumos；Obsidian CLI 只保留給 lumos 沒有的少數場景（見下節）。
  
 -> **全域安裝**：本精簡版隨附 `install.sh`（不是 `lumos install`——那支子命令未交付），跑一次把 `lumos` 裝上 `~/.local/bin`，之後任何專案子目錄直接打 `lumos <cmd>`（find_vault 從 cwd 往上找 docs/*-knowledge）。下文一律用全域 `lumos`。★不要用 `python3 scripts/lumos`★——若你所在的專案本身 vendored 了完整版 `scripts/lumos`（checked in、非本精簡版安裝的），那個寫法會呼叫到**完整版全部指令**（支數以其 `--help` 為準），不是本精簡版的 26 支子集；`init`/`update` 等本精簡版未交付的指令在那條路徑上會**真的執行**，可能動到專案層 `CLAUDE.md`。全域安裝是本包唯一保證等價的路徑。
 +> **全域安裝**：本精簡版隨附 `install.sh`（不是 `lumos install`——那支子命令未交付），跑一次把 `lumos` 裝上 `~/.local/bin`，之後任何專案子目錄直接打 `lumos <cmd>`（find_vault 從 cwd 往上找 docs/*-knowledge）。下文一律用全域 `lumos`。★不要用 `python3 scripts/lumos`★——若你所在的專案本身 vendored 了完整版 `scripts/lumos`（checked in、非本精簡版安裝的），那個寫法會呼叫到**完整版全部指令**（支數以其 `--help` 為準），不是本精簡版的 26 支子集；`init` 等本精簡版未交付的指令在那條路徑上會**真的執行**;★`update` 兩邊都有但語意完全不同★——完整版的 `update` 是「同步 vendored 工具組」會動專案層,本精簡版的 `update` 只更新工具自身(見專案 README〈更新方式〉),走錯路徑後果不同。全域安裝是本包唯一保證等價的路徑。
  
  **禁止用 Grep/Glob/Read/Edit/Write 直接操作 `docs/{vault-name}/` 下的 .md 檔案。**
- lumos 提供圖譜感知能力（backlinks、links、orphans、contracts、合約測試綁定），是單純讀寫檔案做不到的；直接編輯也繞過寫後自驗與鐵則防護。
-@@ -56,9 +56,9 @@ lumos 提供圖譜感知能力（backlinks、links、orphans、contracts、合
+ lumos 提供架構圖感知能力（backlinks、links、orphans、contracts、合約測試綁定），是單純讀寫檔案做不到的；直接編輯也繞過寫後自驗與鐵則防護。
+@@ -56,9 +56,9 @@ lumos 提供架構圖感知能力（backlinks、links、orphans、contracts、合
  - **decisions 翻盤/新增** → `lumos decision-supersede` / `decision-add`（surgical 巢狀;**非 ruamel**——ruamel round-trip 會 reflow、破壞最小 diff）
  - **白名單外的 frontmatter 寫入**（`summary` block 改某行、`alternatives_considered` 子清單編輯）→ lumos 目前無對應,走下節 obsidian `processFrontMatter` eval 或手動 Edit
  
@@ -170,7 +170,7 @@ index dc8668e..add84dc 100644
 -> ⚠ **`doctor`／`lint` 有些檢查會建議跑本精簡版沒交付的指令**——這是從完整版原封繼承的訊息文字，**看到請忽略、不用照做**（判準是「打了會得到『未知指令』錯誤」，不是背下一份清單）。已知會出現的至少有 `lumos init`／`lumos update`／`lumos self-audit`／`lumos signoff`（後者出現在 regen 節點的證據檢查訊息裡，`lint` 和 `doctor` 都會印，建議「走 signoff 升級」）——這份列舉不保證窮盡。最常見的是 `CLAUDE.md` 紀律區塊比對（Check D）：sentinel 損壞或與範本不同步時會建議跑 `init`/`update` 修復；`CLAUDE.md` 相關的檢查在本版**沒有修復路徑**，那是刻意的（本版不注入、不更新任何 `CLAUDE.md`，見專案 README〈怎麼裝〉）。
 +> ⚠ **`doctor`／`lint` 有些檢查會建議跑本精簡版沒交付的指令**——這是從完整版原封繼承的訊息文字，**看到請忽略、不用照做**（判準是「打了會得到『未知指令』錯誤」，不是背下一份清單）。已知會出現的至少有 `lumos init`／`lumos self-audit`／`lumos signoff`（後者出現在 regen 節點的證據檢查訊息裡，`lint` 和 `doctor` 都會印，建議「走 signoff 升級」）——這份列舉不保證窮盡。最常見的是 `CLAUDE.md` 紀律區塊比對（Check D）：sentinel 損壞或與範本不同步時會建議跑 `init`/`update` 修復——★注意:本版現在**有** `lumos update`,但它只更新工具自身、**不會**修 `CLAUDE.md`,別把 doctor 這裡的建議當成「跑 update 就能修」★;`CLAUDE.md` 相關的檢查在本版**沒有修復路徑**，那是刻意的（本版不注入、不更新任何 `CLAUDE.md`，見專案 README〈怎麼裝〉）。
  
- > **子命令全覽（本精簡版 26 支頂層命令；`lumos --help` 為現行權威）**：讀取/導航（`context` `show` `contracts` `search` `query` `links` `backlinks` `map` `export` `decisions` `stale` `recent` `stats`）+ 巡檢/治理（`doctor` `lint` `sync-verified-by` `rel-cascade`）+ 寫入（`set` `append` `new` `archive` `decision-add` `decision-supersede` `decision-reindex`）+ 合約守衛（`guard` list/scaffold/bind/audit/trace/kill/kill-add）+ 刪除傳播守衛（`delguard --staged`：commit 前抓「code 刪了、圖譜還在講」，advisory 不擋）。
+ > **子命令全覽（本精簡版 26 支頂層命令；`lumos --help` 為現行權威）**：讀取/導航（`context` `show` `contracts` `search` `query` `links` `backlinks` `map` `export` `decisions` `stale` `recent` `stats`）+ 巡檢/治理（`doctor` `lint` `sync-verified-by` `rel-cascade`）+ 寫入（`set` `append` `new` `archive` `decision-add` `decision-supersede` `decision-reindex`）+ 合約守衛（`guard` list/scaffold/bind/audit/trace/kill/kill-add）+ 刪除傳播守衛（`delguard --staged`：commit 前抓「code 刪了、架構圖還在講」，advisory 不擋）。
  
 diff --git a/slim/update_cmd.py b/slim/update_cmd.py
 index c043522..4d14d56 100644

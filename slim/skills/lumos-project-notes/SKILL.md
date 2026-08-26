@@ -1,16 +1,16 @@
 ---
 name: lumos-project-notes
-description: 維護專案知識圖譜（docs/{project}-knowledge/）— 追蹤進行中/待辦工作、系統關聯、Issue、會話交接。當專案工作開始、結束、遇到 issue、或需要掌握現況時觸發。
+description: 維護專案知識架構圖（docs/{project}-knowledge/）— 追蹤進行中/待辦工作、系統關聯、Issue、會話交接。當專案工作開始、結束、遇到 issue、或需要掌握現況時觸發。
 ---
 
-# 專案知識圖譜系統（lumos）
+# 專案知識架構圖系統（lumos）
 
 ## 一眼看懂
 
-- **金科玉律**:所有改動/調研/計畫都**同一次工作內**同步進圖譜。查知識**優先讀圖譜**;與其他文件/記憶/臆測衝突以圖譜為準、向人確認。**但與行為事實(測試結果/實際執行/生產觀測)衝突時不自動判圖譜為真**——那是有東西壞了,查清哪邊錯並立事故節點(2026-07-29 外審吸收)。
+- **金科玉律**:所有改動/調研/計畫都**同一次工作內**同步進架構圖。查知識**優先讀架構圖**;與其他文件/記憶/臆測衝突以架構圖為準、向人確認。**但與行為事實(測試結果/實際執行/生產觀測)衝突時不自動判架構圖為真**——那是有東西壞了,查清哪邊錯並立事故節點(2026-07-29 外審吸收)。
 - **主工具 = `lumos`**(python3 零依賴,`find_vault` 自動鎖定 `docs/*-knowledge/`)。**禁止**用 Grep/Read/Edit/Write 直接碰 vault 的 .md——繞過寫後自驗與鐵則防護。需讀節點**完整 body**(決策全文/章節內文)→ `lumos show <節點> [--body-only]`(2026-07-21 新增,補「context 只給 summary 索引」的全文讀取缺口);context 仍是進場導航首選。
 - **進場三步**:`lumos search <關鍵字>` 定位 → `lumos context <節點>` 掃脈絡(頭部攤 ⚠ 合約) → `lumos contracts <節點>` 查硬合約。**然後**才 grep code / 查 DB 驗證。
-- **★命中≠查完★**:search 只給索引——命中節點要 `lumos show` 讀**全文**才准下結論;拿摘要判「圖譜沒記」是實證過的破口。「只是查個值」不是跳過圖譜的理由,是最該查的情境;每個子任務進場都重新走圖譜先行。
+- **★命中≠查完★**:search 只給索引——命中節點要 `lumos show` 讀**全文**才准下結論;拿摘要判「架構圖沒記」是實證過的破口。「只是查個值」不是跳過架構圖的理由,是最該查的情境;每個子任務進場都重新走架構圖先行。
 - **寫完一個節點**:`lumos lint <節點>`(單檔快檢) → 收尾 `lumos doctor`(全圖)。
 - **紅燈不過夜**：main 上出現 CI 紅燈時，修不完也要在收尾報告明講「main 上有紅燈未解」，不得靜默收工。
 - **rich 節點** = Write/Edit 內文 + `summary` block;**純量/list/decisions 一律走 `lumos set`/`append`/`decision-add`**(別手改 frontmatter)。
@@ -23,7 +23,7 @@ description: 維護專案知識圖譜（docs/{project}-knowledge/）— 追蹤�
 > | 綁合約 `[test:]`/`[audit:]`/`[kill:]`、跑 `lumos guard` scaffold/bind/kill、或不確定會不會**帶風向** | 「合約鏈深規 + guard 工作流 + 防帶風向鐵則」段 |
 > | 寫**重大決策**要填 ADR 四欄、或某欄不知怎麼填 | 「decisions ADR 完整版」段 |
 > | 建/改 Verification（`valid_under`/`revalidate_when`/雙向 `verified_by` 細節） | 「Verification 完整規格」段 |
-> | 跑**自足性審計**要 prompt 模板 / 無主脈絡時的交叉審計變體 B | 「圖譜更新後審計」段 |
+> | 跑**自足性審計**要 prompt 模板 / 無主脈絡時的交叉審計變體 B | 「架構圖更新後審計」段 |
 > | 查某 lumos 子命令的**完整旗標** | 「操作方式」段(或 `lumos <cmd> --help`) |
 > | 需要 Obsidian GUI / 權威解析驗證 / File Recovery（少數場景） | 「Obsidian CLI」段 |
 >
@@ -36,11 +36,11 @@ description: 維護專案知識圖譜（docs/{project}-knowledge/）— 追蹤�
 ```bash
 ls -d docs/*-knowledge/Projects/ 2>/dev/null   # 存在即 lumos doctor 確認鎖得到
 ```
-vault 名 = 資料夾 basename,lumos 自動解析。**全程無需 Obsidian**(僅 obsidian-only 功能才註冊,見 `reference.md`)。**本精簡版不含建立新圖譜的指令**——vault 是既有專案本來就有的,精簡版只負責讀寫既有圖譜。
+vault 名 = 資料夾 basename,lumos 自動解析。**全程無需 Obsidian**(僅 obsidian-only 功能才註冊,見 `reference.md`)。**本精簡版不含建立新架構圖的指令**——vault 是既有專案本來就有的,精簡版只負責讀寫既有架構圖。
 
-## 核心圖譜接點(唯讀說明)
+## 核心架構圖接點(唯讀說明)
 
-看到 frontmatter `core_refs:` 或 summary `CORE:` 行 → **該主題權威可能在跨專案核心圖譜,本專案筆記殘留描述不可當權威**(疑似快照 = drift)。★本精簡版不含核心圖譜維護 skill/工具★,語意異動需另外處理,不在本 skill 範圍內。
+看到 frontmatter `core_refs:` 或 summary `CORE:` 行 → **該主題權威可能在跨專案核心架構圖,本專案筆記殘留描述不可當權威**(疑似快照 = drift)。★本精簡版不含核心架構圖維護 skill/工具★,語意異動需另外處理,不在本 skill 範圍內。
 
 ---
 
@@ -140,14 +140,14 @@ KEY:★CHECKPOINT★   <改了難救>                                     # 建�
 - **重大決策**(架構/技術/流程/安全選型)`decisions[]` 必填四欄:`context`/`alternatives_considered`(≥2)/`why_chosen`/`trade_offs`——**缺資訊就問人,不可編造**污染學習資產。翻盤:舊條 `valid:false`+`superseded_by`+`ended`,新條重填完整四欄。
 - **Verification** 必填 `valid_under`(有效條件:版本/規模/schema)+ `revalidate_when`(重驗觸發)。建 Verification **同步**把 wikilink 加進相關 Systems 的 `verified_by`(雙向,缺一不可;漏寫 `lumos sync-verified-by --apply` 補)。
 - **plan_refs**:落地某計劃的 Verification(含後續迭代)填 `plan_refs` 反指計劃節點(意圖鏈,doctor Check 4 把關)。
-- **計劃/設計一律寫圖譜計劃節點**(`Projects/<主題>_計劃`,`type:project`),**不寫 `docs/superpowers/specs/`、`openspec/` 等 repo 路徑**——覆寫任何 SDD 工具的預設落點。
+- **計劃/設計一律寫架構圖計劃節點**(`Projects/<主題>_計劃`,`type:project`),**不寫 `docs/superpowers/specs/`、`openspec/` 等 repo 路徑**——覆寫任何 SDD 工具的預設落點。
 
 ---
 
-## 自足性審計(圖譜實質更新後必做)
+## 自足性審計(架構圖實質更新後必做)
 
-派**乾淨 sonnet agent 只讀圖譜**還原脈絡 → 主對話比對「還原結果 vs 腦中現存脈絡」:有出入 = 圖譜當下不健全,補缺後**重審到一致**。純格式修正可豁免。
-> 無主對話脈絡時(定期巡檢/接手陌生專案)→ 改用「圖譜×程式碼交叉審計」(以 code 為真值),做法見 `reference.md`。
+派**乾淨 sonnet agent 只讀架構圖**還原脈絡 → 主對話比對「還原結果 vs 腦中現存脈絡」:有出入 = 架構圖當下不健全,補缺後**重審到一致**。純格式修正可豁免。
+> 無主對話脈絡時(定期巡檢/接手陌生專案)→ 改用「架構圖×程式碼交叉審計」(以 code 為真值),做法見 `reference.md`。
 
 ---
 
@@ -157,7 +157,7 @@ KEY:★CHECKPOINT★   <改了難救>                                     # 建�
 # 開工:掌握現況
 lumos query --tag status/doing; lumos recent --days 7; lumos context Systems/<模組>
 
-# 改完 code:更新圖譜
+# 改完 code:更新架構圖
 lumos set Systems/<模組> updated <日期>
 lumos append Systems/<模組> verified_by "[[Verification/<日期>_xxx]]"
 # body 進度/表格 → Edit;寫完 → lumos lint <節點>

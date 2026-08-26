@@ -16,12 +16,12 @@ summary: |
 
 > 緣起(2026-08-08,Enzo 裁定入帳):canary 的根本困境=「有抓到不代表認真,沒抓到不代表不認真;模型能力上升 → miss 率趨零 → 計分訊號飽和;整個機制在不停變動的系統(模型換代/spec 各異/植針難度人拿捏)裡找穩定規律——跨期統計站在流沙上」。系統 8/4 已把 design-loop 的 canary 踢出閘(d4 觀測化),本案推進兩步:①canary 定位正式收縮成「當輪煙霧偵測器」②code-loop 同步降級+以模型無關判準補位。
 
-PRIOR-ART: ① 最小解層級——處置閘(design-loop 已驗證,本週三個 loop 實戰含 rc0 收斂)移植 code-loop;變異測試=既有 `guard kill`(合約點沙盒破壞)思想泛化到 diff 層,測試選擇複用既有 `testmap affected`(檔↔測試依賴圖);翻紅釘=TDD 紅綠既有慣例升收貨規則;其餘全 skill 文本/圖譜裁定。② 世界解:mutation testing=業界成熟(mutmut/cosmic-ray/PIT;diff-based mutation 有文獻與 CI 實務)——零依賴家規排除引套件,算子自寫(python ast,三種起步);「finding 須附可執行重現」=2026-08-01 治理日報吸收(十個唱反調審查員一致背書不存在漏洞,只有強制實跑才殺掉)。③ Growth test 三問:事故=Enzo 非平穩性論證+canary 天花板實證(canary-audit 已載「真醒vs演醒不可分」+Anthropic workspace 論文)+8/1 phantom-vuln 日報;非風格(閘的判準漂移=可量測的治理風險);既有機制小修蓋不住「考人」的結構問題,但補位件全是既有機制泛化。④ 裁定=borrow-design。
+PRIOR-ART: ① 最小解層級——處置閘(design-loop 已驗證,本週三個 loop 實戰含 rc0 收斂)移植 code-loop;變異測試=既有 `guard kill`(合約點沙盒破壞)思想泛化到 diff 層,測試選擇複用既有 `testmap affected`(檔↔測試依賴圖);翻紅釘=TDD 紅綠既有慣例升收貨規則;其餘全 skill 文本/架構圖裁定。② 世界解:mutation testing=業界成熟(mutmut/cosmic-ray/PIT;diff-based mutation 有文獻與 CI 實務)——零依賴家規排除引套件,算子自寫(python ast,三種起步);「finding 須附可執行重現」=2026-08-01 治理日報吸收(十個唱反調審查員一致背書不存在漏洞,只有強制實跑才殺掉)。③ Growth test 三問:事故=Enzo 非平穩性論證+canary 天花板實證(canary-audit 已載「真醒vs演醒不可分」+Anthropic workspace 論文)+8/1 phantom-vuln 日報;非風格(閘的判準漂移=可量測的治理風險);既有機制小修蓋不住「考人」的結構問題,但補位件全是既有機制泛化。④ 裁定=borrow-design。
 
-## 四件(S1-S2 純文字/圖譜,S3 收貨規則,S4 唯一新碼)
+## 四件(S1-S2 純文字/架構圖,S3 收貨規則,S4 唯一新碼)
 
 ### S1 canary 定位收縮(design-loop 側,零代碼)
-- 圖譜裁定入帳([[Systems/canary-audit]] KEY+decision):canary=**當輪煙霧偵測器**——只做同輪席間對照(多席抓到、一席沒抓到=當輪異常,查該席管線:context 截斷/檔沒給到/工具壞/降級路由),**不做跨期統計、不做席位信譽分、不做型別抽樣權重**(D 案的權重工程半正式否決,理由=非平穩性;型別帳降為描述性紀錄)。
+- 架構圖裁定入帳([[Systems/canary-audit]] KEY+decision):canary=**當輪煙霧偵測器**——只做同輪席間對照(多席抓到、一席沒抓到=當輪異常,查該席管線:context 截斷/檔沒給到/工具壞/降級路由),**不做跨期統計、不做席位信譽分、不做型別抽樣權重**(D 案的權重工程半正式否決,理由=非平穩性;型別帳降為描述性紀錄)。
 - 判讀規則一句話入 skill:「漏送分題=強警報(連這都沒抓到);漏難題=弱訊號(不苛責);抓到送分題≈零證明;抓到難題=真醒著」——當輪判讀,非統計。
 - 型別報表結清:canary-stats 現有輸出即第一份描述性報表(18 筆 attr;c 型 5/5 全抓=送分題實證),入 Verification 結清「攢滿 15 筆」驗收,**到此為止不再蓋樓**。
 

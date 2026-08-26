@@ -15,17 +15,17 @@ tags:
   - type/verification
   - status/pass
 plan_refs:
-  - "[[Android側UI測試綁圖譜工作流_計劃]]"
-  - "[[Android側UI測試綁圖譜工作流_實作計畫]]"
+  - "[[Android側UI測試綁架構圖工作流_計劃]]"
+  - "[[Android側UI測試綁架構圖工作流_實作計畫]]"
 summary: |-
   TEST:t_precommit_whitelist_drift_guard 新增路徑同源斷言(先紅 27/1 → 後綠 28/0);全量套件 0 failed
-  VERIFY:[[Android側UI測試綁圖譜工作流_實作計畫]] A 段 Task 1-4
-  KEY:A 段=本 repo 三處落地(慣例節點證據路徑+Android 通道／skill 退場自問第 4 問／reference.md 派工要求)+圖譜收尾;B 段(mOrangePos,需真裝置)未動
+  VERIFY:[[Android側UI測試綁架構圖工作流_實作計畫]] A 段 Task 1-4
+  KEY:A 段=本 repo 三處落地(慣例節點證據路徑+Android 通道／skill 退場自問第 4 問／reference.md 派工要求)+架構圖收尾;B 段(mOrangePos,需真裝置)未動
   KEY:★本段只證明「本 repo 這三處寫對了」,不證明工作流有效★—工作流是否真的接得上,要 B 段在 mOrangePos 實跑(雙平台 config→bind/audit→flow 檔案形式跑→回歸釘翻紅)才算
 ---
 # 2026-08-11_AndroidUI工作流A段落地
 
-驗證對象：[[Android側UI測試綁圖譜工作流_實作計畫]] 的 **A 段（lumos-toolchain 側，不需裝置）**。
+驗證對象：[[Android側UI測試綁架構圖工作流_實作計畫]] 的 **A 段（lumos-toolchain 側，不需裝置）**。
 
 ## 落地內容
 

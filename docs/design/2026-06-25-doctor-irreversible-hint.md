@@ -149,7 +149,7 @@ print()
 - `warn()` 呼叫(Check H 從不計 issues)
 - `run_doctor` 簽名
 - `extract_reversibility`, `_rollback_resolved`, `_guard_resolved`
-- gov_events:Check H **刻意不寫**——Check H 無具體 Systems nodes 可記錄(diff-scan 不解析圖譜),empty-nodes gov_event 在 `cmd_gov` L1228-1235(`q in r["nodes"]`)查不到任何節點,對 `lumos gov <node>` 消費端零可見性增益(r5-F1 辯方反證:scripts/lumos:L660/666/699/1228-1230)
+- gov_events:Check H **刻意不寫**——Check H 無具體 Systems nodes 可記錄(diff-scan 不解析架構圖),empty-nodes gov_event 在 `cmd_gov` L1228-1235(`q in r["nodes"]`)查不到任何節點,對 `lumos gov <node>` 消費端零可見性增益(r5-F1 辯方反證:scripts/lumos:L660/666/699/1228-1230)
 
 ## 誠實天花板
 
@@ -165,8 +165,8 @@ print()
 
 | 文件 | 影響 | 同步動作 |
 |---|---|---|
-| `docs/methodology/圖譜即合約.md` | 說明 Check R 可逆性機制 | 補句「doctor --ci 另有 Check H:掃 diff 偵測疑似不可逆操作、提示漏標」 |
-| `docs/methodology/圖譜即合約-對外論述.md` | 有可逆性段落(L160,確認含不可逆動作說明) | 同上補句 |
+| `docs/methodology/架構圖即合約.md` | 說明 Check R 可逆性機制 | 補句「doctor --ci 另有 Check H:掃 diff 偵測疑似不可逆操作、提示漏標」 |
+| `docs/methodology/架構圖即合約-對外論述.md` | 有可逆性段落(L160,確認含不可逆動作說明) | 同上補句 |
 | `skills/lumos-project-notes/SKILL.md` | doctor 各 check section 說明 | 補「[H] 漏標可逆性提醒(--ci 才跑)」 |
 | `scripts/templates/graph-discipline.md` | ★IRREVERSIBLE★ 說明 | 可逆性段落補「doctor --ci 的 Check H 掃 diff 提醒漏標」 |
 | `skills/lumos-design-loop/SKILL.md` | 不直接影響 | 無 |

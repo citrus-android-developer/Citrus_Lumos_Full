@@ -11,7 +11,7 @@ related:
 summary: |-
   FLAG:DECISION
   KEY:收破口——`lumos update`/`init` 從不刷新既有專案 CLAUDE.md 紀律區塊(教會 Claude 用工具的 vendored 範本改了傳不到消費端);根因三合謀:_scaffold_project 遇既有 vault 提早 return(:3654)+ 注入 create-only(:3671)+ update 在 re-vendor 範本「之前」才呼叫 scaffold(:3557 vs copy2 :3571 順序錯)
-  KEY:修法=解耦——把「注入 CLAUDE.md」從「scaffold 圖譜資料」拆開;scaffold skip-if-exists 對圖譜資料是對的,錯在注入搭便車
+  KEY:修法=解耦——把「注入 CLAUDE.md」從「scaffold 架構圖資料」拆開;scaffold skip-if-exists 對架構圖資料是對的,錯在注入搭便車
   DECISION:再注入語意=覆蓋 sentinel 之間 + 印 diff(sentinel 外逐字保留;無變靜默;手改區塊內會被蓋但區塊本標「勿手改」,diff 讓覆蓋可見)
   DECISION:含機械漂移守衛(test + doctor Check):本 repo CLAUDE.md 區塊 == resolved template,逐字比對(內容比對 > 版本比對)
   DECISION:交付物 3 版本號=「人可讀標籤 + 粗 nudge」,嚴禁當 staleness oracle;單一源 LUMOS_VERSION → 機械蓋進 START sentinel 行(在比對區「外」,不耦合守衛)
@@ -32,7 +32,7 @@ summary: |-
 `Systems/lumos-cli-lifecycle` 的 KEY 已宣稱「graph-discipline.md 要重跑 init/update 才刷新」——**這是文件寫的意圖,code 沒做到**。本計劃是讓 code 對齊既有意圖(bug fix,非 spec 變更)。
 
 ## 修法核心:解耦
-把「注入 CLAUDE.md」從「scaffold 圖譜資料」拆開。scaffold 的 skip-if-exists 對**圖譜資料**是對的(保護資料不被動),錯在注入搭了它的便車、繼承了 skip。
+把「注入 CLAUDE.md」從「scaffold 架構圖資料」拆開。scaffold 的 skip-if-exists 對**架構圖資料**是對的(保護資料不被動),錯在注入搭了它的便車、繼承了 skip。
 
 ## 交付物 1:re-inject(覆蓋 + diff)
 **回傳型別(F1 blocker,三態不可塞進 `str|None`)**:`_reinject_claude_block(root, slug) -> ReInjectResult`,`ReInjectResult = namedtuple("ReInjectResult", "status diff")`,`status ∈ {"created","updated","unchanged","appended","sentinel_broken"}`、`diff: str|None`(僅 updated 帶 unified_diff,其餘 None)。呼叫端依 status 印(updated→印 diff;sentinel_broken→印警示)。取代原 `str|None`(值多載 = 隱式約定,無型別守護)。
@@ -47,7 +47,7 @@ summary: |-
 **BOM/CRLF(F-09)**:讀時 strip 前導 BOM(`﻿`)後再 find marker;寫一律走 `_write_lf`(強制 LF,同既有寫入慣例)。BOM 檔:注入後正規化為無 BOM + LF(與 T1 寫入「拒 BOM/CRLF」哲學一致)。
 
 接線:
-- `_scaffold_project` **移除**注入段(只留 vault 夾 + MOC + gitignore;其 skip-if-exists 只保護圖譜資料)。
+- `_scaffold_project` **移除**注入段(只留 vault 夾 + MOC + gitignore;其 skip-if-exists 只保護架構圖資料)。
 - `_vendor_toolchain`:注入改到 **copy2 vendor 迴圈之後**呼叫(讀新範本 + 修 :3557 先於 :3567-3576 的順序錯)。
 - `cmd_init`(F-06 + F5 順序):現有 `existing and not force → return 0`(`:3759`)會**繞過** re-inject。修法明定序列:**① 確保範本已 vendor(最新)→ ② re-inject → ③ 才走 existing/force 的 return 邏輯**。關鍵:re-inject「讀已 vendor 的範本」,故 vendor 必先於 re-inject(否則讀到上次留的舊 vendored 範本);兩條路徑(init/update)都保證 re-inject 讀到當次最新範本。不要求 `--force` 才刷新紀律區塊(re-inject idempotent+diff、對既有專案安全)。
 

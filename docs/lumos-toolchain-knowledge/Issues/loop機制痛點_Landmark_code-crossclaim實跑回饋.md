@@ -25,7 +25,7 @@ summary: |-
 ---
 # loop機制痛點_Landmark_code-crossclaim實跑回饋
 
-來源:2026-08-14 Enzo 要 Landmark 專案的 session 回報當日 loop 過程(跨 session 傳訊),回報中的「機制不順」段。原始回報存於該 session 對話;其圖譜留痕見 Landmark repo `governance/review-reports/code-crossclaim/`。
+來源:2026-08-14 Enzo 要 Landmark 專案的 session 回報當日 loop 過程(跨 session 傳訊),回報中的「機制不順」段。原始回報存於該 session 對話;其架構圖留痕見 Landmark repo `governance/review-reports/code-crossclaim/`。
 
 ## 五點回饋與現況
 

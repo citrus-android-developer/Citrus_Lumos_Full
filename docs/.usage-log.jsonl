@@ -102,7 +102,7 @@
 {"ts": "2026-08-10T20:56:10", "node": "Projects/關係層傳播守衛_計劃.md", "cmd": "context"}
 {"ts": "2026-08-10T21:04:49", "node": "Projects/code側刪除傳播守衛_計劃.md", "cmd": "show"}
 {"ts": "2026-08-11T07:59:58", "node": "Projects/code側刪除傳播守衛_計劃.md", "cmd": "context"}
-{"ts": "2026-08-11T10:48:48", "node": "Projects/Android側UI測試綁圖譜工作流_計劃.md", "cmd": "show"}
+{"ts": "2026-08-11T10:48:48", "node": "Projects/Android側UI測試綁架構圖工作流_計劃.md", "cmd": "show"}
 {"ts": "2026-08-11T10:49:47", "node": "Systems/test-profile-multiplatform.md", "cmd": "context"}
 {"ts": "2026-08-11T10:50:03", "node": "Systems/pitfalls-code-loop.md", "cmd": "show"}
 {"ts": "2026-08-11T10:50:03", "node": "Projects/test-layers軟提醒_計劃.md", "cmd": "show"}
@@ -139,8 +139,8 @@
 {"ts": "2026-08-14T11:26:03", "node": "Projects/子代理續談調研.md", "cmd": "context"}
 {"ts": "2026-08-14T20:31:02", "node": "Systems/canary-audit.md", "cmd": "context"}
 {"ts": "2026-08-16T00:42:23", "node": "Systems/lumos-cli-read.md", "cmd": "show"}
-{"ts": "2026-08-16T02:07:00", "node": "Projects/圖譜結構化查詢_計劃.md", "cmd": "show"}
-{"ts": "2026-08-16T02:07:00", "node": "Verification/2026-08-16_圖譜結構化查詢query落地.md", "cmd": "show"}
+{"ts": "2026-08-16T02:07:00", "node": "Projects/架構圖結構化查詢_計劃.md", "cmd": "show"}
+{"ts": "2026-08-16T02:07:00", "node": "Verification/2026-08-16_架構圖結構化查詢query落地.md", "cmd": "show"}
 {"ts": "2026-08-16T02:07:01", "node": "Systems/lumos-cli-read.md", "cmd": "context"}
 {"ts": "2026-08-17T14:34:38", "node": "Issues/vendored自測3紅_來源repo專用測試漏標skip.md", "cmd": "show"}
 {"ts": "2026-08-17T14:34:51", "node": "Issues/vendored自測3紅_來源repo專用測試漏標skip.md", "cmd": "context"}

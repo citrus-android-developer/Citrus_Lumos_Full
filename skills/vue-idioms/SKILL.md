@@ -1,13 +1,13 @@
 ---
 name: vue-idioms
-description: 寫或審 Vue 3（Composition API/<script setup>）代碼前必讀——通用不變量層的慣例規則：並行等待、computed vs watch、響應性陷阱、組件邊界。每條附壞例→好例與機檢對照。框架選擇（Pinia/Vuex、Axios/fetch 等）不在此裁——查該專案圖譜。
+description: 寫或審 Vue 3（Composition API/<script setup>）代碼前必讀——通用不變量層的慣例規則：並行等待、computed vs watch、響應性陷阱、組件邊界。每條附壞例→好例與機檢對照。框架選擇（Pinia/Vuex、Axios/fetch 等）不在此裁——查該專案架構圖。
 ---
 
 # Vue 3 慣例（通用不變量層）
 
 **這份文件治的病**：AI 寫出「正確但笨」的 Vue——串聯了本該並行的請求、用 watch 手動同步本該 computed 的衍生值、解構弄丟響應性、async watch 的舊回應蓋掉新資料。
 
-**分層原則**：只寫不隨框架選擇改變的原則。Pinia 還是 Vuex、Axios 還是 fetch——查該專案的知識圖譜與 CLAUDE.md（`lumos search` 起手）。
+**分層原則**：只寫不隨框架選擇改變的原則。Pinia 還是 Vuex、Axios 還是 fetch——查該專案的知識架構圖與 CLAUDE.md（`lumos search` 起手）。
 
 **機檢欄**：`eslint:規則名`＝現成；`自訂`＝可寫自訂規則；`不可機檢`＝只有本文件與審查鏡頭能守（排最前）。
 
@@ -15,7 +15,7 @@ description: 寫或審 Vue 3（Composition API/<script setup>）代碼前必讀�
 
 ## 一、並行與非同步
 
-> **審查時機管道**:本文標「⚠ 不可機檢」的效能/適用性條目,其載重問已由 lumos 效能檢核機制在三時機自動推送(動手前 impact hook 注入/push 前 pitfalls advisory/終審 code-loop 鏡頭;內容源=lumos-toolchain 圖譜 Systems/效能檢核目錄,雙向同步義務)——可機檢條目歸 linter/analyzer,勿靠人記。
+> **審查時機管道**:本文標「⚠ 不可機檢」的效能/適用性條目,其載重問已由 lumos 效能檢核機制在三時機自動推送(動手前 impact hook 注入/push 前 pitfalls advisory/終審 code-loop 鏡頭;內容源=lumos-toolchain 架構圖 Systems/效能檢核目錄,雙向同步義務)——可機檢條目歸 linter/analyzer,勿靠人記。
 
 ### R1. 互不依賴的等待必須並行 ⚠ 不可機檢，頭號條款
 ```js
@@ -124,5 +124,5 @@ props 唯讀，要改就 emit（含巢狀物件——runtime 不擋但官方明�
 
 1. 最重要的三條（R1 並行、R2 computed、R3 競態）全部不可機檢——本文件＋審查鏡頭是唯一防線。
 2. 持續比對源：Vue 官方有專為 AI 維護的最佳實踐 repo（[vuejs-ai/skills](https://github.com/vuejs-ai/skills)）——本文件更新時先跟它對一輪。
-3. 本文件不裁框架；與專案當地慣例衝突時當地贏，衝突記進該專案圖譜。
+3. 本文件不裁框架；與專案當地慣例衝突時當地贏，衝突記進該專案架構圖。
 4. 飛輪：每次人工糾正 AI 一個醜寫法，回填一條或一例。

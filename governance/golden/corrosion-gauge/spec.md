@@ -21,7 +21,7 @@ PRIOR-ART: ① 最小解=無既有層可解——`.lumos/lint.json` 社群 linte
 
 ## 前提與既驗事實(逐字查證,2026-07-14)
 
-- **全 repo 現無任何 code 趨勢量測**:`grep -rn "corrosion\|dead_defs\|dup_ratio" governance/ scripts/` 0 命中;`lumos doctor` 各 Check 全部對圖譜(Check P 抓「圖譜指向死碼檔案」,不量 code 本身);rot-eval(docs/design/2026-06-19-rot-eval.md)量的是**圖譜 Verification 知識腐化**,與 code 腐蝕不同物。
+- **全 repo 現無任何 code 趨勢量測**:`grep -rn "corrosion\|dead_defs\|dup_ratio" governance/ scripts/` 0 命中;`lumos doctor` 各 Check 全部對架構圖(Check P 抓「架構圖指向死碼檔案」,不量 code 本身);rot-eval(docs/design/2026-06-19-rot-eval.md)量的是**架構圖 Verification 知識腐化**,與 code 腐蝕不同物。
 - **腐蝕主面是單檔 monolith**:`wc -l scripts/lumos` = 8,493 行單檔 python;governance/autonomous_loop/*.py 合計 ~400 行——loop 每天的實作改動集中在這兩面。
 - **每日排程掛點現成**:`governance/daily-governance.sh` 三段結構(治理日報→自主 loop→lint-watch),各段 fail-open(`set -uo pipefail` 無 `-e`)、各寫自己 log——第 4 段同形掛接零風險。
 - **同形先例**:`governance/lint-watch-check.sh`(20 行:跑檢查→dedup→LINE→`exit 0` fail-open)是「每日檢查+通知」的已收斂形狀;`governance/autonomous_loop/difficulty.py`(65 行零依賴純函數+模組頂 docstring 指回設計 doc)是模組形狀先例。
@@ -37,7 +37,7 @@ PRIOR-ART: ① 最小解=無既有層可解——`.lumos/lint.json` 社群 linte
 
 > 路徑以散文書寫:新檔提案、非現況指涉(refcheck 慣例,同 risk-tiered-review r1 留痕)。
 
-- `SCOPE`:量測面 glob 清單,第一刀=scripts/lumos、scripts/*.py(**排除 scripts/test_*.py,r1-F3**)、scripts/hooks/*(**非遞迴、僅檔案**——os.path.isfile 過濾,目錄項不 open,r3-F1′;無副檔名檔以 shebang 首行分類:含 python → ast 面+文字面;否則只文字面——現況頂層三檔全 bash、python 分支為未來檔案預留(fixture 測試涵蓋);誤分類不炸、只虛拉 parse_errors,r2-F6)。**scripts/hooks/claude/ 子目錄的 *.py(Claude Code 整合 hooks:impact/check-graph-sync/verification-rot-check)v1 不納**——是否屬 loop 高頻自修改面待量,先誠實記取捨(r3-F1′),納入=之後改 SCOPE 一行、governance/*.sh、governance/*.py、governance/autonomous_loop/*.py。**量 scripts/+governance/ 的治理 code 面**(loop 自我修改的主面;glob 亦吃進非 loop 動線的治理工具如 governance_flex_builder.py/ai-governance-research.sh——同屬會腐蝕的治理 code,一併入帳、rationale 據實不縮寫,r3-F4),不量 docs/、不量圖譜、不量測試檔——unittest 的 setUp/fixture 天然高重複會灌噪 dup_ratio,且測試檔膨脹通常是覆蓋變好不是腐蝕;測試面的債(死 helper 等)v1 不量、誠實不宣稱蓋(見天花板 7)。
+- `SCOPE`:量測面 glob 清單,第一刀=scripts/lumos、scripts/*.py(**排除 scripts/test_*.py,r1-F3**)、scripts/hooks/*(**非遞迴、僅檔案**——os.path.isfile 過濾,目錄項不 open,r3-F1′;無副檔名檔以 shebang 首行分類:含 python → ast 面+文字面;否則只文字面——現況頂層三檔全 bash、python 分支為未來檔案預留(fixture 測試涵蓋);誤分類不炸、只虛拉 parse_errors,r2-F6)。**scripts/hooks/claude/ 子目錄的 *.py(Claude Code 整合 hooks:impact/check-graph-sync/verification-rot-check)v1 不納**——是否屬 loop 高頻自修改面待量,先誠實記取捨(r3-F1′),納入=之後改 SCOPE 一行、governance/*.sh、governance/*.py、governance/autonomous_loop/*.py。**量 scripts/+governance/ 的治理 code 面**(loop 自我修改的主面;glob 亦吃進非 loop 動線的治理工具如 governance_flex_builder.py/ai-governance-research.sh——同屬會腐蝕的治理 code,一併入帳、rationale 據實不縮寫,r3-F4),不量 docs/、不量架構圖、不量測試檔——unittest 的 setUp/fixture 天然高重複會灌噪 dup_ratio,且測試檔膨脹通常是覆蓋變好不是腐蝕;測試面的債(死 helper 等)v1 不量、誠實不宣稱蓋(見天花板 7)。
 - `snapshot(repo_root) -> dict`:確定性度量(同 repo 狀態恆同輸出、零網路零時間依賴):
   - **體積指標(只入帳、不觸發)**:`total_loc`(非空非註解行)、`max_file_loc` + `max_file`(monolith 監視)、`file_count`。理由:活躍開發的 repo LOC 本來就隨功能長,拿體積當腐蝕訊號=恆假警報;體積入帳供人眼看斜率。
   - **密度指標(趨勢觸發用)**:
@@ -109,8 +109,8 @@ PRIOR-ART: ① 最小解=無既有層可解——`.lumos/lint.json` 社群 linte
 
 | 受影響文件 | 需同步什麼 |
 |---|---|
-| `docs/methodology/圖譜即合約.md` | 自主 loop / 治理節補一句:「腐蝕趨勢尺——loop 自我修改面的 code 健康(死碼/重複/TODO 密度)按變更步入帳,連 K 步單調上升標人核;尺非閘,先量再收」;無對應段則於治理帳(canary-log/governance-log)列舉處併列 corrosion-ledger |
-| `docs/methodology/圖譜即合約-對外論述.md` | 若有「自主 loop 安全邊界」段,補「code 退化趨勢獨立於審計 findings 另立帳」一句;無則略 |
+| `docs/methodology/架構圖即合約.md` | 自主 loop / 治理節補一句:「腐蝕趨勢尺——loop 自我修改面的 code 健康(死碼/重複/TODO 密度)按變更步入帳,連 K 步單調上升標人核;尺非閘,先量再收」;無對應段則於治理帳(canary-log/governance-log)列舉處併列 corrosion-ledger |
+| `docs/methodology/架構圖即合約-對外論述.md` | 若有「自主 loop 安全邊界」段,補「code 退化趨勢獨立於審計 findings 另立帳」一句;無則略 |
 | `lumos-*` skills | **無影響**——不動 design-loop/code-loop/project-notes 的任何流程(③ 明確不進 loop 輪內) |
 | `governance/autonomous_loop/orchestrator-prompt.md` | **無影響**(同上) |
 

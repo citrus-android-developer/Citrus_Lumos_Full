@@ -8,13 +8,13 @@ tags:
   - status/doing
   - scope/governance
 related:
-  - "[[Android側UI測試綁圖譜工作流_計劃]]"
+  - "[[Android側UI測試綁架構圖工作流_計劃]]"
   - "[[Systems/pitfalls-code-loop]]"
   - "[[Systems/test-profile-multiplatform]]"
 summary: |-
-  FLOW:A 段(本 repo,可立即做完)=修 pitfalls-code-loop 證據路徑+補 Android 通道散文→skill 退場段加 UI 面問句(時機觸發者)→reference.md 加產 flow 派工要求→圖譜收尾;B 段(mOrangePos,需真裝置)=雙平台 config→測試名/flow name 改識別字+bind+audit→測試門店與裝置 ready 清單→真跑驗收含回歸釘翻紅
-  KEY:spec 單源=[[Android側UI測試綁圖譜工作流_計劃]](design-loop r1/r2 雙 PASS,golden@governance/golden/Android側UI測試綁圖譜工作流/);本節點只管「怎麼落地」,行為合約以 spec 為準
-  KEY:★A 段(本 repo 4 task)已完成 2026-08-11★—慣例節點證據路徑+Android 通道／skill 退場自問第 4 問／reference.md 派工要求／圖譜收尾,全量 0 failed;驗證見 [[Verification/2026-08-11_AndroidUI工作流A段落地]]。★B 段(mOrangePos,需真裝置)未動★
+  FLOW:A 段(本 repo,可立即做完)=修 pitfalls-code-loop 證據路徑+補 Android 通道散文→skill 退場段加 UI 面問句(時機觸發者)→reference.md 加產 flow 派工要求→架構圖收尾;B 段(mOrangePos,需真裝置)=雙平台 config→測試名/flow name 改識別字+bind+audit→測試門店與裝置 ready 清單→真跑驗收含回歸釘翻紅
+  KEY:spec 單源=[[Android側UI測試綁架構圖工作流_計劃]](design-loop r1/r2 雙 PASS,golden@governance/golden/Android側UI測試綁架構圖工作流/);本節點只管「怎麼落地」,行為合約以 spec 為準
+  KEY:★A 段(本 repo 4 task)已完成 2026-08-11★—慣例節點證據路徑+Android 通道／skill 退場自問第 4 問／reference.md 派工要求／架構圖收尾,全量 0 failed;驗證見 [[Verification/2026-08-11_AndroidUI工作流A段落地]]。★B 段(mOrangePos,需真裝置)未動★
   KEY:★兩 repo 分段,B 段驗不完不擋 A 段★—A 段全在 lumos-toolchain(散文/節點/skill),B 段在 mOrangePos 且要真裝置;B 段任一步驟卡住=明記未驗+原因,不得靜默跳過
   KEY:★時機觸發者已裁(2026-08-11 Enzo)=skill 退場段★—寫進 lumos-project-notes 既有退場自問(delguard S3 三問旁),user-scope 跨專案生效、零新機制;pre-push 軟提醒方案落選(觸發點是 push 前不是功能完成當下)
   KEY:★本計畫不新增任何機制★—唯一近似新增的是 Task 1 的路徑同源斷言,走「既有 t_precommit_whitelist_drift_guard 同型小修」而非新 detector(新機制準入三問已答,見 Task 1)
@@ -22,15 +22,15 @@ summary: |-
 verified_by:
   - "[[Verification/2026-08-11_AndroidUI工作流A段落地]]"
 ---
-# Android 側 UI 測試綁圖譜工作流_實作計畫
+# Android 側 UI 測試綁架構圖工作流_實作計畫
 
 > **For agentic workers:** 建議 `superpowers:subagent-driven-development`（每 task 派乾淨 subagent、task 間審查）。Steps 用 checkbox 追蹤；**動 code 的 commit 必須同時勾本節點對應 checkbox**（pre-commit Gate 3 硬擋）。
 
-**Goal:** 把 [[Android側UI測試綁圖譜工作流_計劃]]（已收斂）落地成兩件事——本 repo 的慣例／skill／節點補齊，mOrangePos 的 maestro 綁定真的接上並跑通一次。
+**Goal:** 把 [[Android側UI測試綁架構圖工作流_計劃]]（已收斂）落地成兩件事——本 repo 的慣例／skill／節點補齊，mOrangePos 的 maestro 綁定真的接上並跑通一次。
 
 **Architecture:** 全部是**接既有機制**，零新機制：`[test:maestro:名]` 綁定用既有多平台 profile；終審通道補進既有 UI 層驗收慣例散文；時機觸發掛既有 skill 退場段；沒裝置走既有 `code-loop skip --note`。
 
-**Tech Stack:** markdown（圖譜節點／skill 散文）、`.lumos/config.json`、maestro YAML flow、既有 lumos CLI（`guard bind/audit`、`doctor`、`lint`）。
+**Tech Stack:** markdown（架構圖節點／skill 散文）、`.lumos/config.json`、maestro YAML flow、既有 lumos CLI（`guard bind/audit`、`doctor`、`lint`）。
 
 ## Global Constraints（每個 task 隱含遵守；值抄自 spec，不得偏離）
 
@@ -40,7 +40,7 @@ verified_by:
 - **`platforms` 是全域開關**：宣告即 legacy `test_profile` 失效；必須同時宣告 android＋maestro 並指定 `default_platform: android`；maestro 的 `root` 指 `.maestro/`。
 - **金流全局約束**：測試門店未確認前，任何 flow 只能標「僅手動、不進回歸集」；終審 agent 不得自動 `run` 未標可自動的 flow。
 - **沒裝置的終審**：走 `lumos code-loop skip --note "無可用 Android 裝置，UI 合約未驗"`——不是綠燈，是誠實留痕。
-- A 段測試跑法：`python3 scripts/test_lumos.py`（全量，尾行判綠）；圖譜改動 `lumos lint <節點>` → `lumos doctor`。
+- A 段測試跑法：`python3 scripts/test_lumos.py`（全量，尾行判綠）；架構圖改動 `lumos lint <節點>` → `lumos doctor`。
 
 ## 檔案結構
 
@@ -75,7 +75,7 @@ verified_by:
 
 ```python
     # delguard/UI 證據路徑同源(2026-08-11,Android UI 工作流 r2-F11):
-    # pitfalls --diff 的排除規則與圖譜節點寫的路徑必須是同一個字串前綴
+    # pitfalls --diff 的排除規則與架構圖節點寫的路徑必須是同一個字串前綴
     lumos_src = (_P(GRAPHCTL)).read_text(encoding="utf-8")
     excl = "governance/review-reports/"
     check("delguard 證據路徑排除規則仍在 scripts/lumos", excl in lumos_src, excl)
@@ -94,7 +94,7 @@ Expected：FAIL ≥1（節點目前是無前綴的 `存 review-reports/<loop>/ui
 - [x] **Step 3：修節點**——把 `Systems/pitfalls-code-loop.md` 第 17 行 KEY 內的 `截圖+console 證據存 review-reports/<loop>/ui-evidence/` 改成 `截圖+console 證據存 governance/review-reports/<loop-id>/ui-evidence/`，並在同一 KEY 行尾追加 Android 通道（★用 Edit 改 body／summary block，不手改 frontmatter 純量★）：
 
 ```
-;★Android 通道(2026-08-11,[[Projects/Android側UI測試綁圖譜工作流_計劃]])★=maestro MCP list_devices→inspect_screen→run,與 Playwright/chrome 並列;★前置:只准對「已標可自動且測試門店已確認」的 flow 自動跑★(否則會在真裝置真後端開真單),未達條件的 flow 一律僅手動、終審走 lumos code-loop skip --note 留痕
+;★Android 通道(2026-08-11,[[Projects/Android側UI測試綁架構圖工作流_計劃]])★=maestro MCP list_devices→inspect_screen→run,與 Playwright/chrome 並列;★前置:只准對「已標可自動且測試門店已確認」的 flow 自動跑★(否則會在真裝置真後端開真單),未達條件的 flow 一律僅手動、終審走 lumos code-loop skip --note 留痕
 ```
 
 - [x] **Step 4：跑綠＋全量**
@@ -106,7 +106,7 @@ Run：同 Step 2 指令 → FAIL 0；再 `python3 scripts/test_lumos.py 2>&1 | t
 
 ```bash
 git add docs/lumos-toolchain-knowledge/Systems/pitfalls-code-loop.md scripts/test_lumos.py \
-        docs/lumos-toolchain-knowledge/Projects/Android側UI測試綁圖譜工作流_實作計畫.md
+        docs/lumos-toolchain-knowledge/Projects/Android側UI測試綁架構圖工作流_實作計畫.md
 git commit -m "fix(kg): pitfalls-code-loop 證據路徑補 governance/ 前綴+補 Android 通道+路徑同源斷言"
 ```
 
@@ -120,7 +120,7 @@ git commit -m "fix(kg): pitfalls-code-loop 證據路徑補 governance/ 前綴+�
 ```markdown
 4. **這次有動到使用者看得到的畫面嗎？**（Android／web UI 都算）
    有 → 除了單元測試，補一支**可重放的 UI flow 檔**（Android＝maestro `.maestro/*.yaml`），
-   並用 `[test:<平台>:<flow名>]` 綁回該功能的圖譜節點。
+   並用 `[test:<平台>:<flow名>]` 綁回該功能的架構圖節點。
    ★斷言必須含「畫面上出現什麼字」★——只斷言「有沒有被擋」等於白做（實例：折扣超過 100%
    確實被擋，但畫面顯示的是登入頁的「請輸入員工編號!」，單元測試結構上測不到）。
    寫法與七個坑見 `reference.md` 的〈產 maestro UI flow 的派工要求〉。
@@ -136,11 +136,11 @@ Expected：出現在第 3 問之後、`⚠ 新增一條 verified_by` 之前；�
 
 Run：`python3 scripts/test_lumos.py 2>&1 | tail -2` → `0 failed`
 
-- [x] **Step 4：commit**（skill 是 code 側，需同 commit 帶圖譜 → 勾本節點 Task 2 checkbox）
+- [x] **Step 4：commit**（skill 是 code 側，需同 commit 帶架構圖 → 勾本節點 Task 2 checkbox）
 
 ```bash
-git add skills/lumos-project-notes/SKILL.md docs/lumos-toolchain-knowledge/Projects/Android側UI測試綁圖譜工作流_實作計畫.md
-git commit -m "feat(skill): 退場自問加第 4 問(UI 面→補可重放 flow 並綁圖譜)——時機觸發者裁定落地"
+git add skills/lumos-project-notes/SKILL.md docs/lumos-toolchain-knowledge/Projects/Android側UI測試綁架構圖工作流_實作計畫.md
+git commit -m "feat(skill): 退場自問加第 4 問(UI 面→補可重放 flow 並綁架構圖)——時機觸發者裁定落地"
 ```
 
 ### Task 3：`reference.md` 新增〈產 maestro UI flow 的派工要求〉
@@ -151,7 +151,7 @@ git commit -m "feat(skill): 退場自問加第 4 問(UI 面→補可重放 flow 
 - [x] **Step 1：新增整節**（逐字，這是派工給「產 flow 的 agent」的單源）
 
 ```markdown
-## 產 maestro UI flow 的派工要求（Android UI 驗收；spec＝`Projects/Android側UI測試綁圖譜工作流_計劃`）
+## 產 maestro UI flow 的派工要求（Android UI 驗收；spec＝`Projects/Android側UI測試綁架構圖工作流_計劃`）
 
 派 agent 產 flow 時，prompt 必須含下列全部：
 
@@ -195,7 +195,7 @@ Run：`python3 -c "import sys; sys.path.insert(0,'scripts'); import test_lumos a
 
 - [x] **Step 4：commit**（勾 Task 3 checkbox 同 commit）
 
-### Task 4：A 段圖譜收尾
+### Task 4：A 段架構圖收尾
 
 **Files:** Create `docs/lumos-toolchain-knowledge/Verification/<今日>_AndroidUI工作流A段落地.md`；Modify 兩個 Projects 節點（`lumos set`／`append`）
 
@@ -228,7 +228,7 @@ Run：`python3 -c "import sys; sys.path.insert(0,'scripts'); import test_lumos a
 （★不要寫 `"multiplatform": true`★——那是回傳的推導結果、程式從不讀；★maestro 的 `root` 不能是 `.`★——會讓 doctor 掃整個 Android repo）
 
 - [ ] **Step 3：驗證沒弄紅**——`lumos guard list` 與 `lumos doctor`：既有 5 條 kotlin 綁定仍是「真綁 5 / 懸空 0」。**若變懸空＝設定錯，回退再修，不要往下做。**
-- [ ] **Step 4：commit**（mOrangePos 的 pre-commit 同樣要求帶圖譜 .md，把本次設定寫進該 repo 的圖譜節點一併 commit）
+- [ ] **Step 4：commit**（mOrangePos 的 pre-commit 同樣要求帶架構圖 .md，把本次設定寫進該 repo 的架構圖節點一併 commit）
 
 ### Task 6：測試名／flow name 改識別字 → `guard bind` → `guard audit`
 

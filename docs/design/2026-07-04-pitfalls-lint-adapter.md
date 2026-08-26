@@ -111,7 +111,7 @@
 | `skills/lumos-project-notes/SKILL.md` | pitfalls 指令表補「--diff 支援 .lumos/lint.json lint 整合(SARIF)」 |
 | `skills/lumos-code-loop/SKILL.md` | pitfalls --diff manifest 現含 lint 來源(source 欄);reviewer 鏡頭對 lint claim 讀 `message`(非 question)、regex claim 仍讀 question(r1-F4) |
 | `scripts/templates/graph-discipline.md` | 終審前 pitfalls --diff 段補一句「專案配 .lumos/lint.json 則自動吃 linter」 |
-| `docs/methodology/圖譜即合約.md` | pitfalls 列補「lint 整合器(SARIF)——吃社群 linter 非自建規則」 |
+| `docs/methodology/架構圖即合約.md` | pitfalls 列補「lint 整合器(SARIF)——吃社群 linter 非自建規則」 |
 | `Projects/pitfalls-lint-integration_計劃` | 第 ① 塊 status 更新 done + verified_by 回指本 spec 落地 Verification |
 
 ## 審計修正紀錄(design-loop)

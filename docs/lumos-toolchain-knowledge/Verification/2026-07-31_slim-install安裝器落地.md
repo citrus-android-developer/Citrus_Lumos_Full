@@ -54,5 +54,5 @@ lumos 測試(1 案例)
 
 ## 相關
 
-- 設計/規格:`.superpowers/sdd/公開精簡版_實作計畫/task-3-brief.md`(SDD 產出,非圖譜路徑,依計畫落地於此)
+- 設計/規格:`.superpowers/sdd/公開精簡版_實作計畫/task-3-brief.md`(SDD 產出,非架構圖路徑,依計畫落地於此)
 - 系統筆記:[[Systems/slim-install-安裝器]]

@@ -46,7 +46,7 @@ summary: |-
 
 - `python3 scripts/test_lumos.py -k slim`:290 checks 全綠。
 - `scripts/slim-gen.py` 重新生成 `dist/`,確認 10 個入口檔全在,且生成後的三支 `.ps1` 同樣不含裸 `exit`。
-- 圖譜同步:[[Systems/slim-install-安裝器]]、[[Systems/slim-uninstall-一行卸載]]、[[Systems/slim-get-一行安裝]] 補上對應 KEY 行,關閉 Task 14 留下的「早期分支 exit 2 未觸碰」殘留風險標記;`slim/README.md`〈支援平台〉未驗清單同步更新。
+- 架構圖同步:[[Systems/slim-install-安裝器]]、[[Systems/slim-uninstall-一行卸載]]、[[Systems/slim-get-一行安裝]] 補上對應 KEY 行,關閉 Task 14 留下的「早期分支 exit 2 未觸碰」殘留風險標記;`slim/README.md`〈支援平台〉未驗清單同步更新。
 
 ## 仍未在真機驗證 / 已知殘留風險
 

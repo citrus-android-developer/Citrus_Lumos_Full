@@ -204,7 +204,7 @@
   }
  },
  "S05": {
-  "Projects/Android側UI測試綁圖譜工作流_實作計畫.md": {
+  "Projects/Android側UI測試綁架構圖工作流_實作計畫.md": {
    "final": 1,
    "why": "留痕為執行細節之一"
   },
@@ -212,7 +212,7 @@
    "final": 2,
    "why": "留痕座標脫鉤為核心議題"
   },
-  "Projects/Android側UI測試綁圖譜工作流_計劃.md": {
+  "Projects/Android側UI測試綁架構圖工作流_計劃.md": {
    "final": 1,
    "why": "多處用留痕/skip--note但非主題"
   },
@@ -268,7 +268,7 @@
    "final": 0,
    "why": "未見事故字面主題"
   },
-  "Projects/Android側UI測試綁圖譜工作流_實作計畫.md": {
+  "Projects/Android側UI測試綁架構圖工作流_實作計畫.md": {
    "final": 1,
    "why": "事故僅作旁證,非主要記載"
   },
@@ -276,7 +276,7 @@
    "final": 1,
    "why": "真事故一筆帶過,連向別的Issue節點"
   },
-  "Projects/Android側UI測試綁圖譜工作流_計劃.md": {
+  "Projects/Android側UI測試綁架構圖工作流_計劃.md": {
    "final": 1,
    "why": "事故是具體實例但非核心主題"
   }
@@ -336,7 +336,7 @@
    "final": 0,
    "why": "合約字眼零散,主題是search遺忘"
   },
-  "Projects/Android側UI測試綁圖譜工作流_實作計畫.md": {
+  "Projects/Android側UI測試綁架構圖工作流_實作計畫.md": {
    "final": 1,
    "why": "合約綁定是工作內容但非主題"
   },
@@ -430,7 +430,7 @@
    "final": 2,
    "why": "核心即審計可稽核性失效"
   },
-  "Projects/Android側UI測試綁圖譜工作流_計劃.md": {
+  "Projects/Android側UI測試綁架構圖工作流_計劃.md": {
    "final": 1,
    "why": "審計修正紀錄為流程附屬"
   },
@@ -722,7 +722,7 @@
    "final": 0,
    "why": "用陷阱非坑字面"
   },
-  "Projects/Android側UI測試綁圖譜工作流_實作計畫.md": {
+  "Projects/Android側UI測試綁架構圖工作流_實作計畫.md": {
    "final": 1,
    "why": "內含七個坑清單,派工要求段落"
   },
@@ -806,7 +806,7 @@
    "final": 2,
    "why": "帳(ci-log/gov七帳)為核心內容"
   },
-  "Projects/Android側UI測試綁圖譜工作流_實作計畫.md": {
+  "Projects/Android側UI測試綁架構圖工作流_實作計畫.md": {
    "final": 0,
    "why": "全文未見「帳」相關內容"
   },
@@ -822,7 +822,7 @@
    "final": 0,
    "why": "帳僅一次附帶提及治理帳讀取入口"
   },
-  "Projects/Android側UI測試綁圖譜工作流_計劃.md": {
+  "Projects/Android側UI測試綁架構圖工作流_計劃.md": {
    "final": 1,
    "why": "測試帳是金流硬性約束核心段落"
   },

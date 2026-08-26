@@ -179,10 +179,10 @@ golden 語料是 **auditor 校準的時間資產**：累到 10+ 份即可做 rep
 
 操作層刻意不帶日期與工作包編號（那是規則的**來歷**不是規則本身）。要追溯就從這裡進：
 
-| 規則群 | 來歷 | 圖譜節點 |
+| 規則群 | 來歷 | 架構圖節點 |
 |---|---|---|
 | loop 定位「抬質量非保正確」 | 2026-07-18 d4 使用者裁定；**前置加重一律拒** | `[[design-loop]]` d4 |
-| 真相入口＝圖譜計劃節點；`docs/design/` 降唯讀 | 2026-07-21 收編 | `[[全盤外審2026-07_調研]]` finding 1 |
+| 真相入口＝架構圖計劃節點；`docs/design/` 降唯讀 | 2026-07-21 收編 | `[[全盤外審2026-07_調研]]` finding 1 |
 | canary 生成硬化三條 | 2026-07-10 | `[[canary生成硬化_計劃]]` |
 | reviewer 結構紀律 | 2026-07-10 研究明文化 | `[[reviewer結構明文化_計劃]]` |
 | panel ≤3 輪壓縮、收斂判準理據 | 2026-07-09 | `[[loop三輪壓縮_計劃]]` |
@@ -199,4 +199,4 @@ golden 語料是 **auditor 校準的時間資產**：累到 10+ 份即可做 rep
 | r1 通才席 | 2026-07-16 replay baseline 實證 | `[[Verification/2026-07-16_replay校準baseline_v0]]` |
 | 跨家族席能力宣告制 | 2026-07-30 修訂 | — |
 
-設計全文（**唯讀歷史，僅供考古**；新設計一律寫圖譜計劃節點）：`docs/design/2026-06-19-design-loop-skill.md`、`…-convergence-recording.md`、`…-canary-audit.md`。
+設計全文（**唯讀歷史，僅供考古**；新設計一律寫架構圖計劃節點）：`docs/design/2026-06-19-design-loop-skill.md`、`…-convergence-recording.md`、`…-canary-audit.md`。

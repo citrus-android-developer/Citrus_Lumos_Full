@@ -687,11 +687,11 @@ git commit -m "feat(loop): 收斂改 --gate 證據閘 + --findings 記錄 + §2.
 ### Task 5: 知識同步 — methodology ×2 + lumos-project-notes
 
 **Files:**
-- Modify: `docs/methodology/圖譜即合約.md`(設計前審計 loop 表「收斂留痕(A)」列 + 原則 5)
-- Modify: `docs/methodology/圖譜即合約-對外論述.md`(anchor 段後插白話段)
+- Modify: `docs/methodology/架構圖即合約.md`(設計前審計 loop 表「收斂留痕(A)」列 + 原則 5)
+- Modify: `docs/methodology/架構圖即合約-對外論述.md`(anchor 段後插白話段)
 - Modify: `skills/lumos-project-notes/SKILL.md`(:92 表列 + :899 收斂留痕段)
 
-- [ ] **Step 1: 圖譜即合約.md 收斂留痕列升級**
+- [ ] **Step 1: 架構圖即合約.md 收斂留痕列升級**
 
 old:
 ```
@@ -702,7 +702,7 @@ new:
 | 收斂留痕(A)+ 證據閘(2026-07-03) | `lumos canary record --loop/--severity/--findings` 記每輪 + `lumos loop status <id> --need 2 --gate --spec …` **機械算收斂**——輪次紀律（連 K 輪 caught+乾淨）保留為必要條件，合取 G1（spec 引用座標 refcheck 全 ok）與 G2（發現枯竭：findings 單調不增、末輪 ≤1 且末步下降）；「連 K 輪各挖 5 條 minor」不再算收斂。天花板：findings 數的源頭仍是 LLM 裁決，gate 機械化的是算術非數字正確性 |
 ```
 
-- [ ] **Step 2: 圖譜即合約.md 原則 5 補計票句**
+- [ ] **Step 2: 架構圖即合約.md 原則 5 補計票句**
 
 old:
 ```
@@ -755,17 +755,17 @@ new:
 
 - [ ] **Step 5: 驗證 + Commit**
 
-Run: `grep -c "gate\|枯竭" docs/methodology/圖譜即合約.md docs/methodology/圖譜即合約-對外論述.md skills/lumos-project-notes/SKILL.md`
+Run: `grep -c "gate\|枯竭" docs/methodology/架構圖即合約.md docs/methodology/架構圖即合約-對外論述.md skills/lumos-project-notes/SKILL.md`
 Expected: 三檔各 ≥1(對外論述用白話,grep "點收" ≥1 亦可)。
 
 ```bash
-git add docs/methodology/圖譜即合約.md docs/methodology/圖譜即合約-對外論述.md skills/lumos-project-notes/SKILL.md
+git add docs/methodology/架構圖即合約.md docs/methodology/架構圖即合約-對外論述.md skills/lumos-project-notes/SKILL.md
 git commit -m "docs(sync): 收斂證據閘知識同步——loop 表/原則5計票/對外白話/project-notes 原語"
 ```
 
 ---
 
-### Task 6: 圖譜節點 + 收尾(controller 自跑)
+### Task 6: 架構圖節點 + 收尾(controller 自跑)
 
 **Files:**
 - Create: `docs/lumos-toolchain-knowledge/Systems/convergence-evidence-gate.md`

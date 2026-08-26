@@ -103,17 +103,17 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 ### Task 3: 知識同步(方法論 + 對外論述 + memory)
 
 **Files:**
-- Modify: `docs/methodology/圖譜即合約.md`(設計前審計 loop 段補辯方=canary 對稱)
-- Modify: `docs/methodology/圖譜即合約-對外論述.md`(白話檢察官/辯護律師)
+- Modify: `docs/methodology/架構圖即合約.md`(設計前審計 loop 段補辯方=canary 對稱)
+- Modify: `docs/methodology/架構圖即合約-對外論述.md`(白話檢察官/辯護律師)
 - Modify: memory `canary-loop-reliability-varies-by-spec`(補辯方防假陽性)
 
 - [ ] **Step 1: 方法論(技術)補辯方**
 
-`docs/methodology/圖譜即合約.md` 設計前審計 loop 段補:辯方階段(對每條 major+ finding 派獨立辯方、要 file:line 證據、防假陽性)= canary(防假陰性、漏抓)的**對稱補位**;檢察官(對設計 refute→findings)/辯方(對 finding refute→殺假陽性)雙向對抗。天花板:只買 code 層、業務層留人。
+`docs/methodology/架構圖即合約.md` 設計前審計 loop 段補:辯方階段(對每條 major+ finding 派獨立辯方、要 file:line 證據、防假陽性)= canary(防假陰性、漏抓)的**對稱補位**;檢察官(對設計 refute→findings)/辯方(對 finding refute→殺假陽性)雙向對抗。天花板:只買 code 層、業務層留人。
 
 - [ ] **Step 2: 對外論述補白話**
 
-`docs/methodology/圖譜即合約-對外論述.md` 補白話:審查除了「檢察官挑毛病」,還配「辯護律師」——每條重罪指控派一個律師專門反駁、且逼他拿代碼證據(指出第幾行),冤枉的當庭推翻。金絲雀防檢察官偷懶漏放,辯護律師防檢察官認真但冤枉人。
+`docs/methodology/架構圖即合約-對外論述.md` 補白話:審查除了「檢察官挑毛病」,還配「辯護律師」——每條重罪指控派一個律師專門反駁、且逼他拿代碼證據(指出第幾行),冤枉的當庭推翻。金絲雀防檢察官偷懶漏放,辯護律師防檢察官認真但冤枉人。
 
 - [ ] **Step 3: 更新 memory**
 

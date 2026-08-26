@@ -12,24 +12,24 @@ tags:
   - status/todo
   - scope/governance
 summary: |-
-  FLOW:code diff 的 `-` 行抽出被刪識別字→grep 圖譜內文→列出「還在講它」的節點與原句→逐句問「這句還成立嗎」→改掉或標作廢
-  KEY:★這是兩個既有守衛之間的接縫,不是新問題面★—[[關係層傳播守衛_計劃]] 自己寫明「pre-commit 只保證 code↔圖譜同次有動(檔案級存在性),保證不了決策翻案→下游校正(跨節點語意傳播)——不同顆粒度、不重疊」,把 code↔節點 這個方向劃給 pre-commit;而 pre-commit Gate 3 實際只判「有沒有任何一個圖譜 .md 進 staged」。兩邊各自以為對方管了
-  KEY:★真實失守實錄(mOrangePos commit aff2329,2026-08-03)★—該 commit 移除登入自動撈 2C2P 憑證。它**有**帶圖譜更新、五個檔,Gate 3 放行;但其中三個 Systems 節點各自只改 1 行,而那一行是 `+  - "[[Verification/2026-08-03_...]]"`。★只掛連結,被推翻的敘述一個字沒改★。七天後(2026-08-10)排查時才發現六個節點+四處 code 註解仍在講「登入時 GetPaywayCredential 撈一次」,其中一個節點還拿這個不存在的前提當設計理由
+  FLOW:code diff 的 `-` 行抽出被刪識別字→grep 架構圖內文→列出「還在講它」的節點與原句→逐句問「這句還成立嗎」→改掉或標作廢
+  KEY:★這是兩個既有守衛之間的接縫,不是新問題面★—[[關係層傳播守衛_計劃]] 自己寫明「pre-commit 只保證 code↔架構圖同次有動(檔案級存在性),保證不了決策翻案→下游校正(跨節點語意傳播)——不同顆粒度、不重疊」,把 code↔節點 這個方向劃給 pre-commit;而 pre-commit Gate 3 實際只判「有沒有任何一個架構圖 .md 進 staged」。兩邊各自以為對方管了
+  KEY:★真實失守實錄(mOrangePos commit aff2329,2026-08-03)★—該 commit 移除登入自動撈 2C2P 憑證。它**有**帶架構圖更新、五個檔,Gate 3 放行;但其中三個 Systems 節點各自只改 1 行,而那一行是 `+  - "[[Verification/2026-08-03_...]]"`。★只掛連結,被推翻的敘述一個字沒改★。七天後(2026-08-10)排查時才發現六個節點+四處 code 註解仍在講「登入時 GetPaywayCredential 撈一次」,其中一個節點還拿這個不存在的前提當設計理由
   KEY:★失守形狀=「新增紀錄很容易,修正舊敘述容易被跳過」,而閘門只認得前者★—掛連結的人主觀上真的認為自己同步過了,所以泛問「有沒有漏更新?」永遠得到「沒有」。要破必須讓問句自己帶查法(見下方 S3)
-  KEY:偵測面=從 diff 的 `-` 行抽識別字(函式/欄位/常數/端點路徑)→在 vault 內文 grep→命中即候選。★這次的案例會被抓到★:被刪的是 refreshPaywayCredentials 呼叫,六個節點內文有 refreshPaywayCredentials/GetPaywayCredential 字面。★「這行被刪」≠「符號從 repo 消失」★—call site 移除但函式還活著時,圖譜講它未必過期;只認全域消失又會漏本次這型(拿掉的是「登入時呼叫」這個行為,符號未必全滅)→ 抽取分兩檔信心:全域消失=高信心報、僅呼叫點消失=低信心報。★「全域消失」判定快照=staged index(git grep --cached;worktree 會被未 staged 內容救回、HEAD 看不到已 staged 新增,r1 折入)★;alternation 逐 token re.escape;S1 只認被刪行實際存在的 token、不做 call graph
+  KEY:偵測面=從 diff 的 `-` 行抽識別字(函式/欄位/常數/端點路徑)→在 vault 內文 grep→命中即候選。★這次的案例會被抓到★:被刪的是 refreshPaywayCredentials 呼叫,六個節點內文有 refreshPaywayCredentials/GetPaywayCredential 字面。★「這行被刪」≠「符號從 repo 消失」★—call site 移除但函式還活著時,架構圖講它未必過期;只認全域消失又會漏本次這型(拿掉的是「登入時呼叫」這個行為,符號未必全滅)→ 抽取分兩檔信心:全域消失=高信心報、僅呼叫點消失=低信心報。★「全域消失」判定快照=staged index(git grep --cached;worktree 會被未 staged 內容救回、HEAD 看不到已 staged 新增,r1 折入)★;alternation 逐 token re.escape;S1 只認被刪行實際存在的 token、不做 call graph
   KEY:第二道=★純連結編輯不算同步★—判該節點本次 diff 是否只動 frontmatter 的 list 型欄位(★欄位清單不手列,讀 lumos LIST_KEYS 常數為單一真源+core_refs;r1 三席一致:手列三欄漏 plan_refs=假同步逃逸★);若是,且它同時被 S1 grep 命中(內文還在講本次被刪的符號)→ 標出來。YAML 重排/正規化 diff 一律判「有動內容」(保守朝不報)。直接對準本次失守形狀。★觸發鍵刻意取 S1 命中而非 impact 必看名單★—掛 impact top-8 會繼承它的漏抓
   KEY:★天花板(誠實講)★—只抓「符號消失」這一型。行為反轉但名字沒少(例:`isStock = if(isSend=="Y") prefs.isStock else false` 改成 `isStock = prefs.isStock`)完全不會響;純語意矛盾更不會。S2 也有逃逸形狀:body 隨手補一行新敘述、被推翻的舊句照樣不改,diff 就不是「純連結」,S2 靜默(=「只改最相關段、漏散落列舉表」的已知失敗型)。這是提高地板,不是全覆蓋——語意那半仍歸 AI 交叉審與 [[關係層傳播守衛_計劃]]
   KEY:誤報來源逐項處置(r1 折入)=檔案搬移(git diff -M 治得了)｜符號改名(檔內改名 -M ★治不了★,v1 明文不解、歸低信心+誤報帳)｜註解提及/同名符號(v1 不判,advisory 吸收,明文取捨)｜歷史記載節點(★字樣標記判定撤案★—substring 誤抑制「尚未作廢」;改節點型別過濾:Systems 高信心、Projects/Verification 壓最低,接實測②)。★刷屏也是失敗模式★—advisory 刷屏=訓練人無視它;識別字 cap 先驗 40、超 cap 保留高信心 top-10+一行統計(證據不清零);★超時契約:偵測器主體 python3 內建 deadline,|| true 只兜 crash 不兜 hang★;--no-verify 繞過留痕沿用既有 post-commit bypass 帳(r1 訂正:原稱「無留痕」有誤)
   PRIOR-ART:①最小解在既有層—pre-commit Gate 3 與 `impact --sync-check` 兩支都已存在,只需加一個判斷(被刪符號→grep vault)與一個 diff 分類(純連結 vs 有動內容),不造新機制、不新增治理層 ②世界解過—**Swimm** 做的正是 code-coupled docs:文件綁到具體 code 片段,被引用的 code 一改就把該文件標為過期,且分三級(up-to-date / out-of-sync 可自動修 / outdated 需人判),攔截點在 IDE 與 PR 合併前;另有 doc-drift CI 的作法(合併後掃,補本地 hook 漏的) ③裁定=**borrow-design**(借 Swimm 的三級分類與「攔在合併前」的時機,原生實作;零依賴家規排除 adopt)
   KEY:★與 Swimm 的刻意偏離★—Swimm 要求文件明確嵌入 code 錨點(Smart Tokens)才能耦合,精度高但有撰寫成本;本設計改用**識別字字面 grep**,精度低於錨點但★對 mOrangePos 既有 150 篇筆記零改造成本★。取捨已知:換來誤報,故先做 advisory 不硬擋
-  KEY:★2026-08-10 mOrangePos 實跑帶回的四筆實測(詳見內文)★—①誤報率有真數字:1697 候選→183 找不到→**逐個判定真 drift 僅 6**(精確率約 3%,無過濾版地板;雜訊類別可枚舉:測試單號/外部 API 欄位/DB 欄位/後端 C# 符號/gradle task/圖譜 frontmatter 欄位/Android SDK 概念/lint 規則 ID/姊妹專案類別) ②★最強過濾訊號是節點型別不是字串規則★—6 筆真 drift **全落在 Systems/**;Projects 提到不存在的名字多半是「還沒實作的預定名稱」、Verification 多半是「正在記載該符號被移除」→建議 Systems 高信心報、Projects/Verification 壓最低 ③★存量掃描抓到 diff 版永遠抓不到的一型★—ArithUtil.kt/CartSummaryCalculator.kt 檔案都在但裡面沒同名物件(是 top-level 函式),圖譜把檔名當物件名寫成 `ArithUtil.round(v,scale)`,照著寫編不過;**從沒有 diff 刪過任何東西** → S1 永不觸發。故存量掃描(一次性,不進閘)與增量掃描(S1,進閘)抓的是不同東西,兩個都要 ④識別字掃勝過關鍵字掃的實例—`Systems/售完狀態雲端同步` 還在講付款設定頁的 etPnqrKey,前一輪用「憑證」關鍵字掃漏掉(節點名與主題對不上,人不會想去翻);★人會按主題找,而 drift 不按主題分布,這正是機械檢查存在的理由★ ⑤順帶產出真實驗收案例—同次把死碼真刪掉後,圖譜四個節點措辭要從「死碼」改成「已刪除」=★刪除本身又製造一批 drift,而這批正是 S1 的正字標記★,可重放
+  KEY:★2026-08-10 mOrangePos 實跑帶回的四筆實測(詳見內文)★—①誤報率有真數字:1697 候選→183 找不到→**逐個判定真 drift 僅 6**(精確率約 3%,無過濾版地板;雜訊類別可枚舉:測試單號/外部 API 欄位/DB 欄位/後端 C# 符號/gradle task/架構圖 frontmatter 欄位/Android SDK 概念/lint 規則 ID/姊妹專案類別) ②★最強過濾訊號是節點型別不是字串規則★—6 筆真 drift **全落在 Systems/**;Projects 提到不存在的名字多半是「還沒實作的預定名稱」、Verification 多半是「正在記載該符號被移除」→建議 Systems 高信心報、Projects/Verification 壓最低 ③★存量掃描抓到 diff 版永遠抓不到的一型★—ArithUtil.kt/CartSummaryCalculator.kt 檔案都在但裡面沒同名物件(是 top-level 函式),架構圖把檔名當物件名寫成 `ArithUtil.round(v,scale)`,照著寫編不過;**從沒有 diff 刪過任何東西** → S1 永不觸發。故存量掃描(一次性,不進閘)與增量掃描(S1,進閘)抓的是不同東西,兩個都要 ④識別字掃勝過關鍵字掃的實例—`Systems/售完狀態雲端同步` 還在講付款設定頁的 etPnqrKey,前一輪用「憑證」關鍵字掃漏掉(節點名與主題對不上,人不會想去翻);★人會按主題找,而 drift 不按主題分布,這正是機械檢查存在的理由★ ⑤順帶產出真實驗收案例—同次把死碼真刪掉後,架構圖四個節點措辭要從「死碼」改成「已刪除」=★刪除本身又製造一批 drift,而這批正是 S1 的正字標記★,可重放
   DECISION:[2026-08-10]先軟提醒不硬擋,跑一段時間收誤報率再決定要不要升級成擋(對齊 sync-check 的 advisory 級別)
   DECISION:[2026-08-10]落點裁定=pre-commit Gate CC 旁,不放 impact --sync-check(輸入不等價:S1 契約=staged index,sync-check 是 branch-range 模式;r1 Codex 席升級自「傾向」)(valid)
 decisions:
   - content: |-
       先做 advisory 軟提醒（不擋 commit），不直接升級成 pre-commit 硬擋
     context: |-
-      識別字字面 grep 的誤報來源明確存在（改名、註解提及、同名符號、圖譜刻意保留的歷史段落），
+      識別字字面 grep 的誤報來源明確存在（改名、註解提及、同名符號、架構圖刻意保留的歷史段落），
       誤報率未知；而 pre-commit 硬擋一旦誤報就是擋住正常工作，反彈會導致整條規則被 --no-verify 繞過
     alternatives_considered: |-
       ①直接硬擋 ②advisory 軟提醒 ③只在 code-loop 終審跑（頻率低但漏日常 commit）
@@ -56,7 +56,7 @@ decisions:
 ---
 # code 側刪除傳播守衛_計劃
 
-**Goal:** 讓「code 拿掉了某個東西、圖譜還在講它」這一型過期，在 commit 當下就被指名到**具體哪一句**，而不是七天後排查時才撞見。
+**Goal:** 讓「code 拿掉了某個東西、架構圖還在講它」這一型過期，在 commit 當下就被指名到**具體哪一句**，而不是七天後排查時才撞見。
 
 > **狀態：待評估與拍板。** 由 mOrangePos 那邊排查 2C2P 付款問題時撞到本問題、就地寫回。
 > 進實作前依家規需過 `lumos-design-loop`。
@@ -65,7 +65,7 @@ decisions:
 
 ## 一句話
 
-**圖譜的閘只檢查「有沒有寫」，不檢查「舊的寫錯了沒」。**
+**架構圖的閘只檢查「有沒有寫」，不檢查「舊的寫錯了沒」。**
 
 新增一條連結、寫一篇新的 Verification，都算「有更新」；而把被推翻的那句話改掉，沒有任何機制在要求。於是新東西一直長，舊東西一直爛。
 
@@ -73,7 +73,7 @@ decisions:
 
 mOrangePos `aff2329`（2026-08-03）把「登入時自動撈 2C2P 憑證」移除，改成設定頁手填。
 
-那個 commit **有**帶圖譜更新，動了五個檔，pre-commit Gate 3 放行。但攤開來看：
+那個 commit **有**帶架構圖更新，動了五個檔，pre-commit Gate 3 放行。但攤開來看：
 
 ```diff
 # 三個 Systems 節點，各自的完整 diff 就是這一行
@@ -95,18 +95,18 @@ mOrangePos `aff2329`（2026-08-03）把「登入時自動撈 2C2P 憑證」移�
 
 `[[關係層傳播守衛_計劃]]` 的 summary 自己寫著：
 
-> pre-commit 只保證 code↔圖譜同次有動（檔案級存在性），保證不了決策翻案→下游校正（跨節點語意傳播）——不同顆粒度、不重疊
+> pre-commit 只保證 code↔架構圖同次有動（檔案級存在性），保證不了決策翻案→下游校正（跨節點語意傳播）——不同顆粒度、不重疊
 
 它把 **code↔節點** 這個方向劃給 pre-commit，自己專心處理 **節點↔節點**。而 pre-commit 的 Gate 3 實際上是：
 
 ```bash
-# Gate 3: 有圖譜 .md staged → 放行
+# Gate 3: 有架構圖 .md staged → 放行
 if echo "$STAGED" | grep -qE "^${GRAPH_ROOT}/.*\.md$"; then
   exit 0
 fi
 ```
 
-任何一個圖譜檔，改任何內容，都放行。**兩邊各自以為對方管了。**
+任何一個架構圖檔，改任何內容，都放行。**兩邊各自以為對方管了。**
 
 ---
 
@@ -122,7 +122,7 @@ fi
 - **註解裡提及／不相干的同名符號**：v1 不判，advisory 吸收＋誤報帳記錄（明文取捨，非遺漏）。
 - **歷史記載節點**：不用字樣標記判斷（「已作廢」substring 會誤抑制「尚未作廢」，且標記形式無機械定義）——改用下方 mOrangePos 實測 ② 的**節點型別過濾**：`Systems/` 才高信心報，`Projects/`／`Verification/` 本來就會講預定名稱與歷史，預設壓到最低。
 
-**兩檔信心——「這行被刪」≠「這個符號從 repo 消失」**：call site 被移除但函式還活著、還被別處用，這時圖譜講它未必過期；反過來只認「repo 全域消失的符號」精度高，但會漏掉本次這型（拿掉的是「登入時呼叫」這個行為，符號未必全滅）。抽取規則分兩檔：**全域消失＝高信心報、僅呼叫點消失＝低信心報**。**「全域消失」的判定快照＝staged index**（`git grep --cached`，與 pre-commit 契約對象一致；grep working tree 會被未 staged 內容「救回」、grep HEAD 看不到已 staged 新增——兩者都判錯），排除域重用 pre-commit 既有 `should_exclude`（vault／build／vendor）。此掃描成本入效能預算（見實務隱患），識別字 cap 同時限制它的次數。
+**兩檔信心——「這行被刪」≠「這個符號從 repo 消失」**：call site 被移除但函式還活著、還被別處用，這時架構圖講它未必過期；反過來只認「repo 全域消失的符號」精度高，但會漏掉本次這型（拿掉的是「登入時呼叫」這個行為，符號未必全滅）。抽取規則分兩檔：**全域消失＝高信心報、僅呼叫點消失＝低信心報**。**「全域消失」的判定快照＝staged index**（`git grep --cached`，與 pre-commit 契約對象一致；grep working tree 會被未 staged 內容「救回」、grep HEAD 看不到已 staged 新增——兩者都判錯），排除域重用 pre-commit 既有 `should_exclude`（vault／build／vendor）。此掃描成本入效能預算（見實務隱患），識別字 cap 同時限制它的次數。
 
 **刷屏也是失敗模式**：大型 refactor 會噴出海量 `-` 行，advisory 一旦刷屏就是在訓練人無視它（trade_offs 已承認「軟提醒可以被無視」，別再自己加速）。`git diff -M` 吃掉檔案搬移；識別字 cap 先驗暫用 **40**（replay 校準後以數據取代）；**超 cap 不是全丟**——保留高信心（全域消失）命中 top-N（先驗 N=10）逐條列，其餘壓成一行統計，證據不清零。
 
@@ -246,13 +246,13 @@ isStock = prefs.isStock
 
 ## 2026-08-10 · mOrangePos 實跑一次全圖版，帶回四筆實測
 
-把 S1 反過來當**存量掃描**跑了一次（不是從 diff 抽被刪符號，而是從圖譜內文抽識別字 → 比對現行原始碼）。這是設計時沒想到的用法，結果比預期有用。
+把 S1 反過來當**存量掃描**跑了一次（不是從 diff 抽被刪符號，而是從架構圖內文抽識別字 → 比對現行原始碼）。這是設計時沒想到的用法，結果比預期有用。
 
 ### ① 誤報率有真數字了：1697 → 183 → 6
 
 | | |
 |---|---|
-| 圖譜內文抽出的候選識別字 | 1697 |
+| 架構圖內文抽出的候選識別字 | 1697 |
 | 原始碼中找不到的 | 183 |
 | 逐個判定後**真 drift** | **6** |
 
@@ -261,7 +261,7 @@ isStock = prefs.isStock
 - 測試資料（訂單號 `M042026...`、商品碼 `GFF29K102F2`、交易號 `ccpp_15332051`）
 - 外部 API 欄位（2C2P 的 `agentCode`/`clientID`/`processBy`/`return_url`）
 - DB 欄位與後端 C# 符號（`PK_OrdersPayway`、`WriteAppEventLog`、`FrasersLiveDB`）
-- gradle task（`assembleDevDebug`）、圖譜自己的 frontmatter 欄位（`plan_refs`）
+- gradle task（`assembleDevDebug`）、架構圖自己的 frontmatter 欄位（`plan_refs`）
 - Android SDK 概念（`LaunchedEffect`、`onBackPressed`）、lint 規則 ID
 - **姊妹專案的類別**（節點自己寫明「姊妹專案 CompassKiosk 的 `UsbEscPosPrinter`」）
 
@@ -278,7 +278,7 @@ isStock = prefs.isStock
 ### ③ 存量掃描抓到 diff 版**永遠抓不到**的一型
 
 ```kotlin
-// 圖譜寫的
+// 架構圖寫的
 ArithUtil.round(v, scale)
 
 // 實際上 ArithUtil.kt 裡沒有 ArithUtil 這個物件，是 top-level 函式
@@ -286,7 +286,7 @@ import com.citrus.morangepos.util.round
 round(v, scale)
 ```
 
-`ArithUtil.kt` / `CartSummaryCalculator.kt` 兩個**檔案都在**，但裡面沒有同名物件。**從來沒有任何 diff 刪掉過什麼**——圖譜是一開始就把檔名當成了物件名。S1（diff 觸發）永遠不會響。
+`ArithUtil.kt` / `CartSummaryCalculator.kt` 兩個**檔案都在**，但裡面沒有同名物件。**從來沒有任何 diff 刪掉過什麼**——架構圖是一開始就把檔名當成了物件名。S1（diff 觸發）永遠不會響。
 
 → **存量掃描與增量掃描抓的是不同東西，兩個都要有。** 增量防新增的 drift，存量清歷史欠帳。存量版跑一次就好，不必進閘。
 
@@ -300,7 +300,7 @@ round(v, scale)
 
 ### ⑤ 順帶驗證了「刪除」這個動作本身
 
-同一次把死碼真的刪掉（`refreshPaywayCredentials` 整條路徑，含 API 方法、VO 檔、常數、prefs 欄位）。刪完後**圖譜有四個節點的措辭要從「死碼」改成「已刪除」**——也就是說**刪除本身又製造一批 drift**，而這批正是 S1 的正字標記（符號從 repo 消失、圖譜還在講）。
+同一次把死碼真的刪掉（`refreshPaywayCredentials` 整條路徑，含 API 方法、VO 檔、常數、prefs 欄位）。刪完後**架構圖有四個節點的措辭要從「死碼」改成「已刪除」**——也就是說**刪除本身又製造一批 drift**，而這批正是 S1 的正字標記（符號從 repo 消失、架構圖還在講）。
 
 如果 S1 當時在線上，這四處會被當場點名。這是一個**真實可重放的驗收案例**，比造一個測試 fixture 有說服力。
 

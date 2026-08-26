@@ -127,7 +127,7 @@ Write-Host "✓ 機器層裝好。重啟 Claude Code session;進專案 cd <專�
    2. 新開 PowerShell 打 `lumos` → 找得到指令(`.cmd` shim + PATH 生效;若報「找不到」=PATH 沒加,照提示加)。
    3. `dir %USERPROFILE%\.claude\skills\lumos-project-notes` → 是 junction(`dir` 顯示 `<JUNCTION>`)、內容指對。
    4. `cd <新專案>; lumos init` → 建 `docs\<slug>-knowledge\` **6 夾(含 Sessions)** + `MOC\index.md` + `.gitignore`;`git config core.hooksPath` == `scripts/hooks`;`%USERPROFILE%\.claude\hooks\` 有 check-graph-sync.py。
-   5. 故意改一個 .py 不更新圖譜 → `git commit` 被 **pre-commit 擋**(git-for-win 用自帶 bash 跑 hook;若沒擋=hook 沒生效或 python 沒 on PATH)。
+   5. 故意改一個 .py 不更新架構圖 → `git commit` 被 **pre-commit 擋**(git-for-win 用自帶 bash 跑 hook;若沒擋=hook 沒生效或 python 沒 on PATH)。
    6. `lumos doctor` → 綠(新骨架乾淨)。
    7. 重啟 Claude Code session → 動 code,L1 軟提醒出現(claude hook 的 resolved-python 真跑)。
    任一步失敗即不放行,記在 spec 審計紀錄。
@@ -138,7 +138,7 @@ Write-Host "✓ 機器層裝好。重啟 Claude Code session;進專案 cd <專�
 |---|---|
 | `README.md` + `ONBOARDING.md` | 加 Windows 段(前置 + `irm get.ps1` + lumos init);4b 補 Windows 分支 |
 | `scripts/lumos` help | install/init 說明補 Windows 行為(.cmd shim/junction);無其他散落 |
-| 方法論 `圖譜即合約.md` | **無**(安裝 UX、非治理機制/Check/Tag) |
+| 方法論 `架構圖即合約.md` | **無**(安裝 UX、非治理機制/Check/Tag) |
 
 ## 審計修正紀錄
 

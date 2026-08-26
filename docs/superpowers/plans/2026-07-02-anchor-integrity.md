@@ -408,7 +408,7 @@ Expected: 兩檔語法皆過。
 - [ ] **Step 4: 接線 smoke(hook 直呼)**
 
 Run: `bash scripts/hooks/pre-push </dev/null; echo "rc=$?"`
-Expected: anchor verify 過 → 續跑 doctor --ci → `rc=0`(當前圖譜健康)。
+Expected: anchor verify 過 → 續跑 doctor --ci → `rc=0`(當前架構圖健康)。
 
 Run(暫時篡改→驗擋→還原):
 ```bash
@@ -427,23 +427,23 @@ Expected: `N passed, 0 failed`。
 git add scripts/hooks/pre-push governance/autonomous-loop.sh governance/anchor-baseline.json
 git commit -m "feat(anchor): pre-push + 自主 loop 入口接線 + 初始 baseline(自指同批進版)"
 ```
-(注意:此 commit 動了 pre-push=錨點,但 baseline 同 commit 帶了新 hash——verify 在 push 時讀的是同批 baseline,不會自擋。commit 若被 pre-commit 圖譜閘擋,依既例 `--no-verify`,圖譜同步歸 Task 4。)
+(注意:此 commit 動了 pre-push=錨點,但 baseline 同 commit 帶了新 hash——verify 在 push 時讀的是同批 baseline,不會自擋。commit 若被 pre-commit 架構圖閘擋,依既例 `--no-verify`,架構圖同步歸 Task 4。)
 
 ---
 
 ### Task 3: 知識同步 — methodology ×3 + lumos-project-notes 指令表
 
 **Files:**
-- Modify: `docs/methodology/圖譜即合約.md`(強制力層表加列 + :83 ★COMBO★ 行天花板補後綴)
-- Modify: `docs/methodology/圖譜即合約-全景圖.md`(§真錨點補一句)
-- Modify: `docs/methodology/圖譜即合約-對外論述.md`(refcheck 段後插白話段)
+- Modify: `docs/methodology/架構圖即合約.md`(強制力層表加列 + :83 ★COMBO★ 行天花板補後綴)
+- Modify: `docs/methodology/架構圖即合約-全景圖.md`(§真錨點補一句)
+- Modify: `docs/methodology/架構圖即合約-對外論述.md`(refcheck 段後插白話段)
 - Modify: `skills/lumos-project-notes/SKILL.md`(讀取/巡檢表加列 + 全覽行)
 
 **Interfaces:**
 - Consumes: Task 1/2 的指令語意(sha256 baseline、approve 留痕、pre-push/loop 入口擋)。
 - Produces: 純文檔。
 
-- [ ] **Step 1: 圖譜即合約.md 強制力層表加列**
+- [ ] **Step 1: 架構圖即合約.md 強制力層表加列**
 
 old(表內既有行,原樣定位):
 ```
@@ -455,7 +455,7 @@ new:
 | 治理事件帳 `lumos gov`（2026-06-19） | 查詢時 | 只彙整 | 「四道閘的訊號散落各 hook，無法一次查某節點歷來被哪幾道攔過」——可觀測性 |
 ```
 
-- [ ] **Step 2: 圖譜即合約.md :83 ★COMBO★ 行天花板補後綴**
+- [ ] **Step 2: 架構圖即合約.md :83 ★COMBO★ 行天花板補後綴**
 
 old(行尾):
 ```
@@ -513,17 +513,17 @@ new:
 
 - [ ] **Step 6: 驗證 + Commit**
 
-Run: `grep -c "anchor" docs/methodology/圖譜即合約.md docs/methodology/圖譜即合約-全景圖.md docs/methodology/圖譜即合約-對外論述.md skills/lumos-project-notes/SKILL.md`
+Run: `grep -c "anchor" docs/methodology/架構圖即合約.md docs/methodology/架構圖即合約-全景圖.md docs/methodology/架構圖即合約-對外論述.md skills/lumos-project-notes/SKILL.md`
 Expected: 前兩檔 ≥2、後兩檔 ≥1(對外論述用「基準檔/指紋」白話,grep "指紋" ≥1 亦可)。
 
 ```bash
-git add docs/methodology/圖譜即合約.md docs/methodology/圖譜即合約-全景圖.md docs/methodology/圖譜即合約-對外論述.md skills/lumos-project-notes/SKILL.md
+git add docs/methodology/架構圖即合約.md docs/methodology/架構圖即合約-全景圖.md docs/methodology/架構圖即合約-對外論述.md skills/lumos-project-notes/SKILL.md
 git commit -m "docs(sync): anchor-integrity 知識同步——強制力表 + 真錨點前提 + 對外白話 + 指令表"
 ```
 
 ---
 
-### Task 4: 圖譜節點 — Systems/anchor-integrity + Verification(收尾,controller 可自跑)
+### Task 4: 架構圖節點 — Systems/anchor-integrity + Verification(收尾,controller 可自跑)
 
 **Files:**
 - Create: `docs/lumos-toolchain-knowledge/Systems/anchor-integrity.md`
@@ -615,7 +615,7 @@ summary: |-
 - [ ] **Step 3: lint + doctor + Commit**
 
 Run: `./scripts/lumos lint Systems/anchor-integrity && ./scripts/lumos lint Verification/2026-07-02_anchor-integrity && ./scripts/lumos doctor 2>&1 | tail -2`
-Expected: lint ×2 過、doctor `✓ 圖譜健康 — 0 issues`。
+Expected: lint ×2 過、doctor `✓ 架構圖健康 — 0 issues`。
 
 ```bash
 git add docs/lumos-toolchain-knowledge/

@@ -14,12 +14,12 @@ summary: |-
   KEY:來源=2026-07-17 使用者把簡化版生命週期圖餵 GPT 取得外部評審;七成建議已存在且多有實證版(L1-3分級=trivial/standard/high｜固定角色+跨家族=panel 鏡頭分工｜審查預算=cap 6/3｜影響表=impact/pitfalls manifest｜規則-測試ID=[test:]綁定+spec-trace｜保鮮=valid_under/stale/cochange｜證據格式=抑噪紀律)——外部盲測視角反向驗證設計方向
   KEY:吸收④——①同一變更同碰{業務碼,測試,hook/CI/審查規則}→tier 自動升 high(改考卷升險;待辦,動 gate code 須過 design-loop)②收斂時未修 findings 逐條「接受理由」(已落兩份 SKILL.md 收斂節,散文紀律 trivial 跳 loop)③TDD 例外明文化=已知行為測試先行/未知行為實驗先行(已落 CLAUDE.md)④「正常改動變快」立北極星指標(已落 [[Projects/loop數據收集_計劃]] KEY)
   KEY:拒收②——canary 改加權可信度評分(自報數字假精確,同 [[pbt-oracle]] 教訓:驗證層天花板=oracle 品質;missed-rate 已當指標+golden replay 校準已達「累積模型可靠度」同一目的,且錯殺 findings 由下輪重挖兜底)｜誘餌五類多樣化(四型輪替+事故反轉+載重錨定+haiku 難度探針已覆蓋)
-  KEY:待盤點=pre-commit「code 無圖譜」gate 對 trivial 變更會不會逼出灌水節點——拿實際 commit 歷史數據看一次再裁,勿憑感覺加豁免
+  KEY:待盤點=pre-commit「code 無架構圖」gate 對 trivial 變更會不會逼出灌水節點——拿實際 commit 歷史數據看一次再裁,勿憑感覺加豁免
   DECISION:[2026-07-17]吸收走最小動作:散文紀律當場落(trivial 註明)、gate code 改動留 design-loop;拒收項記理由防重提(valid)
 ---
 # GPT外部評審吸收_計劃
 
-> 來源:2026-07-17 使用者將簡化版生命週期流程圖餵 GPT 所得外部評審全文(對話中)。GPT 只看得到白話圖、看不到圖譜與 skill 正文——等於一次「盲測外部審計」。裁定原則:已有的記對照(驗證方向)、真缺的吸收、想當然的記拒收理由防日後重提。
+> 來源:2026-07-17 使用者將簡化版生命週期流程圖餵 GPT 所得外部評審全文(對話中)。GPT 只看得到白話圖、看不到架構圖與 skill 正文——等於一次「盲測外部審計」。裁定原則:已有的記對照(驗證方向)、真缺的吸收、想當然的記拒收理由防日後重提。
 
 PRIOR-ART: ① 最小解層級——吸收①是 pitfalls --diff tier 判定加一條組合規則(既有機制小修,非新機制);②③④全是散文紀律/指標宣告,零新代碼。② 世界解過——①即審計界 separation of duties(不能自己改考卷自己閱卷)的機械化;GPT 意見本身即出處。③ 裁定=borrow-design。
 
@@ -48,7 +48,7 @@ PRIOR-ART: ① 最小解層級——吸收①是 pitfalls --diff tier 判定加�
 - **誘餌多樣化五類**:四型輪替(壞引用/未定義旗標/欄位/產物)+事故反轉(incident-inv)+載重錨定+haiku 難度探針已覆蓋其五類實質。
 
 ### 待盤點
-- pre-commit「改 code 沒帶圖譜」gate 是機械判定,分不出行為變更 vs 改 padding——是否實際逼出灌水節點?拿 commit 歷史統計「被 gate 逼出的節點中多少後來無人引用」再裁,勿憑感覺開豁免口。
+- pre-commit「改 code 沒帶架構圖」gate 是機械判定,分不出行為變更 vs 改 padding——是否實際逼出灌水節點?拿 commit 歷史統計「被 gate 逼出的節點中多少後來無人引用」再裁,勿憑感覺開豁免口。
 
 ## 下一步
 - [ ] 吸收① 走 brainstorm→design-loop→TDD(tier 組合升險規則)

@@ -2,9 +2,9 @@
 type: moc
 status: doing
 ---
-# lumos-toolchain 知識圖譜總索引
+# lumos-toolchain 知識架構圖總索引
 
-Lumos 工具鏈(`scripts/lumos` + skills + governance 自動化)自身的知識圖譜。節點現況以 code 為準,完整設計史/收斂史指回 `docs/design/`。狀態標記:無標=已實作;`[planned]`=設計收斂未落地;`[deferred]`=擱置;`[rejected]`=評估後不做(輕方案落地)。
+Lumos 工具鏈(`scripts/lumos` + skills + governance 自動化)自身的知識架構圖。節點現況以 code 為準,完整設計史/收斂史指回 `docs/design/`。狀態標記:無標=已實作;`[planned]`=設計收斂未落地;`[deferred]`=擱置;`[rejected]`=評估後不做(輕方案落地)。
 
 > **慣例**:節點內嵌的 `scripts/lumos:行號`(或 `@行號`、`:行號`)是**近似導航參考**,code 重構後可能漂移——以 code 現況與函式名為準,行號僅供快速定位。
 
@@ -27,7 +27,7 @@ Lumos 工具鏈(`scripts/lumos` + skills + governance 自動化)自身的知識�
 
 ## 自主治理 / loop engineering
 - [[Systems/autonomous-iteration-loop]] — 日報 gap→brainstorm→design-loop→收斂備 pending 的無人看顧自主迭代。
-- [[Systems/verification-rot-eval]] `[planned]` — 從圖譜史抽衝突測試集定期回測 L3 腐化偵測(設計收斂未落地)。
+- [[Systems/verification-rot-eval]] `[planned]` — 從架構圖史抽衝突測試集定期回測 L3 腐化偵測(設計收斂未落地)。
 
 ## 安全與權限
 - [[Systems/nested-agent-permission-scope]] — 子 agent 權限收窄(maker≠checker 的審計員不繼承主對話權限)。
@@ -49,10 +49,10 @@ Lumos 工具鏈(`scripts/lumos` + skills + governance 自動化)自身的知識�
 - [[Systems/lumos-cli-lifecycle]] — install/uninstall/update/bootstrap/init/deinit;機器層 vs 專案層分工。
 
 ## 外部對照 / PRIOR-ART
-- [[Systems/外部對照-code衍生wiki]] — langchain-ai/openwiki(11.6k★ code 衍生 wiki)反例世界解:站在 lumos 導覽層、賭注相反(code 衍生+可丟 vs 圖譜手寫+機械守);核心論點=重生保新鮮≠正確、無輸出 oracle(maker-only),反證 lumos「圖譜即真相/合約驗證層」的必要。
+- [[Systems/外部對照-code衍生wiki]] — langchain-ai/openwiki(11.6k★ code 衍生 wiki)反例世界解:站在 lumos 導覽層、賭注相反(code 衍生+可丟 vs 架構圖手寫+機械守);核心論點=重生保新鮮≠正確、無輸出 oracle(maker-only),反證 lumos「架構圖即真相/合約驗證層」的必要。
 
-## 外部設計 / 計畫文件(圖譜外,但屬本工具鏈)
+## 外部設計 / 計畫文件(架構圖外,但屬本工具鏈)
 - `docs/design/` — 各功能設計稿(含 design-loop 收斂紀錄,18 份)。
 - `docs/superpowers/plans/` — 實作計畫(TDD 任務分解)。
-- `docs/methodology/` — 「圖譜即合約」方法論。
+- `docs/methodology/` — 「架構圖即合約」方法論。
 - `governance/reports/` — AI 治理日報(研究 → gap → 觸發上述功能的 provenance,各 Verification/Systems 節點內有溯源)。

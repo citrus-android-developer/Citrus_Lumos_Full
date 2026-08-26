@@ -16,7 +16,7 @@ tags:
   - status/done
 summary: |-
   FLOW:load_platforms 讀 .lumos/config→{multiplatform,default_platform,platforms:{plat:{profile,root}}}→resolve_test_refs 把 [test:plat:name] 逐段解析為 (plat,name)→_platform_test_index 惰性建每平台 root+profile 的 method set/haystack→Check T/classify_invariants/cmd_archive 各 ref 對其平台判 real/fake/dangling(跨 repo)
-  KEY:單一圖譜跨平台綁測試——config 從單 test_profile 擴為 platforms 多根多 profile map;[test:plat:name] 的**平台前綴**(android/backend/maestro/playwright)★注意:平台前綴≠profile 名★——profile 名是 csharp-xunit/kotlin-junit/maestro/playwright/dart/python 共 6 個(見下方 KEY);兩者同名的只有 maestro/playwright,android 對應 kotlin-junit、backend 對應 csharp-xunit
+  KEY:單一架構圖跨平台綁測試——config 從單 test_profile 擴為 platforms 多根多 profile map;[test:plat:name] 的**平台前綴**(android/backend/maestro/playwright)★注意:平台前綴≠profile 名★——profile 名是 csharp-xunit/kotlin-junit/maestro/playwright/dart/python 共 6 個(見下方 KEY);兩者同名的只有 maestro/playwright,android 對應 kotlin-junit、backend 對應 csharp-xunit
   KEY:向後相容以「config 有無 platforms 鍵」為信號(multiplatform bool)——無 platforms=legacy,resolve 不切分整串當方法名,舊 test_profile/裸 [test:X] 照舊
   KEY:default_platform 規則——多平台缺省即報錯(不猜);未定義平台前綴 [test:foo:X] Check T 明確報錯(不 fallback)
   KEY:新增內建 profile maestro(綁 flow name:,file_must_match=^appId: 濾非flow yaml,\s*$ 錨多字 name NO MATCH)/ playwright(綁 test('id'),多字 title NO MATCH)
@@ -33,7 +33,7 @@ aliases:
 ---
 # 多平台合約測試綁定（test-profile multiplatform）
 
-讓**單一知識圖譜**把 ★INVARIANT★ 的 `[test:]` 綁到**不同平台**的測試（C# xunit / Kotlin JUnit / Maestro E2E / Playwright），解決舊機制「一 repo 一 profile、只掃自己 repo」的三道牆。設計與審計全紀錄見計劃節點 [[Projects/多平台合約測試綁定_計劃]]（design-loop 4 輪收斂）。
+讓**單一知識架構圖**把 ★INVARIANT★ 的 `[test:]` 綁到**不同平台**的測試（C# xunit / Kotlin JUnit / Maestro E2E / Playwright），解決舊機制「一 repo 一 profile、只掃自己 repo」的三道牆。設計與審計全紀錄見計劃節點 [[Projects/多平台合約測試綁定_計劃]]（design-loop 4 輪收斂）。
 
 ## 核心元件（scripts/lumos）
 

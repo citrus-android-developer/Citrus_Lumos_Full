@@ -12,9 +12,9 @@ plan_refs:
   - "[[pitfalls事故觸發_計劃]]"
 summary: |-
   FLAG:DECISION
-  KEY:「pitfalls 事故觸發」TDD 實作計畫(設計見 [[pitfalls事故觸發_計劃]]);4 task=T1 _match_incident_triggers(glob/content-regex)→ T2 lumos impact incidents 段+去重+讀被碰檔內容 → T3 impact hook 注入 incidents → T4 e2e/回歸+圖譜回填
+  KEY:「pitfalls 事故觸發」TDD 實作計畫(設計見 [[pitfalls事故觸發_計劃]]);4 task=T1 _match_incident_triggers(glob/content-regex)→ T2 lumos impact incidents 段+去重+讀被碰檔內容 → T3 impact hook 注入 incidents → T4 e2e/回歸+架構圖回填
   KEY:動既有 impact(cmd_impact/scripts/lumos)+ impact-hook.py(剛 merged);算法權威在設計 §2-§4
-  DECISION:subagent-driven TDD;merge 前全 test_lumos.py + 真機無 pitfall_when 圖譜 incidents 空不誤傷
+  DECISION:subagent-driven TDD;merge 前全 test_lumos.py + 真機無 pitfall_when 架構圖 incidents 空不誤傷
   DEP:[[pitfalls事故觸發_計劃]]
   TEST:未開工
 ---
@@ -34,7 +34,7 @@ summary: |-
 - 去重:節點既 impact 結構命中又 trigger 命中 → 只列 incidents。
 - 新建檔(無 content)→ content-regex 全 miss、只 glob。
 - 測試進 `scripts/test_lumos.py` 用 `check()`;基線=main 現值(先 `python3 scripts/test_lumos.py` 取)。
-- 真機無 `pitfall_when` 圖譜跑 impact → incidents 空、不回歸。
+- 真機無 `pitfall_when` 架構圖跑 impact → incidents 空、不回歸。
 
 ---
 
@@ -78,7 +78,7 @@ def t_match_incident_triggers():
 
 **Interfaces:** `lumos impact --json` 加頂層 `incidents:[{node,matched_by,contract,combo}]`;人讀加「相關事故」節。
 
-- [ ] **Step 1: 失敗測試** — impact --json 有 `incidents` key;pitfall_when 命中的節點進 incidents;**去重**:某節點既被 body-inline-code 直接命中又 trigger 命中 → 只在 incidents 不在 direct;無 pitfall_when 圖譜 → incidents 空。
+- [ ] **Step 1: 失敗測試** — impact --json 有 `incidents` key;pitfall_when 命中的節點進 incidents;**去重**:某節點既被 body-inline-code 直接命中又 trigger 命中 → 只在 incidents 不在 direct;無 pitfall_when 架構圖 → incidents 空。
 ```python
 def t_impact_incidents_section():
     # fixture:一節點 body 引用 code X(→ 本來 direct)且 pitfall_when glob 命中 X → 只列 incidents
@@ -117,11 +117,11 @@ def t_impact_hook_incidents_inject():
 
 ---
 
-### Task 4: e2e/回歸 + 圖譜回填
+### Task 4: e2e/回歸 + 架構圖回填
 
-**Files:** Test `scripts/test_lumos.py`;圖譜(controller 回填)。
+**Files:** Test `scripts/test_lumos.py`;架構圖(controller 回填)。
 
-- [ ] **Step 1: 回歸測試** — 對現有無 `pitfall_when` 的真圖譜跑 `lumos impact --file scripts/lumos --repo . --json` → incidents 空、rc 不變、direct/indirect 不受影響。
+- [ ] **Step 1: 回歸測試** — 對現有無 `pitfall_when` 的真架構圖跑 `lumos impact --file scripts/lumos --repo . --json` → incidents 空、rc 不變、direct/indirect 不受影響。
 ```python
 def t_impact_incidents_regression():
     d = json.loads(run_lumos_capture(["impact","--file","scripts/lumos","--repo",".","--json"]))
@@ -130,7 +130,7 @@ def t_impact_incidents_regression():
 - [ ] **Step 2: 確認行為**。
 - [ ] **Step 3:** 全量 `python3 scripts/test_lumos.py` 0 failed;真機 smoke(暫造一個 pitfall_when 事故節點→impact 撈到→清理)。
 - [ ] **Step 4: PASS**。
-- [ ] **Step 5: Commit** `test(impact): incidents 回歸(無 pitfall_when 圖譜不誤傷)`
+- [ ] **Step 5: Commit** `test(impact): incidents 回歸(無 pitfall_when 架構圖不誤傷)`
 
 ---
 

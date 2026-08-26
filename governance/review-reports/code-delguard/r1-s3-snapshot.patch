@@ -19,7 +19,7 @@ index 03dd53c..267ed71 100755
 +  "$CC_PY" "$REPO_ROOT/scripts/lumos" delguard --staged 2>/dev/null || true
 +fi
 +
- # Gate 1: 圖譜污染指紋 (2026-06-13 對抗審計 P0)
+ # Gate 1: 架構圖污染指紋 (2026-06-13 對抗審計 P0)
  # 攔 notesmd-cli `frontmatter --edit` 的副作用: 日期欄位加引號 (Obsidian property
  # 型別 date→text 靜默損傷,且通常伴隨整篇 frontmatter 鍵序重排)。
  # 必須放在 Gate 2 之前 — 污染 commit 是 docs-only,Gate 2 的 code 判定對它直接放行。
@@ -256,7 +256,7 @@ index 9f5d0be..4634397 100755
 +            return 0
 +        hi = sum(1 for h in hits if h["conf"] == "high")
 +        n_hit_tokens = len({t for h in hits for t in h["tokens"]})
-+        print(f"⚠ delguard: code 側刪除傳播——{n_hit_tokens} 個被刪符號在圖譜仍被提及(高信心 {hi}/低信心 {len(hits)-hi})")
++        print(f"⚠ delguard: code 側刪除傳播——{n_hit_tokens} 個被刪符號在架構圖仍被提及(高信心 {hi}/低信心 {len(hits)-hi})")
 +        for h in hits[:DELGUARD_TOP_N]:
 +            print(f"  [{h['conf']}] {h['node']}:{h['line_no']} 「{h['line']}」 ← {','.join(h['tokens'])}")
 +        rest = len(hits) - min(len(hits), DELGUARD_TOP_N)
@@ -332,7 +332,7 @@ index 9f5d0be..4634397 100755
                               at_sha=getattr(args, "cl_at_sha", None),
                               marker_branch=getattr(args, "cl_branch", None))
      if args.cmd == "loop" and args.lcmd == "capture-counts":
-         # 純機械原語(不碰圖譜):跨異質 finder 算 capture-recapture 重疊,vault-free
+         # 純機械原語(不碰架構圖):跨異質 finder 算 capture-recapture 重疊,vault-free
          return cmd_loop_capture_counts(None, args.finders,
 @@ -10507,8 +10507,9 @@ def _delguard_confidence(tokens, repo_root, graph_root, timeout=None):
      alive = set()
@@ -349,7 +349,7 @@ index 8cf824f..3a5b9e7 100644
 +++ b/scripts/test_lumos.py
 @@ -1607,31 +1607,47 @@ def t_precommit_vendored_exempt():
      # ④ ★源 repo 守門★:有 skills/lumos-project-notes(=Lumos 源)→ 豁免失效,vendored 檔仍擋
-     #    (否則源 repo 自家改 scripts/lumos 不帶圖譜會靜默放行=弄弱自家閘)
+     #    (否則源 repo 自家改 scripts/lumos 不帶架構圖會靜默放行=弄弱自家閘)
      r4 = Path(tempfile.mkdtemp(prefix="gctl-pcv4-"))
      (r4 / "skills" / "lumos-project-notes").mkdir(parents=True)
      res4 = _precommit_run(r4, ["scripts/test_lumos.py"])

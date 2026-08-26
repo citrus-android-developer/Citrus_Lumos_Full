@@ -90,7 +90,7 @@ def t_codeloop_guard_verdict():
 
 - [ ] **Step 1: 失敗測試** — verdict blocked → 注入 additionalContext(含「跑 lumos-code-loop 或 lumos code-loop skip」);不 blocked → 無輸出;fail-open(lumos 缺席/非 git → 靜默)。
 - [ ] **Step 2: FAIL**。
-- [ ] **Step 3: 實作** — 見設計 §1:Stop hook 讀 payload cwd/`$CLAUDE_PROJECT_DIR` → subprocess `lumos code-loop check --json` → blocked 則注入 nag(**Stop event、只注入不 block**)。fail-open(同 impact-hook 范式:lumos 缺席/非圖譜/非 git 靜默)。**不擋回合**(Stop decision 不設 block)。
+- [ ] **Step 3: 實作** — 見設計 §1:Stop hook 讀 payload cwd/`$CLAUDE_PROJECT_DIR` → subprocess `lumos code-loop check --json` → blocked 則注入 nag(**Stop event、只注入不 block**)。fail-open(同 impact-hook 范式:lumos 缺席/非架構圖/非 git 靜默)。**不擋回合**(Stop decision 不設 block)。
 - [ ] **Step 4: PASS**。
 - [ ] **Step 5: Commit** `feat(code-loop-guard): Stop hook 注入 nag(tier=high 未過 code-loop)`
 
@@ -112,7 +112,7 @@ def t_codeloop_guard_verdict():
 
 ### Task 5: skill/doc 接線 + 回歸 + 回填
 
-**Files:** Modify `skills/lumos-code-loop/SKILL.md`(收斂後呼叫 `code-loop pass`)、`skills/lumos-project-notes/SKILL.md` + `CLAUDE.md` + `scripts/templates/graph-discipline.md`(使用指南補);Test 回歸;圖譜回填(controller)。
+**Files:** Modify `skills/lumos-code-loop/SKILL.md`(收斂後呼叫 `code-loop pass`)、`skills/lumos-project-notes/SKILL.md` + `CLAUDE.md` + `scripts/templates/graph-discipline.md`(使用指南補);Test 回歸;架構圖回填(controller)。
 
 - [ ] **Step 1: 回歸測試** — tier≠high 分支:`code-loop check` 不 blocked、Stop 不 nag、pre-push 不擋(不誤傷)。全量 `python3 scripts/test_lumos.py` 0 failed。
 - [ ] **Step 2: 確認**。

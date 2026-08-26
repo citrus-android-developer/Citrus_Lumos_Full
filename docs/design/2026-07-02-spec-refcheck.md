@@ -99,8 +99,8 @@ CLI subprocess 風格(run(...) + check(name, cond, detail),t_-prefixed 自動收
 
 | 受影響文件 | 需同步什麼 |
 |---|---|
-| `docs/methodology/圖譜即合約.md` | 「確定性 > AI 判斷」軸補:design-loop 的存在性查證已機械化(refcheck),LLM 只判語意——gap→機制的落地例 |
-| `docs/methodology/圖譜即合約-對外論述.md` | 白話:審查員不再自己聲稱「我查過檔案在」,系統先機械查好、附上原文,審查員只判「描述對不對」 |
+| `docs/methodology/架構圖即合約.md` | 「確定性 > AI 判斷」軸補:design-loop 的存在性查證已機械化(refcheck),LLM 只判語意——gap→機制的落地例 |
+| `docs/methodology/架構圖即合約-對外論述.md` | 白話:審查員不再自己聲稱「我查過檔案在」,系統先機械查好、附上原文,審查員只判「描述對不對」 |
 | `skills/lumos-design-loop/SKILL.md` | 步驟 3 前插 refcheck(消費端 ③) |
 | `governance/autonomous_loop/orchestrator-prompt.md` | §2 步驟 2.8 + auditor/judge prompt 措辭 + §2.5a 取材規範(消費端 ①②) |
 | `lumos-project-notes` skill | 指令清單補 `lumos refcheck`(vault-free 工具) |

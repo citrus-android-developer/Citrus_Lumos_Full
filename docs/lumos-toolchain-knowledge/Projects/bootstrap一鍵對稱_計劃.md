@@ -41,7 +41,7 @@ verified_by:
 |---|---|
 | 有 vault ＋ 有 vendored 工具（已是 lumos 專案） | 照舊接 hooks（`core.hooksPath` 是 git config＝每台機器要重接） |
 | 有 vault ＋ **無** vendored 工具（中間態，std F5 補列） | **不自動動**，印提示「跑 `lumos init` 補齊工具」——`_vault_in` 只看資料夾名，可能是同名非 lumos 目錄，別在誤判上疊自動動作 |
-| 無 vault（git repo） | **問一句「要把 <完整路徑> 建成 lumos 專案嗎？[y/N]」→ y 才跑 `cmd_init`**（建圖譜＋vendor＋hooks＋CLAUDE 注入） |
+| 無 vault（git repo） | **問一句「要把 <完整路徑> 建成 lumos 專案嗎？[y/N]」→ y 才跑 `cmd_init`**（建架構圖＋vendor＋hooks＋CLAUDE 注入） |
 | 非 git repo（如家目錄） | 跳過專案層，只做機器層（同現況） |
 
 **cmd_init 呼叫契約**（std F6/F7 釘死）：

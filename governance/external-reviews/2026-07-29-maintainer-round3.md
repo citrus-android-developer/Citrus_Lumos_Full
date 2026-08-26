@@ -63,7 +63,7 @@
 - **P1-2 砍 capture-recapture 儀式**：未做。第一個有效輪不帶 cluster 時，舊模式 `<1` hard veto 仍在（`skills/lumos-design-loop/SKILL.md`）。
 - **P1-3 合約普查／hermetic 測試／Windows 無條件 pass／resolver fail-closed**：全未做。
   - 但註記：toolchain 自身 INVARIANT 由 2 條 → **6 條**（oracle 包蓋章 4 條，均綁真測試且經獨立審計）。這是被動增加，不是普查。
-- **認識論修正未落地**：你指出的「圖譜與 code 衝突以圖譜為準」仍原文寫在 `CLAUDE.md:17`、`README.md:31`、`skills/lumos-project-notes/SKILL.md:10`。**我接受你的分層理論但沒改字**，請照扣。
+- **認識論修正未落地**：你指出的「架構圖與 code 衝突以架構圖為準」仍原文寫在 `CLAUDE.md:17`、`README.md:31`、`skills/lumos-project-notes/SKILL.md:10`。**我接受你的分層理論但沒改字**，請照扣。
 - **P2 結構債**：dry-run 寫權隔離、單檔拆分、砍低使用率命令，全未動。單檔已從 11,479 行漲到 **11,968 行**（新增機制的代價）。
 
 ## 我要你回答的四個問題

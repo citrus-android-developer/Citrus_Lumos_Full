@@ -1,9 +1,9 @@
 ---
 name: lumos-core-knowledge
-description: 跨專案核心圖譜(core-knowledge)的讀寫規範——核心業務規則的查詢、升格、偏離登記、純度治理。當對話涉及「跨專案共用的業務規則」「升格為核心」「core_refs 指針」「偏離核心」或直接操作 $CORE_KNOWLEDGE_ROOT 時觸發。與 lumos-project-notes(專案層)分工:專案的事歸專案 skill,跨專案的事歸這份。
+description: 跨專案核心架構圖(core-knowledge)的讀寫規範——核心業務規則的查詢、升格、偏離登記、純度治理。當對話涉及「跨專案共用的業務規則」「升格為核心」「core_refs 指針」「偏離核心」或直接操作 $CORE_KNOWLEDGE_ROOT 時觸發。與 lumos-project-notes(專案層)分工:專案的事歸專案 skill,跨專案的事歸這份。
 ---
 
-# 跨專案核心圖譜(core-knowledge)
+# 跨專案核心架構圖(core-knowledge)
 
 > 依據:graph-as-contract 文件 Part 2。**v1 試點階段(2026-06-10 起)**——一條核心 + 一個 facet + 純手動同步。標 ⚠v2 的規則是規劃,尚未實作。
 
@@ -54,12 +54,12 @@ MOC/              # 索引
 
 ## 閱讀規則(查核心知識時)
 
-1. **入口一:專案筆記的指針**——專案圖譜筆記見 `core_refs:` property 或 summary `CORE:` 行 → 該主題權威在核心,**專案筆記殘留的描述不可當權威**(專案側依紀律不留快照,若看到疑似快照內容 = drift,該清)
+1. **入口一:專案筆記的指針**——專案架構圖筆記見 `core_refs:` property 或 summary `CORE:` 行 → 該主題權威在核心,**專案筆記殘留的描述不可當權威**(專案側依紀律不留快照,若看到疑似快照內容 = drift,該清)
 2. **入口二:核心 MOC**——`MOC/核心知識索引.md` 列全部核心節點與狀態
 3. **讀核心節點先看 status**:`active` 才是現行;`stale` 警告勿依賴;`superseded`/`demoted` 是歷史脈絡與學習資產
 4. **查某專案的參數/偏離**:讀該專案 facet 的 `implements`,不在核心節點找(那裡沒有,也不該有)
 5. **查「誰偏離了某條核心」**:掃所有 `projects/*.md` 過濾 deviations 非空(v1 即席掃,規模化後讀快取表)
-6. **自足性審計**:審計 agent 的可讀範圍要涵蓋已掛載的核心 repo,否則升格後的規則會被誤判為「圖譜缺漏」
+6. **自足性審計**:審計 agent 的可讀範圍要涵蓋已掛載的核心 repo,否則升格後的規則會被誤判為「架構圖缺漏」
 
 ## 寫入規則
 

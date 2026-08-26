@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Git pre-commit hook — 圖譜同步硬擋 (L2)
+# Git pre-commit hook — 架構圖同步硬擋 (L2)
 #
 # ★精簡版★:自完整版 scripts/hooks/pre-commit 移植,三處改動——
 #   ① 移除 `lumos cochange check --staged` advisory 段:精簡版未交付
@@ -33,7 +33,7 @@ set -u
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "$REPO_ROOT" || exit 0
 
-# 找圖譜目錄 (docs/{slug}-knowledge/)
+# 找架構圖目錄 (docs/{slug}-knowledge/)
 GRAPH_ROOT=""
 if [[ -d docs ]]; then
   for d in docs/*-knowledge; do
@@ -42,16 +42,16 @@ if [[ -d docs ]]; then
   [[ -z "$GRAPH_ROOT" && -d docs/knowledge ]] && GRAPH_ROOT="docs/knowledge"
 fi
 
-# Gate 0: 圖譜不存在 → 放行
-# ★精簡版預期行為★:install.py 不 scaffold 圖譜,所以在第一批節點建出來之前,
+# Gate 0: 架構圖不存在 → 放行
+# ★精簡版預期行為★:install.py 不 scaffold 架構圖,所以在第一批節點建出來之前,
 # 即使 hooksPath 開著本 hook 也是完全靜默的 no-op。這是設計不是壞掉。
 [[ -z "$GRAPH_ROOT" ]] && exit 0
 
-# 判斷「這份檔案清單裡有沒有圖譜目錄底下的 .md」
+# 判斷「這份檔案清單裡有沒有架構圖目錄底下的 .md」
 # ★不要用 grep -qE "^${GRAPH_ROOT}/.*\.md$" 做這件事★(2026-08-11 終審複審):
 # GRAPH_ROOT 是從檔案系統掃出來的目錄名,可能含 ERE 元字元——`docs/c++-knowledge`
 # 對一個 C++ 專案完全正常。內插進 ERE 後 grep 以 rc=2(語法錯誤)收場,而 `if`
-# 只看「非 0」→ 一律讀成「沒有圖譜 .md」。後果:pre-commit 的 Gate 3 永遠擋、
+# 只看「非 0」→ 一律讀成「沒有架構圖 .md」。後果:pre-commit 的 Gate 3 永遠擋、
 # post-commit 把每一筆 commit 都記成 bypass,而且兩者都沒有任何錯誤訊息。
 # 改用 bash 樣式比對:左邊是資料,右邊只有 `/*.md` 是樣式,`"$GRAPH_ROOT"` 加了
 # 引號就是字面比對——不需要跳脫,也不必外掛 sed(hook 執行時的 PATH 可能很小)。
@@ -68,12 +68,12 @@ has_graph_md() {
 
 # 拿最終 staged (git 在 pre-commit 時 staged 已確定,-a/-am/path 都涵蓋)
 # core.quotePath=off: 避免 git 對中文/non-ASCII 路徑加雙引號 ("docs/.../節點.md"),
-# 否則下面 has_graph_md 的 "${GRAPH_ROOT}/*.md" 比對不到 → 圖譜檔已 staged 仍誤判
+# 否則下面 has_graph_md 的 "${GRAPH_ROOT}/*.md" 比對不到 → 架構圖檔已 staged 仍誤判
 # 為未同步擋下
 STAGED="$(git -c core.quotePath=off diff --cached --name-only)"
 [[ -z "$STAGED" ]] && exit 0  # 空 commit 不擋
 
-# Gate 1: 圖譜污染指紋
+# Gate 1: 架構圖污染指紋
 # 攔 notesmd-cli `frontmatter --edit` 的副作用: 日期欄位加引號 (Obsidian property
 # 型別 date→text 靜默損傷,且通常伴隨整篇 frontmatter 鍵序重排)。
 # 必須放在 Gate 2 之前 — 污染 commit 是 docs-only,Gate 2 的 code 判定對它直接放行。
@@ -83,7 +83,7 @@ if has_graph_md "$STAGED"; then
   if [[ -n "$polluted" ]]; then
     {
       echo ""
-      echo "🚫 圖譜污染指紋: frontmatter 日期欄位被加引號 (典型來源 = notesmd-cli frontmatter --edit)"
+      echo "🚫 架構圖污染指紋: frontmatter 日期欄位被加引號 (典型來源 = notesmd-cli frontmatter --edit)"
       echo "   Obsidian property 型別會從 date 變 text,且通常伴隨整篇鍵序重排 — diff 不可審"
       echo ""
       echo "$polluted" | head -5 | sed 's/^/   /'
@@ -109,7 +109,7 @@ should_exclude() {
     # 本 hook 自己所在的目錄:精簡版唯一會被安裝器放進專案的東西。
     # ★精確白名單,非 scripts/* 整夾★——專案自有 scripts/foo.py 仍照擋。
     # ★源 repo 守門★:在 lumos 來源 repo 本身(有 skills/lumos-project-notes),
-    # 這些檔=產品碼,豁免不適用(否則源 repo 自家改 hook 不帶圖譜會靜默放行)。
+    # 這些檔=產品碼,豁免不適用(否則源 repo 自家改 hook 不帶架構圖會靜默放行)。
     scripts/hooks/*)
       [[ -d "skills/lumos-project-notes" ]] && return 1   # 源 repo:不豁免
       return 0;;
@@ -128,7 +128,7 @@ done <<< "$STAGED"
 # Gate 2: 沒 code → 放行
 [[ ${#src_files[@]} -eq 0 ]] && exit 0
 
-# Gate 3: 有圖譜 .md staged → 放行
+# Gate 3: 有架構圖 .md staged → 放行
 if has_graph_md "$STAGED"; then
   exit 0
 fi
@@ -136,7 +136,7 @@ fi
 # ── 印警告並擋 ──
 {
   echo ""
-  echo "🚫 Pre-commit graph sync gate: commit 改了原始碼但沒同步圖譜"
+  echo "🚫 Pre-commit graph sync gate: commit 改了原始碼但沒同步架構圖"
   echo ""
   echo "Staged code files (${#src_files[@]}):"
   for f in "${src_files[@]:0:10}"; do echo "   • $f"; done
@@ -144,7 +144,7 @@ fi
     echo "   ... 還有 $(( ${#src_files[@]} - 10 )) 個"
   fi
   echo ""
-  echo "圖譜目錄 ${GRAPH_ROOT}/ 內無任何 .md 被 staged。"
+  echo "架構圖目錄 ${GRAPH_ROOT}/ 內無任何 .md 被 staged。"
   echo ""
   echo "依 lumos-project-notes skill,功能異動必須同步更新:"
   echo "   • Systems/*.md  受影響的 system note"
@@ -152,8 +152,8 @@ fi
   echo "   • Issues/*.md  相關 issue 狀態"
   echo ""
   echo "請選一條繼續:"
-  echo "   1. 更新圖譜後 git add docs/...-knowledge/...md 再重試 commit"
-  echo "   2. 確認此 commit 不需圖譜 (typo/格式/註解/WIP) → 加 --no-verify 跳過"
+  echo "   1. 更新架構圖後 git add docs/...-knowledge/...md 再重試 commit"
+  echo "   2. 確認此 commit 不需架構圖 (typo/格式/註解/WIP) → 加 --no-verify 跳過"
   echo "      例: git commit --no-verify -m 'fix: typo in PointService'"
   echo ""
 } >&2

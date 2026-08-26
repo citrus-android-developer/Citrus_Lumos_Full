@@ -11,7 +11,7 @@ canary：a=advisory 高殘餘回鍋硬條件 ✗、b=未定義 ledger 查詢旗�
 
 ## r2（canary a✓ b✗ c✓＝無效輪｜折 9｜max major）
 canary：a=孤兒治理帳檔 ✓ 精準（四路實證：grep 零命中/六帳封閉清單×2/_codeloop_gov_log 慣例/範圍刀）、b=時間型容忍窗 ✗（被當正當設計接受——連兩輪 missed → r3 升 opus）、c=借名旗標 ✓ 精準（argparse 實證）。**Codex 行使否決**：兩必補+六副作用。
-折入：**★統一單位裁定**——cluster 一切語意（定錨/混用/fold/advisory/ledger）只作用於「有效輪」，一刀收四洞（Codex 謂詞/A 三讀法/B 首輪 missed 定錨+中段卡死/C ledger 蒸發）／round-id 非連續 rc2／第三空態統一 rc2／ledger 不蒸發（警告區列帳）／型別防禦／summary 舊停止條件消歧（圖譜即真相）。
+折入：**★統一單位裁定**——cluster 一切語意（定錨/混用/fold/advisory/ledger）只作用於「有效輪」，一刀收四洞（Codex 謂詞/A 三讀法/B 首輪 missed 定錨+中段卡死/C ledger 蒸發）／round-id 非連續 rc2／第三空態統一 rc2／ledger 不蒸發（警告區列帳）／型別防禦／summary 舊停止條件消歧（架構圖即真相）。
 
 ## r3（canary a✓ b✗ c✓＝無效輪｜折 7｜max major｜cap 末輪）
 canary：a=不可執行慣例（note 前綴解析——round 欄就在手上，邏輯反了）✓ 完美、b=未定義快取檔 ✗ **opus 亦漏＝該席三連 missed**、c=無效輪防灌帳例外 vs 完全豁免互打 ✓ 精準（含「測試策略照字面轉測試會把它鎖死成 bug」分析）。Codex 覆核：否決維持但殘餘收窄（六項判已解決）。

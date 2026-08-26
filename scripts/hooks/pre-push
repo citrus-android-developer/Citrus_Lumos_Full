@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# Git pre-push hook — 圖譜健康同步把關(push 前最後一道,同步可見)
+# Git pre-push hook — 架構圖健康同步把關(push 前最後一道,同步可見)
 #
 # 為什麼需要:
-#   L2 pre-commit 只擋「污染指紋 + code 無圖譜」,不跑完整 doctor。
-#   壞圖譜狀態(斷連結 / orphan / verified_by 漏寫 / plan_refs 斷鏈)能 commit 過。
+#   L2 pre-commit 只擋「污染指紋 + code 無架構圖」,不跑完整 doctor。
+#   壞架構圖狀態(斷連結 / orphan / verified_by 漏寫 / plan_refs 斷鏈)能 commit 過。
 #   CI push 觸發雖會抓,但**非同步、終端看不到、擋不了**(push 已發生)。
 #   pre-push 在 push 前**同步**跑 lumos doctor:Claude Code / 終端當場看到輸出,
-#   有問題擋下 push,壞圖譜出不了本機。self-contained(lumos 零 Obsidian 依賴)。
+#   有問題擋下 push,壞架構圖出不了本機。self-contained(lumos 零 Obsidian 依賴)。
 #
 # Bypass: git push --no-verify(業界標準;GitHub Actions CI(.github/workflows/ci.yml)在 push 後仍會跑全套+doctor --ci+anchor verify)
 #
@@ -30,7 +30,7 @@ done
 GRAPHCTL="$REPO_ROOT/scripts/lumos"
 PY="$(command -v python3 || command -v python || true)"
 if [[ -z "$PY" || ! -f "$GRAPHCTL" ]]; then
-  echo "pre-push: 無 python3 或 lumos,跳過圖譜巡檢(GitHub Actions CI 在 push 後兜底)" >&2
+  echo "pre-push: 無 python3 或 lumos,跳過架構圖巡檢(GitHub Actions CI 在 push 後兜底)" >&2
   exit 0
 fi
 
@@ -151,10 +151,10 @@ fi
 
 {
   echo ""
-  echo "🚫 pre-push: lumos doctor 發現圖譜問題(見上方),push 已擋下"
+  echo "🚫 pre-push: lumos doctor 發現架構圖問題(見上方),push 已擋下"
   echo ""
   echo "請選一條:"
-  echo "  1. 修圖譜(補連結 / verified_by / plan_refs…)後重 push"
+  echo "  1. 修架構圖(補連結 / verified_by / plan_refs…)後重 push"
   echo "  2. 確認非真問題(疑 lumos bug)→ 走並跑期裁決協議"
   echo "     (lumos_計劃 §11:本地重現 → 讀 finding → Check1-3 可用 bash 裁決)"
   echo "  3. 確屬可接受 → git push --no-verify(GitHub Actions CI 在 push 後仍跑全套,留審計)"

@@ -1,4 +1,4 @@
-# golden findings — Android側UI測試綁圖譜工作流（design-loop 收斂，2026-08-11）
+# golden findings — Android側UI測試綁架構圖工作流（design-loop 收斂，2026-08-11）
 
 處置閘 r1/r2 雙 PASS。canary 5 席 3 caught / 2 missed（missed 席 findings 依 d4 觀測制不作廢，且皆與他席獨立重合或實測有據）。**全數折入、零「接受不修」**——無 accept-reason 條目。★單家族（Anthropic）panel★：Codex ChatGPT 授權無可用模型、qwen/gemini 未安裝（waiver.json），收斂宣稱降級為單家族視角。
 

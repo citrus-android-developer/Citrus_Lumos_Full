@@ -53,7 +53,7 @@
    "Issues/2026-08-03_剝除與邊界解析的既有缺陷群.md": 1,
    "Issues/code-loop-pass自失效追尾.md": 2,
    "Issues/code-loop守衛main-direct盲區.md": 2,
-   "Projects/Android側UI測試綁圖譜工作流_實作計畫.md": 1
+   "Projects/Android側UI測試綁架構圖工作流_實作計畫.md": 1
   },
   "S21": {
    "Projects/hook必看召回修復_計劃.md": 1,
@@ -69,7 +69,7 @@
    "Verification/2026-07-28_testmap落地與Landmark轉正.md": 0
   },
   "S28": {
-   "Projects/Android側UI測試綁圖譜工作流_計劃.md": 2
+   "Projects/Android側UI測試綁架構圖工作流_計劃.md": 2
   },
   "SY01": {
    "Systems/doctor-irreversible-hint.md": 0,
@@ -131,7 +131,7 @@
   },
   "S09": {
    "Issues/canary-record未落盤事件.md": 0,
-   "Projects/Android側UI測試綁圖譜工作流_計劃.md": 2,
+   "Projects/Android側UI測試綁架構圖工作流_計劃.md": 2,
    "Projects/from-scratch重生守衛_計劃.md": 2,
    "Systems/slim-skill-修剪.md": 0
   },
@@ -195,7 +195,7 @@
    "Issues/canary-record未落盤事件.md": 2,
    "Issues/vendored自測3紅_來源repo專用測試漏標skip.md": 1,
    "Issues/散文紀律沒有退場機制.md": 0,
-   "Projects/Android側UI測試綁圖譜工作流_計劃.md": 0,
+   "Projects/Android側UI測試綁架構圖工作流_計劃.md": 0,
    "Projects/CI回流閉環_計劃.md": 0,
    "Verification/2026-08-14_canary協議停用none制落地.md": 2,
    "Projects/canary注意力檢查失效.md": 2
@@ -246,7 +246,7 @@
   "S04": {
    "Issues/2026-08-03_剝除與邊界解析的既有缺陷群.md": 1,
    "Issues/code-loop-pass自失效追尾.md": 1,
-   "Projects/Android側UI測試綁圖譜工作流_計劃.md": 1,
+   "Projects/Android側UI測試綁架構圖工作流_計劃.md": 1,
    "Projects/CI回流閉環_計劃.md": 1,
    "Projects/Codex外審吸收_計劃.md": 2,
    "Systems/pitfalls-code-loop.md": 1,
@@ -263,8 +263,8 @@
    "Projects/驗證層自證三件_計劃.md": 0
   },
   "S17": {
-   "Projects/Android側UI測試綁圖譜工作流_實作計畫.md": 1,
-   "Projects/Android側UI測試綁圖譜工作流_計劃.md": 1,
+   "Projects/Android側UI測試綁架構圖工作流_實作計畫.md": 1,
+   "Projects/Android側UI測試綁架構圖工作流_計劃.md": 1,
    "Projects/CI回流閉環_計劃.md": 1,
    "Projects/pitfalls棧別效能追問_計劃.md": 2
   },
@@ -430,7 +430,7 @@
     "a": 1,
     "b": 2
    },
-   "Projects/Android側UI測試綁圖譜工作流_實作計畫.md": {
+   "Projects/Android側UI測試綁架構圖工作流_實作計畫.md": {
     "a": 2,
     "b": 1
    },
@@ -536,7 +536,7 @@
     "a": 0,
     "b": 1
    },
-   "Projects/Android側UI測試綁圖譜工作流_實作計畫.md": {
+   "Projects/Android側UI測試綁架構圖工作流_實作計畫.md": {
     "a": 1,
     "b": 0
    },
@@ -692,7 +692,7 @@
     "a": 0,
     "b": 1
    },
-   "Projects/Android側UI測試綁圖譜工作流_計劃.md": {
+   "Projects/Android側UI測試綁架構圖工作流_計劃.md": {
     "a": 2,
     "b": 1
    },
@@ -778,11 +778,11 @@
     "a": 1,
     "b": 0
    },
-   "Projects/Android側UI測試綁圖譜工作流_實作計畫.md": {
+   "Projects/Android側UI測試綁架構圖工作流_實作計畫.md": {
     "a": 0,
     "b": 1
    },
-   "Projects/Android側UI測試綁圖譜工作流_計劃.md": {
+   "Projects/Android側UI測試綁架構圖工作流_計劃.md": {
     "a": 0,
     "b": 1
    },
@@ -1042,11 +1042,11 @@
     "a": 0,
     "b": 1
    },
-   "Projects/Android側UI測試綁圖譜工作流_實作計畫.md": {
+   "Projects/Android側UI測試綁架構圖工作流_實作計畫.md": {
     "a": 0,
     "b": 1
    },
-   "Projects/Android側UI測試綁圖譜工作流_計劃.md": {
+   "Projects/Android側UI測試綁架構圖工作流_計劃.md": {
     "a": 0,
     "b": 1
    },
@@ -1068,11 +1068,11 @@
    }
   },
   "S07": {
-   "Projects/Android側UI測試綁圖譜工作流_實作計畫.md": {
+   "Projects/Android側UI測試綁架構圖工作流_實作計畫.md": {
     "a": 0,
     "b": 1
    },
-   "Projects/Android側UI測試綁圖譜工作流_計劃.md": {
+   "Projects/Android側UI測試綁架構圖工作流_計劃.md": {
     "a": 0,
     "b": 1
    },

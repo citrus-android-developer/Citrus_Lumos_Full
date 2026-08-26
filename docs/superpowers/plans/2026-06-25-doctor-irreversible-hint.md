@@ -213,16 +213,16 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 ### Task 2: 知識同步(方法論 Check 體系 + skills + 速查)
 
 **Files:**
-- Modify: `docs/methodology/圖譜即合約.md`(Check 體系表 L126-128 加 Check H 行;Check T/R 詳解段補 Check H 互補句)
-- Modify: `docs/methodology/圖譜即合約-對外論述.md`(可逆性白話段 L160 補「doctor 還會掃 diff 提醒漏標」)
+- Modify: `docs/methodology/架構圖即合約.md`(Check 體系表 L126-128 加 Check H 行;Check T/R 詳解段補 Check H 互補句)
+- Modify: `docs/methodology/架構圖即合約-對外論述.md`(可逆性白話段 L160 補「doctor 還會掃 diff 提醒漏標」)
 - Modify: `skills/lumos-project-notes/SKILL.md`(doctor check 說明補 `[H]`)
 - Modify: `scripts/templates/graph-discipline.md`(可逆性段補 Check H 提醒)
 
 **吸取昨天教訓**:新 Check 要回填**所有列舉 Check 的地方**,別只補一段(check-r 漏 L282、辯方漏 3 處列舉表的覆轍)。
 
-- [ ] **Step 1: 圖譜即合約.md Check 體系表加 Check H 行**
+- [ ] **Step 1: 架構圖即合約.md Check 體系表加 Check H 行**
 
-先定位:`grep -n "Check K ★COMBO★\|Check R 可逆性" docs/methodology/圖譜即合約.md`
+先定位:`grep -n "Check K ★COMBO★\|Check R 可逆性" docs/methodology/架構圖即合約.md`
 
 在 Check R 那一行(`| Check R 可逆性...`)**之後**插入一行:
 
@@ -230,9 +230,9 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 | Check H 漏標可逆性提醒（2026-06-25，doctor `--ci`） | doctor `--ci` | 軟提醒（不擋） | 「diff 碰 prod/外部 API/寄送/破壞性 DB 卻可能沒標 ★IRREVERSIBLE★」——把漏標從「全靠人想到」變「機器提醒人」；與 Check R 互補（R 守「有標要合規」、H 提醒「沒標但可能需要」）。維持人手標、不把判可逆性自動化交 LLM |
 ```
 
-- [ ] **Step 2: 圖譜即合約.md Check 詳解段補 Check H**
+- [ ] **Step 2: 架構圖即合約.md Check 詳解段補 Check H**
 
-先定位:`grep -n "^### 合約即測試 / 獨立審計 / 可逆性\|^| Check R |" docs/methodology/圖譜即合約.md`
+先定位:`grep -n "^### 合約即測試 / 獨立審計 / 可逆性\|^| Check R |" docs/methodology/架構圖即合約.md`
 
 在該詳解表 `| Check R | ...` 行**之後**插入:
 
@@ -242,7 +242,7 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 
 - [ ] **Step 3: 對外論述補白話**
 
-先定位:`grep -n "先把「萬一錯了怎麼收回來」" docs/methodology/圖譜即合約-對外論述.md`
+先定位:`grep -n "先把「萬一錯了怎麼收回來」" docs/methodology/架構圖即合約-對外論述.md`
 
 在該可逆性段落(L160 那段,結尾「本身就有價值。」)**之後**補一句(同段或新句):
 
@@ -269,7 +269,7 @@ Run: `python3 scripts/test_lumos.py 2>&1 | tail -1`
 Expected: 全綠(文件改不影響測試;但 `t_marker_doc_sync` 若涵蓋新內容須確認——它守的是 marker 字串非 Check 名,Check H 不涉新 marker,應不受影響)。
 
 ```bash
-git add docs/methodology/圖譜即合約.md docs/methodology/圖譜即合約-對外論述.md skills/lumos-project-notes/SKILL.md scripts/templates/graph-discipline.md
+git add docs/methodology/架構圖即合約.md docs/methodology/架構圖即合約-對外論述.md skills/lumos-project-notes/SKILL.md scripts/templates/graph-discipline.md
 git commit -m "docs(doctor): Check H 知識同步——方法論 Check 體系/詳解 + skills + 速查
 
 回填所有列舉 Check 的地方(Check 體系表 + 詳解表 + project-notes + graph-discipline)+ 對外白話。

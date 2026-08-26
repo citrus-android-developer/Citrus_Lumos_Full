@@ -11,7 +11,7 @@ tags:
 verified_by:
   - "[[Verification/2026-06-26_lumos-deinit_跨平台]]"
 summary: |-
-  FLOW:pre-flight守衛(非git→rc2｜root==_lumos_src→rc2｜vault==root→強制keep-graph)→[--dry-run僅印即返]→[刪圖譜安全網:非tty無--yes→rc2｜印清單+未commit數→互動y確認]→拆閘→剝CLAUDE區塊→刪vault→移vendored(最後,可能含自己)
+  FLOW:pre-flight守衛(非git→rc2｜root==_lumos_src→rc2｜vault==root→強制keep-graph)→[--dry-run僅印即返]→[刪架構圖安全網:非tty無--yes→rc2｜印清單+未commit數→互動y確認]→拆閘→剝CLAUDE區塊→刪vault→移vendored(最後,可能含自己)
   KEY:對稱 lumos init 的「專案層」反安裝(對比 uninstall=機器層);只動本 repo,不碰 ~/.claude
   KEY:不可逆的 rmtree(vault) 被四重閘擋——dry-run/keep-graph/vault==root/非互動無--yes 任一即不刪(防誤刪整個 repo)[test:t_deinit_graph]
   KEY:vault==root 鐵閘獨立於 root==_lumos_src 守衛——保護任何 standalone-vault repo(非只 Lumos 源)免被 rmtree 整個 repo
@@ -27,9 +27,9 @@ decisions:
     why_chosen: 對主打防誤刪的指令,刪掉整個 repo 是不可逆災難;鐵閘獨立於來源守衛才能涵蓋任何 standalone-vault repo
     decided: 2026-06-26
     valid: true
-  - content: 預設刪圖譜但置於三道安全網後(印清單+未commit警示、互動y確認、非tty無--yes則rc2拒刪)
+  - content: 預設刪架構圖但置於三道安全網後(印清單+未commit警示、互動y確認、非tty無--yes則rc2拒刪)
     id: d2
-    context: 使用者要 deinit 完整逆轉 init(含圖譜);但圖譜是不可逆資料
+    context: 使用者要 deinit 完整逆轉 init(含架構圖);但架構圖是不可逆資料
     why_chosen: 預設完整逆轉符合對稱語義,安全網把不可逆風險收斂到明確確認;--keep-graph 為逃生口
     decided: 2026-06-26
     valid: true
@@ -45,13 +45,13 @@ decisions:
 `scripts/lumos` 的 `deinit` 子指令 —— 與 `lumos init` 對稱的**專案層反安裝**。
 
 ## 定位
-- `lumos deinit` = 專案層:拆本 repo 的 pre-commit 閘(`core.hooksPath`)、vendored 工具組、`CLAUDE.md` 的 `LUMOS:GRAPH-DISCIPLINE` 注入區塊、(預設)知識圖譜 vault。
+- `lumos deinit` = 專案層:拆本 repo 的 pre-commit 閘(`core.hooksPath`)、vendored 工具組、`CLAUDE.md` 的 `LUMOS:GRAPH-DISCIPLINE` 注入區塊、(預設)知識架構圖 vault。
 - `lumos uninstall` = 機器層(既有):全域 `~/.local/bin/lumos`、user-scope skills。
 - deinit **不碰機器共用項**(`~/.claude/hooks/*.py`、`~/.claude/settings.json`)。
 
 ## 指令介面
 `lumos deinit [--keep-graph] [--dry-run] [-y/--yes] [--source <path>]`
-- `--keep-graph`:保留圖譜,其餘照拆。
+- `--keep-graph`:保留架構圖,其餘照拆。
 - `--dry-run`:唯讀預演,完全不觸發確認機制,不動任何檔/config。
 - `-y/--yes`:跳過互動確認(CI/非互動用)。
 - `--source`:僅供 `root==_lumos_src()` 自我保護比對;白名單是 hardcoded 常數,不隨 source 變。
@@ -60,7 +60,7 @@ decisions:
 `rmtree` 只在 `will_delete_vault` 為真時可達,而以下任一都讓它為假或提早 return,因此 rmtree 永遠到不了:
 1. `--dry-run` → 印完即 `return 0`。
 2. `--keep-graph` → `will_delete_vault=False`。
-3. `vault==root` 鐵閘 → 強制 `keep_graph=True`(standalone vault:圖譜=repo 根,刪了=刪整個 repo)。**獨立於** `root==_lumos_src()` 守衛,保護任何 standalone-vault repo。
+3. `vault==root` 鐵閘 → 強制 `keep_graph=True`(standalone vault:架構圖=repo 根,刪了=刪整個 repo)。**獨立於** `root==_lumos_src()` 守衛,保護任何 standalone-vault repo。
 4. 非互動(stdin 非 tty)且無 `--yes` → `return 2`。
 互動確認的 `input()` 另包 `try/except EOFError` —— 某些終端 `isatty()` 回 True 但 stdin 實為 EOF(Windows 真機),讀不到確認時**安全預設:拒刪 return 2**;使用者打非 `y` 主動取消 → `return 1`。
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # install-graph-toolchain.sh — 薄殼:vendor/scaffold 邏輯已收進 python 單一源(scripts/lumos)。
-# 保留檔名供舊文檔/離線。解析既有 --target/--slug,轉呼叫 `lumos init`(在目標 repo 建圖譜 + vendor + hooks)。
+# 保留檔名供舊文檔/離線。解析既有 --target/--slug,轉呼叫 `lumos init`(在目標 repo 建架構圖 + vendor + hooks)。
 set -u
 HERE="$(cd "$(dirname "$0")" && pwd)"
 TARGET=""; SLUG=""

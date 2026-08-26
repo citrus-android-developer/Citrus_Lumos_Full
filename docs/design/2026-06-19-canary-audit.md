@@ -13,7 +13,7 @@
 ## 1. 範圍(v1)
 
 - **只做「對抗設計/spec 審計」**:被審的是**你控制的文件**(spec/設計稿),可以乾淨地植入瑕疵再移除。這正是我們反覆在跑的那種審計 loop。
-- **不做「圖譜自足性審計」**(§795/§831):審計員讀的是**真實圖譜**,植 canary 會污染圖譜或要 temp-copy 體操 → v1 延後。
+- **不做「架構圖自足性審計」**(§795/§831):審計員讀的是**真實架構圖**,植 canary 會污染架構圖或要 temp-copy 體操 → v1 延後。
 - **形式 = skill 協議規則 + 極小 lumos helper**:協議是主體(怎麼跑帶 canary 的審計);helper 只負責**把 canary 結果記進本機 log,漏抓事件餵進 `lumos gov`**(審計員可靠度的可查詢軌跡)。lumos 不 spawn agent,植入/判定留在對話/skill 層。
 
 ## 2. 協議(寫進 skill 的規則)
@@ -54,7 +54,7 @@
 **寫入路徑**:canary 寫**自己的** `.canary-log.jsonl`(單一寫者=`lumos canary`),不碰 doctor 的 `.governance-log.jsonl`(沿用「不合併寫入、gov 唯讀彙整多檔」的決定)。
 
 ## 4. 範圍 / YAGNI(v1 明確不做)
-- ❌ 圖譜自足性審計的 canary(真實圖譜污染)——延後。
+- ❌ 架構圖自足性審計的 canary(真實架構圖污染)——延後。
 - ❌ 自動注入/自動判定工具(lumos 不 spawn agent;植入與判定留在對話/skill)。
 - ❌ `lumos canary` 擋任何東西——record-only、本機(同 `gov` 是可見性、不是閘)。
 - ❌ `lumos canary new`(token 鑄造):已砍,`record` 自動補 token(R1-F6)。

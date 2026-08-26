@@ -319,21 +319,21 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 
 ---
 
-### Task 4: 知識同步(放行 PR 時一併,圖譜即合約)
+### Task 4: 知識同步(放行 PR 時一併,架構圖即合約)
 
 **Files:**
-- Modify: `docs/methodology/圖譜即合約.md`(自主 loop 段補跨家族複核)
-- Modify: `docs/methodology/圖譜即合約-對外論述.md`(對外白話段補一句)
+- Modify: `docs/methodology/架構圖即合約.md`(自主 loop 段補跨家族複核)
+- Modify: `docs/methodology/架構圖即合約-對外論述.md`(對外白話段補一句)
 - Modify: `docs/design/2026-06-20-autonomous-iteration-loop.md`(§放行閘補步驟 9 + degrade)
 - Modify: memory `autonomous-iteration-loop`(放行閘加跨家族複核)
 
 - [ ] **Step 1: 方法論(技術)補一段**
 
-在 `docs/methodology/圖譜即合約.md` 自主 loop 自節,補:「放行前跨家族複核(qwen3-max)= 對抗同門偏心的具體機制:opus 取材餵料、qwen 跨家族判,disputed 退回 opus 驗證,degrade fail-open。」
+在 `docs/methodology/架構圖即合約.md` 自主 loop 自節,補:「放行前跨家族複核(qwen3-max)= 對抗同門偏心的具體機制:opus 取材餵料、qwen 跨家族判,disputed 退回 opus 驗證,degrade fail-open。」
 
 - [ ] **Step 2: 對外論述補白話一句**
 
-在 `docs/methodology/圖譜即合約-對外論述.md` 對外段補:「loop 放行前,由『不同家族的 AI』再看一眼——降低同一家族的共同盲點。」
+在 `docs/methodology/架構圖即合約-對外論述.md` 對外段補:「loop 放行前,由『不同家族的 AI』再看一眼——降低同一家族的共同盲點。」
 
 - [ ] **Step 3: autonomous-iteration-loop spec 放行閘補步驟 9**
 

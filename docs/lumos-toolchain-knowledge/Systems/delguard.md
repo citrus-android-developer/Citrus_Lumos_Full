@@ -27,7 +27,7 @@ verified_by:
 ---
 # delguard — code 側刪除傳播守衛（S1+S2+S3）
 
-**一句話**：commit 當下抓「code 拿掉了某個東西、圖譜還在講它」，把過期指名到具體哪一句（advisory，不擋 commit）。
+**一句話**：commit 當下抓「code 拿掉了某個東西、架構圖還在講它」，把過期指名到具體哪一句（advisory，不擋 commit）。
 
 設計脈絡、失守實錄（mOrangePos aff2329）、誤報處置、能力邊界表全在 [[code側刪除傳播守衛_計劃]]（design-loop r1/r2 收斂，golden 凍結）；實作拆解與審計歷程在 [[code側刪除傳播守衛_實作計畫]]（SDD 8 task＋code-loop 三輪 panel 收斂，留痕 `governance/review-reports/code-delguard/`）。
 

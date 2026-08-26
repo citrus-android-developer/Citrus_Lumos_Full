@@ -166,7 +166,7 @@ index abef295..ee7afa0 100644
  
  ## 2026-08-10 · mOrangePos 實跑一次全圖版，帶回四筆實測
  
- 把 S1 反過來當**存量掃描**跑了一次（不是從 diff 抽被刪符號，而是從圖譜內文抽識別字 → 比對現行原始碼）。這是設計時沒想到的用法，結果比預期有用。
+ 把 S1 反過來當**存量掃描**跑了一次（不是從 diff 抽被刪符號，而是從架構圖內文抽識別字 → 比對現行原始碼）。這是設計時沒想到的用法，結果比預期有用。
  
  ### ① 誤報率有真數字了：1697 → 183 → 6
  
@@ -208,7 +208,7 @@ index d7db1c2..a851142 100644
 +- 全量套件 `python3 scripts/test_lumos.py`：**0 failed**（以 push 前控制器實測留痕為準）。
 +  斷言數與總測項數隨版本演進，本節點**不做數字快照**——2026-08-11 code-loop r1 折入：數字快照（原「43 條斷言」「2463 passed」）兩度過期，此類宣稱一律改為機制式。
  - 煙霧兩幕（Task 7 report，fixture repo 實裝 hook）：
-   - **第一幕（純 code 刪除）**：staged 刪 `refreshPaywayCredentials()` 呼叫 → Gate DG 輸出高信心命中（節點:行號＋原句＋S3 三問）；commit 被擋者為既有 Gate 3（code 無圖譜同動），非 delguard——advisory 分際正確。
+   - **第一幕（純 code 刪除）**：staged 刪 `refreshPaywayCredentials()` 呼叫 → Gate DG 輸出高信心命中（節點:行號＋原句＋S3 三問）；commit 被擋者為既有 Gate 3（code 無架構圖同動），非 delguard——advisory 分際正確。
    - **第二幕（aff2329 假同步形狀重演）**：vault 節點只掛 `verified_by` 連結、被推翻的舊敘述不改，與 code 刪除同 commit → delguard 輸出高信心命中＋「假同步嫌疑」標記＋退場前自問三句；commit rc=0（advisory 放行，不擋）——S1＋S2＋S3 全鏈路兌現，精確重演 spec 失守實錄（2026-08-03 mOrangePos aff2329）的形狀且攔在 commit 當下被指名。
  
  ## 相關
@@ -337,7 +337,7 @@ index 0000000..5467906
 +# code-loop r1 修復波報告（delguard）
 +
 +- 分支：`feat/delguard`
-+- 範圍：`scripts/lumos` delguard 區（`_delguard_*` / `cmd_delguard_check`）、`scripts/hooks/pre-commit` Gate DG、`scripts/test_lumos.py`（`t_delguard` / `t_precommit_whitelist_drift_guard`）、圖譜兩節點
++- 範圍：`scripts/lumos` delguard 區（`_delguard_*` / `cmd_delguard_check`）、`scripts/hooks/pre-commit` Gate DG、`scripts/test_lumos.py`（`t_delguard` / `t_precommit_whitelist_drift_guard`）、架構圖兩節點
 +- 目標測試：`t_delguard` + `t_precommit_whitelist_drift_guard` → **102 PASS / 0 FAIL**
 +- 鄰接迴歸抽驗：`t_hooks_python_fallback` / `t_precommit_vendored_exempt` / `t_hook_cmd_home_resolved` / `t_hook_copy_list_completeness` / `t_cochange` → 39 PASS / 0 FAIL
 +- 全量套件由控制器跑（本波未跑）
@@ -544,7 +544,7 @@ index 267ed71..8d9d597 100755
    "$CC_PY" "$REPO_ROOT/scripts/lumos" delguard --staged 2>/dev/null || true
  fi
  
- # Gate 1: 圖譜污染指紋 (2026-06-13 對抗審計 P0)
+ # Gate 1: 架構圖污染指紋 (2026-06-13 對抗審計 P0)
  # 攔 notesmd-cli `frontmatter --edit` 的副作用: 日期欄位加引號 (Obsidian property
  # 型別 date→text 靜默損傷,且通常伴隨整篇 frontmatter 鍵序重排)。
  # 必須放在 Gate 2 之前 — 污染 commit 是 docs-only,Gate 2 的 code 判定對它直接放行。

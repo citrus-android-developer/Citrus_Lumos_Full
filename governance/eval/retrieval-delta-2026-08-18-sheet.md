@@ -209,7 +209,7 @@
 - [ ] Issues/code-loop-pass自失效追尾.md ｜標:____
 - [ ] Issues/散文紀律沒有退場機制.md ｜標:____
 - [ ] Issues/連鎖佇列開了沒人跟完.md ｜標:____
-- [ ] Projects/Android側UI測試綁圖譜工作流_計劃.md ｜標:____
+- [ ] Projects/Android側UI測試綁架構圖工作流_計劃.md ｜標:____
 - [ ] Projects/CI回流閉環_計劃.md ｜標:____
 - [ ] Projects/Codex外審吸收_計劃.md ｜標:____
 - [ ] Systems/pitfalls-code-loop.md ｜標:____
@@ -223,8 +223,8 @@
 - [ ] Issues/code-loop-pass自失效追尾.md ｜標:____
 - [ ] Issues/code-loop守衛main-direct盲區.md ｜標:____
 - [ ] Issues/loop機制痛點_Landmark_code-crossclaim實跑回饋.md ｜標:____
-- [ ] Projects/Android側UI測試綁圖譜工作流_實作計畫.md ｜標:____
-- [ ] Projects/Android側UI測試綁圖譜工作流_計劃.md ｜標:____
+- [ ] Projects/Android側UI測試綁架構圖工作流_實作計畫.md ｜標:____
+- [ ] Projects/Android側UI測試綁架構圖工作流_計劃.md ｜標:____
 - [ ] Projects/CI回流閉環_計劃.md ｜標:____
 - [ ] Projects/GPT外部評審吸收_計劃.md ｜標:____
 - [ ] Projects/canary注意力檢查失效.md ｜標:____
@@ -250,8 +250,8 @@
 - [ ] Issues/prepush測試閘假紅-git環境洩漏.md ｜標:____
 - [ ] Issues/散文紀律沒有退場機制.md ｜標:____
 - [ ] Issues/連鎖佇列開了沒人跟完.md ｜標:____
-- [ ] Projects/Android側UI測試綁圖譜工作流_實作計畫.md ｜標:____
-- [ ] Projects/Android側UI測試綁圖譜工作流_計劃.md ｜標:____
+- [ ] Projects/Android側UI測試綁架構圖工作流_實作計畫.md ｜標:____
+- [ ] Projects/Android側UI測試綁架構圖工作流_計劃.md ｜標:____
 - [ ] Projects/CI回流閉環_計劃.md ｜標:____
 - [ ] Projects/Codex外審吸收_計劃.md ｜標:____
 - [ ] Projects/GPT外部評審吸收_計劃.md ｜標:____
@@ -279,8 +279,8 @@
 - [ ] Issues/2026-08-03_剝除與邊界解析的既有缺陷群.md ｜標:____
 - [ ] Issues/canary-record未落盤事件.md ｜標:____
 - [ ] Issues/loop機制痛點_Landmark_code-crossclaim實跑回饋.md ｜標:____
-- [ ] Projects/Android側UI測試綁圖譜工作流_實作計畫.md ｜標:____
-- [ ] Projects/Android側UI測試綁圖譜工作流_計劃.md ｜標:____
+- [ ] Projects/Android側UI測試綁架構圖工作流_實作計畫.md ｜標:____
+- [ ] Projects/Android側UI測試綁架構圖工作流_計劃.md ｜標:____
 - [ ] Projects/CheckT-Python-profile_計劃.md ｜標:____
 - [ ] Projects/Codex外審吸收_計劃.md ｜標:____
 - [ ] Verification/2026-07-25_CheckT-Python-profile.md ｜標:____
@@ -327,7 +327,7 @@
 - [ ] Issues/loop機制痛點_Landmark_code-crossclaim實跑回饋.md ｜標:____
 - [ ] Issues/散文紀律沒有退場機制.md ｜標:____
 - [ ] Issues/連鎖佇列開了沒人跟完.md ｜標:____
-- [ ] Projects/Android側UI測試綁圖譜工作流_計劃.md ｜標:____
+- [ ] Projects/Android側UI測試綁架構圖工作流_計劃.md ｜標:____
 - [ ] Projects/CI回流閉環_計劃.md ｜標:____
 - [ ] Projects/多平台合約測試綁定_計劃.md ｜標:____
 - [ ] Verification/2026-07-29_oracle品質包落地.md ｜標:____
@@ -363,7 +363,7 @@
 - [ ] Issues/loop-next吐不可宣告的tier.md ｜標:____
 - [ ] Issues/loop機制痛點_Landmark_code-crossclaim實跑回饋.md ｜標:____
 - [ ] Issues/vendored自測3紅_來源repo專用測試漏標skip.md ｜標:____
-- [ ] Projects/Android側UI測試綁圖譜工作流_實作計畫.md ｜標:____
+- [ ] Projects/Android側UI測試綁架構圖工作流_實作計畫.md ｜標:____
 - [ ] Projects/prepush主幹範圍修法_計劃.md ｜標:____
 - [ ] Verification/2026-07-17_test-layers軟提醒.md ｜標:____
 
@@ -386,8 +386,8 @@
 - [ ] Issues/loop機制痛點_Landmark_code-crossclaim實跑回饋.md ｜標:____
 - [ ] Issues/vendored自測3紅_來源repo專用測試漏標skip.md ｜標:____
 - [ ] Issues/散文紀律沒有退場機制.md ｜標:____
-- [ ] Projects/Android側UI測試綁圖譜工作流_實作計畫.md ｜標:____
-- [ ] Projects/Android側UI測試綁圖譜工作流_計劃.md ｜標:____
+- [ ] Projects/Android側UI測試綁架構圖工作流_實作計畫.md ｜標:____
+- [ ] Projects/Android側UI測試綁架構圖工作流_計劃.md ｜標:____
 - [ ] Projects/CI回流閉環_計劃.md ｜標:____
 - [ ] Projects/pitfalls棧別效能追問_計劃.md ｜標:____
 - [ ] Verification/2026-07-04_pitfalls-lint-adapter.md ｜標:____
@@ -461,7 +461,7 @@
 - [ ] Issues/vendored自測3紅_來源repo專用測試漏標skip.md ｜標:____
 - [ ] Issues/主程式讀取路徑漏接UnicodeDecodeError.md ｜標:____
 - [ ] Issues/散文紀律沒有退場機制.md ｜標:____
-- [ ] Projects/Android側UI測試綁圖譜工作流_計劃.md ｜標:____
+- [ ] Projects/Android側UI測試綁架構圖工作流_計劃.md ｜標:____
 - [ ] Projects/CI回流閉環_計劃.md ｜標:____
 - [ ] Verification/2026-08-14_canary協議停用none制落地.md ｜標:____
 - [ ] Projects/canary注意力檢查失效.md ｜標:____
@@ -487,8 +487,8 @@
 
 ## S28｜搜尋:「坑」
 - [ ] Issues/loop-next吐不可宣告的tier.md ｜標:____
-- [ ] Projects/Android側UI測試綁圖譜工作流_實作計畫.md ｜標:____
-- [ ] Projects/Android側UI測試綁圖譜工作流_計劃.md ｜標:____
+- [ ] Projects/Android側UI測試綁架構圖工作流_實作計畫.md ｜標:____
+- [ ] Projects/Android側UI測試綁架構圖工作流_計劃.md ｜標:____
 - [ ] Projects/CI回流閉環_計劃.md ｜標:____
 - [ ] Projects/bootstrap一鍵對稱_計劃.md ｜標:____
 - [ ] Projects/code側刪除傳播守衛_實作計畫.md ｜標:____
@@ -522,8 +522,8 @@
 - [ ] Issues/loop-next吐不可宣告的tier.md ｜標:____
 - [ ] Issues/loop機制痛點_Landmark_code-crossclaim實跑回饋.md ｜標:____
 - [ ] Issues/連鎖佇列開了沒人跟完.md ｜標:____
-- [ ] Projects/Android側UI測試綁圖譜工作流_實作計畫.md ｜標:____
-- [ ] Projects/Android側UI測試綁圖譜工作流_計劃.md ｜標:____
+- [ ] Projects/Android側UI測試綁架構圖工作流_實作計畫.md ｜標:____
+- [ ] Projects/Android側UI測試綁架構圖工作流_計劃.md ｜標:____
 - [ ] Verification/2026-07-16_dloop提效M2_cluster帳.md ｜標:____
 - [ ] Verification/2026-07-29_CI回流閉環v1落地.md ｜標:____
 - [ ] Projects/loop數據收集_計劃.md ｜標:____

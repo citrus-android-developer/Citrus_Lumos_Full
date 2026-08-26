@@ -1,5 +1,5 @@
 {"round": "r1", "loop": "code-標註刷新",
- "scope_note": "審材=code diff(governance/eval/*.py+autonomous-loop.sh+test_lumos.py,1163 行);圖譜節點/審計報告/生成 delta 表不入審(前者經 design-loop,後者為生成物)",
+ "scope_note": "審材=code diff(governance/eval/*.py+autonomous-loop.sh+test_lumos.py,1163 行);架構圖節點/審計報告/生成 delta 表不入審(前者經 design-loop,後者為生成物)",
  "deviation": "Codex 到期;外家僅 Gemini 一家,finder 席+否決席同家承擔=跨家族獨立性折損,如實留痕",
  "seats": [
   {"seat":"s1","lens":"bug-boundary","auditor":"bug-sonnet","materials":["governance/review-reports/code-標註刷新/r1-snapshot.patch"]},

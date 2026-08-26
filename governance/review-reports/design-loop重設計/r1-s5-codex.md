@@ -2,29 +2,29 @@ codex
 我會先完整讀投稿（含 frontmatter）與 repo 的單一真相來源，再逐一核對指定函式和 canary 量測；全程唯讀。
 # CLAUDE.md
 <!-- LUMOS:GRAPH-DISCIPLINE:START v1.0 — 自動注入/更新,勿手改本區塊;改範本 scripts/templates/graph-discipline.md -->
-## 核心原則：知識圖譜即唯一真相來源 — 圖譜先行（必讀，優先級最高）
+## 核心原則：知識架構圖即唯一真相來源 — 架構圖先行（必讀，優先級最高）
 
-**`docs/lumos-toolchain-knowledge/` 知識圖譜是本專案系統脈絡的唯一真相來源（single source of truth）。** 程式碼只是「現在長這樣」；圖譜才是「**為什麼這樣設計 / 邊界在哪 / 哪些是不可改的合約（★INVARIANT★）/ 驗證過沒**」——這些 code 讀不出來。
+**`docs/lumos-toolchain-knowledge/` 知識架構圖是本專案系統脈絡的唯一真相來源（single source of truth）。** 程式碼只是「現在長這樣」；架構圖才是「**為什麼這樣設計 / 邊界在哪 / 哪些是不可改的合約（★INVARIANT★）/ 驗證過沒**」——這些 code 讀不出來。
 
-> **界線（2026-07-29 外審吸收）**：圖譜權威的是**意圖與宣告合約**；「現在實際跑成什麼樣」的真相在**測試 / 實際執行 / 生產觀測**。兩者衝突時**不自動判圖譜為真**——那是有東西壞了，該查清哪邊錯並立事故節點。
+> **界線（2026-07-29 外審吸收）**：架構圖權威的是**意圖與宣告合約**；「現在實際跑成什麼樣」的真相在**測試 / 實際執行 / 生產觀測**。兩者衝突時**不自動判架構圖為真**——那是有東西壞了，該查清哪邊錯並立事故節點。
 
-### 🟢 圖譜先行（第一動作，不可跳過）
+### 🟢 架構圖先行（第一動作，不可跳過）
 
 **動任何既有系統之前，你的第一個工具呼叫必須是 `lumos`，不是 grep / Read / Explore / DB 查詢。**
 
-- ✋ **STOP 自檢**：正要 grep code、派 Explore、或查 DB 去搞懂「為什麼這樣 / 邊界 / 合約 / 欄位語意」——**停**，先 `lumos`，再下 code/DB 驗證。**不分任務類型**：開發、重構、排查、對外支援、查 DB、對帳全算「進場」（最常被合理化跳過的破口：把任務歸成「只是查資料」就略過圖譜。別這樣）。
+- ✋ **STOP 自檢**：正要 grep code、派 Explore、或查 DB 去搞懂「為什麼這樣 / 邊界 / 合約 / 欄位語意」——**停**，先 `lumos`，再下 code/DB 驗證。**不分任務類型**：開發、重構、排查、對外支援、查 DB、對帳全算「進場」（最常被合理化跳過的破口：把任務歸成「只是查資料」就略過架構圖。別這樣）。
 - **入口三步**：`lumos search <關鍵字>` 定位 → `lumos context <節點>` 掃脈絡（頭部攤 ⚠ 合約）→ `lumos contracts <節點>` 查硬合約 → 然後才 grep code / 查 DB 印證。
 - **自動輔助（不取代主動查）**：`impact` hook 會在 Edit/Write 動手前自動注入「必看合約/事故＋相關 top-8＋棧別效能檢核問」——看到就順手判波及；hook 只推「碰到的」，合約邊界仍要自己查。
 
 ### 其餘原則
 
-- **唯一真相（分層）**：圖譜與其他文件 / 記憶 / 臆測衝突 → 以圖譜為準；但**行為事實**（測試結果 / 實際執行 / 生產觀測）與圖譜衝突時**不自動判圖譜為真**，查清哪邊錯、立事故節點。**實時更新**：影響行為 / 決策 / 驗證的 code 變更，同一次工作內同步圖譜（pre-commit gate 硬擋改 code 不帶圖譜）。**退場必寫**：做完把脈絡（決策 / 驗證 / 合約）寫回。
-- **對人回報用白話**：所有給人看的東西（摘要 / 結論 / 排查回報 / 設計探討當下）預設從人話起手——先給一句話重點或生活化比喻再往下談；機制術語與 file:line 能不用就不用，非用不可則第一次出現當場給一句人話解釋。術語與精確細節收進圖譜。目標是讓人少花一層理解成本，不是零術語。
+- **唯一真相（分層）**：架構圖與其他文件 / 記憶 / 臆測衝突 → 以架構圖為準；但**行為事實**（測試結果 / 實際執行 / 生產觀測）與架構圖衝突時**不自動判架構圖為真**，查清哪邊錯、立事故節點。**實時更新**：影響行為 / 決策 / 驗證的 code 變更，同一次工作內同步架構圖（pre-commit gate 硬擋改 code 不帶架構圖）。**退場必寫**：做完把脈絡（決策 / 驗證 / 合約）寫回。
+- **對人回報用白話**：所有給人看的東西（摘要 / 結論 / 排查回報 / 設計探討當下）預設從人話起手——先給一句話重點或生活化比喻再往下談；機制術語與 file:line 能不用就不用，非用不可則第一次出現當場給一句人話解釋。術語與精確細節收進架構圖。目標是讓人少花一層理解成本，不是零術語。
 - **設計動筆前先問世界（PRIOR-ART 三問）**：① 最小解在哪一層（既有機制小修就別造新機制）② 世界解過沒（真搜，非憑印象）③ 裁定 = borrow-design（預設）/ build（真沒輪子）/ adopt（例外須理由，零依賴家規下幾乎恆排除）。答案一行 `PRIOR-ART:` 記進計劃節點。
 - **已知行為測試先行、未知行為實驗先行**：可驗證規則走 TDD；探索性工作先做最小實驗、結論定案後補回歸測試。**嚴禁為滿足流程寫湊數測試**。**「實驗先行」的完成判準**：講得出**一道你已經跑過至少一次、會對「這個症狀」翻紅**的指令（貼出呼叫與輸出）之前，**不准開始建立理論**——在那之前讀 code 找原因就是這條規則要防的失敗。完整紀律（怎麼建迴圈、先列 3-5 條可證偽假說、「更嚴重的症狀 ≠ 同一個原因」、「不得在真環境製造你要驗的傷害」）見 `[[Systems/診斷迴圈先行]]`。
-- **計劃/設計也歸圖譜**：任何設計 / spec / 計劃產出（不論來自哪個工具）一律寫成 `Projects/<主題>_計劃` 節點（`type: project`），不寫其他 repo 路徑；落地的 Verification 以 `plan_refs` 回指。
+- **計劃/設計也歸架構圖**：任何設計 / spec / 計劃產出（不論來自哪個工具）一律寫成 `Projects/<主題>_計劃` 節點（`type: project`），不寫其他 repo 路徑；落地的 Verification 以 `plan_refs` 回指。
 
-### 寫入圖譜（規範單源在 `lumos-project-notes` skill——動筆先調用，別憑記憶）
+### 寫入架構圖（規範單源在 `lumos-project-notes` skill——動筆先調用，別憑記憶）
 
 標籤符號、合約鏈（★INVARIANT★→[test:]→[audit:]→[kill:]）、可逆性（★IRREVERSIBLE★/★CHECKPOINT★＋[rollback:]/[guard:]）、重生標記（regen）、ADR、Verification、條款追溯（`lumos spec-trace`）、業務簽核（`lumos signoff`）規格全在該 skill。此處只留三條最毒的鐵則：
 
@@ -39,20 +39,20 @@ codex
 | 你要做的事 | 必調用 |
 |-----------|--------|
 | 排查 / 對外支援 / 查 DB / 呼叫既有 API（動手前要懂為什麼 / 邊界 / 合約） | **`lumos-project-notes`**（先 search→context→contracts）|
-| 讀圖譜 / 寫筆記 / 巡檢 / 綁合約測試 / 動 `docs/lumos-toolchain-knowledge/` | **`lumos-project-notes`** |
+| 讀架構圖 / 寫筆記 / 巡檢 / 綁合約測試 / 動 `docs/lumos-toolchain-knowledge/` | **`lumos-project-notes`** |
 | 跨專案共用業務規則（升格核心 / `core_refs` / 偏離） | **`lumos-core-knowledge`** |
 | 設計 spec 完成 → 進實作前：過 canary-護對抗審計 loop 到 `lumos loop status --gate` 收斂（trivial 可跳並註明；進場資格與 light/settle 模式見 skill） | **`lumos-design-loop`** |
 | 分支終審前：`lumos pitfalls --diff <merge-base>..HEAD` 出 `tier: high` → 對抗代碼審；收斂後 `lumos code-loop pass --note` 留痕才能 push（pre-push 硬擋無留痕的 tier=high） | **`lumos-code-loop`** |
 
-> 圖譜讀寫工具是 **lumos**（`scripts/lumos`，python3 零依賴；細節見 `lumos-project-notes` skill）。`lumos-*` 是 **user-scope skills**（唯一源在 `lumos-toolchain` repo、symlink 進 `~/.claude/skills/`）——每台機器首次裝一次：`git clone <lumos-toolchain> ~/harness/lumos-toolchain && ~/harness/lumos-toolchain/install.sh`。專案技術棧 skill（如 vue / csharp）見文末〈架構參考 Skills〉。
+> 架構圖讀寫工具是 **lumos**（`scripts/lumos`，python3 零依賴；細節見 `lumos-project-notes` skill）。`lumos-*` 是 **user-scope skills**（唯一源在 `lumos-toolchain` repo、symlink 進 `~/.claude/skills/`）——每台機器首次裝一次：`git clone <lumos-toolchain> ~/harness/lumos-toolchain && ~/harness/lumos-toolchain/install.sh`。專案技術棧 skill（如 vue / csharp）見文末〈架構參考 Skills〉。
 <!-- LUMOS:GRAPH-DISCIPLINE:END -->
 ---
 type: moc
 status: doing
 ---
-# lumos-toolchain 知識圖譜總索引
+# lumos-toolchain 知識架構圖總索引
 
-Lumos 工具鏈(`scripts/lumos` + skills + governance 自動化)自身的知識圖譜。節點現況以 code 為準,完整設計史/收斂史指回 `docs/design/`。狀態標記:無標=已實作;`[planned]`=設計收斂未落地;`[deferred]`=擱置;`[rejected]`=評估後不做(輕方案落地)。
+Lumos 工具鏈(`scripts/lumos` + skills + governance 自動化)自身的知識架構圖。節點現況以 code 為準,完整設計史/收斂史指回 `docs/design/`。狀態標記:無標=已實作;`[planned]`=設計收斂未落地;`[deferred]`=擱置;`[rejected]`=評估後不做(輕方案落地)。
 
 > **慣例**:節點內嵌的 `scripts/lumos:行號`(或 `@行號`、`:行號`)是**近似導航參考**,code 重構後可能漂移——以 code 現況與函式名為準,行號僅供快速定位。
 
@@ -75,7 +75,7 @@ Lumos 工具鏈(`scripts/lumos` + skills + governance 自動化)自身的知識�
 
 ## 自主治理 / loop engineering
 - [[Systems/autonomous-iteration-loop]] — 日報 gap→brainstorm→design-loop→收斂備 pending 的無人看顧自主迭代。
-- [[Systems/verification-rot-eval]] `[planned]` — 從圖譜史抽衝突測試集定期回測 L3 腐化偵測(設計收斂未落地)。
+- [[Systems/verification-rot-eval]] `[planned]` — 從架構圖史抽衝突測試集定期回測 L3 腐化偵測(設計收斂未落地)。
 
 ## 安全與權限
 - [[Systems/nested-agent-permission-scope]] — 子 agent 權限收窄(maker≠checker 的審計員不繼承主對話權限)。
@@ -97,12 +97,12 @@ Lumos 工具鏈(`scripts/lumos` + skills + governance 自動化)自身的知識�
 - [[Systems/lumos-cli-lifecycle]] — install/uninstall/update/bootstrap/init/deinit;機器層 vs 專案層分工。
 
 ## 外部對照 / PRIOR-ART
-- [[Systems/外部對照-code衍生wiki]] — langchain-ai/openwiki(11.6k★ code 衍生 wiki)反例世界解:站在 lumos 導覽層、賭注相反(code 衍生+可丟 vs 圖譜手寫+機械守);核心論點=重生保新鮮≠正確、無輸出 oracle(maker-only),反證 lumos「圖譜即真相/合約驗證層」的必要。
+- [[Systems/外部對照-code衍生wiki]] — langchain-ai/openwiki(11.6k★ code 衍生 wiki)反例世界解:站在 lumos 導覽層、賭注相反(code 衍生+可丟 vs 架構圖手寫+機械守);核心論點=重生保新鮮≠正確、無輸出 oracle(maker-only),反證 lumos「架構圖即真相/合約驗證層」的必要。
 
-## 外部設計 / 計畫文件(圖譜外,但屬本工具鏈)
+## 外部設計 / 計畫文件(架構圖外,但屬本工具鏈)
 - `docs/design/` — 各功能設計稿(含 design-loop 收斂紀錄,18 份)。
 - `docs/superpowers/plans/` — 實作計畫(TDD 任務分解)。
-- `docs/methodology/` — 「圖譜即合約」方法論。
+- `docs/methodology/` — 「架構圖即合約」方法論。
 - `governance/reports/` — AI 治理日報(研究 → gap → 觸發上述功能的 provenance,各 Verification/Systems 節點內有溯源)。
 ---
 type: project
@@ -250,7 +250,7 @@ codex
     18 [KEY]: KEY:修法定案(見 [[design-loop折入守衛_計劃]]+[[design-loop折入守衛_實作計畫]]):**初版 lint ①§-ref+②summary→body…
     19 [DECISION]: DECISION:先記為 lumos 工具鏈改進 Issue(非某 spec 問題);真要做需自己走 brainstorm→design-loop(注意別遞歸)。與知識同步散落漂移…
     20 [KEY]: KEY:[2026-07-18]第四場域=權威派工模板漂移——templates.md 辯方段直到今日仍寫「opus;對每條≥major各派一個」:M1 路由制(07-16)與 S…
-    21 [KEY]: KEY:[2026-07-17]同病新案例=圖譜節點自身也漂——[[design-loop]] M1 落地只在 summary 頂加 KEY 增量行,FLOW 主幹+辯方 KEY …
+    21 [KEY]: KEY:[2026-07-17]同病新案例=架構圖節點自身也漂——[[design-loop]] M1 落地只在 summary 頂加 KEY 增量行,FLOW 主幹+辯方 KEY …
     23 [DEP]: DEP:[[design-loop]]
     … 還有 4 處
   6.442  Projects/design-loop輕量檔_計劃.md  [design-loop,design,loop]
@@ -390,7 +390,7 @@ codex
     54 [body]: - [ ] 吸收① 走 brainstorm→design-loop→TDD(tier 組合升險規則)
   6.170  Systems/autonomous-iteration-loop.md  [design-loop,design,loop]
     13 [FLOW]: FLOW:cron 10:10 → autonomous-loop.sh:驗當日日報存在(真模式無報即跳;dry-run fallback 最近一份)→ gap_select(日報…
-    20 [KEY]: KEY:★抽掉人之前必辦清單(觸發條件=迴圈能不經人放行寫圖譜/開 PR 那天,今天人在放行點故全部不建)★——①提案者≠寫入者結構分離(Mnemosyne arXiv 2607.…
+    20 [KEY]: KEY:★抽掉人之前必辦清單(觸發條件=迴圈能不經人放行寫架構圖/開 PR 那天,今天人在放行點故全部不建)★——①提案者≠寫入者結構分離(Mnemosyne arXiv 2607.…
     40 [fm:context]: context: design-loop R3 揪出「severity 自報 = 收斂門檻自填」是全自動判收斂最弱環——被審者自填收斂了沒;此缺口本身就是 loop 上線後自己選中…
     70 [body]: 日報(9:30)→ 抽當日最高價值 gap → 自動 brainstorm 成 spec → 跑 design-loop 審到收斂 → 跨家族複核 → 把「收斂 spec + 可信…
     81 [body]: - `autonomous_loop/orchestrator-prompt.md` — `claude -p` orchestrator 的 prompt 模板(brainsto…
@@ -542,7 +542,7 @@ codex
     18 [body]: 手動 design-loop 6 輪(lumos-design-loop skill 編排,canary 序 `[a,b,c,d]`、token `CANARY-CFA-N`):*…
   5.702  Projects/impact-diff橋接_計劃.md  [design-loop,design,loop]
     20 [body]: **跳 design-loop 註明**：glue/編排層（聚合既有 cmd_impact 逐檔結果），無新演算法、無新合約；依 [[Systems/design-loop]] 已…
-    38 [body]: design-loop 收斂→code-loop 過審之後,「退場必寫」目前只有 pre-commit 粗閘（有沒有帶圖譜改動）與人判;精確版=**`impact --diff` …
+    38 [body]: design-loop 收斂→code-loop 過審之後,「退場必寫」目前只有 pre-commit 粗閘（有沒有帶架構圖改動）與人判;精確版=**`impact --diff` …
   5.690  Projects/CLAUDE注入re-sync與版本標籤_計劃.md  [design-loop,design,loop]
     20 [TEST]: TEST:design-loop 3 輪(全 caught,見 canary-log claude-reinject)——架構折穩(解耦/ReInjectResult三態/Bloc…
     85 [body]: ## 設計定案補充(design-loop r3 加固)
@@ -584,7 +584,7 @@ codex
     10 [fm]: - "skill 文本單源:生成硬化與 reviewer 紀律正文在 lumos-design-loop,code-loop 以引用指回"
     45 [body]: - [[Systems/design-loop]]
   5.509  Verification/2026-07-05_pitfalls網搜補漏.md  [design-loop,design,loop]
-    16 [VERIFY]: VERIFY:block ③ 網搜補漏落地(skill + 純圖譜、無 lumos 新碼);跳 design-loop(純散文 skill 空轉)、驗收走 dogfood
+    16 [VERIFY]: VERIFY:block ③ 網搜補漏落地(skill + 純架構圖、無 lumos 新碼);跳 design-loop(純散文 skill 空轉)、驗收走 dogfood
   5.501  Projects/上下文瘦身_計劃.md  [design-loop,design,loop]
     13 [KEY]: KEY:依 Anthropic 官方 Claude 5 context-engineering 指南瘦身常駐上下文——graph-discipline 範本 12.2KB→5.1K…
   5.487  Projects/狀態標籤同步守衛_計劃.md  [design-loop,design,loop]
@@ -774,12 +774,12 @@ codex
     19 [KEY]: KEY:★安裝器只做機器層,絕不碰專案層★——專案層的 init/update 會**重新注入 CLAUDE.md 紀律區塊**(用精簡範本),會覆蓋掉既有專案含 design-l…
     132 [body]: - **內容邊界**：只教「標籤怎麼讀」（summary 符號／`KEY:` 行合約性前綴／合約鏈括號／frontmatter 欄位／進場三步，五段內容逐字對齊 `skills/l…
     257 [body]: 3. skill 名稱：`lumos-design-loop`／`lumos-code-loop`／`lumos-core-knowledge`／`lumos-pitfalls-g…
-    505 [body]: 4. 圖譜既有實證（[[Systems/design-loop]]）：**本 loop 對機械核心收斂強、對散文空轉**。目前卡住的正是散文那半。
+    505 [body]: 4. 架構圖既有實證（[[Systems/design-loop]]）：**本 loop 對機械核心收斂強、對散文空轉**。目前卡住的正是散文那半。
     558 [body]: **狀態**：design-loop **未收斂、人裁放行**（見〈放行裁定〉）。r1／r2 panel 兩輪 + settle 三輪，共 15 席次、10 筆 canary 記錄…
   3.945  Verification/2026-06-26_native-windows-support_真機.md  [design-loop,design,loop]
     29 [body]: ## design-loop(紙審,3 輪皆有真缺陷,從未乾淨輪)
   3.894  Systems/test-profile-multiplatform.md  [design-loop,design,loop]
-    34 [★INVARIANT★]: 讓**單一知識圖譜**把 ★INVARIANT★ 的 `[test:]` 綁到**不同平台**的測試（C# xunit / Kotlin JUnit / Maestro E2E /…
+    34 [★INVARIANT★]: 讓**單一知識架構圖**把 ★INVARIANT★ 的 `[test:]` 綁到**不同平台**的測試（C# xunit / Kotlin JUnit / Maestro E2E /…
   3.809  Verification/2026-07-31_slim-skill與readme落地.md  [design-loop,design,loop]
     108 [body]: - Step 3 修剪範圍比預期大:brief 只明確點名 `reference.md:85` 與 `SKILL.md:14` 兩處,但逐條過完 129 條候選後,發現「對抗設計審…
   3.766  Projects/主動影響幅度偵測_實作計畫.md  [design-loop,design,loop]
@@ -821,9 +821,9 @@ type:system | status:done | created:2026-06-26 | updated:2026-07-28
 summary:
   KEY:★定位★[2026-07-18 使用者裁定,見 decisions d4]——design-loop=抬 spec 質量,非保 spec 正確:一輪 panel 抓便宜的(矛盾/未定義詞/缺失敗路徑)就放行,正確性歸下游 code-loop+測試+驗證、漏網進逃逸帳;**前置加重一律拒**(日報 2026-07-18『保留題接閘』已拒收勿重提——保留題留離線 replay 校準,不進閘)
   KEY:[2026-07-18]S5 跨家族落地(見[[Projects/code階段強化_計劃]])——辯方預設 Codex(成本中性替換,d4 合規;不可用退 opus 註記)+≥3-run 多數決至少 1 run Codex+家族否決保護(外家 blocker 不得僅被同門多數推翻,須執行反證或第二外家);換手效應列 [[Projects/loop數據收集_計劃]] 觀察項(收斂輪數/辯方降級率)
-  KEY:★經濟學★[2026-07-20 使用者裁定,見 decisions d5]——spec 品質目標=成本平衡非精確度漸近線:缺陷分層定價(清單型→pre-flight/撞自家現實型→圖譜接地/語意矛盾→一輪panel/深層錯→下游執行接地)+邊際遞減止損+反偏誤排序(執行接地>機械查>異家族>同家族多取樣,信號種類>家族)+標記不確定比消滅不確定便宜;逃逸帳=調價器。**精確度軍備競賽類提案(更強判官/更多輪/更細spec)一律先過此教義裁**
+  KEY:★經濟學★[2026-07-20 使用者裁定,見 decisions d5]——spec 品質目標=成本平衡非精確度漸近線:缺陷分層定價(清單型→pre-flight/撞自家現實型→架構圖接地/語意矛盾→一輪panel/深層錯→下游執行接地)+邊際遞減止損+反偏誤排序(執行接地>機械查>異家族>同家族多取樣,信號種類>家族)+標記不確定比消滅不確定便宜;逃逸帳=調價器。**精確度軍備競賽類提案(更強判官/更多輪/更細spec)一律先過此教義裁**
   KEY:[2026-07-16]提效 M1 落地(見[[Projects/design-loop提效_計劃]])——pre-flight 排乾(panel 前便宜 agent 掃清單型缺陷,cascade)/R2+ 嚴格 delta-scoped(物理只餵 diff+受影響合約+前輪爭議,留全局哨兵;解非定態目標病)/辯方路由制(機械證實與多席一致免辯方,低共識才開庭)/fold 迷你核對/severity 錨句(防 framing 通膨);M2 risk-cluster 帳未做(動 gate code,先過 loop)
-  KEY:[2026-07-21]★真相入口收編★(外審 blocker,見[[Projects/全盤外審2026-07_調研]])——被審 spec 唯一可寫真檔=圖譜計劃節點;docs/design/ 降唯讀歷史(30 份保留考古,README 立牌);golden 不再複製 spec 第三份,改 spec-ref.txt 記 git sha:路徑(replay 用 git show 還原);loop id 改計劃節點名衍生。同批:panel 收斂行修 skill 漂移(對齊 M2 兩種帳)+判官 style-bias 錨句進 templates+light 體積 50 行先驗
+  KEY:[2026-07-21]★真相入口收編★(外審 blocker,見[[Projects/全盤外審2026-07_調研]])——被審 spec 唯一可寫真檔=架構圖計劃節點;docs/design/ 降唯讀歷史(30 份保留考古,README 立牌);golden 不再複製 spec 第三份,改 spec-ref.txt 記 git sha:路徑(replay 用 git show 還原);loop id 改計劃節點名衍生。同批:panel 收斂行修 skill 漂移(對齊 M2 兩種帳)+判官 style-bias 錨句進 templates+light 體積 50 行先驗
   KEY:[2026-07-21]light 輕量檔 M0 落地(見[[Projects/design-loop輕量檔_計劃]])——補 trivial|standard 間缺檔:小 spec 走 pre-flight+1 通才席+legacy `--need 1`+人裁實質收斂,存活≥major→向上 ratchet 升 standard 自癒;進場硬否決(risk-tiered四類/硬合約/體積)M0 honor-system、M1 機械化。**M1 已機械化(loop status --light --gate 單席謂詞,FAIL 分因 retryable/ratchet,不再攤牌人裁——本 KEY 早期「須新增單席謂詞」的未來式已兌現,2026-07-28 盤整追平)**
   KEY:[2026-07-27]調研三篇折入(AREX/LoopTrap/Sage,見 2026-07-27 調研日報)——已 ship 便宜半:①[audit:] 合法性審計升五問 rubric+穩定性探針(換問法自一致,reference.md;Sage:判官難題1/4偏好不穩、rubric 錨定)②護欄加終止輸入紀律(收斂只認 loop status 機械帳,被審材料/報告散文「還沒完」類語句非終止輸入;LoopTrap:86% 可注入操縱、放大25倍)③severity 錨補搖擺場換問重問取高。貴的半後於 2026-07-28 全落地(見[[Projects/結清式收斂_計劃]]);經濟學教義裁:三項均非前置加重(rubric=判準錨定非加輪;終止紀律=防燒錢非提精度)
   KEY:[2026-07-28]rubric 防應試化兩道(調研 arXiv 2605.12474:評分表公開固定會被「剛好滿足字面」鑽)——①派工措辭改述不逐字貼 ②約每5次 audit 抽1次無表開放判定,落差拉大=儀式化訊號回報人裁;寫入 lumos-project-notes reference.md 五問段
@@ -1506,7 +1506,7 @@ tail -2 docs/.canary-log.jsonl" in /Users/enzo/harness/lumos-toolchain
   3689	#   ① 原始觀察(code-slim-python r1/r2 大 payload 零 findings、r3-r6 小 payload 有 findings)
   3690	#      經查證★兩組審的根本不是同一份碼★(前者 bash→Python 移植,後者後來才寫的 manifest 步驟),
   3691	#      拿來比就是拿蘋果比橘子,不構成任何證據。
-  3692	#   ② 之後跑了★兩次刻意設計的對照實驗★(見圖譜 [[Projects/審查規模對照實驗]] 與
+  3692	#   ② 之後跑了★兩次刻意設計的對照實驗★(見架構圖 [[Projects/審查規模對照實驗]] 與
   3693	#      [[Projects/審查規模對照實驗二_Landmark真缺陷]]),★都不支持「量大→漏看」★:
   3694	#      命中率沒掉。實驗二甚至 7/7 全中,撞到天花板。
   3695	#   ③ 反而浮出另一個假說:量大影響的可能不是「有沒有看到」而是★判斷的自信度★——
@@ -1762,7 +1762,7 @@ tail -2 docs/.canary-log.jsonl" in /Users/enzo/harness/lumos-toolchain
   5714	  if(is2d) Graph.cameraPosition({x:0,y:0,z:900},{x:0,y:0,z:0},800);
   5715	};
   5716	
-  5717	// ---- 時間軸:按節點日期回放圖譜生長 ----
+  5717	// ---- 時間軸:按節點日期回放架構圖生長 ----
   5718	const tt=document.getElementById('timetoggle');tt.classList.remove('on');tt.classList.add('off');
   5719	const tb=document.getElementById('timebar'),tr=document.getElementById('trange'),
   5720	      td=document.getElementById('tdate'),tp=document.getElementById('tplay');
@@ -2150,7 +2150,7 @@ tail -2 docs/.canary-log.jsonl" in /Users/enzo/harness/lumos-toolchain
   6102	
   6103	def cmd_self_audit(env, rel, model="sonnet", date=None):
   6104	    """L4 自足性審計留痕:寫 self_audit: <model>/<date> 到節點 frontmatter。
-  6105	    語意:這整篇節點的「自足性」(無主對話脈絡的乾淨 agent 只讀圖譜能不能還原
+  6105	    語意:這整篇節點的「自足性」(無主對話脈絡的乾淨 agent 只讀架構圖能不能還原
   6106	    專案現況)已由一個獨立 agent 審過並通過。對應 guard audit 的角色(乾淨 agent
   6107	    審後蓋戳),但程式路徑獨立——這是節點級戳記,guard audit 是行級 [audit:]。
   6108	    工具只記留痕,不證明審計真乾淨——派 agent 的乾淨脈絡/中立 prompt 靠主對話誠實。"""
@@ -2777,7 +2777,7 @@ rg -n 'CiteCheck|IBIR|FLAWS|Prolific|ACM|gold|fault seeding|citation' /tmp/dlrd-
   3689	#   ① 原始觀察(code-slim-python r1/r2 大 payload 零 findings、r3-r6 小 payload 有 findings)
   3690	#      經查證★兩組審的根本不是同一份碼★(前者 bash→Python 移植,後者後來才寫的 manifest 步驟),
   3691	#      拿來比就是拿蘋果比橘子,不構成任何證據。
-  3692	#   ② 之後跑了★兩次刻意設計的對照實驗★(見圖譜 [[Projects/審查規模對照實驗]] 與
+  3692	#   ② 之後跑了★兩次刻意設計的對照實驗★(見架構圖 [[Projects/審查規模對照實驗]] 與
   3693	#      [[Projects/審查規模對照實驗二_Landmark真缺陷]]),★都不支持「量大→漏看」★:
   3694	#      命中率沒掉。實驗二甚至 7/7 全中,撞到天花板。
   3695	#   ③ 反而浮出另一個假說:量大影響的可能不是「有沒有看到」而是★判斷的自信度★——
@@ -2956,7 +2956,7 @@ rg -n 'CiteCheck|IBIR|FLAWS|Prolific|ACM|gold|fault seeding|citation' /tmp/dlrd-
 /tmp/dlrd-r1.md:77:| 11 收斂後 | golden/接受理由 | 因第 10 站不亮，歷史上全靠人裁進入 |
 docs/lumos-toolchain-knowledge/Issues/design-loop折入漂移_機械守衛.md:63:- 已修:FLOW 行重寫(路由制+前置排乾+--gate 三錨+golden 凍結+panel 指針)、辯方 KEY 行同步、pitfalls-code-loop FLOW 補 tier 三分流(trivial/standard/high)。
 docs/lumos-toolchain-knowledge/Systems/retrieval-ranking.md:13:  KEY:search面已轉正預設(2026-07-11,goldset §6全過:修正尺 nDCG@5 +58.1%/held +99.6%(2026-08-03 凍結值);--legacy逃生,--regex走舊路,預設全量+逐檔命中明細——資訊零損失);hook面已轉正(2026-07-11:P@8 .707/中位3/p95 9;dyn_coef .55/direct_base .30/名額10;trigger delta-scoped;必看視野19/30=精度代價(2026-08-03 凍結值;原記 24/30 不重現),見[[Verification/2026-07-11_hook面v1.1轉正]]);recommend面dormant;hop≥2需L>0、hop1只受靜態底線;結構前綴停用集(KEY:/FLOW:模板詞不算詞彙訊號);A1型別先驗:moc×0.4乘於詞彙分(train網格凍結,held零倒退,見[[Projects/節點靜態先驗_調研]])
-docs/lumos-toolchain-knowledge/Systems/retrieval-ranking.md:14:  KEY:★DEBT★ 多詞片語候選=legacy片語語意(0候選不回退)★2026-08-02 部分緩解:`--any` 旗標(預設關)在整串片語全庫無命中時退成各詞 OR 召回;fallback-only 故對既有查詢零回歸(現有 goldset 30 題全部回>0候選,回退條件永不觸發)。Landmark 284 篇真庫實測:10/10 現實多詞查詢在預設下全 0 命中,`--any` 後 7/10 第一名正確。★2026-08-03 人裁翻預設★:多詞回退改為預設開、`--no-any` 逃生、`--any` 留相容。證據=補了 10 題多詞評測(雙評 Claude+Codex 跨家族、分歧交乾淨 opus 裁決):nDCG@5 0→0.767、MRR 0.95、第一名為「必看」7/10;對照組 5 題(現有命中的多詞查詢)逐檔完全相同=零回歸實證。誠實邊界:pooling bias(池半數來自回退自己)、n=10、單一快照。交付版已同步重生。見 [[Projects/檢索多詞回退_計劃]]★｜cochange proxy對圖譜related面太稀(兩vault實證,僅sanity check)｜hook接線v1.1待評測
+docs/lumos-toolchain-knowledge/Systems/retrieval-ranking.md:14:  KEY:★DEBT★ 多詞片語候選=legacy片語語意(0候選不回退)★2026-08-02 部分緩解:`--any` 旗標(預設關)在整串片語全庫無命中時退成各詞 OR 召回;fallback-only 故對既有查詢零回歸(現有 goldset 30 題全部回>0候選,回退條件永不觸發)。Landmark 284 篇真庫實測:10/10 現實多詞查詢在預設下全 0 命中,`--any` 後 7/10 第一名正確。★2026-08-03 人裁翻預設★:多詞回退改為預設開、`--no-any` 逃生、`--any` 留相容。證據=補了 10 題多詞評測(雙評 Claude+Codex 跨家族、分歧交乾淨 opus 裁決):nDCG@5 0→0.767、MRR 0.95、第一名為「必看」7/10;對照組 5 題(現有命中的多詞查詢)逐檔完全相同=零回歸實證。誠實邊界:pooling bias(池半數來自回退自己)、n=10、單一快照。交付版已同步重生。見 [[Projects/檢索多詞回退_計劃]]★｜cochange proxy對架構圖related面太稀(兩vault實證,僅sanity check)｜hook接線v1.1待評測
 docs/lumos-toolchain-knowledge/Systems/retrieval-ranking.md:16:  TEST:t_tokenizer/search_ranked/context_recommend/impact_ranked/impact_diff/impact_hook_v11 全綠+全套1018 | VERIFY:[[Verification/2026-07-11_hook面v1.1轉正]] | VERIFY:[[Verification/2026-07-10_檢索排序v1]][[Verification/2026-07-11_檢索goldset評測]]
 docs/lumos-toolchain-knowledge/Systems/retrieval-ranking.md:24:  - "[[Verification/2026-07-11_檢索goldset評測]]"
 docs/lumos-toolchain-knowledge/Systems/retrieval-ranking.md:29:設計三輪 panel（Codex 跨家族否決席全勤、5/5 canary 零漏——史上首例）收斂於 [[Projects/檢索優化_計劃]]，golden 凍結 governance/golden/retrieval/。雙盲合併（Claude×GPT-5.6）八處分歧裁定見計劃節點。
@@ -2973,11 +2973,11 @@ docs/lumos-toolchain-knowledge/Systems/canary-audit.md:18:  KEY:[2026-07-10]生�
 docs/lumos-toolchain-knowledge/Systems/cochange-guard.md:27:解「知識同步散落」缺口的機械守衛：從 git 歷史挖「改 A 歷史上 X% 同改 B」的關聯規則，commit 時警告漏改的夥伴檔。警告型、不擋人。設計全程見 [[Projects/cochange守衛_計劃]]（3 輪 canary-護 panel 審計 + golden 凍結於 `governance/golden/cochange-guard/`）。
 docs/lumos-toolchain-knowledge/Systems/guard-kill.md:31:合約鏈最後一哩：`★INVARIANT★→[test:]` 只證「保鑣存在」，`guard kill` 真的打一拳——隔離 worktree 裡故意弄壞被守護的行為，綁定測試必須翻紅；全綠＝稻草人證據（rc 1）。設計三輪 panel 收斂見 [[Projects/guard殺傷力驗證_計劃]]，golden 凍結 `governance/golden/guard-kill/`。
 governance/golden/lumos-show讀取入口-std/findings.md:19:## 審計員校準數據（golden 語料用）
-docs/lumos-toolchain-knowledge/Systems/design-loop.md:21:  KEY:[2026-07-21]★真相入口收編★(外審 blocker,見[[Projects/全盤外審2026-07_調研]])——被審 spec 唯一可寫真檔=圖譜計劃節點;docs/design/ 降唯讀歷史(30 份保留考古,README 立牌);golden 不再複製 spec 第三份,改 spec-ref.txt 記 git sha:路徑(replay 用 git show 還原);loop id 改計劃節點名衍生。同批:panel 收斂行修 skill 漂移(對齊 M2 兩種帳)+判官 style-bias 錨句進 templates+light 體積 50 行先驗
+docs/lumos-toolchain-knowledge/Systems/design-loop.md:21:  KEY:[2026-07-21]★真相入口收編★(外審 blocker,見[[Projects/全盤外審2026-07_調研]])——被審 spec 唯一可寫真檔=架構圖計劃節點;docs/design/ 降唯讀歷史(30 份保留考古,README 立牌);golden 不再複製 spec 第三份,改 spec-ref.txt 記 git sha:路徑(replay 用 git show 還原);loop id 改計劃節點名衍生。同批:panel 收斂行修 skill 漂移(對齊 M2 兩種帳)+判官 style-bias 錨句進 templates+light 體積 50 行先驗
 docs/lumos-toolchain-knowledge/Systems/design-loop.md:26:  FLOW:brainstorming產spec→[trivial?跳並註明]→前置排乾(refcheck機械核對spec→repo指涉+pitfalls --check補實務隱患節+pre-flight便宜agent掃清單型缺陷;首輪前一次,cascade便宜先掃)→每輪{複製spec→/tmp/<id>-rN(**N/型別/席數問 `lumos loop next`**,2026-07-21 M1包;並 sha256sum 真檔留 reviewed 快照)→植1canary(類型=清單[(N−1)mod4],只進工作副本)→派乾淨審計員(sonnet,連2missed升opus,不告知canary,refute framing)→判讀(canary抓到?+真finding max severity)→辯方路由(機械證實/多席一致直接折入,僅低共識才派獨立opus構造反證file:line;2026-07-16 M1)→該輪severity=辯方存活max→**caught輪:折真finding進真檔+fold迷你核對+grep canary=0 之後才 record(--spec/--reviewed 雙hash;M1包 時序裁定,原 record-先-fold 會使 hash 恆失配);missed輪:當場record**/漏抓不折直接下輪}→loop status --gate exit0(模式擇一:legacy --need 2 K-streak∧G1∧G2∧G3/panel/light/settle 結清)→收斂+天花板提醒+golden凍結→writing-plans｜平行panel模式(現行推薦,一輪W席≤3輪)見下方KEY
 governance/golden/idioms-self-maint/spec.md:48:    why_chosen: 架構已穩、續推邊際遞減且接縫需真build(非spec patch);凍成golden保住三輪findings語料+架構決策,實作另議。phase-1只做真做得出的M層+人跑skill,C3/全自動列phase-2
 governance/golden/loop機械脊椎M1包/findings.md:18:## 審計員校準數據（golden 語料）
-docs/lumos-toolchain-knowledge/Systems/slim-skill-修剪.md:16:  KEY:★2026-08-01 補一條非指令型的懸空引用★——reference.md:679「設計全文與三輪對抗審:`Projects/from-scratch重生守衛_計劃`+`governance/golden/fromscratch-m1/`」指向本包完全未交付的檔案,接手者查無此檔且無人可問;改寫成「留在完整版工具鏈,★本精簡版沒有交付那些檔案★——這裡列的規則本身就是全部,不必去找」。★方法論教訓★:`slim-scan.py` 只掃指令名(prefixed/bare-token/skill-name/span/prose 五形態),★掃不到路徑型懸空引用★(圖譜節點路徑、governance/ 語料目錄)——與「任何『我枚舉了 N 種形態』的規格都要假設有第 N+1 種」同型,本次由人眼逐檔複閱補上,不宣稱已窮盡
+docs/lumos-toolchain-knowledge/Systems/slim-skill-修剪.md:16:  KEY:★2026-08-01 補一條非指令型的懸空引用★——reference.md:679「設計全文與三輪對抗審:`Projects/from-scratch重生守衛_計劃`+`governance/golden/fromscratch-m1/`」指向本包完全未交付的檔案,接手者查無此檔且無人可問;改寫成「留在完整版工具鏈,★本精簡版沒有交付那些檔案★——這裡列的規則本身就是全部,不必去找」。★方法論教訓★:`slim-scan.py` 只掃指令名(prefixed/bare-token/skill-name/span/prose 五形態),★掃不到路徑型懸空引用★(架構圖節點路徑、governance/ 語料目錄)——與「任何『我枚舉了 N 種形態』的規格都要假設有第 N+1 種」同型,本次由人眼逐檔複閱補上,不宣稱已窮盡
 governance/golden/t3-dref/spec.md:3:> **狀態**：達 3 輪 panel cap 未 clean 收斂 → 人裁「凍 golden、暫停實作」（2026-07-15）。
 governance/external-reviews/2026-07-28-codex-initial.md:198:- capture counts、cluster、golden replay
 governance/external-reviews/2026-07-28-codex-initial.md:283:11k CLI、11k tests、49 commands、多代 loop gate、skills/reference/golden/graph/methodology 多份真相同時存在。已出現：
@@ -3536,7 +3536,7 @@ codex
 
 [minor] 「code-loop 保正確」把下游責任鏈縮成單一機制，容易造成過度承諾  
 引句:「**code-loop 不跟進**：它定位『保正確』、canary missed 率 9.3% 未見異常」  
-理由:圖譜現行定位是正確性歸「code-loop＋測試＋驗證」共同承接，不是 code-loop 本身提供 correctness oracle。此處應寫成「code-loop 是下游正確性防線之一」，否則會把保留 canary 的理由建立在不實保證上。
+理由:架構圖現行定位是正確性歸「code-loop＋測試＋驗證」共同承接，不是 code-loop 本身提供 correctness oracle。此處應寫成「code-loop 是下游正確性防線之一」，否則會把保留 canary 的理由建立在不實保證上。
 
 MAX_SEVERITY: major
 84,978
@@ -3574,6 +3574,6 @@ MAX_SEVERITY: major
 
 [minor] 「code-loop 保正確」把下游責任鏈縮成單一機制，容易造成過度承諾  
 引句:「**code-loop 不跟進**：它定位『保正確』、canary missed 率 9.3% 未見異常」  
-理由:圖譜現行定位是正確性歸「code-loop＋測試＋驗證」共同承接，不是 code-loop 本身提供 correctness oracle。此處應寫成「code-loop 是下游正確性防線之一」，否則會把保留 canary 的理由建立在不實保證上。
+理由:架構圖現行定位是正確性歸「code-loop＋測試＋驗證」共同承接，不是 code-loop 本身提供 correctness oracle。此處應寫成「code-loop 是下游正確性防線之一」，否則會把保留 canary 的理由建立在不實保證上。
 
 MAX_SEVERITY: major

@@ -12,7 +12,7 @@ autonomous loop 的 auditor / judge 子 agent 改以 **Bash 子程序(`claude -p
 ## 前提與既驗事實
 
 - **現況**:autonomous-loop.sh:L43 給 orchestrator `--allowedTools "Read,Edit,Bash,Grep,Glob,Agent"`;orchestrator 再用 `Agent` 工具 spawn auditor / judge——Claude Code 的 `Agent` 工具**不支援 allowedTools 參數**,子 agent 完整繼承父 session 的工具集。
-- **confused deputy 路徑**:spec 草稿中若有「被下毒」節(惡意注入指令),auditor 子 agent 被誘導時可合法呼叫 `Edit`/`Bash`,寫入圖譜、改 spec、甚至開 PR——父 session 和 harness 層皆不攔截。
+- **confused deputy 路徑**:spec 草稿中若有「被下毒」節(惡意注入指令),auditor 子 agent 被誘導時可合法呼叫 `Edit`/`Bash`,寫入架構圖、改 spec、甚至開 PR——父 session 和 harness 層皆不攔截。
 - **機械防護可達點**:`claude -p --allowedTools "Read,Grep,Glob"` 在 harness 層強制 auditor/judge 無 Edit/Bash/Agent,子程序無論被如何誘導都無法呼叫受限工具(harness 層比 prompt 層可靠)。
 - **orchestrator Bash 工具已驗**:orchestrator-prompt 要求跑 `python3 scripts/lumos ...` + `python3 -c "...cross_audit..."`,已用 Bash 工具;再加一條 `claude -p` Bash 子程序同層次、無新依賴。
 - **autonomous_loop/ __init__.py 存在**:grep 已驗 `governance/autonomous_loop/__init__.py` 存在;`governance/__init__.py` 不存在,故 `sys.path.insert(0,'<REPO>/governance')` + `from autonomous_loop import ...` 是正確調用路徑(cross_audit spec R2 坐實)。
@@ -162,8 +162,8 @@ delegation-log 不進可信度報告;審計留本機即可。
 |---|---|
 | `governance/autonomous_loop/orchestrator-prompt.md` | §2 round sub-steps 3/4:spawn auditor/judge 改 Bash 子程序(字面路徑 + temp file) + delegation-log append |
 | `docs/design/2026-06-20-autonomous-iteration-loop.md` | §3 自動 Design-loop 段:補「子 agent 唯讀(harness 層 --allowedTools 限)+ delegation-log 稽核軌跡」 |
-| `docs/methodology/圖譜即合約.md` | 補:loop 子 agent 委派採 append-only narrowing——每巢狀一層只能更窄、delegation-log 留痕 |
-| `docs/methodology/圖譜即合約-對外論述.md` | 可不改(技術細節,對外論述不需列 allowedTools 機制) |
+| `docs/methodology/架構圖即合約.md` | 補:loop 子 agent 委派採 append-only narrowing——每巢狀一層只能更窄、delegation-log 留痕 |
+| `docs/methodology/架構圖即合約-對外論述.md` | 可不改(技術細節,對外論述不需列 allowedTools 機制) |
 | `lumos-project-notes` skill | 補:confused deputy gap 已有設計 spec |
 
 ## 審計修正紀錄

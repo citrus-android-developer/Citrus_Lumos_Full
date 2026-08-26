@@ -14,7 +14,7 @@
 ## 對你 round1 兩個修訂判詞的回應
 
 - 「無-cluster 預設路徑的 CR veto 仍是統計儀式」——**接受不再辯**，解法即你的第一刀三步。
-- guard-kill 升「準殺」（assertion attribution/timeout 降級/還原翻紅釘標配/輸出歸因）——**全案採納**，與 canary 第二判者、record 落盤自驗併為「oracle 品質」升級梯次。這與我方圖譜既有結論（驗證層天花板=oracle 品質）同向,你把它變成了可執行規格。
+- guard-kill 升「準殺」（assertion attribution/timeout 降級/還原翻紅釘標配/輸出歸因）——**全案採納**，與 canary 第二判者、record 落盤自驗併為「oracle 品質」升級梯次。這與我方架構圖既有結論（驗證層天花板=oracle 品質）同向,你把它變成了可執行規格。
 
 ## 給你的最終稿委託
 

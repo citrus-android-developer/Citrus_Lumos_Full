@@ -28,7 +28,7 @@ summary: |-
 
 ## 交付(對應設計三交付物)
 1. `_extract_claude_block_span`(三態 + body 位移,`text[body_start:body_end]==body` 有保證)+ `_reinject_claude_block`(6-status:created/updated/unchanged/appended/sentinel_broken/no_template;覆蓋 sentinel 之間 body、diff、BOM/CRLF 正規化)。
-2. 解耦注入 from `_scaffold_project`(其 skip-if-exists 只保護圖譜資料);接 `_vendor_toolchain`(copy2 vendor 後 re-inject、修「讀舊範本」順序)+ `cmd_init`(既有 vault 非 force 只 `_reinject` 不 pull/不重裝 hooks);doctor **Check D** 內容比對漂移守衛(`_expected_claude_body` 單一源給 reinject 與 Check D 共用)。
+2. 解耦注入 from `_scaffold_project`(其 skip-if-exists 只保護架構圖資料);接 `_vendor_toolchain`(copy2 vendor 後 re-inject、修「讀舊範本」順序)+ `cmd_init`(既有 vault 非 force 只 `_reinject` 不 pull/不重裝 hooks);doctor **Check D** 內容比對漂移守衛(`_expected_claude_body` 單一源給 reinject 與 Check D 共用)。
 3. `LUMOS_VERSION`(v1.0)版本戳蓋 START sentinel 行(body 外 → 版本 bump 不觸發 Check D)+ **Check N** nudge(soft advisory、語意版本 tuple 比較、來源 `_lumos_src()` 不可達靜默 skip)。
 
 ## opus 終審實證(逐點驗過)

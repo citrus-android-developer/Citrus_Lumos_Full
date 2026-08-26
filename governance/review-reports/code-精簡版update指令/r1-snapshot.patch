@@ -257,7 +257,7 @@ index 34a1371..4fa7dd2 100644
  
  ## 後續增補(2026-08-18):README 選配 hooks 章
  
- 前一日 hooksPath 真機實測(新專案 clone 精簡版→`git config core.hooksPath ~/Citrus_Lumos/hooks` 絕對路徑變體驗證通過;確認閘在無 `docs/*-knowledge` 時為靜默 no-op、hooksPath 設定會停用 `.git/hooks` 既有 hooks)之結論落進交付包:README 新增〈選配:把圖譜同步閘掛到你的專案〉——三步接法(clone→hooksPath→驗證;團隊變體=複製進專案 scripts/hooks 入版控)+五件注意(沉睡條件/hooksPath 排他/精簡版無 pre-push/`--no-verify` 有 post-commit 留痕/一行停用)。同 commit 修 hooks/pre-commit 檔頭過時註解(原稱 install.py 會複製 hooks,與安裝器「明確不做」清單矛盾——改為 opt-in 二擇一指引)。已推 Citrus_Lumos main(6e249eb)。
+ 前一日 hooksPath 真機實測(新專案 clone 精簡版→`git config core.hooksPath ~/Citrus_Lumos/hooks` 絕對路徑變體驗證通過;確認閘在無 `docs/*-knowledge` 時為靜默 no-op、hooksPath 設定會停用 `.git/hooks` 既有 hooks)之結論落進交付包:README 新增〈選配:把架構圖同步閘掛到你的專案〉——三步接法(clone→hooksPath→驗證;團隊變體=複製進專案 scripts/hooks 入版控)+五件注意(沉睡條件/hooksPath 排他/精簡版無 pre-push/`--no-verify` 有 post-commit 留痕/一行停用)。同 commit 修 hooks/pre-commit 檔頭過時註解(原稱 install.py 會複製 hooks,與安裝器「明確不做」清單矛盾——改為 opt-in 二擇一指引)。已推 Citrus_Lumos main(6e249eb)。
 +
 +## 後續增補(2026-08-19):update 指令+凍結聲明退役
 +
@@ -1402,8 +1402,8 @@ index 9ace76b..780214f 100644
 @@ -1,13 +1,13 @@
  # Lumos 公開精簡版
  
--這是知識圖譜工具 lumos 的**離職交接精簡版**——目的只有一個：讓接手的人能讀懂既有專案留下的知識圖譜（`docs/{project}-knowledge/`）。可讀是目標，可維護是加分，本包不設任何機械強制（不擋 commit、不擋 push、不裝任何 hook）。
-+這是知識圖譜工具 lumos 的**精簡版**——目的只有一個：讓接手的人能讀懂既有專案留下的知識圖譜（`docs/{project}-knowledge/`）。可讀是目標，可維護是加分，本包不設任何機械強制（不擋 commit、不擋 push、不裝任何 hook）。
+-這是知識架構圖工具 lumos 的**離職交接精簡版**——目的只有一個：讓接手的人能讀懂既有專案留下的知識架構圖（`docs/{project}-knowledge/`）。可讀是目標，可維護是加分，本包不設任何機械強制（不擋 commit、不擋 push、不裝任何 hook）。
++這是知識架構圖工具 lumos 的**精簡版**——目的只有一個：讓接手的人能讀懂既有專案留下的知識架構圖（`docs/{project}-knowledge/`）。可讀是目標，可維護是加分，本包不設任何機械強制（不擋 commit、不擋 push、不裝任何 hook）。
  
  ## 支援平台
  
@@ -1430,7 +1430,7 @@ index 9ace76b..780214f 100644
  
  ## 進場三步
  
- 讀一個既有專案的圖譜，永遠先做這三步，再去翻程式碼：
+ 讀一個既有專案的架構圖，永遠先做這三步，再去翻程式碼：
  
  ```bash
  lumos search <關鍵字>      # 定位
@@ -1444,10 +1444,10 @@ index 9ace76b..780214f 100644
 -
  ## Frontmatter 四條鐵則
  
- 寫圖譜筆記時 frontmatter 有四條血換來的鐵則，違反會讓圖譜長出讀不到的 ghost 節點、甚至整篇 frontmatter 報廢（以下逐字轉錄自 `skills/lumos-project-notes/reference.md`）：
+ 寫架構圖筆記時 frontmatter 有四條血換來的鐵則，違反會讓架構圖長出讀不到的 ghost 節點、甚至整篇 frontmatter 報廢（以下逐字轉錄自 `skills/lumos-project-notes/reference.md`）：
  
- 1. **多個 wikilink 必須是 YAML list，一項一連結**。❌ `verified_by: "[[A]], [[B]]"`（單一字串）→ Obsidian 把整串從第一個 `[[` 貪婪吃到最後一個 `]]` 當成**一個**超長連結 → 圖譜長出亂碼灰色 ghost 節點；在 Obsidian 點到該節點還會**自動建立含 `]], [[` 的垃圾檔案**（檔名中的 `/` 切成巢狀資料夾）。✅ 寫法見 `related` / `verified_by` 範例。
- 2. **block scalar（`summary: |` 等）內的 wikilink 不會被索引**。寫在 summary 裡的 `[[X]]` 只是文字，不產生圖譜連結、不算 backlink——要建立關聯必須同時在內文（如「## 相關模組」）或 list 型 property 放一份，否則目標筆記可能變孤兒。
+ 1. **多個 wikilink 必須是 YAML list，一項一連結**。❌ `verified_by: "[[A]], [[B]]"`（單一字串）→ Obsidian 把整串從第一個 `[[` 貪婪吃到最後一個 `]]` 當成**一個**超長連結 → 架構圖長出亂碼灰色 ghost 節點；在 Obsidian 點到該節點還會**自動建立含 `]], [[` 的垃圾檔案**（檔名中的 `/` 切成巢狀資料夾）。✅ 寫法見 `related` / `verified_by` 範例。
+ 2. **block scalar（`summary: |` 等）內的 wikilink 不會被索引**。寫在 summary 裡的 `[[X]]` 只是文字，不產生架構圖連結、不算 backlink——要建立關聯必須同時在內文（如「## 相關模組」）或 list 型 property 放一份，否則目標筆記可能變孤兒。
  3. **含 `: `（冒號+空格）的長文必須用 block scalar 或引號**。❌ `- content: 處置 SQL: UPDATE ...`（未引號）→ YAML `mapping values are not allowed` → **整篇 frontmatter 解析失敗**，所有 property 查詢對此筆記隱性失效。✅ `- content: |-` 換行縮排放長文。
  4. **同一層級禁止重複鍵**。`decided:` / `valid:` 在同一個 decision item 出現兩次 → Obsidian 的 js-yaml 直接整篇 fail（CLI 的 ruby/libyaml 寬鬆放行，**用 CLI 驗過不代表 Obsidian 讀得到**）。
  
@@ -1468,7 +1468,7 @@ index 9ace76b..780214f 100644
  
  ### ⚠ 程式碼註解裡也會提到本包沒交付的檔案
  
- `scripts/lumos` 的註解是**刻意原樣保留**的（那是「當初為什麼這樣寫」的脈絡，砍掉就再也問不到人了）。但其中有些註解會指向完整版工具鏈才有的東西——圖譜節點路徑（`Projects/xxx_計劃`）、對抗審語料目錄（`governance/golden/...`）、或 `[code-loop rN]`／`[design-loop]` 這類流程標記。**這些檔案本包都沒交付，查不到是正常的，不是你漏拿了什麼**；註解本身要表達的意思（為什麼這行要這樣寫）是完整的，照著讀就好。
+ `scripts/lumos` 的註解是**刻意原樣保留**的（那是「當初為什麼這樣寫」的脈絡，砍掉就再也問不到人了）。但其中有些註解會指向完整版工具鏈才有的東西——架構圖節點路徑（`Projects/xxx_計劃`）、對抗審語料目錄（`governance/golden/...`）、或 `[code-loop rN]`／`[design-loop]` 這類流程標記。**這些檔案本包都沒交付，查不到是正常的，不是你漏拿了什麼**；註解本身要表達的意思（為什麼這行要這樣寫）是完整的，照著讀就好。
  
  本包附的 `slim-scan` 掃描器只掃**指令名**的懸空引用，掃不到這種**路徑型**的——所以這裡也一樣不宣稱窮盡。
  
@@ -1477,13 +1477,13 @@ index 9ace76b..780214f 100644
  
  ## 範圍聲明
  
- 本包是**功能子集**：只保留維護圖譜本身要用的 26 支指令（讀取／導航、寫入、健康巡檢 `doctor`/`lint`、合約守衛 `guard`、刪除傳播守衛 `delguard`）；不含反覆對抗審查、程式碼變更風險掃描、linter 版本追蹤、CI 狀態回拉、跨專案核心圖譜等進階治理功能。
+ 本包是**功能子集**：只保留維護架構圖本身要用的 26 支指令（讀取／導航、寫入、健康巡檢 `doctor`/`lint`、合約守衛 `guard`、刪除傳播守衛 `delguard`）；不含反覆對抗審查、程式碼變更風險掃描、linter 版本追蹤、CI 狀態回拉、跨專案核心架構圖等進階治理功能。
  
  ★**移除的是入口不是全部程式碼**★——被砍的是那些功能對應的頂層指令入口；它們共用的底層程式碼（helper 函式）有些仍留在檔案裡供保留指令呼叫，**別誤讀成「功能其實還在,只是沒寫在說明裡」**。凡是這份 README 或技能說明沒教的操作，一律視為沒有。
  
-+## 選配:把圖譜同步閘掛到你的專案(opt-in,安裝器不代勞)
++## 選配:把架構圖同步閘掛到你的專案(opt-in,安裝器不代勞)
 +
-+本包的 `hooks/` 目錄帶了兩支 git hook:**pre-commit**(擋「改了 code 卻不同步圖譜」的 commit)與 **post-commit**(有人用後門跳過時留一筆痕)。★安裝器刻意不裝、不設定——要用是你自己掛★,不掛也完全不影響讀圖譜。
++本包的 `hooks/` 目錄帶了兩支 git hook:**pre-commit**(擋「改了 code 卻不同步架構圖」的 commit)與 **post-commit**(有人用後門跳過時留一筆痕)。★安裝器刻意不裝、不設定——要用是你自己掛★,不掛也完全不影響讀架構圖。
 +
 +**三步接法**(在你想掛的那個專案根目錄下):
 +
@@ -1495,14 +1495,14 @@ index 9ace76b..780214f 100644
 +cd /path/to/你的專案
 +git config core.hooksPath ~/Citrus_Lumos/hooks
 +
-+# ③ 驗證:隨便改一個 code 檔 commit,應該被擋(或看到圖譜同步提示)
++# ③ 驗證:隨便改一個 code 檔 commit,應該被擋(或看到架構圖同步提示)
 +```
 +
 +想讓**全隊**都吃到閘,改用「入 repo」變體:把 `~/Citrus_Lumos/hooks/*` 複製進專案的 `scripts/hooks/`、commit 進版控,然後每人各跑一次 `git config core.hooksPath scripts/hooks`(相對路徑)。
 +
 +**掛之前要知道的五件事**:
 +
-+1. **沒圖譜=沉睡**。專案裡還沒有 `docs/*-knowledge/` 圖譜目錄之前,pre-commit 是**完全靜默的 no-op**——這是設計不是壞掉。第一批節點建出來之後閘才醒。
++1. **沒架構圖=沉睡**。專案裡還沒有 `docs/*-knowledge/` 架構圖目錄之前,pre-commit 是**完全靜默的 no-op**——這是設計不是壞掉。第一批節點建出來之後閘才醒。
 +2. **hooksPath 是排他的**。`core.hooksPath` 一設,該專案 `.git/hooks/` 裡**原有的 hooks 全部停用**(git 不會合併兩邊)。專案本來就有 husky/自家 hooks 的話,別直接用上面的接法——把本包兩支 hook 的內容合併進你既有的 hooks 才對。
 +3. **精簡版沒有 pre-push 閘**。完整版還有一道 push 前的硬擋,本包刻意不帶;這兩支只管 commit 面。
 +4. **後門存在且會留痕**。`git commit --no-verify` 可跳過 pre-commit(業界標準做法),但 post-commit 永遠會跑、會把這筆 bypass 記下來——跳得過,躲不掉帳。
@@ -1511,8 +1511,8 @@ index 9ace76b..780214f 100644
  ## 不要跑哪些
  
 -- **不要跑**完整版 `scripts/` 目錄下的 `install-hooks.sh`——那是完整版的 git hooks 安裝腳本，本精簡版刻意不裝任何 hook。
-+- **不要跑**完整版 `scripts/` 目錄下的 `install-hooks.sh`——那是完整版的 git hooks 安裝腳本，本精簡版的安裝器刻意不裝任何 hook(要掛圖譜同步閘,走上面〈選配〉那節的 opt-in 接法)。
- - **不要**因為看到專案自己的 `CLAUDE.md` 要你去 clone 完整版 lumos-toolchain、執行它的 `install.sh` 就照做——那是另一支功能完整、會動專案層（注入圖譜規則、設定 git hooks）的安裝流程，跟這份精簡版無關，也不是本包想讓你走的路。
++- **不要跑**完整版 `scripts/` 目錄下的 `install-hooks.sh`——那是完整版的 git hooks 安裝腳本，本精簡版的安裝器刻意不裝任何 hook(要掛架構圖同步閘,走上面〈選配〉那節的 opt-in 接法)。
+ - **不要**因為看到專案自己的 `CLAUDE.md` 要你去 clone 完整版 lumos-toolchain、執行它的 `install.sh` 就照做——那是另一支功能完整、會動專案層（注入架構圖規則、設定 git hooks）的安裝流程，跟這份精簡版無關，也不是本包想讓你走的路。
  
  **誠實的話講在前面**：這份 README 的建議壓不住專案自己的 `CLAUDE.md`——那份文件的指示優先級更高，是 Claude Code 在該專案裡實際遵循的規則來源。本 README 只能**降低**你被指去跑完整版安裝流程的機率，不能保證一定不會發生。看到衝突時，先想一下「這個指示是不是在叫我裝一套比我手上這份更完整的東西」，多一分警覺就好。
  
@@ -1554,9 +1554,9 @@ index 0000000..9930080
 +#
 +# 設計理由:
 +#   L2 pre-commit 硬擋有合法後門 `--no-verify`,但走後門零痕跡——bypass 率
-+#   是「不更新圖譜比更新圖譜更難」這個核心宣稱唯一沒被量測的數字。
++#   是「不更新架構圖比更新架構圖更難」這個核心宣稱唯一沒被量測的數字。
 +#   關鍵事實:--no-verify 只跳過 pre-commit / commit-msg,post-commit 永遠會跑,
-+#   所以本 hook 是天然的偵測點:凡「有 code 異動但無圖譜 .md」的 commit 能落地,
++#   所以本 hook 是天然的偵測點:凡「有 code 異動但無架構圖 .md」的 commit 能落地,
 +#   必然繞過了 L2 → append 結構化事件到 docs/.bypass-log.jsonl。
 +#
 +#   只記錄、不阻擋、不問理由——bypass 本來就是被認可的逃生口,這裡要的是
@@ -1573,7 +1573,7 @@ index 0000000..9930080
 +REPO_ROOT="$(git rev-parse --show-toplevel)"
 +cd "$REPO_ROOT" || exit 0
 +
-+# 找圖譜目錄 (對齊 pre-commit)
++# 找架構圖目錄 (對齊 pre-commit)
 +GRAPH_ROOT=""
 +if [[ -d docs ]]; then
 +  for d in docs/*-knowledge; do
@@ -1583,11 +1583,11 @@ index 0000000..9930080
 +fi
 +[[ -z "$GRAPH_ROOT" ]] && exit 0
 +
-+# 判斷「這份檔案清單裡有沒有圖譜目錄底下的 .md」
++# 判斷「這份檔案清單裡有沒有架構圖目錄底下的 .md」
 +# ★不要用 grep -qE "^${GRAPH_ROOT}/.*\.md$" 做這件事★(2026-08-11 終審複審):
 +# GRAPH_ROOT 是從檔案系統掃出來的目錄名,可能含 ERE 元字元——`docs/c++-knowledge`
 +# 對一個 C++ 專案完全正常。內插進 ERE 後 grep 以 rc=2(語法錯誤)收場,而 `if`
-+# 只看「非 0」→ 一律讀成「沒有圖譜 .md」。後果:pre-commit 的 Gate 3 永遠擋、
++# 只看「非 0」→ 一律讀成「沒有架構圖 .md」。後果:pre-commit 的 Gate 3 永遠擋、
 +# post-commit 把每一筆 commit 都記成 bypass,而且兩者都沒有任何錯誤訊息。
 +# 改用 bash 樣式比對:左邊是資料,右邊只有 `/*.md` 是樣式,`"$GRAPH_ROOT"` 加了
 +# 引號就是字面比對——不需要跳脫,也不必外掛 sed(hook 執行時的 PATH 可能很小)。
@@ -1622,7 +1622,7 @@ index 0000000..9930080
 +    # 本 hook 自己所在的目錄:精簡版唯一會被安裝器放進專案的東西。
 +    # ★精確白名單,非 scripts/* 整夾★——專案自有 scripts/foo.py 仍照擋。
 +    # ★源 repo 守門★:在 lumos 來源 repo 本身(有 skills/lumos-project-notes),
-+    # 這些檔=產品碼,豁免不適用(否則源 repo 自家改 hook 不帶圖譜會靜默放行)。
++    # 這些檔=產品碼,豁免不適用(否則源 repo 自家改 hook 不帶架構圖會靜默放行)。
 +    scripts/hooks/*)
 +      [[ -d "skills/lumos-project-notes" ]] && return 1   # 源 repo:不豁免
 +      return 0;;
@@ -1641,7 +1641,7 @@ index 0000000..9930080
 +# 沒 code → 本來就會被 pre-commit 放行,不是 bypass
 +[[ ${#src_files[@]} -eq 0 ]] && exit 0
 +
-+# 有圖譜 .md 一起 commit → 正常通過 L2,不是 bypass
++# 有架構圖 .md 一起 commit → 正常通過 L2,不是 bypass
 +if has_graph_md "$CHANGED"; then
 +  exit 0
 +fi
@@ -1673,9 +1673,9 @@ index 0000000..9930080
 +
 +{
 +  echo ""
-+  echo "📋 L2 bypass 已留痕 (docs/.bypass-log.jsonl): ${#src_files[@]} 個 code 檔未帶圖譜異動"
++  echo "📋 L2 bypass 已留痕 (docs/.bypass-log.jsonl): ${#src_files[@]} 個 code 檔未帶架構圖異動"
 +  echo "   檢視 bypass 率: wc -l docs/.bypass-log.jsonl"
-+  echo "   若此 commit 其實該補圖譜,趁記憶新鮮補上"
++  echo "   若此 commit 其實該補架構圖,趁記憶新鮮補上"
 +  echo ""
 +} >&2
 +
@@ -1687,7 +1687,7 @@ index 0000000..e956a80
 +++ b/slim/hooks/pre-commit
 @@ -0,0 +1,161 @@
 +#!/usr/bin/env bash
-+# Git pre-commit hook — 圖譜同步硬擋 (L2)
++# Git pre-commit hook — 架構圖同步硬擋 (L2)
 +#
 +# ★精簡版★:自完整版 scripts/hooks/pre-commit 移植,三處改動——
 +#   ① 移除 `lumos cochange check --staged` advisory 段:精簡版未交付
@@ -1721,7 +1721,7 @@ index 0000000..e956a80
 +REPO_ROOT="$(git rev-parse --show-toplevel)"
 +cd "$REPO_ROOT" || exit 0
 +
-+# 找圖譜目錄 (docs/{slug}-knowledge/)
++# 找架構圖目錄 (docs/{slug}-knowledge/)
 +GRAPH_ROOT=""
 +if [[ -d docs ]]; then
 +  for d in docs/*-knowledge; do
@@ -1730,16 +1730,16 @@ index 0000000..e956a80
 +  [[ -z "$GRAPH_ROOT" && -d docs/knowledge ]] && GRAPH_ROOT="docs/knowledge"
 +fi
 +
-+# Gate 0: 圖譜不存在 → 放行
-+# ★精簡版預期行為★:install.py 不 scaffold 圖譜,所以在第一批節點建出來之前,
++# Gate 0: 架構圖不存在 → 放行
++# ★精簡版預期行為★:install.py 不 scaffold 架構圖,所以在第一批節點建出來之前,
 +# 即使 hooksPath 開著本 hook 也是完全靜默的 no-op。這是設計不是壞掉。
 +[[ -z "$GRAPH_ROOT" ]] && exit 0
 +
-+# 判斷「這份檔案清單裡有沒有圖譜目錄底下的 .md」
++# 判斷「這份檔案清單裡有沒有架構圖目錄底下的 .md」
 +# ★不要用 grep -qE "^${GRAPH_ROOT}/.*\.md$" 做這件事★(2026-08-11 終審複審):
 +# GRAPH_ROOT 是從檔案系統掃出來的目錄名,可能含 ERE 元字元——`docs/c++-knowledge`
 +# 對一個 C++ 專案完全正常。內插進 ERE 後 grep 以 rc=2(語法錯誤)收場,而 `if`
-+# 只看「非 0」→ 一律讀成「沒有圖譜 .md」。後果:pre-commit 的 Gate 3 永遠擋、
++# 只看「非 0」→ 一律讀成「沒有架構圖 .md」。後果:pre-commit 的 Gate 3 永遠擋、
 +# post-commit 把每一筆 commit 都記成 bypass,而且兩者都沒有任何錯誤訊息。
 +# 改用 bash 樣式比對:左邊是資料,右邊只有 `/*.md` 是樣式,`"$GRAPH_ROOT"` 加了
 +# 引號就是字面比對——不需要跳脫,也不必外掛 sed(hook 執行時的 PATH 可能很小)。
@@ -1756,12 +1756,12 @@ index 0000000..e956a80
 +
 +# 拿最終 staged (git 在 pre-commit 時 staged 已確定,-a/-am/path 都涵蓋)
 +# core.quotePath=off: 避免 git 對中文/non-ASCII 路徑加雙引號 ("docs/.../節點.md"),
-+# 否則下面 has_graph_md 的 "${GRAPH_ROOT}/*.md" 比對不到 → 圖譜檔已 staged 仍誤判
++# 否則下面 has_graph_md 的 "${GRAPH_ROOT}/*.md" 比對不到 → 架構圖檔已 staged 仍誤判
 +# 為未同步擋下
 +STAGED="$(git -c core.quotePath=off diff --cached --name-only)"
 +[[ -z "$STAGED" ]] && exit 0  # 空 commit 不擋
 +
-+# Gate 1: 圖譜污染指紋
++# Gate 1: 架構圖污染指紋
 +# 攔 notesmd-cli `frontmatter --edit` 的副作用: 日期欄位加引號 (Obsidian property
 +# 型別 date→text 靜默損傷,且通常伴隨整篇 frontmatter 鍵序重排)。
 +# 必須放在 Gate 2 之前 — 污染 commit 是 docs-only,Gate 2 的 code 判定對它直接放行。
@@ -1771,7 +1771,7 @@ index 0000000..e956a80
 +  if [[ -n "$polluted" ]]; then
 +    {
 +      echo ""
-+      echo "🚫 圖譜污染指紋: frontmatter 日期欄位被加引號 (典型來源 = notesmd-cli frontmatter --edit)"
++      echo "🚫 架構圖污染指紋: frontmatter 日期欄位被加引號 (典型來源 = notesmd-cli frontmatter --edit)"
 +      echo "   Obsidian property 型別會從 date 變 text,且通常伴隨整篇鍵序重排 — diff 不可審"
 +      echo ""
 +      echo "$polluted" | head -5 | sed 's/^/   /'
@@ -1797,7 +1797,7 @@ index 0000000..e956a80
 +    # 本 hook 自己所在的目錄:精簡版唯一會被安裝器放進專案的東西。
 +    # ★精確白名單,非 scripts/* 整夾★——專案自有 scripts/foo.py 仍照擋。
 +    # ★源 repo 守門★:在 lumos 來源 repo 本身(有 skills/lumos-project-notes),
-+    # 這些檔=產品碼,豁免不適用(否則源 repo 自家改 hook 不帶圖譜會靜默放行)。
++    # 這些檔=產品碼,豁免不適用(否則源 repo 自家改 hook 不帶架構圖會靜默放行)。
 +    scripts/hooks/*)
 +      [[ -d "skills/lumos-project-notes" ]] && return 1   # 源 repo:不豁免
 +      return 0;;
@@ -1816,7 +1816,7 @@ index 0000000..e956a80
 +# Gate 2: 沒 code → 放行
 +[[ ${#src_files[@]} -eq 0 ]] && exit 0
 +
-+# Gate 3: 有圖譜 .md staged → 放行
++# Gate 3: 有架構圖 .md staged → 放行
 +if has_graph_md "$STAGED"; then
 +  exit 0
 +fi
@@ -1824,7 +1824,7 @@ index 0000000..e956a80
 +# ── 印警告並擋 ──
 +{
 +  echo ""
-+  echo "🚫 Pre-commit graph sync gate: commit 改了原始碼但沒同步圖譜"
++  echo "🚫 Pre-commit graph sync gate: commit 改了原始碼但沒同步架構圖"
 +  echo ""
 +  echo "Staged code files (${#src_files[@]}):"
 +  for f in "${src_files[@]:0:10}"; do echo "   • $f"; done
@@ -1832,7 +1832,7 @@ index 0000000..e956a80
 +    echo "   ... 還有 $(( ${#src_files[@]} - 10 )) 個"
 +  fi
 +  echo ""
-+  echo "圖譜目錄 ${GRAPH_ROOT}/ 內無任何 .md 被 staged。"
++  echo "架構圖目錄 ${GRAPH_ROOT}/ 內無任何 .md 被 staged。"
 +  echo ""
 +  echo "依 lumos-project-notes skill,功能異動必須同步更新:"
 +  echo "   • Systems/*.md  受影響的 system note"
@@ -1840,8 +1840,8 @@ index 0000000..e956a80
 +  echo "   • Issues/*.md  相關 issue 狀態"
 +  echo ""
 +  echo "請選一條繼續:"
-+  echo "   1. 更新圖譜後 git add docs/...-knowledge/...md 再重試 commit"
-+  echo "   2. 確認此 commit 不需圖譜 (typo/格式/註解/WIP) → 加 --no-verify 跳過"
++  echo "   1. 更新架構圖後 git add docs/...-knowledge/...md 再重試 commit"
++  echo "   2. 確認此 commit 不需架構圖 (typo/格式/註解/WIP) → 加 --no-verify 跳過"
 +  echo "      例: git commit --no-verify -m 'fix: typo in PointService'"
 +  echo ""
 +} >&2

@@ -143,7 +143,7 @@ Compose 的重組效能(某 composable 每次父層重組都跟著重組 = 卡�
 | 受影響文件 | 需同步什麼 |
 |---|---|
 | `skills/lumos-project-notes/SKILL.md` | 指令表補 `compose-metrics`(vault-free、baseline+delta、需專案先 build metrics) |
-| `docs/methodology/圖譜即合約.md` | pitfalls 列補「Compose 重組效能(compose-metrics)——吃編譯器 metrics baseline+delta、補 SARIF 蓋不到的偏科坑」 |
+| `docs/methodology/架構圖即合約.md` | pitfalls 列補「Compose 重組效能(compose-metrics)——吃編譯器 metrics baseline+delta、補 SARIF 蓋不到的偏科坑」 |
 | `Projects/pitfalls-lint-integration_計劃` | 偏科層新支線紀錄 + verified_by 回指 |
 
 ## 天花板 / 誠實邊界

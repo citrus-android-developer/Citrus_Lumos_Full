@@ -104,7 +104,7 @@ record 解析(寫側):三態白名單過/壞狀態 rc2/名含非法字元 rc2/�
 - **第三空態統一(major,C-F2)**:撤「空字串=未帶」特例,帶旗標過濾後空列表一律 rc2。
 - **ledger 與 gate 同源+警告區列帳(major,C-F3)**:記帳不蒸發。
 - **讀側型別防禦(major,Codex)**:損壞 JSONL → rc2 非 traceback。
-- **summary KEY 行舊停止條件消歧(major,Codex:圖譜即真相)**。
+- **summary KEY 行舊停止條件消歧(major,Codex:架構圖即真相)**。
 - **檢查時機本體明講(minor,B-F4)**/**新生 cluster 數+名格式(minor,C-F4)**/**舊 ✗ 訊息與 help 同步義務+--gate no-op 明訂(minor,Codex+C-F5)**。
 
 **r3（2026-07-16,panel delta-scoped,cap 末輪;B 席升 opus）**:canary a✓(不可執行慣例——note 前綴解析,邏輯反了 round 欄就在手上,完美)b✗(未定義快取檔,**opus 亦漏=該席三連 missed**——深鏡頭審計與表面植入偵測是兩軸的系統性觀察,三輪皆交最深 findings 皆漏 canary)c✓(無效輪防灌帳例外 vs 完全豁免互打,精準)。**caught 2/3 仍無效輪;三輪無一有效輪**。Codex 覆核:否決維持但殘餘收窄(六項判已解決)。存活 7 條 distinct 折 v4(全確定性修法):

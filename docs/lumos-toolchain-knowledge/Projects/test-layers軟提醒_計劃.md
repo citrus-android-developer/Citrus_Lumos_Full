@@ -10,7 +10,7 @@ related:
   - "[[Systems/pitfalls-lint-adapter]]"
   - "[[Systems/pitfalls-code-loop]]"
   - "[[test-layers軟提醒_實作計畫]]"
-  - "[[Android側UI測試綁圖譜工作流_計劃]]"
+  - "[[Android側UI測試綁架構圖工作流_計劃]]"
 summary: |-
   KEY:問題=消費專案的測試套件 lumos 明文不越俎(pre-push 測試閘僅源 repo),E2E/Playwright/maestro 等慢測試層該硬在 CI 合併點——但「push 前忘了跑/忘了補」這個最便宜的破口目前零提醒
   KEY:方案=宣告+復用偵測+advisory 三件套——①專案 opt-in 宣告 .lumos/test-layers.json(棧 key→{layer,cmd,when},無檔靜默跳過)②棧偵測復用 pitfalls --diff 既有「副檔名→棧 key」對應(零新偵測碼)③pre-push 印 tier 後追加軟提醒段(恆 rc0,樣板同 co-change/Check H 的 advisory 型)④tier=high 時該宣告餵 code-loop 審查員當一個鏡頭(「此改動需不需要補/跑宣告的測試層?」)

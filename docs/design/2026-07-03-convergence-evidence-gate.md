@@ -15,7 +15,7 @@ design-loop 的收斂判定從「連 K 輪 caught+乾淨」的純輪次計數,�
 | 方案 | 內容 | 判定 |
 |---|---|---|
 | **A(選)** | 判準增強落在既有 `loop status` 上(`--gate` 旗標,fail-closed=證據缺失即擋、不猜)+ 記錄面 `canary record --findings N` 給枯竭訊號 + cross_audit 定界修復與解析硬化 + reject 語意改「驗證存活才計」 | **選**:每道錨都是確定性核對(rc/字串比對/整數單調性),零權重參數;複用已落地的 refcheck(`scripts/lumos:3860`);向後相容(不帶 `--gate` 行為分毫不變);一次回應 gap 的判準本體+複核根因兩半 |
-| B(否決) | 統計收斂模型:findings 離散度指標、verdict 信心權重、加權投票 | 否決:權重/閾值全是拍腦袋參數,無法機械驗證「權重對不對」,違反 mechanical-not-motivational(圖譜即合約設計原則 2);把「一致≠正確」的問題換成「權重≠正確」,沒有消滅拍腦袋、只是搬家 |
+| B(否決) | 統計收斂模型:findings 離散度指標、verdict 信心權重、加權投票 | 否決:權重/閾值全是拍腦袋參數,無法機械驗證「權重對不對」,違反 mechanical-not-motivational(架構圖即合約設計原則 2);把「一致≠正確」的問題換成「權重≠正確」,沒有消滅拍腦袋、只是搬家 |
 | C(否決) | 只修 cross_audit 定界(最小根因修) | 否決:只治複核端誤報,收斂判準本體(輪次算術=充分條件)不動,gap 主體「一致/自信擋不住系統性偏誤」未回應;但其內容全數併入 A 的組件 ③ |
 
 ## 前提與既驗事實(逐字查證,2026-07-03)
@@ -43,7 +43,7 @@ design-loop 的收斂判定從「連 K 輪 caught+乾淨」的純輪次計數,�
   - **G1 refcheck 錨**:對 `--spec` 跑與 refcheck 同一套抽取/核對邏輯,要求 0 missing、0 line_out_of_range;否則 gate fail 並列出壞宣稱。「說收斂的那份 spec,引用座標經機械核對」。(實作註:需先把 `cmd_refcheck` 的核對與列印拆開成可回傳 manifest 的 helper,見前提節;r1-F4)
   - **G2 發現枯竭錨**:tail-K 輪每筆必有 `findings` 欄位,且序列**單調不增、末輪 ≤1、末步收斂**(即:末輪=0,或**末步嚴格下降**——末輪 < 倒數第二輪;r1-F3 + r2-F4:原「窗內至少一步嚴格下降」在 K>2 時與散文發散、會放行 `[2,1,1]` 尾端涓流,改以末步為準後散文與機械定義對所有 K 一致)。缺欄位或不枯竭 → gate fail(訊息明示「用 --findings 記錄」,**fail-closed**:舊格式紀錄不足以支撐 gate 收斂)。**K=1 退化(r4-F2;cross-r2-qF2 分 case 形式化)**:`--need 1` 為合法輸入(`scripts/lumos:1525` `need=max(1,need)`)。G2 枯竭判準的完整分段定義(實作以此為準):**K=1 → findings[-1]==0;K≥2 → 序列單調不增 且 findings[-1]≤1 且(findings[-1]==0 或 findings[-1]<findings[-2])**——K=1 無「倒數第二輪」、無枯竭趨勢可言,退化為單分支,誠實記明而非禁用;實作先判窗長、不得直取 rounds[-2]。**欄位互證子核對(r4-F3)**:tail-K 每筆的 severity 與 findings 需相容——severity=clean ⇒ findings=0、severity=minor ⇒ findings≥1,矛盾 → gate fail(擋「severity=minor 卻誤記 findings=0」的一次漂白;major/blocker 輪本就被 streak 擋、不在此列)。收斂語意從「都只剩 minor」升級為「新發現真的在枯竭」——「連 K 輪各挖 5 條 minor」與 `[1,1]` 穩態涓流皆不再算收斂;允許的殘餘是「收尾恰一條、且相對前輪在下降」——此散文句描述**有殘餘**分支;機械定義另含末輪=0 的無殘餘退化情形(trivial case,cross-r1-qF5),**以機械定義(括號內)為準**(r2-F4 對齊、r3-F4 下修:散文是機械定義的真子集,非逐字等價)。
   - rc:streak 達標且兩錨全過 → 0;任一不過 → 1(逐錨印 pass/fail 明細);參數錯(--gate 無 --spec、repo 解析失敗)→ 2。
-- **為何沒有「留痕完整」錨(r1-F2,辯方維持 major 後拆除)**:gap 建議的「canary 留痕」核對在現有機械下已是 K-streak 的邏輯後果——`good(r)` 對 kind/severity 的要求比「非空」更嚴(`scripts/lumos:1544-1545`),token 由 `cmd_canary` 恆自動鑄非空(`scripts/lumos:1499-1500`),且 `.canary-log.jsonl` 的寫入路徑僅 `cmd_canary` append(`scripts/lumos:1507-1510`;圖譜 canary-audit 節點記其為 log 來源,`docs/lumos-toolchain-knowledge/Systems/canary-audit.md:66`)——{streak 通過} ⊆ {留痕完整} 恆真,另設此錨是零判別力的裝飾。誠實拆除、不湊「三錨」門面;「留痕完整由 streak 涵蓋」以歸因回歸測試固定(測試案 12)。
+- **為何沒有「留痕完整」錨(r1-F2,辯方維持 major 後拆除)**:gap 建議的「canary 留痕」核對在現有機械下已是 K-streak 的邏輯後果——`good(r)` 對 kind/severity 的要求比「非空」更嚴(`scripts/lumos:1544-1545`),token 由 `cmd_canary` 恆自動鑄非空(`scripts/lumos:1499-1500`),且 `.canary-log.jsonl` 的寫入路徑僅 `cmd_canary` append(`scripts/lumos:1507-1510`;架構圖 canary-audit 節點記其為 log 來源,`docs/lumos-toolchain-knowledge/Systems/canary-audit.md:66`)——{streak 通過} ⊆ {留痕完整} 恆真,另設此錨是零判別力的裝飾。誠實拆除、不湊「三錨」門面;「留痕完整由 streak 涵蓋」以歸因回歸測試固定(測試案 12)。
 - **為何 K-streak 不整個退役**:輪次紀律(caught 連 K)量的是「審計員連 K 輪醒著」,發現枯竭量的是「spec 真的被挖乾」——兩個正交訊號,單獨任一皆可繞(見誠實天花板 1),合取才有效。退役的是輪次算術的**充分性**,不是紀錄本身——這是 6/24 stall gap「地基退役、升級人核精神保留」的忠實落地。
 
 ### ③ cross_audit 定界 + 解析硬化(根因修,`governance/autonomous_loop/cross_audit.py`)
@@ -63,7 +63,7 @@ design-loop 的收斂判定從「連 K 輪 caught+乾淨」的純輪次計數,�
 
 ## 邊界 / 非目標(YAGNI)
 
-- ❌ **[test:] 綠燈錨不進 v1 gate**:design-loop 審的是**未實作的 spec**,不存在可跑的合約測試;gap 的「有 [test:] 者測試真跑綠」條件在本場景是空集。該錨屬「圖譜節點合約收斂」情境(doctor Check T 地盤),留 v2 誠實記明,不硬造。
+- ❌ **[test:] 綠燈錨不進 v1 gate**:design-loop 審的是**未實作的 spec**,不存在可跑的合約測試;gap 的「有 [test:] 者測試真跑綠」條件在本場景是空集。該錨屬「架構圖節點合約收斂」情境(doctor Check T 地盤),留 v2 誠實記明,不硬造。
 - ❌ **不做統計離散度模型**(方案 B):單調不增+末輪 ≤1 是可機械判定的最簡枯竭形;曲線擬合/方差留給有數據之後。
 - ❌ **不動 canary a/b/c、judge、辯方機制**:三者原樣;本 spec 只動「收斂怎麼算」與「複核怎麼計票」。
 - ❌ **不做 cross_audit 結構化輸出(JSON mode)**:qwen JSON 相容性未驗;sentinel+末行嚴格解析已覆蓋根因;v2 候選。
@@ -116,8 +116,8 @@ design-loop 的收斂判定從「連 K 輪 caught+乾淨」的純輪次計數,�
 
 | 受影響文件 | 需同步什麼 |
 |---|---|
-| `docs/methodology/圖譜即合約.md` | 「設計前審計 loop」節:收斂判準從輪次計數升級為證據閘(輪次紀律 ∧ refcheck ∧ 發現枯竭;留痕完整為 streak 邏輯後果、不設空錨);「AI as auditor」原則補 cross 複核計票改「驗證存活才計」 |
-| `docs/methodology/圖譜即合約-對外論述.md` | 白話:「說收斂」不再是「連兩輪沒挖到大問題」,而是機器核對過——引用都真、留痕齊全、新發現真的枯竭;複核喊「有大問題」要驗過還站著才算數 |
+| `docs/methodology/架構圖即合約.md` | 「設計前審計 loop」節:收斂判準從輪次計數升級為證據閘(輪次紀律 ∧ refcheck ∧ 發現枯竭;留痕完整為 streak 邏輯後果、不設空錨);「AI as auditor」原則補 cross 複核計票改「驗證存活才計」 |
+| `docs/methodology/架構圖即合約-對外論述.md` | 白話:「說收斂」不再是「連兩輪沒挖到大問題」,而是機器核對過——引用都真、留痕齊全、新發現真的枯竭;複核喊「有大問題」要驗過還站著才算數 |
 | `skills/lumos-design-loop/SKILL.md` | 手動 loop 步驟同步:每輪記錄補 `--findings N`;收斂查詢改 `loop status --gate --spec … --repo …` |
 | `governance/autonomous_loop/orchestrator-prompt.md` | §2 步驟 6(--findings)、步驟 8(--gate);§2.5c 全段改寫(reject 語意/unanchored/parse_fallback) |
 | `lumos-project-notes` skill | 指令速查補 `loop status --gate` 與 `canary record --findings` |

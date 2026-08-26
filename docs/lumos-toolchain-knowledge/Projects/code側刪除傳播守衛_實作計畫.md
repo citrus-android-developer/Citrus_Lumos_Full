@@ -10,10 +10,10 @@ tags:
 related:
   - "[[code側刪除傳播守衛_計劃]]"
 summary: |-
-  FLOW:Task1 LINK_KEYS 常數→Task2 diff 解析抽 token→Task3 staged-index 信心分檔→Task4 vault 掃描+輸出→Task5 S2 純連結判定→Task6 delguard 子命令組裝(deadline/fail-open)→Task7 pre-commit Gate DG 掛載→Task8 S3 問句進 skill+圖譜收尾
+  FLOW:Task1 LINK_KEYS 常數→Task2 diff 解析抽 token→Task3 staged-index 信心分檔→Task4 vault 掃描+輸出→Task5 S2 純連結判定→Task6 delguard 子命令組裝(deadline/fail-open)→Task7 pre-commit Gate DG 掛載→Task8 S3 問句進 skill+架構圖收尾
   KEY:spec 單源=[[code側刪除傳播守衛_計劃]](design-loop 已收斂,golden@governance/golden/code側刪除傳播守衛/);本節點只管「怎麼落地」,行為合約以 spec 為準
   KEY:★執行模式=subagent-driven★(每 task 派乾淨 subagent,task 間主對話審查);TDD 硬性:每 task 先紅再綠再 commit
-  KEY:★每個 commit 都動 scripts/lumos(code)→pre-commit Gate 3 要求同 commit 帶圖譜 .md=勾本節點該 task checkbox★
+  KEY:★每個 commit 都動 scripts/lumos(code)→pre-commit Gate 3 要求同 commit 帶架構圖 .md=勾本節點該 task checkbox★
   KEY:先驗值(replay 校準後以數據取代)=token cap 40/輸出 top-10/deadline 2.0s(env LUMOS_DELGUARD_DEADLINE 可覆寫,測試靠它注入超時)
   TEST:python3 scripts/test_lumos.py 全跑;新增 t_delguard()+_mk_delguard_repo() fixture,斷言風格沿 check(name,cond,detail)
 verified_by:
@@ -21,7 +21,7 @@ verified_by:
 ---
 # code側刪除傳播守衛_實作計畫
 
-> **For agentic workers:** REQUIRED SUB-SKILL — `superpowers:subagent-driven-development`（已裁定）。Steps 用 checkbox 追蹤；**每個 task 的 commit 必須同時勾本節點對應 checkbox（pre-commit Gate 3 硬擋 code 無圖譜 commit）**。
+> **For agentic workers:** REQUIRED SUB-SKILL — `superpowers:subagent-driven-development`（已裁定）。Steps 用 checkbox 追蹤；**每個 task 的 commit 必須同時勾本節點對應 checkbox（pre-commit Gate 3 硬擋 code 無架構圖 commit）**。
 
 **Goal:** 把已收斂的 [[code側刪除傳播守衛_計劃]] v1（S1 被刪符號偵測＋S2 純連結判定＋S3 問句）落成 `lumos delguard` 子命令＋pre-commit Gate DG（advisory），TDD 全綠。
 
@@ -360,7 +360,7 @@ def _delguard_purelink(diff_lines):
 **Files:** Modify `scripts/lumos`（cmd 函式＋argparse 註冊＋dispatch 分支——dispatch 寫法照 cochange 的分支抄）；Test `scripts/test_lumos.py`
 **Interfaces / Produces:** CLI `lumos delguard --staged [--json] [--repo R]`；恆 rc0（argparse 錯誤除外）。輸出（stdout）：
 ```
-⚠ delguard: code 側刪除傳播——N 個被刪符號在圖譜仍被提及(高信心 H/低信心 L)
+⚠ delguard: code 側刪除傳播——N 個被刪符號在架構圖仍被提及(高信心 H/低信心 L)
   [high] Systems/憑證.md:5 「登入時 refreshPaywayCredentials 撈一次憑證。」 ← refreshPaywayCredentials
   ...(top-10 逐條;其餘一行統計「另有 K 處命中(低信心/超額),--json 看全量」)
   ⚠ 假同步嫌疑: Systems/憑證.md 本次只掛連結(純連結編輯)但內文仍講被刪符號
@@ -446,7 +446,7 @@ def cmd_delguard_check(repo=None, as_json=False):
         if not hits:
             return 0
         hi = sum(1 for h in hits if h["conf"] == "high")
-        print(f"⚠ delguard: code 側刪除傳播——{len(tokens)} 個被刪符號在圖譜仍被提及(高信心 {hi}/低信心 {len(hits)-hi})")
+        print(f"⚠ delguard: code 側刪除傳播——{len(tokens)} 個被刪符號在架構圖仍被提及(高信心 {hi}/低信心 {len(hits)-hi})")
         for h in hits[:10]:  # DELGUARD_TOP_N
             print(f"  [{h['conf']}] {h['node']}:{h['line_no']} 「{h['line']}」 ← {','.join(h['tokens'])}")
         rest = len(hits) - min(len(hits), 10)
@@ -513,9 +513,9 @@ fi
 - [x] Step 4 跑綠＋手動煙霧：在 `_mk_delguard_repo` 產的 repo 裝 hook 實跑一次 commit，肉眼確認警告出現且 commit 成功（結果貼 PR/commit message）
 - [x] Step 5 commit＋勾 Task7 `feat(delguard): pre-commit Gate DG(advisory)+排除域對齊斷言`
 
-### Task 8：S3 問句進 skill 退場段＋圖譜收尾
+### Task 8：S3 問句進 skill 退場段＋架構圖收尾
 
-**Files:** Modify `skills/lumos-project-notes/SKILL.md`（「常見工作流」節後加退場段）；Modify spec 節點＋本節點（圖譜收尾）
+**Files:** Modify `skills/lumos-project-notes/SKILL.md`（「常見工作流」節後加退場段）；Modify spec 節點＋本節點（架構圖收尾）
 **Interfaces / Consumes:** 無 code。此 task 兌現 decision「advisory 版必須配 S3」的跨專案那一半（機械吐問句已由 Task 6 做掉）。
 
 - [x] Step 1 在 `skills/lumos-project-notes/SKILL.md` 的「常見工作流」節之後加：
@@ -529,9 +529,9 @@ fi
 ⚠ 新增一條 verified_by/related 連結**不算同步**。有裝 delguard（pre-commit Gate DG）的 repo，S1 命中時會機械吐這三問；沒裝的 repo 靠這段自律。
 ```
 
-- [x] Step 2 圖譜收尾（同一 commit）：spec 節點 `lumos set Projects/code側刪除傳播守衛_計劃 status doing` 改 `done` 前先確認：待辦剩餘項（誤報帳格式、存量另案、v2 死碼判定）搬清楚＝留待辦不擋 done？——**不改 done**，改 `lumos set ... updated <日期>`＋body 待辦勾 S3 落點項、註「已裁定 skill 退場段（2026-08-10 Enzo）」；本實作計畫節點 `status` → `done`；建 `Verification/<日期>_delguard落地`（`plan_refs` 回指 spec＋本節點，記 t_delguard 全綠證據），`lumos append` 進兩節點 `verified_by`。
+- [x] Step 2 架構圖收尾（同一 commit）：spec 節點 `lumos set Projects/code側刪除傳播守衛_計劃 status doing` 改 `done` 前先確認：待辦剩餘項（誤報帳格式、存量另案、v2 死碼判定）搬清楚＝留待辦不擋 done？——**不改 done**，改 `lumos set ... updated <日期>`＋body 待辦勾 S3 落點項、註「已裁定 skill 退場段（2026-08-10 Enzo）」；本實作計畫節點 `status` → `done`；建 `Verification/<日期>_delguard落地`（`plan_refs` 回指 spec＋本節點，記 t_delguard 全綠證據），`lumos append` 進兩節點 `verified_by`。
 - [x] Step 3 `lumos lint` 兩節點＋`lumos doctor` 全綠
-- [x] Step 4 commit＋勾 Task8 `feat(delguard): S3 問句入 skill 退場段+圖譜收尾`
+- [x] Step 4 commit＋勾 Task8 `feat(delguard): S3 問句入 skill 退場段+架構圖收尾`
 
 ---
 

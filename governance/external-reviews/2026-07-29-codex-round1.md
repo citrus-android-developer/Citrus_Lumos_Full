@@ -4,7 +4,7 @@
 
 Lumos 已不只是「單人治理實驗室」：CI、真實消費端評測、負結果處決、canary 模型分流，以及 code-loop 抓出測試空轉，都提供了先前缺少的實證。但它仍不是完整的組織級治理平台：CI 尚未成為 required check，語意同步仍未閉合，部分治理帳只有自報，autonomous dry-run 仍握有完整寫入權限。
 
-核對範圍：HEAD `3ffec02`、近 20 commits、當前程式與圖譜。我另實跑 SyntaxWarning 閘、`t_docs_command_count`（3/3）、`anchor verify`（5/5）。受唯讀環境限制，未重跑會建立暫存檔的全套測試；CI 紅→綠的 commit 時序可信，但我未取得 GitHub Actions 原始 run log，因此不把「3m15s／1588 全綠」當完全獨立第三方證據。
+核對範圍：HEAD `3ffec02`、近 20 commits、當前程式與架構圖。我另實跑 SyntaxWarning 閘、`t_docs_command_count`（3/3）、`anchor verify`（5/5）。受唯讀環境限制，未重跑會建立暫存檔的全套測試；CI 紅→綠的 commit 時序可信，但我未取得 GitHub Actions 原始 run log，因此不把「3m15s／1588 全綠」當完全獨立第三方證據。
 
 ## 1. 逐條回應簡報 ②③④
 
@@ -20,7 +20,7 @@ Lumos 已不只是「單人治理實驗室」：CI、真實消費端評測、負
 
 2. **Canary 定位：改口。**
 
-我原先把「降為注意力探針」寫成改進建議，不準確；那本來就是明文定位。圖譜稱它為「注意力下限」，[Systems/canary-audit.md:17](/Users/enzo/harness/lumos-toolchain/docs/lumos-toolchain-knowledge/Systems/canary-audit.md:17)，並清楚否認完整性與閉合驗證，[Systems/canary-audit.md:70](/Users/enzo/harness/lumos-toolchain/docs/lumos-toolchain-knowledge/Systems/canary-audit.md:70)；skill 也明載「抬 spec 質量、非保正確」，[skills/lumos-design-loop/SKILL.md:8](/Users/enzo/harness/lumos-toolchain/skills/lumos-design-loop/SKILL.md:8)。
+我原先把「降為注意力探針」寫成改進建議，不準確；那本來就是明文定位。架構圖稱它為「注意力下限」，[Systems/canary-audit.md:17](/Users/enzo/harness/lumos-toolchain/docs/lumos-toolchain-knowledge/Systems/canary-audit.md:17)，並清楚否認完整性與閉合驗證，[Systems/canary-audit.md:70](/Users/enzo/harness/lumos-toolchain/docs/lumos-toolchain-knowledge/Systems/canary-audit.md:70)；skill 也明載「抬 spec 質量、非保正確」，[skills/lumos-design-loop/SKILL.md:8](/Users/enzo/harness/lumos-toolchain/skills/lumos-design-loop/SKILL.md:8)。
 
 我撤回「canary 本身有自嗨成分」這個過寬判詞。較準確是：
 
@@ -32,15 +32,15 @@ Lumos 已不只是「單人治理實驗室」：CI、真實消費端評測、負
 
 但對 Lumos 自身仍是有效批評：治理工具的關鍵行為也值得正式合約化，而目前大量機制宣稱仍未進最強鏈。維護方自己也把它列 backlog 首位，[Projects/Codex外審吸收_計劃.md:16](/Users/enzo/harness/lumos-toolchain/docs/lumos-toolchain-knowledge/Projects/Codex外審吸收_計劃.md:16)。
 
-4. **「衝突以圖譜為準」：維持原判，尚未落地。**
+4. **「衝突以架構圖為準」：維持原判，尚未落地。**
 
-維護方理論上已接受，但產品正文仍寫無條件「以圖譜為準」，[README.md:31](/Users/enzo/harness/lumos-toolchain/README.md:31)，吸收計劃也只說待修改，[Projects/Codex外審吸收_計劃.md:21](/Users/enzo/harness/lumos-toolchain/docs/lumos-toolchain-knowledge/Projects/Codex外審吸收_計劃.md:21)。
+維護方理論上已接受，但產品正文仍寫無條件「以架構圖為準」，[README.md:31](/Users/enzo/harness/lumos-toolchain/README.md:31)，吸收計劃也只說待修改，[Projects/Codex外審吸收_計劃.md:21](/Users/enzo/harness/lumos-toolchain/docs/lumos-toolchain-knowledge/Projects/Codex外審吸收_計劃.md:21)。
 
 因此我不先為「已接受」加完成分。應落成：
 
-- 圖譜：規範性意圖權威。
+- 架構圖：規範性意圖權威。
 - 執行／測試／production observation：行為事實。
-- 衝突：進 incident，不自動宣判圖譜為真。
+- 衝突：進 incident，不自動宣判架構圖為真。
 
 ### ③ 內部實證
 
@@ -115,7 +115,7 @@ CI 先行是正確排序。P0 已先做，不存在「拆檔 vs CI」的當前�
 
 | 面向 | 昨日 | 更新 | 主要驅動 |
 |---|---:|---:|---|
-| 問題定位與方法論 | 7.0 | **7.5** | 負結果處決與實證文化獲證；仍扣「圖譜必勝」尚未修及本 repo 合約低密度 |
+| 問題定位與方法論 | 7.0 | **7.5** | 負結果處決與實證文化獲證；仍扣「架構圖必勝」尚未修及本 repo 合約低密度 |
 | 架構與代碼品質 | 5.0 | **6.0** | CI、SyntaxWarning 閘、decisions lint、命令數守衛；仍扣 god module、非 hermetic 測試與 lint 未進全庫 doctor |
 | 治理機制設計 | 6.0 | **7.5** | canary 真有鑑別力、cluster 已 advisory、code-loop 抓真 bug／假測試；仍扣舊 capture gate、自報帳與語意同步未閉合 |
 | 可用性與採用門檻 | 4.0 | **5.5** | 文件修整、常駐 context -58%、移植性基準修正；仍有 49 命令、厚重 skills 及文件殘留漂移 |
@@ -128,7 +128,7 @@ CI 先行是正確排序。P0 已先做，不存在「拆檔 vs CI」的當前�
 - `actions/checkout@v4` 與 `setup-python@v5` 仍以可移動 tag 引用，[.github/workflows/ci.yml:14](/Users/enzo/harness/lumos-toolchain/.github/workflows/ci.yml:14)；GitHub 的安全建議是 full SHA pin。[GitHub Actions secure use](https://docs.github.com/en/actions/reference/security/secure-use)
 - decisions 結構守衛只在 `cmd_lint()`，[scripts/lumos:2042](/Users/enzo/harness/lumos-toolchain/scripts/lumos:2042)；CI 跑 `doctor --ci`，沒有逐節點呼叫它。因此同型壞 YAML 若繞過手動 `lumos lint`，仍可進 CI。
 - autonomous `--pr` 雖被擋，[governance/autonomous-loop.sh:11](/Users/enzo/harness/lumos-toolchain/governance/autonomous-loop.sh:11)，但 dry-run 仍用 `Read,Edit,Bash,Grep,Glob,Agent`＋`acceptEdits` 真跑，[同檔:74](/Users/enzo/harness/lumos-toolchain/governance/autonomous-loop.sh:74)，而 prompt 明說 dry-run 與 PR 過程完全相同，[orchestrator-prompt.md:12](/Users/enzo/harness/lumos-toolchain/governance/autonomous_loop/orchestrator-prompt.md:12)。所以 confused-deputy 的「寫 repo 能力」尚未真正移除，只是自動開 PR 被移除。
-- 英文 README 仍寫兩步 onboarding，[README.en.md:68](/Users/enzo/harness/lumos-toolchain/README.en.md:68)；方法論仍宣稱一個 git 歷史中未出現的 `graph-doctor.yml`，[圖譜即合約.md:611](/Users/enzo/harness/lumos-toolchain/docs/methodology/圖譜即合約.md:611)。文件漂移已改善，但未清完。
+- 英文 README 仍寫兩步 onboarding，[README.en.md:68](/Users/enzo/harness/lumos-toolchain/README.en.md:68)；方法論仍宣稱一個 git 歷史中未出現的 `graph-doctor.yml`，[架構圖即合約.md:611](/Users/enzo/harness/lumos-toolchain/docs/methodology/架構圖即合約.md:611)。文件漂移已改善，但未清完。
 - 安裝供應鏈仍未 pin clone，[get.sh:24](/Users/enzo/harness/lumos-toolchain/get.sh:24)，notesmd 仍下載後直接解壓執行、無 checksum，[fetch-notesmd.sh:32](/Users/enzo/harness/lumos-toolchain/scripts/fetch-notesmd.sh:32)。
 
 ## 3. 下一輪追問
@@ -158,7 +158,7 @@ testmap 已出現「殘餘 3.75 擋住，但真正出口仍是 cap＋人裁」�
 
 **第一個升級投資：可執行反事實驗證，也就是把 guard-kill 升成「準殺」。**
 
-目前任何非零 rc 或 timeout 都算 killed，[scripts/lumos:4089](/Users/enzo/harness/lumos-toolchain/scripts/lumos:4089)，圖譜也已承認可能只是碰巧 crash，[Systems/guard-kill.md:15](/Users/enzo/harness/lumos-toolchain/docs/lumos-toolchain-knowledge/Systems/guard-kill.md:15)。
+目前任何非零 rc 或 timeout 都算 killed，[scripts/lumos:4089](/Users/enzo/harness/lumos-toolchain/scripts/lumos:4089)，架構圖也已承認可能只是碰巧 crash，[Systems/guard-kill.md:15](/Users/enzo/harness/lumos-toolchain/docs/lumos-toolchain-knowledge/Systems/guard-kill.md:15)。
 
 升級目標應是：
 

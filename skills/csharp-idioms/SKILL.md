@@ -1,13 +1,13 @@
 ---
 name: csharp-idioms
-description: 寫或審 C#/.NET（ASP.NET Core Web API）代碼前必讀——通用不變量層的慣例規則：Task.WhenAll 並行、CancellationToken 全鏈、背景工作陷阱、DI 生命週期、資源釋放。每條附壞例→好例與分析器對照。框架選擇（EF Core/Dapper、DI 容器等）不在此裁——查該專案圖譜。
+description: 寫或審 C#/.NET（ASP.NET Core Web API）代碼前必讀——通用不變量層的慣例規則：Task.WhenAll 並行、CancellationToken 全鏈、背景工作陷阱、DI 生命週期、資源釋放。每條附壞例→好例與分析器對照。框架選擇（EF Core/Dapper、DI 容器等）不在此裁——查該專案架構圖。
 ---
 
 # C#/.NET 慣例（通用不變量層）
 
 **這份文件治的病**：AI 寫出「正確但笨」的 C#——串聯了本該 `Task.WhenAll` 的查詢、CancellationToken 半路斷鏈、`Task.Run` 捕獲請求物件、singleton 偷抱 scoped 依賴。這些不炸在測試上，炸在負載、關機、和使用者按下取消的那一刻。
 
-**分層原則**：只寫不隨框架選擇改變的原則。EF Core 還是 Dapper、哪家 DI 容器——查該專案的知識圖譜與 CLAUDE.md。
+**分層原則**：只寫不隨框架選擇改變的原則。EF Core 還是 Dapper、哪家 DI 容器——查該專案的知識架構圖與 CLAUDE.md。
 
 **機檢欄縮寫**：CA＝Roslyn 內建、AF＝AsyncFixer、VSTHRD＝VS Threading Analyzers、MA＝Meziantou、CS＝編譯器警告。⚠ 多數關鍵規則**預設不開或僅 suggestion**——見文末接線表，不升級嚴重度等於沒裝。
 
@@ -15,7 +15,7 @@ description: 寫或審 C#/.NET（ASP.NET Core Web API）代碼前必讀——通
 
 ## 一、並行與 async 紀律
 
-> **審查時機管道**:本文標「⚠ 不可機檢」的效能/適用性條目,其載重問已由 lumos 效能檢核機制在三時機自動推送(動手前 impact hook 注入/push 前 pitfalls advisory/終審 code-loop 鏡頭;內容源=lumos-toolchain 圖譜 Systems/效能檢核目錄,雙向同步義務)——可機檢條目歸 linter/analyzer,勿靠人記。
+> **審查時機管道**:本文標「⚠ 不可機檢」的效能/適用性條目,其載重問已由 lumos 效能檢核機制在三時機自動推送(動手前 impact hook 注入/push 前 pitfalls advisory/終審 code-loop 鏡頭;內容源=lumos-toolchain 架構圖 Systems/效能檢核目錄,雙向同步義務)——可機檢條目歸 linter/analyzer,勿靠人記。
 
 ### R1. 互不依賴的等待必須並行 ⚠ 不可機檢，頭號條款
 ```csharp
@@ -123,5 +123,5 @@ Roslyn 吐 SARIF（`dotnet build -p:ErrorLog=...`）宣告進 `.lumos/lint.json`
 
 1. 病最重的四條（R1 並行、R2 全鏈、R5 token、R7 背景捕獲）機檢缺席或只蓋一半——本文件＋審查鏡頭是主防線。
 2. R1 有真實反例教訓：看似無依賴的批次若共用 conn/tx，平行化是把 bug 換 bug——並行前先過「資源共享」檢查。
-3. 本文件不裁框架；與專案當地慣例衝突時當地贏，衝突記進該專案圖譜。
+3. 本文件不裁框架；與專案當地慣例衝突時當地贏，衝突記進該專案架構圖。
 4. 飛輪：每次人工糾正 AI 一個醜寫法，回填一條或一例。

@@ -11,12 +11,12 @@ related:
   - "[[Systems/design-loop]]"
 summary: |-
   KEY:code 階段三腿補強(呼應 design-loop d4 定位裁定:正確性歸下游,下游要配得上)——正確性/品質兩腿尚可,性能腿近空(pitfalls 只有 regex 提示,從未真量);2026 業界共識=審查從「用讀的」轉「用跑的」(agentic testing/execution-based verification)
-  KEY:[S1]真跑優先(紀律層規則,r1 折入後誠實降級)——(a)diff 經 `lumos impact --diff` 命中綁 [test:] 的星標合約節點時,放行前**只跑該綁定測試**(非全套)且須綠;此為紀律層規則非機械閘(家規同款);[test:]名→指令解析紀律=圖譜記載→棧慣例組指令→歧義退檔/模組/全套並留痕,不得靜默跳過;機械化=動 gate code 記 v2 另立計劃 (b)確定性驗證器(真跑測試/type checker/mutation)**不佔 canary 席不進輪有效**;參與方式=findings 依機械證實路由折入+以異質 finder 進 capture-recapture 帳(既有 `loop capture-counts` 原語);跑真碼樹沿 mutation 隔離 worktree 模式
-  KEY:[S2]查詢數斷言(消費端樣式)——「操作 X 最多 N 條查詢」寫成整合測試斷言,N+1 即紅;**落點=LandmarkMember 自己的圖譜節點**(框架特定歸專案圖譜,csharp-idioms 明文不裁框架、不落 Dapper 代碼;r1 blocker 折入),框架無關原則於落地時記入 pitfalls-code-loop summary(不進 linter精選目錄,r4 折入)
-  KEY:[S3]性質測試席(選配,r1/r2 修)——開席=兩機械錨(tier=high ∧ impact 命中星標合約節點)+人工核純函式+具推導源(docstring/型別/圖譜合約;缺源不開席防自證 oracle),預設關+開席理由留痕;產出:反例可重現性免爭,**性質合法性必過辯方**(辯方專問「這條性質真是該函式的業務合約嗎」,對文件/圖譜合約/呼叫端查證;高分=進辯方資格非免審,低分丟);金流級另掛 signoff 既有慣例
+  KEY:[S1]真跑優先(紀律層規則,r1 折入後誠實降級)——(a)diff 經 `lumos impact --diff` 命中綁 [test:] 的星標合約節點時,放行前**只跑該綁定測試**(非全套)且須綠;此為紀律層規則非機械閘(家規同款);[test:]名→指令解析紀律=架構圖記載→棧慣例組指令→歧義退檔/模組/全套並留痕,不得靜默跳過;機械化=動 gate code 記 v2 另立計劃 (b)確定性驗證器(真跑測試/type checker/mutation)**不佔 canary 席不進輪有效**;參與方式=findings 依機械證實路由折入+以異質 finder 進 capture-recapture 帳(既有 `loop capture-counts` 原語);跑真碼樹沿 mutation 隔離 worktree 模式
+  KEY:[S2]查詢數斷言(消費端樣式)——「操作 X 最多 N 條查詢」寫成整合測試斷言,N+1 即紅;**落點=LandmarkMember 自己的架構圖節點**(框架特定歸專案架構圖,csharp-idioms 明文不裁框架、不落 Dapper 代碼;r1 blocker 折入),框架無關原則於落地時記入 pitfalls-code-loop summary(不進 linter精選目錄,r4 折入)
+  KEY:[S3]性質測試席(選配,r1/r2 修)——開席=兩機械錨(tier=high ∧ impact 命中星標合約節點)+人工核純函式+具推導源(docstring/型別/架構圖合約;缺源不開席防自證 oracle),預設關+開席理由留痕;產出:反例可重現性免爭,**性質合法性必過辯方**(辯方專問「這條性質真是該函式的業務合約嗎」,對文件/架構圖合約/呼叫端查證;高分=進辯方資格非免審,低分丟);金流級另掛 signoff 既有慣例
   KEY:[S4]持續基準測試=不做(non-goal)——拒收理由立足工程成本(穩定硬體壓噪音);誠實缺口:CPU-bound/記憶體退化在 code 階段零覆蓋,S2 只接查詢數這一種訊號(第一根拐杖非補齊);線上分桶告警=消費端建議待辦**非既存安全網**(r1 折入:原文誤植為已存在)
   KEY:[S5]跨家族比重提升(使用者指示,r2 大修)——①辯方預設 Codex(兩 loop,成本中性替換=d4 合規)②雙 Codex 角色**僅 code-loop tier=high**(帶餌 finder 佔 W+無餌否決席外掛不佔 W;否決席 findings 同池進辯方/存活 max/重疊帳,防紙上角色);design-loop 一席不加(d4 前置加重一律拒)③≥3-run 至少 1 run Codex+家族否決保護(外家 blocker 不得僅被同門多數推翻,須執行反證或第二外家)④fail 分級(r3 嚴格版):standard fail-open/high fail-closed=外家軸缺席一律不得收斂攤人裁(人可明示豁免留痕),不分金流⑤真加軸=第三家族輪替,記方向
-  KEY:範圍刀——S1 改兩份 skill 文字(紀律層);S2 樣式歸消費端圖譜;S3/S5 是編排規格;零新 lumos 原語;全部加在 code/驗證階段,spec 階段零加重(d4 合規)
+  KEY:範圍刀——S1 改兩份 skill 文字(紀律層);S2 樣式歸消費端架構圖;S3/S5 是編排規格;零新 lumos 原語;全部加在 code/驗證階段,spec 階段零加重(d4 合規)
   DEP:[[Systems/pitfalls-code-loop]]
   DECISION:[2026-07-18]S4 拒收記理由防重提;S3 觸發改開席四要件(兩機械錨+一人工核+推導源查核,r1-r3 逐輪收窄);S3 免辯方路由撤除(r1 三方共指:自評分=自報級信號不得做免辯方級動作)
 ---
@@ -24,14 +24,14 @@ summary: |-
 
 > **緣起**:design-loop d4 裁定「正確性歸下游」後,使用者要求鏡頭轉向 code 階段:搜業界更全面提升正確性/品質/消除 bad performance 的做法。2026-07-18 搜證(來源見文末)。r1 對抗審計(3 帶餌席+Codex 否決席)折入七組修正,見〈審計修正紀錄〉。
 
-PRIOR-ART: ① 最小解層級——S1 改既有 skill 文字(紀律層)、S2 是消費端圖譜樣式文檔、S3/S5 是既有 panel 的編排規格;零新 lumos 原語。② 世界解過——S1=agentic testing 2026 共識;S2=Rails bullet/prosopite 查詢數斷言路線;S3=Anthropic property-based testing 配方(2026-07,984 報告實測 56%→86%);S5=異質 ensemble 文獻既有方向的比重調整;S4=Bencher 持續基準(拒收)。③ 裁定=S1/S2/S3/S5 皆 borrow-design;S4=評估後拒收(三分類外的 non-goal,非採納)。
+PRIOR-ART: ① 最小解層級——S1 改既有 skill 文字(紀律層)、S2 是消費端架構圖樣式文檔、S3/S5 是既有 panel 的編排規格;零新 lumos 原語。② 世界解過——S1=agentic testing 2026 共識;S2=Rails bullet/prosopite 查詢數斷言路線;S3=Anthropic property-based testing 配方(2026-07,984 報告實測 56%→86%);S5=異質 ensemble 文獻既有方向的比重調整;S4=Bencher 持續基準(拒收)。③ 裁定=S1/S2/S3/S5 皆 borrow-design;S4=評估後拒收(三分類外的 non-goal,非採納)。
 
 ## [S1] 真跑優先(正確性;紀律層規則,改 skill 文字)
 
 **現況**:code-loop 收斂由 LLM 判官數 finding 決定;真跑測試只是實作階段習慣,終審層面無明文地位。
 
 **改動**(兩份 skill 文字;**紀律層規則,非機械閘**——同「硬閘是紀律非技術鎖」家規,誠實聲明):
-1. `skills/lumos-code-loop/SKILL.md` 收斂節加規則:**「觸碰合約」的判定依據=`lumos impact --diff` 命中綁 `[test:]` 的 ★INVARIANT★ 節點**(沿用既有 min_score 門檻機制,非檔案級粗判——單檔如 scripts/lumos 綁 6+ 合約,檔案級會誤傷 docstring 小改)。命中時,放行前**只跑該綁定測試**(非全套,成本=單測試一跑)且須綠;跑過與結果**記入 `code-loop pass --note`**(留痕可稽核)。**解析紀律(r2 折入)**:`[test:]` 存的是測試方法名非可執行命令——解析順序=①該合約節點/專案圖譜有無記完整測試指令 ②以測試名對該棧慣例組指令(如 `dotnet test --filter`/`python3 scripts/test_lumos.py -k`)③同名多筆或查無 → **不得靜默跳過**:退跑該測試檔/模組級,再不行跑全套,留痕記「解析歧義」;「解析不了所以沒跑」不構成放行理由(fail-closed on skip)。LLM 判官意見不能替代這一跑(信任階梯:真跑 > 機械查 > LLM 判官 > 自報)。**機械化**(code-loop check 讀綁定並驗執行結果)=動 gate code,記 v2 另立計劃,本計劃不做。
+1. `skills/lumos-code-loop/SKILL.md` 收斂節加規則:**「觸碰合約」的判定依據=`lumos impact --diff` 命中綁 `[test:]` 的 ★INVARIANT★ 節點**(沿用既有 min_score 門檻機制,非檔案級粗判——單檔如 scripts/lumos 綁 6+ 合約,檔案級會誤傷 docstring 小改)。命中時,放行前**只跑該綁定測試**(非全套,成本=單測試一跑)且須綠;跑過與結果**記入 `code-loop pass --note`**(留痕可稽核)。**解析紀律(r2 折入)**:`[test:]` 存的是測試方法名非可執行命令——解析順序=①該合約節點/專案架構圖有無記完整測試指令 ②以測試名對該棧慣例組指令(如 `dotnet test --filter`/`python3 scripts/test_lumos.py -k`)③同名多筆或查無 → **不得靜默跳過**:退跑該測試檔/模組級,再不行跑全套,留痕記「解析歧義」;「解析不了所以沒跑」不構成放行理由(fail-closed on skip)。LLM 判官意見不能替代這一跑(信任階梯:真跑 > 機械查 > LLM 判官 > 自報)。**機械化**(code-loop check 讀綁定並驗執行結果)=動 gate code,記 v2 另立計劃,本計劃不做。
 2. panel 節明文確定性驗證器的參與方式:**不佔 canary 席、不進「輪有效」判定**(它們跑真碼樹,看不到文字 diff 副本裡的誘餌,記席必然 missed;canary 票只驗 LLM 席注意力)。參與三通道:(a) 其 findings 依辯方路由「機械證實」直接折入 (b) 以**異質 finder** 進 capture-recapture 重疊帳(既有 `lumos loop capture-counts --finder/--from-pitfalls` 原語,零新機制) (c) 需跑真碼的(測試套件/type checker)沿 mutation 冒煙既有的**隔離 worktree** 模式。**待改的實際措辭(r2 折入,r3 校正指位)**:精確字串「一等 panel 成員」在 reference.md:179;SKILL.md 檔尾「參考」節有「一等成員」(:162)與「各算獨立票」;「升格為一個確定性 panel 成員」**兩份重複**(SKILL.md:164 與 reference.md:188,都要改,漏一份=語感殘留)——改寫為三通道語意,勿新造「同權重投票」等不存在字串去搜。**兩套帳差異(r2 折入)**:無-cluster 舊帳=三條合取,capture-recapture **進合取**(通道 b 有真裁決權);M2 cluster 帳(2026-07-16 上線)=capture-recapture **advisory 不進合取**——該模式下確定性驗證器的裁決權由**通道 (a) 承載**(其機械證實 findings 進 cluster 三態帳),通道 (b) 降為輔助訊號。skill 文字須分別敘明,不得混稱「數學不變」。
 
 **測試策略**:純 prompt/紀律層無單元測;以下次真實 code-loop 跑一遍驗流程可執行(同 finding-refute 前例)。
@@ -41,9 +41,9 @@ PRIOR-ART: ① 最小解層級——S1 改既有 skill 文字(紀律層)、S2 �
 **現況**:性能腿近空——pitfalls 對 N+1 只有單行 regex 提示,從未有機制真的量過查詢行為。
 
 **改動**(r1 blocker 折入:落點改歸消費端):
-1. **樣式主體落 LandmarkMember 自己的圖譜**(Systems 節點):「會數查詢的連線包裝」——測試組件裡包 `IDbConnection` 攔 `Execute*/Query*` 計數 + 斷言範例:`載入 50 筆訂單清單 → 查詢數 ≤ 3`。N+1 出現時 3→51 直接紅。查詢數上限以**該專案實測值+緩衝**訂,硬編碼於各測試(顯式可審),不引入新宣告檔。
-2. 本圖譜的框架無關原則(「操作級性能可翻譯成確定性測試斷言,優先於監控與基準」)於 S2 落地時記入 [[Systems/pitfalls-code-loop]] summary(確定性性能斷言=異質 finder 家族一員)——**不進 linter精選目錄**(該節點定位=linter 選型菜單,塞測試哲學句不搭;r3 折入)。
-3. **csharp-idioms 不動**——該 skill 三處明文「框架選擇不在此裁,歸專案圖譜」,Dapper 專屬樣式進去會被其審查鏡頭套到所有 C# 專案(含 EF Core 者)產生誤導 finding(r1 s3-blocker)。
+1. **樣式主體落 LandmarkMember 自己的架構圖**(Systems 節點):「會數查詢的連線包裝」——測試組件裡包 `IDbConnection` 攔 `Execute*/Query*` 計數 + 斷言範例:`載入 50 筆訂單清單 → 查詢數 ≤ 3`。N+1 出現時 3→51 直接紅。查詢數上限以**該專案實測值+緩衝**訂,硬編碼於各測試(顯式可審),不引入新宣告檔。
+2. 本架構圖的框架無關原則(「操作級性能可翻譯成確定性測試斷言,優先於監控與基準」)於 S2 落地時記入 [[Systems/pitfalls-code-loop]] summary(確定性性能斷言=異質 finder 家族一員)——**不進 linter精選目錄**(該節點定位=linter 選型菜單,塞測試哲學句不搭;r3 折入)。
+3. **csharp-idioms 不動**——該 skill 三處明文「框架選擇不在此裁,歸專案架構圖」,Dapper 專屬樣式進去會被其審查鏡頭套到所有 C# 專案(含 EF Core 者)產生誤導 finding(r1 s3-blocker)。
 4. LandmarkMember 首用掛該專案待辦,非本計劃交付。
 
 **為什麼是斷言不是監控**:把性能翻譯成**確定性測試**=信任階梯最高階;免基準環境、免統計、CI 直接跑。
@@ -52,12 +52,12 @@ PRIOR-ART: ① 最小解層級——S1 改既有 skill 文字(紀律層)、S2 �
 
 ## [S3] 性質測試席(正確性;code-loop 選配席,r1 大修)
 
-**現況與舊帳**:07-15 圖譜判「自動生成 property 測試 oracle 不可靠」(agent 自己發明錯誤期望→誤報)。Anthropic 2026-07 配方:推導性質(從文件/型別)→寫 PBT→真跑→自我篩選→評分過濾→**高分交人審**,實測 56%→86%。**r1 三方共指**(Codex+s1+s3):反例只證「代碼≠生成的性質」,哪邊錯正是 oracle 問題;自評分=自報級信號(S1 階梯最低級),不得做「免辯方」這個最高信任動作。
+**現況與舊帳**:07-15 架構圖判「自動生成 property 測試 oracle 不可靠」(agent 自己發明錯誤期望→誤報)。Anthropic 2026-07 配方:推導性質(從文件/型別)→寫 PBT→真跑→自我篩選→評分過濾→**高分交人審**,實測 56%→86%。**r1 三方共指**(Codex+s1+s3):反例只證「代碼≠生成的性質」,哪邊錯正是 oracle 問題;自評分=自報級信號(S1 階梯最低級),不得做「免辯方」這個最高信任動作。
 
 **改動**(code-loop 選配席編排規格):
-- **觸發(開席四要件=兩機械錨+一人工核+一推導源查核,r1 收窄、r2 增訂、r3 正名)**:①tier=high **且** ②`lumos impact --diff` 命中綁 ★INVARIANT★ 合約節點 **且** ③該 diff 觸及的函式為純函式(無 IO;人工核,候選集已被②機械收窄)**且** ④該函式**具可推導源**(docstring/型別註解/圖譜合約其一;存在性=機械可查,內容品質人判)——缺推導源不開席並留痕「文件缺失」(r2 折入:無文件硬推=退化成 07-15 判定不可靠的自證 oracle;缺文件是先補文件的訊號)。**預設關**;開席須在收斂留痕記開席理由。防濫開:tier=high 門檻低,故②是主閘。
+- **觸發(開席四要件=兩機械錨+一人工核+一推導源查核,r1 收窄、r2 增訂、r3 正名)**:①tier=high **且** ②`lumos impact --diff` 命中綁 ★INVARIANT★ 合約節點 **且** ③該 diff 觸及的函式為純函式(無 IO;人工核,候選集已被②機械收窄)**且** ④該函式**具可推導源**(docstring/型別註解/架構圖合約其一;存在性=機械可查,內容品質人判)——缺推導源不開席並留痕「文件缺失」(r2 折入:無文件硬推=退化成 07-15 判定不可靠的自證 oracle;缺文件是先補文件的訊號)。**預設關**;開席須在收斂留痕記開席理由。防濫開:tier=high 門檻低,故②是主閘。
 - **流程**:席位 agent 讀 diff 涉及的純邏輯函式+文件/型別註解 → 推導 2-3 條性質(從文件推導,禁憑空)→ 該棧 PBT 框架寫測試(C#=CsCheck/Kotlin=kotest-property/JS=fast-check/Py=Hypothesis)→ 真跑數百案例(固定 seed,反例可重現)→ 自我篩選(排除測試自己寫錯)→ 自評分(性質來源可靠度/可重現/影響面)。
-- **產出(r1 撤免辯方)**:反例的**可重現性**免爭(那是機械事實);性質的**合法性必過辯方**——辯方(依 S5 預設 Codex)專問:「這條性質真是該函式的業務合約嗎?」對文件、圖譜 ★INVARIANT★、呼叫端行為查證。**高分=取得進辯方資格,非免審**;低分直接丟(防噪音)。辯方維持→折入;辯方駁倒→丟棄並記「性質推導誤」。金流級 finding 折入後另掛 `lumos signoff` 既有慣例(對業務的人確認)。
+- **產出(r1 撤免辯方)**:反例的**可重現性**免爭(那是機械事實);性質的**合法性必過辯方**——辯方(依 S5 預設 Codex)專問:「這條性質真是該函式的業務合約嗎?」對文件、架構圖 ★INVARIANT★、呼叫端行為查證。**高分=取得進辯方資格,非免審**;低分直接丟(防噪音)。辯方維持→折入;辯方駁倒→丟棄並記「性質推導誤」。金流級 finding 折入後另掛 `lumos signoff` 既有慣例(對業務的人確認)。
 - **成本上限**:單席、跑一次、cap 數百案例;不收斂不重跑(加菜非主菜)。
 
 **測試策略**:編排規格無單元測;首用挑真實高風險 diff 驗端到端,結果記 Verification。
@@ -104,7 +104,7 @@ PRIOR-ART: ① 最小解層級——S1 改既有 skill 文字(紀律層)、S2 �
   2. [Codex+s2] S1(a)「真跑綠才放行」原文=紙上硬閘+觸碰粒度未定義 → 誠實降級紀律層+指名 impact --diff 為判定依據+只跑綁定測試+留痕;機械化記 v2。
   3. [Codex+s1+s3 三方共指] S3 高分反例免辯方=自報級信號做免辯方級動作,Anthropic 配方「高分交人審」被偷換 → 撤免辯方:性質合法性必過辯方(預設 Codex),金流級另掛 signoff。
   4. [s2] S3 觸發「編排者判純邏輯」防濫開太弱(tier=high 門檻低)→ 雙機械錨(impact 命中合約節點為主閘)+預設關+開席理由留痕。
-  5. [s3, blocker] S2 落點撞 csharp-idioms 明文邊界(不裁框架/審查鏡頭會套到所有 C# 專案)→ 樣式主體改歸 LandmarkMember 專案圖譜,idioms 不動,本圖譜只留框架無關原則一句。
+  5. [s3, blocker] S2 落點撞 csharp-idioms 明文邊界(不裁框架/審查鏡頭會套到所有 C# 專案)→ 樣式主體改歸 LandmarkMember 專案架構圖,idioms 不動,本架構圖只留框架無關原則一句。
   6. [s2] S4 拒收理由引用不存在的「線上分桶告警」+「性能腿補齊」誇大 → 更正為消費端建議待辦+「第一根拐杖」定位+CPU/記憶體缺口誠實記載。
   7. [使用者指示] 新增 S5 跨家族比重提升(辯方預設 Codex/雙 Codex 角色/≥3-run 含 Codex/第三家族方向)。
 
@@ -132,7 +132,7 @@ PRIOR-ART: ① 最小解層級——S1 改既有 skill 文字(紀律層)、S2 �
 
 ## 落地順序
 
-S1(改文字)→ S5(改文字,與 S1 同波)→ S2 樣式(歸 LandmarkMember 圖譜,該專案下次動手時)→ S3 規格(寫進 SKILL,首用等真實高風險 diff)→ S4 不做。落地 Verification 以 `plan_refs` 回指本節點。
+S1(改文字)→ S5(改文字,與 S1 同波)→ S2 樣式(歸 LandmarkMember 架構圖,該專案下次動手時)→ S3 規格(寫進 SKILL,首用等真實高風險 diff)→ S4 不做。落地 Verification 以 `plan_refs` 回指本節點。
 
 ## 來源(2026-07-18 搜證)
 

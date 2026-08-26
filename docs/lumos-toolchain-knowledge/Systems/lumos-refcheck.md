@@ -43,7 +43,7 @@ design-loop/跨家族複核最吃重的「地面事實查證」恰是 LLM 最不
 ## 三個消費端
 - 自動 loop:`governance/autonomous_loop/orchestrator-prompt.md` §2 步驟 2.8(植 canary 後、spawn auditor 前對工作副本跑;missing/超界=機械 finding 修原稿留痕)+ auditor/judge prompt 附 manifest + §2.5a ground_truth 機械底座(不得刪減,散文規範)。
 - 手動 loop:`skills/lumos-design-loop/SKILL.md` 步驟 2.5 同款 + (d) 型 canary 裸檔名校準規則。
-- 方法論:`docs/methodology/圖譜即合約.md` 設計前審計 loop 表「機械 refcheck」列。
+- 方法論:`docs/methodology/架構圖即合約.md` 設計前審計 loop 表「機械 refcheck」列。
 
 ## 相關
 - 設計稿:`docs/design/2026-07-02-spec-refcheck.md`(design-loop 3 輪收斂;qwen disputed 經人裁機械反證後放行)。

@@ -120,7 +120,7 @@ Expected: `N passed, 0 failed`。
 - [ ] **Step 5: Smoke on real vault(降噪驗證)**
 
 Run: `./scripts/lumos doctor 2>&1 | sed -n '/\[P\]/,/^\[/p' | grep "→"`
-Expected: 從 15 條降到 **1 條**(`Systems/verification-rot-eval.md → scripts/rot-eval/`);doctor 結尾仍 `✓ 圖譜健康 — 0 issues`(Check P 軟、不改 rc)。
+Expected: 從 15 條降到 **1 條**(`Systems/verification-rot-eval.md → scripts/rot-eval/`);doctor 結尾仍 `✓ 架構圖健康 — 0 issues`(Check P 軟、不改 rc)。
 
 - [ ] **Step 6: Commit**
 

@@ -13,7 +13,7 @@ plan_refs:
 summary: |-
   FLAG:DECISION
   KEY:「loop 三輪壓縮」TDD 實作計畫(設計權威=[[loop三輪壓縮_計劃]],經 2 輪平行 panel dogfood + 3 線文獻交叉);策略=TDD 機械核心、prose(skills/orchestrator)當文檔接線(spec 自身天花板:glue 留實作真測不設計散文摳)
-  KEY:6 task=T1 capture-recapture 殘餘估計(純函式 Chao1)→ T2 cmd_canary --round 留痕→ T3 cmd_loop_status --panel 謂詞(輪有效+ODC class-gating+falsification-survived+capture-recapture 殘餘<門檻+混用報錯)→ T4 difficulty panel_width→ T5 prose 接線(skills/templates/orchestrator/Systems)→ T6 圖譜回填+回歸+anchor
+  KEY:6 task=T1 capture-recapture 殘餘估計(純函式 Chao1)→ T2 cmd_canary --round 留痕→ T3 cmd_loop_status --panel 謂詞(輪有效+ODC class-gating+falsification-survived+capture-recapture 殘餘<門檻+混用報錯)→ T4 difficulty panel_width→ T5 prose 接線(skills/templates/orchestrator/Systems)→ T6 架構圖回填+回歸+anchor
   DECISION:subagent-driven TDD;基線 828 passed;向後相容(無 --panel/--round=舊 K-streak∧G2 不變)
   DEP:[[loop三輪壓縮_計劃]]
   TEST:未開工
@@ -100,7 +100,7 @@ summary: |-
 
 ---
 
-### Task 6: 圖譜回填 + 回歸 + anchor
+### Task 6: 架構圖回填 + 回歸 + anchor
 
 - [x] Verification `plan_refs` 回指設計節點;設計/實作 status→done;`Systems/design-loop` + `convergence-evidence-gate` KEY 更新(panel 收斂)。
 - [x] 全量測試 0 failed;`lumos doctor` 0 issues。

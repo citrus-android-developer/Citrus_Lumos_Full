@@ -11,13 +11,13 @@ index c052310..2b9d3c6 100644
  | 你要做的事 | 必調用 |
  |-----------|--------|
  | 排查 / 對外支援 / 查 DB / 呼叫既有 API（動手前要懂為什麼 / 邊界 / 合約） | **`lumos-project-notes`**（先 search→context→contracts）|
- | 讀圖譜 / 寫筆記 / 巡檢 / 綁合約測試 / 動 `docs/lumos-toolchain-knowledge/` | **`lumos-project-notes`** |
+ | 讀架構圖 / 寫筆記 / 巡檢 / 綁合約測試 / 動 `docs/lumos-toolchain-knowledge/` | **`lumos-project-notes`** |
  | 跨專案共用業務規則（升格核心 / `core_refs` / 偏離） | **`lumos-core-knowledge`** |
 -| 設計 spec 完成 → 進實作前：過處置閘審計 loop 到 `lumos loop status --disposal` 收斂（2026-08-04 新制：錨定引句＋處置帳全清，canary 降為觀測；trivial 可跳並註明；進場資格與 light/settle 見 skill） | **`lumos-design-loop`** |
 +| 設計 spec 完成 → 進實作前：過處置閘審計 loop 到 `lumos loop status --disposal` 收斂（2026-08-04 新制：錨定引句＋處置帳全清；canary 協議 2026-08-14 已停用、輪記帳改 `record none`；trivial 可跳並註明；進場資格與 light/settle 見 skill） | **`lumos-design-loop`** |
  | 分支終審前：`lumos pitfalls --diff <merge-base>..HEAD` 出 `tier: high` → 對抗代碼審；收斂後 `lumos code-loop pass --note` 留痕才能 push（pre-push 硬擋無留痕的 tier=high） | **`lumos-code-loop`** |
  
- > 圖譜讀寫工具是 **lumos**（`scripts/lumos`，python3 零依賴；細節見 `lumos-project-notes` skill）。`lumos-*` 是 **user-scope skills**（唯一源在 `lumos-toolchain` repo、symlink 進 `~/.claude/skills/`）——每台機器首次裝一次：`git clone <lumos-toolchain> ~/harness/lumos-toolchain && ~/harness/lumos-toolchain/install.sh`。專案技術棧 skill（如 vue / csharp）見文末〈架構參考 Skills〉。
+ > 架構圖讀寫工具是 **lumos**（`scripts/lumos`，python3 零依賴；細節見 `lumos-project-notes` skill）。`lumos-*` 是 **user-scope skills**（唯一源在 `lumos-toolchain` repo、symlink 進 `~/.claude/skills/`）——每台機器首次裝一次：`git clone <lumos-toolchain> ~/harness/lumos-toolchain && ~/harness/lumos-toolchain/install.sh`。專案技術棧 skill（如 vue / csharp）見文末〈架構參考 Skills〉。
  <!-- LUMOS:GRAPH-DISCIPLINE:END -->
 diff --git a/docs/.governance-log.jsonl b/docs/.governance-log.jsonl
 index fd3347c..4808743 100644
@@ -356,7 +356,7 @@ index 0000000..b98f132
 +---
 +# loop機制痛點_Landmark_code-crossclaim實跑回饋
 +
-+來源:2026-08-14 Enzo 要 Landmark 專案的 session 回報當日 loop 過程(跨 session 傳訊),回報中的「機制不順」段。原始回報存於該 session 對話;其圖譜留痕見 Landmark repo `governance/review-reports/code-crossclaim/`。
++來源:2026-08-14 Enzo 要 Landmark 專案的 session 回報當日 loop 過程(跨 session 傳訊),回報中的「機制不順」段。原始回報存於該 session 對話;其架構圖留痕見 Landmark repo `governance/review-reports/code-crossclaim/`。
 +
 +## 五點回饋與現況
 +
@@ -461,7 +461,7 @@ index 003503e..89f3ad4 100644
  
  ## 範圍(v1)
  - **只做對抗設計/spec 審計**:被審的是你控制的文件,能乾淨地植入瑕疵再移除。
- - **不做圖譜自足性審計**(§795/§831):審計員讀真實圖譜,植 canary 會污染圖譜 → 延後。
+ - **不做架構圖自足性審計**(§795/§831):審計員讀真實架構圖,植 canary 會污染架構圖 → 延後。
 diff --git a/docs/lumos-toolchain-knowledge/Systems/design-loop.md b/docs/lumos-toolchain-knowledge/Systems/design-loop.md
 index 081cee0..4a7524b 100644
 --- a/docs/lumos-toolchain-knowledge/Systems/design-loop.md
@@ -494,9 +494,9 @@ index 081cee0..4a7524b 100644
    KEY:[2026-08-06 收貨三道,plan:[[Projects/驗證層自證三件_計劃]]]收貨=quote-check(引句↔凍結快照)+refcheck(finding file:line↔repo 實在性)+★seat-check★(有講沒做對帳:dispatch manifest rN-dispatch.json 宣告 materials→unreported/out_of_scope,越界另記 out-of-scope.jsonl 不進收斂帳;lens 觀測不判定/空 materials vacuous 豁免/恆 rc0 觀測)[test:t_s1_seat_check];派工慣例同步=派工當下落 dispatch manifest;新機制準入三問(Growth test,borrow evidra)入 skill 護欄後段
    KEY:★定位★[2026-07-18 使用者裁定,見 decisions d4]——design-loop=抬 spec 質量,非保 spec 正確:一輪 panel 抓便宜的(矛盾/未定義詞/缺失敗路徑)就放行,正確性歸下游 code-loop+測試+驗證、漏網進逃逸帳;**前置加重一律拒**(日報 2026-07-18『保留題接閘』已拒收勿重提——保留題留離線 replay 校準,不進閘)
    KEY:[2026-07-18]S5 跨家族落地(見[[Projects/code階段強化_計劃]])——辯方預設 Codex(成本中性替換,d4 合規;不可用退 opus 註記)+≥3-run 多數決至少 1 run Codex+家族否決保護(外家 blocker 不得僅被同門多數推翻,須執行反證或第二外家);換手效應列 [[Projects/loop數據收集_計劃]] 觀察項(收斂輪數/辯方降級率)
-   KEY:★經濟學★[2026-07-20 使用者裁定,見 decisions d5]——spec 品質目標=成本平衡非精確度漸近線:缺陷分層定價(清單型→pre-flight/撞自家現實型→圖譜接地/語意矛盾→一輪panel/深層錯→下游執行接地)+邊際遞減止損+反偏誤排序(執行接地>機械查>異家族>同家族多取樣,信號種類>家族)+標記不確定比消滅不確定便宜;逃逸帳=調價器。**精確度軍備競賽類提案(更強判官/更多輪/更細spec)一律先過此教義裁**
+   KEY:★經濟學★[2026-07-20 使用者裁定,見 decisions d5]——spec 品質目標=成本平衡非精確度漸近線:缺陷分層定價(清單型→pre-flight/撞自家現實型→架構圖接地/語意矛盾→一輪panel/深層錯→下游執行接地)+邊際遞減止損+反偏誤排序(執行接地>機械查>異家族>同家族多取樣,信號種類>家族)+標記不確定比消滅不確定便宜;逃逸帳=調價器。**精確度軍備競賽類提案(更強判官/更多輪/更細spec)一律先過此教義裁**
    KEY:[2026-07-16]提效 M1 落地(見[[Projects/design-loop提效_計劃]])——pre-flight 排乾(panel 前便宜 agent 掃清單型缺陷,cascade)/R2+ 嚴格 delta-scoped(物理只餵 diff+受影響合約+前輪爭議,留全局哨兵;解非定態目標病)/辯方路由制(機械證實與多席一致免辯方,低共識才開庭)/fold 迷你核對/severity 錨句(防 framing 通膨);M2 risk-cluster 帳未做(動 gate code,先過 loop)
-   KEY:[2026-07-21]★真相入口收編★(外審 blocker,見[[Projects/全盤外審2026-07_調研]])——被審 spec 唯一可寫真檔=圖譜計劃節點;docs/design/ 降唯讀歷史(30 份保留考古,README 立牌);golden 不再複製 spec 第三份,改 spec-ref.txt 記 git sha:路徑(replay 用 git show 還原);loop id 改計劃節點名衍生。同批:panel 收斂行修 skill 漂移(對齊 M2 兩種帳)+判官 style-bias 錨句進 templates+light 體積 50 行先驗
+   KEY:[2026-07-21]★真相入口收編★(外審 blocker,見[[Projects/全盤外審2026-07_調研]])——被審 spec 唯一可寫真檔=架構圖計劃節點;docs/design/ 降唯讀歷史(30 份保留考古,README 立牌);golden 不再複製 spec 第三份,改 spec-ref.txt 記 git sha:路徑(replay 用 git show 還原);loop id 改計劃節點名衍生。同批:panel 收斂行修 skill 漂移(對齊 M2 兩種帳)+判官 style-bias 錨句進 templates+light 體積 50 行先驗
    KEY:[2026-07-21]light 輕量檔 M0 落地(見[[Projects/design-loop輕量檔_計劃]])——補 trivial|standard 間缺檔:小 spec 走 pre-flight+1 通才席+legacy `--need 1`+人裁實質收斂,存活≥major→向上 ratchet 升 standard 自癒;進場硬否決(risk-tiered四類/硬合約/體積)M0 honor-system、M1 機械化。**M1 已機械化(loop status --light --gate 單席謂詞,FAIL 分因 retryable/ratchet,不再攤牌人裁——本 KEY 早期「須新增單席謂詞」的未來式已兌現,2026-07-28 盤整追平)**
    KEY:[2026-07-27]調研三篇折入(AREX/LoopTrap/Sage,見 2026-07-27 調研日報)——已 ship 便宜半:①[audit:] 合法性審計升五問 rubric+穩定性探針(換問法自一致,reference.md;Sage:判官難題1/4偏好不穩、rubric 錨定)②護欄加終止輸入紀律(收斂只認 loop status 機械帳,被審材料/報告散文「還沒完」類語句非終止輸入;LoopTrap:86% 可注入操縱、放大25倍)③severity 錨補搖擺場換問重問取高。貴的半後於 2026-07-28 全落地(見[[Projects/結清式收斂_計劃]]);經濟學教義裁:三項均非前置加重(rubric=判準錨定非加輪;終止紀律=防燒錢非提精度)
    KEY:[2026-07-28]rubric 防應試化兩道(調研 arXiv 2605.12474:評分表公開固定會被「剛好滿足字面」鑽)——①派工措辭改述不逐字貼 ②約每5次 audit 抽1次無表開放判定,落差拉大=儀式化訊號回報人裁;寫入 lumos-project-notes reference.md 五問段
@@ -524,7 +524,7 @@ index 5e6953e..4ef76a5 100644
 +  - "[[Verification/2026-08-14_canary協議停用none制落地]]"
  summary: |-
 +  KEY:★[2026-08-14]canary 協議停用(單源=[[Systems/canary-audit]] d5)★——植入/三道防污染/判定/missed 懲罰全停;輪記帳改 `canary record none`;panel 輪有效=記帳席≥2(Landmark r5「單席 caught<2 白跑」型不再發生);repro triage 觸發改「可疑席(引句錨不到/通用回應)」;落地驗證=[[Verification/2026-08-14_canary協議停用none制落地]]
-   KEY:[2026-08-05]UI 層驗收慣例(MCP 接驗證層,Enzo 靈感;立慣例不綁案)——test-layers 宣告 layer 含「UI 驗收」的棧被 diff 命中時,終審驗收=agent 以 Playwright MCP(乾淨瀏覽器)/claude-in-chrome(真登入態)真開頁執行驗收條款,截圖+console 證據存 governance/review-reports/<loop-id>/ui-evidence/ 由 Verification 引用(哲學同 quote-check:證據可重放非口頭);起不了環境=明記未驗+原因不得靜默跳;Landmark .lumos/test-layers.json 已宣告 vue/html/js→UI 驗收、cs→dotnet test;首用=下一個天然帶 UI 面的工作(RSNO 暫緩,人裁);★Android 通道(2026-08-11,[[Projects/Android側UI測試綁圖譜工作流_計劃]])★=maestro MCP list_devices→inspect_screen→run,與 Playwright/chrome 並列;★前置:只准對「已標可自動且測試門店已確認」的 flow 自動跑★(否則會在真裝置真後端開真單),未達條件的 flow 一律僅手動、終審走 lumos code-loop skip --note 留痕
+   KEY:[2026-08-05]UI 層驗收慣例(MCP 接驗證層,Enzo 靈感;立慣例不綁案)——test-layers 宣告 layer 含「UI 驗收」的棧被 diff 命中時,終審驗收=agent 以 Playwright MCP(乾淨瀏覽器)/claude-in-chrome(真登入態)真開頁執行驗收條款,截圖+console 證據存 governance/review-reports/<loop-id>/ui-evidence/ 由 Verification 引用(哲學同 quote-check:證據可重放非口頭);起不了環境=明記未驗+原因不得靜默跳;Landmark .lumos/test-layers.json 已宣告 vue/html/js→UI 驗收、cs→dotnet test;首用=下一個天然帶 UI 面的工作(RSNO 暫緩,人裁);★Android 通道(2026-08-11,[[Projects/Android側UI測試綁架構圖工作流_計劃]])★=maestro MCP list_devices→inspect_screen→run,與 Playwright/chrome 並列;★前置:只准對「已標可自動且測試門店已確認」的 flow 自動跑★(否則會在真裝置真後端開真單),未達條件的 flow 一律僅手動、終審走 lumos code-loop skip --note 留痕
    KEY:[2026-08-05]pitfalls --diff 排除 governance/review-reports/ 路徑——歸檔證物(席報告/canary 快照 .patch)★故意★含 bug,當代碼掃=push 被自己的留痕擋下(C 慣例落地首推實錄);排除不外溢(收緊釘:同內容在該路徑外照掃) [test:t_pitfalls_diff_skips_review_report_artifacts]
    KEY:[2026-08-11]同型第二例——簿記帳也排除(_BOOKKEEPING_FILES/_DIR:治理帳/usage-log/ci-log/anchor-baseline/code-loop 留痕)。★自我餵食迴圈★:治理帳裡記的 skip 理由本身在描述「命中 open(...)」→掃自己的紀錄再次命中→再 skip→再寫一行理由進治理帳,實測誤觸發 9 次(3978732、837bbff 等皆此形態)。白名單與 code-loop 留痕失效豁免★共用同一組常數★(原本 code-loop 端寫成區域變數,兩處會漂移) [test:t_pitfalls_diff_skips_bookkeeping_ledgers]
    KEY:[2026-08-05]missed 席 findings 改★機械 repro triage★(取代直接丟)——canary 硬閘不動(該席判決仍作廢),但 findings 逐條試真碼/真跑證實;證實走通道 a 折入(note 記「機械證實非席信用」)、repro 不出才丟。實證=T8 r1 missed 席兩條真 major 靠 repro 撈回,原「撈」是編排者裁量現為硬步驟(結構性誤殺的機制化補丁;與 design-loop d4 分流不變:代碼有真 oracle 故走 repro 不走「不作廢」)
@@ -855,13 +855,13 @@ index 5a32381..218fafb 100644
  | 你要做的事 | 必調用 |
  |-----------|--------|
  | 排查 / 對外支援 / 查 DB / 呼叫既有 API（動手前要懂為什麼 / 邊界 / 合約） | **`lumos-project-notes`**（先 search→context→contracts）|
- | 讀圖譜 / 寫筆記 / 巡檢 / 綁合約測試 / 動 `{{KG}}` | **`lumos-project-notes`** |
+ | 讀架構圖 / 寫筆記 / 巡檢 / 綁合約測試 / 動 `{{KG}}` | **`lumos-project-notes`** |
  | 跨專案共用業務規則（升格核心 / `core_refs` / 偏離） | **`lumos-core-knowledge`** |
 -| 設計 spec 完成 → 進實作前：過處置閘審計 loop 到 `lumos loop status --disposal` 收斂（2026-08-04 新制：錨定引句＋處置帳全清，canary 降為觀測；trivial 可跳並註明；進場資格與 light/settle 見 skill） | **`lumos-design-loop`** |
 +| 設計 spec 完成 → 進實作前：過處置閘審計 loop 到 `lumos loop status --disposal` 收斂（2026-08-04 新制：錨定引句＋處置帳全清；canary 協議 2026-08-14 已停用、輪記帳改 `record none`；trivial 可跳並註明；進場資格與 light/settle 見 skill） | **`lumos-design-loop`** |
  | 分支終審前：`lumos pitfalls --diff <merge-base>..HEAD` 出 `tier: high` → 對抗代碼審；收斂後 `lumos code-loop pass --note` 留痕才能 push（pre-push 硬擋無留痕的 tier=high） | **`lumos-code-loop`** |
  
- > 圖譜讀寫工具是 **lumos**（`scripts/lumos`，python3 零依賴；細節見 `lumos-project-notes` skill）。`lumos-*` 是 **user-scope skills**（唯一源在 `lumos-toolchain` repo、symlink 進 `~/.claude/skills/`）——每台機器首次裝一次：`git clone <lumos-toolchain> ~/harness/lumos-toolchain && ~/harness/lumos-toolchain/install.sh`。專案技術棧 skill（如 vue / csharp）見文末〈架構參考 Skills〉。
+ > 架構圖讀寫工具是 **lumos**（`scripts/lumos`，python3 零依賴；細節見 `lumos-project-notes` skill）。`lumos-*` 是 **user-scope skills**（唯一源在 `lumos-toolchain` repo、symlink 進 `~/.claude/skills/`）——每台機器首次裝一次：`git clone <lumos-toolchain> ~/harness/lumos-toolchain && ~/harness/lumos-toolchain/install.sh`。專案技術棧 skill（如 vue / csharp）見文末〈架構參考 Skills〉。
 diff --git a/scripts/test_lumos.py b/scripts/test_lumos.py
 index 7c7511f..b6c9d2d 100644
 --- a/scripts/test_lumos.py
@@ -953,7 +953,7 @@ index 6bdf6e2..75c4f5e 100644
 +# lumos-code-loop:分支終審前的對抗代碼審 loop
  
 -**Claude 編排,lumos 出原語**:你用 Agent tool 派 reviewer、判讀、修碼;lumos 記錄與算收斂,不 spawn agent。機制與 design-loop 1:1,差異只在 canary 是 bug hunk、無 G1、mutation 冒煙為機械錨。
-+> ## ⛔ canary 協議已停用(2026-08-14,Enzo 裁;單源=圖譜 Systems/canary-audit d5 + `../lumos-design-loop/SKILL.md` 頁頂告示)
++> ## ⛔ canary 協議已停用(2026-08-14,Enzo 裁;單源=架構圖 Systems/canary-audit d5 + `../lumos-design-loop/SKILL.md` 頁頂告示)
 +>
 +> 植入/判定/漏抓懲罰停止;每輪記帳改 `lumos canary record none ...`(純處置帳載體,severity/findings/disposal 欄照記);panel 輪有效=記帳席 ≥2 且零 missed。下文殘留的 canary 步驟=歷史帳判讀用,不再執行。
 +
@@ -1084,7 +1084,7 @@ index 6bdf6e2..75c4f5e 100644
      check("★前置★ 現場成立:rmdir 這一步真的拋了例外(輸出有『順帶清理』字樣)", "順帶清理空目錄" in out, out)
      ```
    - **寫測試/審測試前對照 [[Systems/測試假綠形態]] 八型清單**(恆真斷言/斷言太鬆/驗寫法不驗行為/現場走不到被測分支/fixture 無鑑別力/根本沒去驗/白名單過寬/依賴環境巧合)。⚠ **對照過清單 ≠ 測試夠格**——清單是提示器不是偵測器,且★一定有第九型★。
-   - 業務合約級隱患 → 另寫圖譜 ★INVARIANT★ 綁 `[test:]`;非合約級測試進套件靠回歸守。
+   - 業務合約級隱患 → 另寫架構圖 ★INVARIANT★ 綁 `[test:]`;非合約級測試進套件靠回歸守。
 -- **canary 判定抽樣分權(oracle品質包 S2)**:每累計 5 個 caught 輪抽 1 輪,把審計員原始報告+植入描述交乾淨第二判者判 caught/missed,結果記 `lumos canary second --id <CANARY-x> --verdict agree|overturn --auditor <模型>`(純 telemetry 不進 gate);抽中輪報告存 `governance/canary-samples/<id>.md`。分歧→下一輪 framing 復核。
 +- ~~canary 判定抽樣分權~~ **⛔ 已停用**(隨協議停用;`canary second` 封存)。
  
@@ -1206,7 +1206,7 @@ index 6bdf6e2..75c4f5e 100644
 @@ -226,14 +215,14 @@ lumos code-loop pass --note "<收斂理由/loop-id>"       # pre-push blocking:
  並由 Verification 節點引用。哲學同 quote-check:證據可重放,不是口頭宣稱「看起來對」。
  無法起環境(lab 不在/需登入而無 session)→ 明記「UI 層未驗+原因」,不得靜默跳過。
- **真跑優先(2026-07-18 S1,紀律層規則非機械閘)**:diff 經 `lumos impact --diff` 命中綁 `[test:]` 的星標合約節點時,pass 前**只跑該綁定測試**(非全套)且須綠,結果記入 pass --note——LLM 判官意見不能替代這一跑(信任階梯:真跑>機械查>LLM 判官>自報)。`[test:]` 存的是測試名非指令,解析順序=①合約節點/專案圖譜記載的完整指令 ②依該棧慣例組指令(`dotnet test --filter`/`python3 scripts/test_lumos.py -k` 等)③歧義/查無 → **不得靜默跳過**:退跑該測試檔/模組級,再不行跑全套,留痕記「解析歧義」——「解析不了所以沒跑」不構成放行理由。機械化留 v2(動 gate code 另立計劃)。
+ **真跑優先(2026-07-18 S1,紀律層規則非機械閘)**:diff 經 `lumos impact --diff` 命中綁 `[test:]` 的星標合約節點時,pass 前**只跑該綁定測試**(非全套)且須綠,結果記入 pass --note——LLM 判官意見不能替代這一跑(信任階梯:真跑>機械查>LLM 判官>自報)。`[test:]` 存的是測試名非指令,解析順序=①合約節點/專案架構圖記載的完整指令 ②依該棧慣例組指令(`dotnet test --filter`/`python3 scripts/test_lumos.py -k` 等)③歧義/查無 → **不得靜默跳過**:退跑該測試檔/模組級,再不行跑全套,留痕記「解析歧義」——「解析不了所以沒跑」不構成放行理由。機械化留 v2(動 gate code 另立計劃)。
  → 交 **finishing-a-development-branch** 進合併流程。
  
  ---
@@ -1260,13 +1260,13 @@ index d9a1142..3047a7b 100644
 -# lumos-design-loop:canary-護的設計審計 loop(進實作前的硬閘)
 +# lumos-design-loop:設計審計 loop(進實作前的硬閘)
 +
-+> ## ⛔ canary 協議已停用(2026-08-14,Enzo 裁;單源=圖譜 Systems/canary-audit d5)
++> ## ⛔ canary 協議已停用(2026-08-14,Enzo 裁;單源=架構圖 Systems/canary-audit d5)
 +>
 +> 植入/判定/抽樣分權/漏抓懲罰**全部停止**。理由:caught/missed 翻譯不出「認真與否」的結論(d4 非平穩性論證),其僅存的煙霧偵測角色(審計員沒讀/管線斷線)已被**引句錨定(quote-check)機械蓋掉**;prior-art 掃描確認業界同題 repo 對 loop 信任全押機械可重算閘、無人做注意力探針層。
 +> **停用後的輪記帳**:`lumos canary record none --loop <id> ...`(kind=`none`=純處置帳載體;severity/findings/disposal 欄照記);panel 輪有效=記帳席 ≥2 且零 missed(工具已支援,歷史 caught/missed 帳原樣可回放)。`loop next` 若印植入指引(canary_type/record_cmd 的 caught|missed 樣板)**照跳過**——工具封存未拆。
 +> 下文與 reference/templates 殘留的 canary 字樣=歷史帳判讀用,不再是動作指令。
  
- > **定位(d4;★2026-08-04 重設計修訂:閘便宜,審不淺★)**:抬 spec 質量,**非保 spec 正確**——「初篩網」指★放行門檻★(一輪處置全清即走),**不是審查深度**:★前提層錯誤(需求誤解/架構誤判/跨系統合約假設錯)明列本層職責——TDD/E2E 對「spec 的理解本身錯不錯」沒有 oracle★。行為層正確性歸下游 code-loop＋測試＋驗證,漏網進逃逸帳。**前置加重一律拒**。完整重設計見圖譜 [[Projects/design-loop重設計]]。
+ > **定位(d4;★2026-08-04 重設計修訂:閘便宜,審不淺★)**:抬 spec 質量,**非保 spec 正確**——「初篩網」指★放行門檻★(一輪處置全清即走),**不是審查深度**:★前提層錯誤(需求誤解/架構誤判/跨系統合約假設錯)明列本層職責——TDD/E2E 對「spec 的理解本身錯不錯」沒有 oracle★。行為層正確性歸下游 code-loop＋測試＋驗證,漏網進逃逸帳。**前置加重一律拒**。完整重設計見架構圖 [[Projects/design-loop重設計]]。
  
  > ### ★收斂改走處置閘(2026-08-04 重設計;取代 K-streak/capture-recapture 硬閘)★
 -> **一輪流程**:pre-flight 排乾 → ★隨機決定植不植 canary(d4 觀測非閘:判定強制留痕、miss 不作廢該席 findings、進跨輪累積帳;★定位=當輪煙霧偵測器(2026-08-08 Enzo 裁,見[[Projects/驗證層去模型化_計劃]]):只做同輪席間對照抓管線斷線,不做跨期統計/席位信譽/型別權重;判讀=漏送分題強警報、漏難題弱訊號、抓到送分題≈零證明★)★ → 派 panel(派工含★錨定紀律★:每條 finding 必附逐字原文引句 ≥10 字;派工當下順手落 dispatch manifest,見留痕慣例) → **收貨三道**(2026-08-06 S1,plan:[[Projects/驗證層自證三件_計劃]]):①逐席 `lumos quote-check <席報告> --spec <凍結快照>`(錨不到的條目不採信;★比對對象=派工當下凍結快照,勿用現檔——折入後引句會自我成真★)②`lumos refcheck <席報告> --repo <root>`(finding 引的 file:line 機械驗存在/行號範圍——報告引了不實指涉當場現形)③`lumos seat-check <席報告> --dispatch <rN-dispatch.json> --ledger <out-of-scope.jsonl>`(有講沒做對帳:unreported/out_of_scope;觀測恆 rc0 不擋收貨,越界另記一本不進收斂帳) → 辯方(≥major) → 處置帳 record(`lumos loop next` 的 `disposal_cmd` 模板;★blocker 只能折不能放行★) → `lumos loop status <id> --disposal --spec <計劃節點> --repo <root>`(四條合取全讀側可重算:G3∧處置全清∧留痕 sha 重驗∧引句全錨定) → rc0 即收斂;cap=2,第二輪只給 delta。
@@ -1443,7 +1443,7 @@ index d9a1142..3047a7b 100644
  2. **是不是風格偏好類關切?**——是 → 出界,不立機制(evidra 家規:detector 只收「造成過 production 傷害的 pattern」)。
  3. **既有機制小修蓋得住嗎?**——先 grep 自家(quote-check/refcheck/canary-stats/doctor Check 字母表…),小修蓋得住就不造新的(本 skill 的 loop 實錄:同一份 spec 曾兩處重造自家既有子命令,全靠審計抓回)。
  
- 三問答案記在**該提案的圖譜計劃節點 PRIOR-ART/緣起段**(既有留痕位,無新帳)。機制總量本身也是成本——evidra 的錨:detector 超過 15 個=系統病了,本 skill 的對應嗅覺:護欄/閘的條數若一直只增不減,先懷疑是不是在補「沒人用」而不是「不夠用」。
+ 三問答案記在**該提案的架構圖計劃節點 PRIOR-ART/緣起段**(既有留痕位,無新帳)。機制總量本身也是成本——evidra 的錨:detector 超過 15 個=系統病了,本 skill 的對應嗅覺:護欄/閘的條數若一直只增不減,先懷疑是不是在補「沒人用」而不是「不夠用」。
  
  ## 平行 panel 模式(≤3 輪壓縮)
  
@@ -1534,14 +1534,14 @@ index 242e61e..ed49a1b 100644
 @@ -208,21 +208,21 @@ KEY:★CHECKPOINT★   <改了難救>                                     # 建
  - **Verification** 必填 `valid_under`(有效條件:版本/規模/schema)+ `revalidate_when`(重驗觸發)。建 Verification **同步**把 wikilink 加進相關 Systems 的 `verified_by`(雙向,缺一不可;漏寫 `lumos sync-verified-by --apply` 補)。
  - **plan_refs**:落地某計劃的 Verification(含後續迭代)填 `plan_refs` 反指計劃節點(意圖鏈,doctor Check 4 把關)。
- - **計劃/設計一律寫圖譜計劃節點**(`Projects/<主題>_計劃`,`type:project`),**不寫 `docs/superpowers/specs/`、`openspec/` 等 repo 路徑**——覆寫任何 SDD 工具的預設落點。
+ - **計劃/設計一律寫架構圖計劃節點**(`Projects/<主題>_計劃`,`type:project`),**不寫 `docs/superpowers/specs/`、`openspec/` 等 repo 路徑**——覆寫任何 SDD 工具的預設落點。
  
  ---
  
- ## 自足性審計(圖譜實質更新後必做)
+ ## 自足性審計(架構圖實質更新後必做)
  
- 派**乾淨 sonnet agent 只讀圖譜**還原脈絡 → 主對話比對「還原結果 vs 腦中現存脈絡」:有出入 = 圖譜當下不健全,補缺後**重審到一致**。純格式修正可豁免。審過留痕:`lumos self-audit <node>`(doctor Check S 軟提醒未審/過期)。
- > 無主對話脈絡時(定期巡檢/接手陌生專案)→ 改用「圖譜×程式碼交叉審計」(以 code 為真值),做法見 `reference.md`。
+ 派**乾淨 sonnet agent 只讀架構圖**還原脈絡 → 主對話比對「還原結果 vs 腦中現存脈絡」:有出入 = 架構圖當下不健全,補缺後**重審到一致**。純格式修正可豁免。審過留痕:`lumos self-audit <node>`(doctor Check S 軟提醒未審/過期)。
+ > 無主對話脈絡時(定期巡檢/接手陌生專案)→ 改用「架構圖×程式碼交叉審計」(以 code 為真值),做法見 `reference.md`。
 -> 對抗**設計稿**審計(canary 驗審計員醒著)→ 走 `lumos-design-loop` skill,不在此。
 +> 對抗**設計稿**審計(乾淨 agent 逐輪找洞+引句錨定收貨)→ 走 `lumos-design-loop` skill,不在此。
  
@@ -1553,13 +1553,13 @@ index 242e61e..ed49a1b 100644
  # 開工:掌握現況
  lumos search "status/doing"; lumos recent --days 7; lumos context Systems/<模組>
  
- # 改完 code:更新圖譜
+ # 改完 code:更新架構圖
 diff --git a/skills/lumos-project-notes/reference.md b/skills/lumos-project-notes/reference.md
 index b141d10..d20f6e2 100644
 --- a/skills/lumos-project-notes/reference.md
 +++ b/skills/lumos-project-notes/reference.md
 @@ -23,21 +23,21 @@ repo 內的 `scripts/lumos`（python3 標準庫，零 Obsidian 依賴）是**日
- lumos 提供圖譜感知能力（backlinks、links、orphans、contracts、合約測試綁定），是單純讀寫檔案做不到的；直接編輯也繞過寫後自驗與鐵則防護。
+ lumos 提供架構圖感知能力（backlinks、links、orphans、contracts、合約測試綁定），是單純讀寫檔案做不到的；直接編輯也繞過寫後自驗與鐵則防護。
  
  **讀取 / 巡檢**：
  
@@ -1571,7 +1571,7 @@ index b141d10..d20f6e2 100644
  | 治理事件帳（某節點歷來被哪幾道閘攔過） | `python3 scripts/lumos gov [<筆記名>] [--since N]` — 唯讀彙整 bypass/rot/governance-log;本機可見性 |
 -| **設計 spec 進實作前打磨**（canary-護審計 loop 到收斂） | 調用 **`lumos-design-loop`** skill;原語 `lumos canary record --loop/--severity/--findings` + `lumos loop status <id> --need 2 --gate --spec <md> --repo <root>`(證據閘:K-streak ∧ 引用座標 refcheck ∧ 發現枯竭)。收斂另有三模式:`--gate --panel`(不吃 --need)/`--light`/`--gate --spec --settle <清單.json>`(結清,互斥群 rc2);輔助原語 `loop next`(settle 不支援)/`loop compress`/`loop verify-progress`——詳 design-loop skill |
 +| **設計 spec 進實作前打磨**（對抗審計 loop 到收斂;canary 協議 2026-08-14 已停用） | 調用 **`lumos-design-loop`** skill;原語 `lumos canary record --loop/--severity/--findings` + `lumos loop status <id> --need 2 --gate --spec <md> --repo <root>`(證據閘:K-streak ∧ 引用座標 refcheck ∧ 發現枯竭)。收斂另有三模式:`--gate --panel`(不吃 --need)/`--light`/`--gate --spec --settle <清單.json>`(結清,互斥群 rc2);輔助原語 `loop next`(settle 不支援)/`loop compress`/`loop verify-progress`——詳 design-loop skill |
- | 健康巡檢（orphans / unresolved / verified_by 同步 / plan_refs 意圖鏈 / 同名守衛 / 鐵則 lint / ★INVARIANT★→測試綁定 + 獨立合法性審計；Check P 失效檔案認領(節點正文 inline-code 路徑指向已不存在的 repo 檔 → 軟提醒「圖譜指向死碼」)） | `python3 scripts/lumos doctor [--ci]` |
+ | 健康巡檢（orphans / unresolved / verified_by 同步 / plan_refs 意圖鏈 / 同名守衛 / 鐵則 lint / ★INVARIANT★→測試綁定 + 獨立合法性審計；Check P 失效檔案認領(節點正文 inline-code 路徑指向已不存在的 repo 檔 → 軟提醒「架構圖指向死碼」)） | `python3 scripts/lumos doctor [--ci]` |
  | 讀單篇 decisions | `python3 scripts/lumos decisions <筆記名>` |
  | 全 vault 掃被推翻決策 | `python3 scripts/lumos decisions --superseded` |
  | 環境變更掃 valid_under / revalidate_when 命中 | `python3 scripts/lumos stale --match "<條件字串>"` |
@@ -1582,7 +1582,7 @@ index b141d10..d20f6e2 100644
  | **業務簽核留痕（validation 那半:人點頭）** | `python3 scripts/lumos signoff <節點> --note "確認了什麼" [--by 人]` — append docs/.signoff-log.jsonl + frontmatter `signed_off`;gov 撈得到。工具只記留痕不證明確認真的發生 |
  | 資料夾統計 | `python3 scripts/lumos stats` |
 @@ -710,21 +710,23 @@ python3 scripts/lumos recent --days 7
- **判定與處置**（主對話執行）：❌ = 圖譜腐爛 → 修筆記（過時決策標 superseded、錯誤描述更正並註明「YYYY-MM-DD 程式碼實證」）→ 建 Verification 紀錄審計結果 → 相關 Systems 的 `verified_by` 雙向同步。**修正一律以 code 為準**——除非 code 本身是 bug（那就開 Issue，不改筆記遷就）。
+ **判定與處置**（主對話執行）：❌ = 架構圖腐爛 → 修筆記（過時決策標 superseded、錯誤描述更正並註明「YYYY-MM-DD 程式碼實證」）→ 建 Verification 紀錄審計結果 → 相關 Systems 的 `verified_by` 雙向同步。**修正一律以 code 為準**——除非 code 本身是 bug（那就開 Issue，不改筆記遷就）。
  
  **實戰教訓（2026-06-10 四大節點首跑，60 主張 85% 一致）**：
  1. 最高頻腐爛型態 = 「**決策在別篇筆記被推翻、本篇沒跟上**」——hooks 抓不到（改 code 時只同步了主筆記），交叉審計是目前唯一掃得出它的機制

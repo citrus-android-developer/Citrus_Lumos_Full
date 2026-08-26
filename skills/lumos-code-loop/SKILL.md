@@ -5,7 +5,7 @@ description: 分支終審前執行代碼對抗審計 loop——pitfalls --diff �
 
 # lumos-code-loop:分支終審前的對抗代碼審 loop
 
-> ## ⛔ canary 協議已停用(2026-08-14,Enzo 裁;單源=圖譜 Systems/canary-audit d5 + `../lumos-design-loop/SKILL.md` 頁頂告示)
+> ## ⛔ canary 協議已停用(2026-08-14,Enzo 裁;單源=架構圖 Systems/canary-audit d5 + `../lumos-design-loop/SKILL.md` 頁頂告示)
 >
 > 植入/判定/漏抓懲罰停止;每輪記帳改 `lumos canary record none ...`(純處置帳載體,severity/findings/disposal 欄照記);panel 輪有效=記帳席 ≥2 且零 missed。下文殘留的 canary 步驟=歷史帳判讀用,不再執行。
 
@@ -109,7 +109,7 @@ Agent tool、`model: sonnet`(升級條件單源見 design-loop 護欄:引句大�
     check("★前置★ 現場成立:rmdir 這一步真的拋了例外(輸出有『順帶清理』字樣)", "順帶清理空目錄" in out, out)
     ```
   - **寫測試/審測試前對照 [[Systems/測試假綠形態]] 八型清單**(恆真斷言/斷言太鬆/驗寫法不驗行為/現場走不到被測分支/fixture 無鑑別力/根本沒去驗/白名單過寬/依賴環境巧合)。⚠ **對照過清單 ≠ 測試夠格**——清單是提示器不是偵測器,且★一定有第九型★。
-  - 業務合約級隱患 → 另寫圖譜 ★INVARIANT★ 綁 `[test:]`;非合約級測試進套件靠回歸守。
+  - 業務合約級隱患 → 另寫架構圖 ★INVARIANT★ 綁 `[test:]`;非合約級測試進套件靠回歸守。
 - ~~canary 判定抽樣分權~~ **⛔ 已停用**(隨協議停用;`canary second` 封存)。
 
 ### 5 · 記錄
@@ -215,7 +215,7 @@ lumos code-loop pass --note "<收斂理由/loop-id>"       # pre-push blocking:�
 證據=截圖+關鍵 console/network 摘要,存 `governance/review-reports/<loop-id>/ui-evidence/`
 並由 Verification 節點引用。哲學同 quote-check:證據可重放,不是口頭宣稱「看起來對」。
 無法起環境(lab 不在/需登入而無 session)→ 明記「UI 層未驗+原因」,不得靜默跳過。
-**真跑優先(2026-07-18 S1,紀律層規則非機械閘)**:diff 經 `lumos impact --diff` 命中綁 `[test:]` 的星標合約節點時,pass 前**只跑該綁定測試**(非全套)且須綠,結果記入 pass --note——LLM 判官意見不能替代這一跑(信任階梯:真跑>機械查>LLM 判官>自報)。`[test:]` 存的是測試名非指令,解析順序=①合約節點/專案圖譜記載的完整指令 ②依該棧慣例組指令(`dotnet test --filter`/`python3 scripts/test_lumos.py -k` 等)③歧義/查無 → **不得靜默跳過**:退跑該測試檔/模組級,再不行跑全套,留痕記「解析歧義」——「解析不了所以沒跑」不構成放行理由。機械化留 v2(動 gate code 另立計劃)。
+**真跑優先(2026-07-18 S1,紀律層規則非機械閘)**:diff 經 `lumos impact --diff` 命中綁 `[test:]` 的星標合約節點時,pass 前**只跑該綁定測試**(非全套)且須綠,結果記入 pass --note——LLM 判官意見不能替代這一跑(信任階梯:真跑>機械查>LLM 判官>自報)。`[test:]` 存的是測試名非指令,解析順序=①合約節點/專案架構圖記載的完整指令 ②依該棧慣例組指令(`dotnet test --filter`/`python3 scripts/test_lumos.py -k` 等)③歧義/查無 → **不得靜默跳過**:退跑該測試檔/模組級,再不行跑全套,留痕記「解析歧義」——「解析不了所以沒跑」不構成放行理由。機械化留 v2(動 gate code 另立計劃)。
 → 交 **finishing-a-development-branch** 進合併流程。
 
 ---

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# graph-rename.sh — 圖譜 rename/移檔的封印 wrapper(只放行 notesmd-cli `move`)
+# graph-rename.sh — 架構圖 rename/移檔的封印 wrapper(只放行 notesmd-cli `move`)
 #
 # 為什麼封印: notesmd-cli `move` 經五項補測通過(連結改寫含 frontmatter 字串、
 #   定點替換不重排、BOM/CRLF 保留),但同工具的 `frontmatter --edit` 會污染

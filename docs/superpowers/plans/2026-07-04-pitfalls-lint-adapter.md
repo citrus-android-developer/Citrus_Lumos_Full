@@ -129,9 +129,9 @@ def t_lint_sarif():
 
 ---
 
-### Task 5: 知識同步 + 圖譜節點 + anchor 收尾(controller 自跑)
+### Task 5: 知識同步 + 架構圖節點 + anchor 收尾(controller 自跑)
 
-**Files:** Modify `skills/lumos-project-notes/SKILL.md`(pitfalls 指令表補 `--diff` lint 整合)、`skills/lumos-code-loop/SKILL.md`(reviewer 鏡頭對 lint claim 讀 `message` 非 question,R1-F4)、`scripts/templates/graph-discipline.md`(終審前 pitfalls --diff 補「配 .lumos/lint.json 則吃 linter」)、`docs/methodology/圖譜即合約.md`(pitfalls 列補「lint 整合器 SARIF」);Create `Systems/pitfalls-lint-adapter.md` + `Verification/2026-07-04_pitfalls-lint-adapter.md`;更新 `Projects/pitfalls-lint-integration_計劃`(①塊 done);merge 後 anchor approve。
+**Files:** Modify `skills/lumos-project-notes/SKILL.md`(pitfalls 指令表補 `--diff` lint 整合)、`skills/lumos-code-loop/SKILL.md`(reviewer 鏡頭對 lint claim 讀 `message` 非 question,R1-F4)、`scripts/templates/graph-discipline.md`(終審前 pitfalls --diff 補「配 .lumos/lint.json 則吃 linter」)、`docs/methodology/架構圖即合約.md`(pitfalls 列補「lint 整合器 SARIF」);Create `Systems/pitfalls-lint-adapter.md` + `Verification/2026-07-04_pitfalls-lint-adapter.md`;更新 `Projects/pitfalls-lint-integration_計劃`(①塊 done);merge 後 anchor approve。
 
 - [ ] **Step 1:** 知識同步四檔(照 spec §知識同步影響表,grep 驗各 ≥1 命中)。
 - [ ] **Step 2:** KG Systems 節點(summary:FLOW=偵測棧→跑 lint→SARIF 解析→過濾/合併→manifest;KEY=只解 SARIF 不內建規則/uri 正規化 KDS tracer 坐實/per-command temp/location-less 不連坐/座標系對齊降級/向後相容;DEP=[[lumos-refcheck]][[pitfalls-code-loop]];TEST;VERIFY)+ Verification 節點(valid_under/revalidate_when/TEST 記實際數)。lint ×2 + doctor 0 issues。

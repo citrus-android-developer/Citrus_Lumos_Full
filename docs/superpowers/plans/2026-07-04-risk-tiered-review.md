@@ -93,8 +93,8 @@ class TestDifficulty(unittest.TestCase):
         self.assertEqual(self.d.assess_spec(md)["tier"], "high")  # 回退全文,偏嚴
 
     def test_assess_spec_strips_inline_code_and_filenames(self):
-        md = ("# t\n## 目標\n更新 `圖譜即合約-對外論述.md` 的段落說明,內容為文檔措辭。\n"
-              "## 組件\n見 圖譜即合約-對外論述.md 檔。\n## 其他\n無風險詞的內部整理。\n")
+        md = ("# t\n## 目標\n更新 `架構圖即合約-對外論述.md` 的段落說明,內容為文檔措辭。\n"
+              "## 組件\n見 架構圖即合約-對外論述.md 檔。\n## 其他\n無風險詞的內部整理。\n")
         self.assertEqual(self.d.assess_spec(md)["tier"], "standard")  # 檔名「對外」不得誤觸
 ```
 
@@ -519,20 +519,20 @@ git commit -m "feat(loop): confidence report 呈現 tier/hits + 自報 tier 對�
 ### Task 5: 知識同步 — methodology ×2 + design-loop SKILL 軟建議
 
 **Files:**
-- Modify: `docs/methodology/圖譜即合約.md`(自主迭代 loop 節的屬性表加一列)
-- Modify: `docs/methodology/圖譜即合約-對外論述.md`(「機器點收」段後插白話段)
+- Modify: `docs/methodology/架構圖即合約.md`(自主迭代 loop 節的屬性表加一列)
+- Modify: `docs/methodology/架構圖即合約-對外論述.md`(「機器點收」段後插白話段)
 - Modify: `skills/lumos-design-loop/SKILL.md`(硬閘行後補軟建議一句)
 
-- [ ] **Step 1: 圖譜即合約.md 自主 loop 表加列**
+- [ ] **Step 1: 架構圖即合約.md 自主 loop 表加列**
 
 old(自主迭代 loop 節屬性表內):
 ```
-| 防 drift | spec 必填「知識同步影響」(列此改動影響哪些論述/skills),人放行時一併更新知識——圖譜即合約(知識跟實作走)套在 loop 自己身上 |
+| 防 drift | spec 必填「知識同步影響」(列此改動影響哪些論述/skills),人放行時一併更新知識——架構圖即合約(知識跟實作走)套在 loop 自己身上 |
 ```
 new:
 ```
 | 風險分級審查(2026-07-04) | 審查強度跟風險面走:difficulty.py 四類關鍵詞(金流/對外寄送/prod 不可逆/守衛面)零參數二值分級——high 級 K=3/cap≥8/關 fail-open(複核缺席不放行、endorsed-after-refute 不算綠燈);**收檔由 wrapper 自算 tier 機械重驗 gate,不信 orchestrator 自報 converged**。分級是 proxy 非難度量測,假陽性偏嚴方向;RHB 病灶(難題放水)只買到更多次揮棒,縱深非解藥 |
-| 防 drift | spec 必填「知識同步影響」(列此改動影響哪些論述/skills),人放行時一併更新知識——圖譜即合約(知識跟實作走)套在 loop 自己身上 |
+| 防 drift | spec 必填「知識同步影響」(列此改動影響哪些論述/skills),人放行時一併更新知識——架構圖即合約(知識跟實作走)套在 loop 自己身上 |
 ```
 
 - [ ] **Step 2: 對外論述插白話段**
@@ -561,16 +561,16 @@ lumos 擋不住「不跑就實作」——靠你記得調用 + 誠實。**高風
 
 - [ ] **Step 4: 驗證 + Commit**
 
-Run: `grep -c "風險分級\|分級" docs/methodology/圖譜即合約.md docs/methodology/圖譜即合約-對外論述.md skills/lumos-design-loop/SKILL.md` → 三檔各 ≥1。
+Run: `grep -c "風險分級\|分級" docs/methodology/架構圖即合約.md docs/methodology/架構圖即合約-對外論述.md skills/lumos-design-loop/SKILL.md` → 三檔各 ≥1。
 
 ```bash
-git add docs/methodology/圖譜即合約.md docs/methodology/圖譜即合約-對外論述.md skills/lumos-design-loop/SKILL.md
+git add docs/methodology/架構圖即合約.md docs/methodology/架構圖即合約-對外論述.md skills/lumos-design-loop/SKILL.md
 git commit -m "docs(sync): risk-tiered-review 知識同步——loop 表分級列 + 對外白話 + SKILL 軟建議"
 ```
 
 ---
 
-### Task 6: 圖譜節點 + 收尾(controller 自跑)
+### Task 6: 架構圖節點 + 收尾(controller 自跑)
 
 **Files:**
 - Create: `docs/lumos-toolchain-knowledge/Systems/risk-tiered-review.md`

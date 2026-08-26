@@ -132,8 +132,8 @@ def run_cross_audit(spec_text, canary_log_path, loop_id, ground_truth,
 
 | 受影響文件 | 需同步什麼 |
 |---|---|
-| `docs/methodology/圖譜即合約.md` | 自主 loop 段(§四自節)補:放行前跨家族複核 = 對抗同門偏心的具體機制 |
-| `docs/methodology/圖譜即合約-對外論述.md` | 對外白話段補一句:loop 放行前由「不同家族的 AI」再看一眼 |
+| `docs/methodology/架構圖即合約.md` | 自主 loop 段(§四自節)補:放行前跨家族複核 = 對抗同門偏心的具體機制 |
+| `docs/methodology/架構圖即合約-對外論述.md` | 對外白話段補一句:loop 放行前由「不同家族的 AI」再看一眼 |
 | `docs/design/2026-06-20-autonomous-iteration-loop.md` | §放行閘補:收斂後、放行前的 qwen 跨家族複核步驟 + degrade |
 | `governance/autonomous_loop/orchestrator-prompt.md` | 見上:§2 末新增步驟 9 + §3 輸出加 cross_verdict/cross_worst/cross_summary 三欄 |
 | `governance/autonomous_loop/cross_audit.py` | 新建此模組 |

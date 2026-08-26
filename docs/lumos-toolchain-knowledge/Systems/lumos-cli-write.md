@@ -20,7 +20,7 @@ summary: |-
   FLOW:set/append/self-audit/decision-*→load_raw_for_edit(讀raw,拒BOM/CRLF)→line-based改fm→atomic_write_verify(寫tmp→re-parse自驗值正確+無新lint指紋→os.replace)→敗則tmp丟棄原檔不動
   KEY:[2026-08-11]新增 `remove <note> <key> <value>`=append 逆操作(T1 list 項移除)。缺口來自實戰:死背書(verified_by 指向已 superseded 的驗證)與降格後殘留 core_refs,都只能靠移除 list 項來收,而 set 只收純量、append 只能加,唯一退路 obsidian processFrontMatter 需 Obsidian 執行中→實務無路可走。比對沿用 link_target()(精確 target,不做前綴/basename 匹配);★不命中一律 rc=2★(靜默 no-op 回成功=呼叫端以為清乾淨了,比報錯危險);清空後連 key 行一併移除(裸鍵被 YAML 解成 null 比沒鍵更糟);core_refs 納入 LIST_KEYS(升格加/降格拆兩向都走 T1)。★不支援巢狀 dict 型 list 項★(core-knowledge facet 的 implements 需 T3 手術層,非本次範圍)。實戰驗收:LandmarkMember doctor E1 死背書 14→0、C 指針轉「無」。詳 [[Verification/2026-08-11_T1_remove_list項移除]]
   KEY:[2026-08-26]decision-add 補齊 ADR 四欄位——新增 `--alternatives`(可重複→`alternatives_considered` 巢狀清單,項縮排 sub+2)與 `--trade-offs`;欄位順序對齊 lumos-project-notes reference 的 ADR 完整版範例(content/id/context/alternatives_considered/why_chosen/trade_offs/decided/valid)。先前只有 context/why_chosen,規範要求的四欄位寫不進 frontmatter,「為什麼不選 B」與「代價」只能塞本文——而那正是 ADR 的價值所在。★兩條 block 組裝路徑抽成單一源 `_decision_block`★(無 decisions 新建 / append 既有,原本各組裝一次,欄位一多必分歧——同 2026-08-01 被代碼審抓到的分支簿記形態);寫後自驗升級到驗四欄位(只驗 id+content 的話,巢狀縮排寫錯會靜默成假成功;實測植入 sub+2→sub 壞法,自驗擋下、原檔零變動) [test:t_decision_add_four_field_adr,t_decision_add_alternatives_parse_back,t_decision_add_four_field_no_existing_decisions,t_decision_add_four_field_lint_clean]
-  KEY:8個寫入原語(set/append/remove/new/archive/decision-add/decision-supersede/self-audit)是「專案層」圖譜寫入的唯一安全路徑,取代手改 frontmatter / obsidian property:set
+  KEY:8個寫入原語(set/append/remove/new/archive/decision-add/decision-supersede/self-audit)是「專案層」架構圖寫入的唯一安全路徑,取代手改 frontmatter / obsidian property:set
   KEY:T1 寫後自驗 atomic——所有 fm mutation 經 atomic_write_verify:寫 .lumos-tmp → re-parse 斷言該 key 寫成目標值 + 無引入新 lint 指紋 → os.replace 原子換入;任一步失敗 tmp 丟棄、原檔零變動 [test:t_set_minimal_diff,t_append_exact_dedup]
   KEY:set 走 SCALAR_KEYS 白名單{status,updated,created,type,self_audit,signed_off,regen[M1 2026-07-16 from-scratch守衛宣告欄]}、append 走 LIST_KEYS{verified_by,plan_refs,related,tags};白名單外 key 直接 rc2(list 用 append、decisions 翻盤/新增走 decision-*) [test:t_append_block_key_rejected]
   KEY:鐵則1(多wikilink必YAML list)由 append 結構性保證——一項一行 + link_target dedup,絕不字串塞多個[[]];鐵則3/4(含「: 」長文引號化、日期 bare)由 fmt_scalar/_fmt_decision_value 包辦
@@ -34,7 +34,7 @@ summary: |-
 decisions:
   - content: 所有 frontmatter 寫入經 atomic_write_verify「寫 tmp → re-parse 自驗(值正確且無新 lint 指紋)→ os.replace」,任一步敗則原檔零變動
     id: d1
-    context: 圖譜檔被 doctor/lint 把關,半寫壞的 frontmatter(YAML 解析爆、引入新指紋)會污染全圖;直接寫檔無法保證寫完仍合法
+    context: 架構圖檔被 doctor/lint 把關,半寫壞的 frontmatter(YAML 解析爆、引入新指紋)會污染全圖;直接寫檔無法保證寫完仍合法
     why_chosen: 寫後自驗把「寫出來的東西真的 parse 得回目標值、且沒新增 lint 問題」變成寫入成功的前置條件;atomic rename 確保不留半截檔,失敗即無痕回滾
     decided: 2026-06-26
     valid: true
@@ -66,7 +66,7 @@ verified_by:
 ---
 # lumos-cli-write
 
-`scripts/lumos` 的**專案層圖譜寫入原語**(7 個子指令)—— 對知識圖譜 frontmatter 的唯一安全寫入路徑。直接手改 frontmatter / obsidian `property:set` 會繞過寫後自驗與格式鐵則(實測 `property:set` 塞多 wikilink 會長出亂碼 ghost 節點)。
+`scripts/lumos` 的**專案層架構圖寫入原語**(7 個子指令)—— 對知識架構圖 frontmatter 的唯一安全寫入路徑。直接手改 frontmatter / obsidian `property:set` 會繞過寫後自驗與格式鐵則(實測 `property:set` 塞多 wikilink 會長出亂碼 ghost 節點)。
 
 > 源起:CLI 核心非日報觸發。
 
@@ -100,7 +100,7 @@ verified_by:
 - **鐵則4(日期 bare 不加引號)**:`fmt_scalar` / decision 子欄位格式化保持日期裸值;`--decided`/`--ended`/`--date` 先過 `DATE_RE`/`fromisoformat` 校驗,非 `YYYY-MM-DD` 直接拒。
 
 ## 機器層 vs 專案層分工
-這組原語只動**專案層**圖譜檔(`docs/<slug>-knowledge/`);與機器層(`install`/`uninstall` 動 `~/.local/bin`、user-scope skills)、生命週期(`bootstrap`/`update`/`init`/`deinit`)正交。
+這組原語只動**專案層**架構圖檔(`docs/<slug>-knowledge/`);與機器層(`install`/`uninstall` 動 `~/.local/bin`、user-scope skills)、生命週期(`bootstrap`/`update`/`init`/`deinit`)正交。
 
 ## 已知限制
 - decision-* 要求 **2-space 標準縮排**;0-indent / tab 縮排的 decisions 區塊報錯、不自動處理。

@@ -1,6 +1,6 @@
 # Lumos 架構圖
 
-> 「圖譜即合約」工具組的**唯一源 → 分發 → 消費端**模型。一張圖看懂:什麼東西住在哪、用哪個指令裝到哪、為什麼非這樣分不可。
+> 「架構圖即合約」工具組的**唯一源 → 分發 → 消費端**模型。一張圖看懂:什麼東西住在哪、用哪個指令裝到哪、為什麼非這樣分不可。
 
 ## 1. 全景:唯一源 → 兩種 scope → 消費端
 
@@ -13,7 +13,7 @@ flowchart TB
         GHOOKS["scripts/hooks/<br/>git: pre-commit / post-commit / pre-push"]
         CHOOKS["scripts/hooks/claude/<br/>PreToolUse (impact 注入) · PostToolUse (自足性/rot 後驗)"]
         INST["安裝器<br/>get.sh · get.ps1 · install.sh<br/>install-hooks.sh · install-graph-toolchain.sh · merge-claude-settings.py"]
-        TPL["scripts/templates/graph-discipline.md<br/>(圖譜先行紀律範本)"]
+        TPL["scripts/templates/graph-discipline.md<br/>(架構圖先行紀律範本)"]
         RENAME["scripts/graph-rename.sh · fetch-notesmd.sh<br/>(notesmd move 封印)"]
         SKILLS["skills/<br/>lumos-project-notes · core-knowledge<br/>design-loop · code-loop · pitfalls-gapfill"]
     end
@@ -30,7 +30,7 @@ flowchart TB
         PCLI["scripts/lumos (vendored copy)"]
         PHOOK["scripts/hooks/ + core.hooksPath"]
         PCLAUDE["CLAUDE.md<br/>(sentinel 注入紀律段)"]
-        PGRAPH["docs/&lt;slug&gt;-knowledge/<br/>(圖譜資料 · 各專案自己的)"]
+        PGRAPH["docs/&lt;slug&gt;-knowledge/<br/>(架構圖資料 · 各專案自己的)"]
     end
 
     CONSUMER["消費端專案<br/>(你的專案 / MyApp 等)<br/>= vendored consumer"]
@@ -81,7 +81,7 @@ flowchart LR
 
     subgraph NEW["lumos init (導入新專案 · 底層 install-graph-toolchain)"]
         direction TB
-        N1["vendor 工具組"] --> N2["scaffold 圖譜<br/>(skip-if-exists)"]
+        N1["vendor 工具組"] --> N2["scaffold 架構圖<br/>(skip-if-exists)"]
         N2 --> N3["注入 CLAUDE.md"]
         N3 --> N4["裝 git + Claude hooks"]
     end
@@ -130,7 +130,7 @@ flowchart TB
 
 > `guard`/`anchor`/`canary`/`loop`/`code-loop` 各帶子命令(如 `anchor verify`);上面 53 是頂層命令數,權威清單以 `lumos --help` 為準(**分類小計刻意不寫**:只有總數有機械守衛,寫了沒守的數字就是新漂移面)。
 
-## 4. 強制力管線 (圖譜不腐爛的機制)
+## 4. 強制力管線 (架構圖不腐爛的機制)
 
 由「動手前推播 → commit 把關 → push 硬閘 → CI → **回流當輪修**」五段;訊號主動推到眼前(impact),硬閘擋在提交與推送點,CI 結論由 `lumos ci-wait` 拉回同一輪(需專案宣告 `.lumos/config.json` 的 `ci` 區塊才啟用;未宣告=此段不存在)。
 
@@ -143,12 +143,12 @@ flowchart TB
         POSTT["PostToolUse<br/>自足性 / verification-rot 後驗"]
     end
 
-    EDIT["改 code + 圖譜"] --> PC{"pre-commit (git)"}
-    PC -->|"改 code 沒帶圖譜更新"| BLOCK["⛔ 擋下 (可 --no-verify · post-commit 留痕)"]
+    EDIT["改 code + 架構圖"] --> PC{"pre-commit (git)"}
+    PC -->|"改 code 沒帶架構圖更新"| BLOCK["⛔ 擋下 (可 --no-verify · post-commit 留痕)"]
     PC -->|通過| COMMIT["commit"]
 
     COMMIT --> PUSH{"pre-push (git)"}
-    PUSH -->|"① lumos doctor --ci"| PB1["⛔ 圖譜不健康"]
+    PUSH -->|"① lumos doctor --ci"| PB1["⛔ 架構圖不健康"]
     PUSH -->|"② anchor verify"| PB2["⛔ 測試/閘檔動了沒核可"]
     PUSH -->|"③ code-loop check (tier=high)"| PB3["⛔ 未過 code-loop<br/>(pass/skip/--no-verify 三路)"]
     PUSH -->|全過| PASS["push"]

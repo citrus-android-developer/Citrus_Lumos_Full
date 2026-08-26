@@ -62,7 +62,7 @@ design-loop 收斂判準升級:**輪次算術 → 機械證據錨 + 發現枯竭
 ## 消費端
 - 自動 loop:`governance/autonomous_loop/orchestrator-prompt.md` 步驟 6(--findings)/8(--gate)+ §2.5c 計票。
 - 手動 loop:`skills/lumos-design-loop/SKILL.md` 硬閘/步驟 5/步驟 8。
-- 方法論:`docs/methodology/圖譜即合約.md` loop 表證據閘列 + 原則 5 計票句。
+- 方法論:`docs/methodology/架構圖即合約.md` loop 表證據閘列 + 原則 5 計票句。
 
 ## 相關
 - 設計稿:`docs/design/2026-07-03-convergence-evidence-gate.md`(design-loop 4 輪、canary 4/4、R1 辯方維持 major 拆錨重構;qwen disputed 經人裁機械反證後放行)。

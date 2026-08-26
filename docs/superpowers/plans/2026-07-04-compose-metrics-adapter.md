@@ -210,9 +210,9 @@ def t_compose_metrics_cli():
 
 ---
 
-### Task 4: 知識同步 + 圖譜節點 + anchor + KDS 真機驗證(controller 自跑)
+### Task 4: 知識同步 + 架構圖節點 + anchor + KDS 真機驗證(controller 自跑)
 
-**Files:** Modify `skills/lumos-project-notes/SKILL.md`(指令表補 `compose-metrics`)、`docs/methodology/圖譜即合約.md`(pitfalls 列補「Compose 重組效能」);Create `Systems/compose-metrics-adapter.md` + `Verification/2026-07-04_compose-metrics-adapter.md`;更新 `Projects/pitfalls-lint-integration_計劃`(偏科層支線 done);merge 後 anchor approve。
+**Files:** Modify `skills/lumos-project-notes/SKILL.md`(指令表補 `compose-metrics`)、`docs/methodology/架構圖即合約.md`(pitfalls 列補「Compose 重組效能」);Create `Systems/compose-metrics-adapter.md` + `Verification/2026-07-04_compose-metrics-adapter.md`;更新 `Projects/pitfalls-lint-integration_計劃`(偏科層支線 done);merge 後 anchor approve。
 
 - [ ] **Step 1:** 知識同步兩檔(照 spec §知識同步影響,grep 驗各 ≥1 命中)。
 - [ ] **Step 2:** KG Systems 節點(summary:FLOW=讀宣告→解析 module.json/csv/txt→比對 baseline→delta manifest→放行 bump;KEY=只報退步不報怎修/baseline+delta 因整模組快照無file:line/non-skippable=skippable0&restartable1/txt 裸fun+泛型+空行硬化/update-baseline skip failed/EPS 只在 ratio;DEP=[[lint-version-watch]][[pitfalls-lint-adapter]];TEST;VERIFY)+ Verification 節點。lint ×2 + doctor 0。

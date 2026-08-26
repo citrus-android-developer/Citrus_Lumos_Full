@@ -1,7 +1,7 @@
 # code-loop r1 修復波報告（delguard）
 
 - 分支：`feat/delguard`
-- 範圍：`scripts/lumos` delguard 區（`_delguard_*` / `cmd_delguard_check`）、`scripts/hooks/pre-commit` Gate DG、`scripts/test_lumos.py`（`t_delguard` / `t_precommit_whitelist_drift_guard`）、圖譜兩節點
+- 範圍：`scripts/lumos` delguard 區（`_delguard_*` / `cmd_delguard_check`）、`scripts/hooks/pre-commit` Gate DG、`scripts/test_lumos.py`（`t_delguard` / `t_precommit_whitelist_drift_guard`）、架構圖兩節點
 - 目標測試：`t_delguard` + `t_precommit_whitelist_drift_guard` → **102 PASS / 0 FAIL**
 - 鄰接迴歸抽驗：`t_hooks_python_fallback` / `t_precommit_vendored_exempt` / `t_hook_cmd_home_resolved` / `t_hook_copy_list_completeness` / `t_cochange` → 39 PASS / 0 FAIL
 - 全量套件由控制器跑（本波未跑）

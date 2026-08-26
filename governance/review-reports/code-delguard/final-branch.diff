@@ -7,10 +7,10 @@ index a3926c4..91bf12e 100644
  
  本 repo 的規矩與現況**單一來源**如下，本檔只指路、不複製內容（防漂移）：
  
- 1. **專案規矩**：讀 `CLAUDE.md`（圖譜先行、零依賴家規、合約鏈、寫入規範）。
- 2. **系統現況**：讀 `docs/lumos-toolchain-knowledge/MOC/index.md`（知識圖譜索引），再按需讀 `Systems/`（機制）、`Projects/`（計劃與決策）、`Verification/`（驗證紀錄）。圖譜是唯一真相來源，與 code 衝突以圖譜的合約（★INVARIANT★）為準。
--3. **CLI**：`python3 scripts/lumos --help`（57 個頂層命令；讀圖譜用 `context`/`search`/`contracts`）。
-+3. **CLI**：`python3 scripts/lumos --help`（58 個頂層命令；讀圖譜用 `context`/`search`/`contracts`）。
+ 1. **專案規矩**：讀 `CLAUDE.md`（架構圖先行、零依賴家規、合約鏈、寫入規範）。
+ 2. **系統現況**：讀 `docs/lumos-toolchain-knowledge/MOC/index.md`（知識架構圖索引），再按需讀 `Systems/`（機制）、`Projects/`（計劃與決策）、`Verification/`（驗證紀錄）。架構圖是唯一真相來源，與 code 衝突以架構圖的合約（★INVARIANT★）為準。
+-3. **CLI**：`python3 scripts/lumos --help`（57 個頂層命令；讀架構圖用 `context`/`search`/`contracts`）。
++3. **CLI**：`python3 scripts/lumos --help`（58 個頂層命令；讀架構圖用 `context`/`search`/`contracts`）。
  4. 你通常被以唯讀審計員/協作者身分派入：**不要**改 `docs/*-knowledge/` 下的檔（那是 lumos 管的），發現問題用報告回覆。
 diff --git a/ARCHITECTURE.md b/ARCHITECTURE.md
 index 200bff5..ec0d26b 100644
@@ -75,10 +75,10 @@ diff --git a/README.md b/README.md
 index 2517689..5ac9eb0 100644
 --- a/README.md
 +++ b/README.md
-@@ -32,21 +32,21 @@ Lumos 把這些知識存成一張 Markdown 筆記圖譜(Obsidian 相容,但**核
- - **先讀再動。** 動既有系統前,第一個動作是 `lumos`,不是 `grep` / `Read` / 查 DB。圖譜先給你合約與邊界,code/DB 只拿來印證細節。
- - **退場寫回。** 做完把決策 / 驗證 / 合約寫回圖譜。
- - **commit-time 強制。** pre-commit 硬擋「改 code 沒更新圖譜」;`lumos doctor` 證明圖譜內部一致、且每條載重宣稱都綁了可執行測試。
+@@ -32,21 +32,21 @@ Lumos 把這些知識存成一張 Markdown 筆記架構圖(Obsidian 相容,但**核
+ - **先讀再動。** 動既有系統前,第一個動作是 `lumos`,不是 `grep` / `Read` / 查 DB。架構圖先給你合約與邊界,code/DB 只拿來印證細節。
+ - **退場寫回。** 做完把決策 / 驗證 / 合約寫回架構圖。
+ - **commit-time 強制。** pre-commit 硬擋「改 code 沒更新架構圖」;`lumos doctor` 證明架構圖內部一致、且每條載重宣稱都綁了可執行測試。
  
  ---
  
@@ -92,11 +92,11 @@ index 2517689..5ac9eb0 100644
  | **檢索與推薦** | `lumos search`(預設相關性排序)、`impact --ranked`(已接 hook)、`context --recommend`(dormant) | BM25F+圖分融合;search 與 hook 面均經人工 goldset 評測轉正(§6 門檻;評測釘語料快照可重現)。評測器 `governance/eval/retrieval_eval.py`。 |
  | **對抗審計 loop** | `lumos pitfalls`、`code-loop`、`canary`、`loop`、`fold-check`、`refcheck` | `pitfalls --diff` 分 tier;tier=high 走 canary 護的 `code-loop`(對抗代碼審);`design-loop` 在進實作前審 spec;`fold-check` 抓設計折入漂移。 |
  | **影響 / 完整性** | `lumos impact`、`anchor verify/approve`、`lumos testmap` | `impact` 由改動的檔反查受影響關聯節點(直接/間接)+ 命中事故(`pitfall_when`);`anchor` 守測試/閘檔不被**無聲**竄改(改動偵測:防意外/無痕漂移;同 repo 內自簽,非防蓄意攻擊的信任根);`testmap` 建檔案↔測試依賴地圖(naming/content/cochange 三路訊號),`affected` 依 diff 推薦該跑測試(advisory,Landmark 真庫金標雙層 recall 1.0 轉正)。 |
- | **git hooks** | `scripts/hooks/` | pre-commit 硬擋「改 code 沒帶圖譜」;post-commit 留繞過痕跡;pre-push 跑 `doctor --ci` **+ anchor verify + tier=high 未過 code-loop 硬擋**。 |
+ | **git hooks** | `scripts/hooks/` | pre-commit 硬擋「改 code 沒帶架構圖」;post-commit 留繞過痕跡;pre-push 跑 `doctor --ci` **+ anchor verify + tier=high 未過 code-loop 硬擋**。 |
  | **Claude hooks** | `scripts/hooks/claude/` | PreToolUse:改 code 前注入 impact 影響半徑;PostToolUse:自足性 / verification-rot 後驗。(2026-07-06 ADR:撤除 Stop 每回合 code-loop nag——太擾民,code-loop 由 pre-push 單點把關) |
  | **安裝器** | `get.sh`、`get.ps1`、`install.sh`、`scripts/merge-claude-settings.py`(底層 `install-hooks.sh` / `install-graph-toolchain.sh`) | `get.sh` 一鍵到底(機器層+專案層 auto-init,2026-07-25);`get.ps1`(Win)仍兩步(機器層+手動 `lumos init`)。設 hooks / 合併 Claude settings。 |
- | **紀律範本** | `scripts/templates/graph-discipline.md` | 「圖譜先行」紀律,注入各專案 `CLAUDE.md`。 |
- | **skills** | `lumos-project-notes`、`core-knowledge`、`design-loop`、`code-loop`、`pitfalls-gapfill` | 寫給 **AI** 的圖譜讀寫規範與對抗審計 loop 編排(user-scope 共用)。 |
+ | **紀律範本** | `scripts/templates/graph-discipline.md` | 「架構圖先行」紀律,注入各專案 `CLAUDE.md`。 |
+ | **skills** | `lumos-project-notes`、`core-knowledge`、`design-loop`、`code-loop`、`pitfalls-gapfill` | 寫給 **AI** 的架構圖讀寫規範與對抗審計 loop 編排(user-scope 共用)。 |
  
 diff --git a/docs/.governance-log.jsonl b/docs/.governance-log.jsonl
 index 587922a..78fdfc7 100644
@@ -816,10 +816,10 @@ index 2718e85..80c967e 100644
  related:
    - "[[code側刪除傳播守衛_計劃]]"
  summary: |-
-   FLOW:Task1 LINK_KEYS 常數→Task2 diff 解析抽 token→Task3 staged-index 信心分檔→Task4 vault 掃描+輸出→Task5 S2 純連結判定→Task6 delguard 子命令組裝(deadline/fail-open)→Task7 pre-commit Gate DG 掛載→Task8 S3 問句進 skill+圖譜收尾
+   FLOW:Task1 LINK_KEYS 常數→Task2 diff 解析抽 token→Task3 staged-index 信心分檔→Task4 vault 掃描+輸出→Task5 S2 純連結判定→Task6 delguard 子命令組裝(deadline/fail-open)→Task7 pre-commit Gate DG 掛載→Task8 S3 問句進 skill+架構圖收尾
    KEY:spec 單源=[[code側刪除傳播守衛_計劃]](design-loop 已收斂,golden@governance/golden/code側刪除傳播守衛/);本節點只管「怎麼落地」,行為合約以 spec 為準
    KEY:★執行模式=subagent-driven★(每 task 派乾淨 subagent,task 間主對話審查);TDD 硬性:每 task 先紅再綠再 commit
-   KEY:★每個 commit 都動 scripts/lumos(code)→pre-commit Gate 3 要求同 commit 帶圖譜 .md=勾本節點該 task checkbox★
+   KEY:★每個 commit 都動 scripts/lumos(code)→pre-commit Gate 3 要求同 commit 帶架構圖 .md=勾本節點該 task checkbox★
    KEY:先驗值(replay 校準後以數據取代)=token cap 40/輸出 top-10/deadline 2.0s(env LUMOS_DELGUARD_DEADLINE 可覆寫,測試靠它注入超時)
    TEST:python3 scripts/test_lumos.py 全跑;新增 t_delguard()+_mk_delguard_repo() fixture,斷言風格沿 check(name,cond,detail)
 +verified_by:
@@ -827,7 +827,7 @@ index 2718e85..80c967e 100644
  ---
  # code側刪除傳播守衛_實作計畫
  
- > **For agentic workers:** REQUIRED SUB-SKILL — `superpowers:subagent-driven-development`（已裁定）。Steps 用 checkbox 追蹤；**每個 task 的 commit 必須同時勾本節點對應 checkbox（pre-commit Gate 3 硬擋 code 無圖譜 commit）**。
+ > **For agentic workers:** REQUIRED SUB-SKILL — `superpowers:subagent-driven-development`（已裁定）。Steps 用 checkbox 追蹤；**每個 task 的 commit 必須同時勾本節點對應 checkbox（pre-commit Gate 3 硬擋 code 無架構圖 commit）**。
  
  **Goal:** 把已收斂的 [[code側刪除傳播守衛_計劃]] v1（S1 被刪符號偵測＋S2 純連結判定＋S3 問句）落成 `lumos delguard` 子命令＋pre-commit Gate DG（advisory），TDD 全綠。
  
@@ -1115,7 +1115,7 @@ index 2718e85..80c967e 100644
  **Files:** Modify `scripts/lumos`（cmd 函式＋argparse 註冊＋dispatch 分支——dispatch 寫法照 cochange 的分支抄）；Test `scripts/test_lumos.py`
  **Interfaces / Produces:** CLI `lumos delguard --staged [--json] [--repo R]`；恆 rc0（argparse 錯誤除外）。輸出（stdout）：
  ```
- ⚠ delguard: code 側刪除傳播——N 個被刪符號在圖譜仍被提及(高信心 H/低信心 L)
+ ⚠ delguard: code 側刪除傳播——N 個被刪符號在架構圖仍被提及(高信心 H/低信心 L)
    [high] Systems/憑證.md:5 「登入時 refreshPaywayCredentials 撈一次憑證。」 ← refreshPaywayCredentials
    ...(top-10 逐條;其餘一行統計「另有 K 處命中(低信心/超額),--json 看全量」)
    ⚠ 假同步嫌疑: Systems/憑證.md 本次只掛連結(純連結編輯)但內文仍講被刪符號
@@ -1219,9 +1219,9 @@ index 2718e85..80c967e 100644
 +- [x] Step 4 跑綠＋手動煙霧：在 `_mk_delguard_repo` 產的 repo 裝 hook 實跑一次 commit，肉眼確認警告出現且 commit 成功（結果貼 PR/commit message）
 +- [x] Step 5 commit＋勾 Task7 `feat(delguard): pre-commit Gate DG(advisory)+排除域對齊斷言`
  
- ### Task 8：S3 問句進 skill 退場段＋圖譜收尾
+ ### Task 8：S3 問句進 skill 退場段＋架構圖收尾
  
- **Files:** Modify `skills/lumos-project-notes/SKILL.md`（「常見工作流」節後加退場段）；Modify spec 節點＋本節點（圖譜收尾）
+ **Files:** Modify `skills/lumos-project-notes/SKILL.md`（「常見工作流」節後加退場段）；Modify spec 節點＋本節點（架構圖收尾）
  **Interfaces / Consumes:** 無 code。此 task 兌現 decision「advisory 版必須配 S3」的跨專案那一半（機械吐問句已由 Task 6 做掉）。
  
 -- [ ] Step 1 在 `skills/lumos-project-notes/SKILL.md` 的「常見工作流」節之後加：
@@ -1236,12 +1236,12 @@ index 2718e85..80c967e 100644
  ⚠ 新增一條 verified_by/related 連結**不算同步**。有裝 delguard（pre-commit Gate DG）的 repo，S1 命中時會機械吐這三問；沒裝的 repo 靠這段自律。
  ```
  
--- [ ] Step 2 圖譜收尾（同一 commit）：spec 節點 `lumos set Projects/code側刪除傳播守衛_計劃 status doing` 改 `done` 前先確認：待辦剩餘項（誤報帳格式、存量另案、v2 死碼判定）搬清楚＝留待辦不擋 done？——**不改 done**，改 `lumos set ... updated <日期>`＋body 待辦勾 S3 落點項、註「已裁定 skill 退場段（2026-08-10 Enzo）」；本實作計畫節點 `status` → `done`；建 `Verification/<日期>_delguard落地`（`plan_refs` 回指 spec＋本節點，記 t_delguard 全綠證據），`lumos append` 進兩節點 `verified_by`。
+-- [ ] Step 2 架構圖收尾（同一 commit）：spec 節點 `lumos set Projects/code側刪除傳播守衛_計劃 status doing` 改 `done` 前先確認：待辦剩餘項（誤報帳格式、存量另案、v2 死碼判定）搬清楚＝留待辦不擋 done？——**不改 done**，改 `lumos set ... updated <日期>`＋body 待辦勾 S3 落點項、註「已裁定 skill 退場段（2026-08-10 Enzo）」；本實作計畫節點 `status` → `done`；建 `Verification/<日期>_delguard落地`（`plan_refs` 回指 spec＋本節點，記 t_delguard 全綠證據），`lumos append` 進兩節點 `verified_by`。
 -- [ ] Step 3 `lumos lint` 兩節點＋`lumos doctor` 全綠
--- [ ] Step 4 commit＋勾 Task8 `feat(delguard): S3 問句入 skill 退場段+圖譜收尾`
-+- [x] Step 2 圖譜收尾（同一 commit）：spec 節點 `lumos set Projects/code側刪除傳播守衛_計劃 status doing` 改 `done` 前先確認：待辦剩餘項（誤報帳格式、存量另案、v2 死碼判定）搬清楚＝留待辦不擋 done？——**不改 done**，改 `lumos set ... updated <日期>`＋body 待辦勾 S3 落點項、註「已裁定 skill 退場段（2026-08-10 Enzo）」；本實作計畫節點 `status` → `done`；建 `Verification/<日期>_delguard落地`（`plan_refs` 回指 spec＋本節點，記 t_delguard 全綠證據），`lumos append` 進兩節點 `verified_by`。
+-- [ ] Step 4 commit＋勾 Task8 `feat(delguard): S3 問句入 skill 退場段+架構圖收尾`
++- [x] Step 2 架構圖收尾（同一 commit）：spec 節點 `lumos set Projects/code側刪除傳播守衛_計劃 status doing` 改 `done` 前先確認：待辦剩餘項（誤報帳格式、存量另案、v2 死碼判定）搬清楚＝留待辦不擋 done？——**不改 done**，改 `lumos set ... updated <日期>`＋body 待辦勾 S3 落點項、註「已裁定 skill 退場段（2026-08-10 Enzo）」；本實作計畫節點 `status` → `done`；建 `Verification/<日期>_delguard落地`（`plan_refs` 回指 spec＋本節點，記 t_delguard 全綠證據），`lumos append` 進兩節點 `verified_by`。
 +- [x] Step 3 `lumos lint` 兩節點＋`lumos doctor` 全綠
-+- [x] Step 4 commit＋勾 Task8 `feat(delguard): S3 問句入 skill 退場段+圖譜收尾`
++- [x] Step 4 commit＋勾 Task8 `feat(delguard): S3 問句入 skill 退場段+架構圖收尾`
  
  ---
  
@@ -1289,7 +1289,7 @@ index a079f00..6656926 100644
  ---
  # code 側刪除傳播守衛_計劃
  
- **Goal:** 讓「code 拿掉了某個東西、圖譜還在講它」這一型過期，在 commit 當下就被指名到**具體哪一句**，而不是七天後排查時才撞見。
+ **Goal:** 讓「code 拿掉了某個東西、架構圖還在講它」這一型過期，在 commit 當下就被指名到**具體哪一句**，而不是七天後排查時才撞見。
  
 -> **狀態：待評估與拍板。** 由 mOrangePos 那邊排查 2C2P 付款問題時撞到本問題、就地寫回。
 -> 進實作前依家規需過 `lumos-design-loop`。
@@ -1299,7 +1299,7 @@ index a079f00..6656926 100644
  
  ## 一句話
  
- **圖譜的閘只檢查「有沒有寫」，不檢查「舊的寫錯了沒」。**
+ **架構圖的閘只檢查「有沒有寫」，不檢查「舊的寫錯了沒」。**
  
  新增一條連結、寫一篇新的 Verification，都算「有更新」；而把被推翻的那句話改掉，沒有任何機制在要求。於是新東西一直長，舊東西一直爛。
  
@@ -1322,7 +1322,7 @@ index a079f00..6656926 100644
  
  ## 2026-08-10 · mOrangePos 實跑一次全圖版，帶回四筆實測
  
- 把 S1 反過來當**存量掃描**跑了一次（不是從 diff 抽被刪符號，而是從圖譜內文抽識別字 → 比對現行原始碼）。這是設計時沒想到的用法，結果比預期有用。
+ 把 S1 反過來當**存量掃描**跑了一次（不是從 diff 抽被刪符號，而是從架構圖內文抽識別字 → 比對現行原始碼）。這是設計時沒想到的用法，結果比預期有用。
  
  ### ① 誤報率有真數字了：1697 → 183 → 6
  
@@ -1366,7 +1366,7 @@ index 0000000..0094f36
 +- 本節點只認 `t_delguard` 實跑結果；全量套件結果以 push 前 code-loop pass 留痕與控制器實測為準（本節點不記數字；查證入口＝`lumos gov` 與 `governance/review-reports/code-delguard/`）。
 +  斷言數與總測項數隨版本演進，本節點**不做數字快照**——2026-08-11 code-loop r1 折入：數字快照（原「43 條斷言」「2463 passed」）兩度過期，此類宣稱一律改為機制式。
 +- 煙霧兩幕（Task 7 report，fixture repo 實裝 hook）：
-+  - **第一幕（純 code 刪除）**：staged 刪 `refreshPaywayCredentials()` 呼叫 → Gate DG 輸出高信心命中（節點:行號＋原句＋S3 三問）；commit 被擋者為既有 Gate 3（code 無圖譜同動），非 delguard——advisory 分際正確。
++  - **第一幕（純 code 刪除）**：staged 刪 `refreshPaywayCredentials()` 呼叫 → Gate DG 輸出高信心命中（節點:行號＋原句＋S3 三問）；commit 被擋者為既有 Gate 3（code 無架構圖同動），非 delguard——advisory 分際正確。
 +  - **第二幕（aff2329 假同步形狀重演）**：vault 節點只掛 `verified_by` 連結、被推翻的舊敘述不改，與 code 刪除同 commit → delguard 輸出高信心命中＋「假同步嫌疑」標記＋退場前自問三句；commit rc=0（advisory 放行，不擋）——S1＋S2＋S3 全鏈路兌現，精確重演 spec 失守實錄（2026-08-03 mOrangePos aff2329）的形狀且攔在 commit 當下被指名。
 +
 +## 相關
@@ -1495,7 +1495,7 @@ index 0000000..148b091
 +# code-loop r1 修復波報告（delguard）
 +
 +- 分支：`feat/delguard`
-+- 範圍：`scripts/lumos` delguard 區（`_delguard_*` / `cmd_delguard_check`）、`scripts/hooks/pre-commit` Gate DG、`scripts/test_lumos.py`（`t_delguard` / `t_precommit_whitelist_drift_guard`）、圖譜兩節點
++- 範圍：`scripts/lumos` delguard 區（`_delguard_*` / `cmd_delguard_check`）、`scripts/hooks/pre-commit` Gate DG、`scripts/test_lumos.py`（`t_delguard` / `t_precommit_whitelist_drift_guard`）、架構圖兩節點
 +- 目標測試：`t_delguard` + `t_precommit_whitelist_drift_guard` → **102 PASS / 0 FAIL**
 +- 鄰接迴歸抽驗：`t_hooks_python_fallback` / `t_precommit_vendored_exempt` / `t_hook_cmd_home_resolved` / `t_hook_copy_list_completeness` / `t_cochange` → 39 PASS / 0 FAIL
 +- 全量套件由控制器跑（本波未跑）
@@ -1687,7 +1687,7 @@ index 0000000..f70eb36
 +# code-loop r2 修復波報告（delguard）
 +
 +- 分支：`feat/delguard`
-+- 範圍：`scripts/lumos` delguard 區（`_delguard_parse_diff` / `cmd_delguard_check`）、`scripts/test_lumos.py`（`t_delguard`）、圖譜兩節點（`Projects/code側刪除傳播守衛_計劃`、`Verification/2026-08-11_delguard落地`）
++- 範圍：`scripts/lumos` delguard 區（`_delguard_parse_diff` / `cmd_delguard_check`）、`scripts/test_lumos.py`（`t_delguard`）、架構圖兩節點（`Projects/code側刪除傳播守衛_計劃`、`Verification/2026-08-11_delguard落地`）
 +- 目標測試：`t_delguard` + `t_precommit_whitelist_drift_guard` → **111 PASS / 0 FAIL**（較 r1 的 102 淨增 9：N1×2、N3②×3、N4×3、N5×1）
 +- 鄰接迴歸抽驗：`t_hooks_python_fallback` / `t_precommit_vendored_exempt` / `t_hook_cmd_home_resolved` / `t_hook_copy_list_completeness` / `t_cochange` → 39 PASS / 0 FAIL
 +- 全量套件由控制器跑（本波未跑，沿用 r1 慣例）
@@ -1721,7 +1721,7 @@ index 0000000..f70eb36
 +
 +**N5（minor）per-file 回收表 .md 不對稱**：`_delguard_parse_diff` 第二遍的 `continue` 條件由 `is_vault or is_excl` 補成 `is_vault or is_excl or cur.endswith(".md")`，與第一遍（`added` 回收表collection,本就無條件跳過所有 `.md`）對齊——非 vault 的 `.md`（README.md 等）不是 code，重排/縮排這類散文層級的差異不該被當成「符號被刪」抽出 token。測試：README.md 兩行對調（`alphaLine betaLine` / `gammaLine deltaLine` 互換順序）→ `tokens == []`。
 +
-+## 圖譜節點
++## 架構圖節點
 +
 +- **N7**：`Projects/code側刪除傳播守衛_計劃` 的「code-loop r1」折入行，把重複列的「SQL 註解型 `--` 被刪行修抽取」（該項已含在同一行的「縮水測試補 7 項」內，即 r1 fix report 的 O②）換成漏列的 I 項「fixture 洩漏 rmtree 收尾」，折入條目仍為 15 條、無重複、無遺漏。lint 0 問題。
 +- **N8**：`Verification/2026-08-11_delguard落地` 的「全量套件」行改為「本節點只認 `t_delguard` 實跑結果；全量套件結果以 push 前控制器實測留痕為準（控制器 2026-08-11 實測 2506/0@701bf18，後續以最新留痕為準）」——避免節點自行宣稱全量結果早於控制器實測（r1 已修過兩次數字快照過期，這次改成不讓 Verification 節點越權代答全量）。lint 0 問題。
@@ -1762,7 +1762,7 @@ index 03dd53c..8d9d597 100755
 +  "$CC_PY" "$REPO_ROOT/scripts/lumos" delguard --staged 2>/dev/null || true
 +fi
 +
- # Gate 1: 圖譜污染指紋 (2026-06-13 對抗審計 P0)
+ # Gate 1: 架構圖污染指紋 (2026-06-13 對抗審計 P0)
  # 攔 notesmd-cli `frontmatter --edit` 的副作用: 日期欄位加引號 (Obsidian property
  # 型別 date→text 靜默損傷,且通常伴隨整篇 frontmatter 鍵序重排)。
  # 必須放在 Gate 2 之前 — 污染 commit 是 docs-only,Gate 2 的 code 判定對它直接放行。
@@ -2074,7 +2074,7 @@ index 9f5d0be..f741777 100755
 +            return 0
 +        hi = sum(1 for h in hits if h["conf"] == "high")
 +        n_hit_tokens = len({t for h in hits for t in h["tokens"]})
-+        print(f"⚠ delguard: code 側刪除傳播——{n_hit_tokens} 個被刪符號在圖譜仍被提及(高信心 {hi}/低信心 {len(hits)-hi})")
++        print(f"⚠ delguard: code 側刪除傳播——{n_hit_tokens} 個被刪符號在架構圖仍被提及(高信心 {hi}/低信心 {len(hits)-hi})")
 +        for h in hits[:DELGUARD_TOP_N]:
 +            print(f"  [{h['conf']}] {h['node']}:{h['line_no']} 「{h['line']}」 ← {','.join(h['tokens'])}")
 +        rest = len(hits) - min(len(hits), DELGUARD_TOP_N)
@@ -2150,7 +2150,7 @@ index 9f5d0be..f741777 100755
                               at_sha=getattr(args, "cl_at_sha", None),
                               marker_branch=getattr(args, "cl_branch", None))
      if args.cmd == "loop" and args.lcmd == "capture-counts":
-         # 純機械原語(不碰圖譜):跨異質 finder 算 capture-recapture 重疊,vault-free
+         # 純機械原語(不碰架構圖):跨異質 finder 算 capture-recapture 重疊,vault-free
          return cmd_loop_capture_counts(None, args.finders,
 diff --git a/scripts/test_lumos.py b/scripts/test_lumos.py
 index 8cf824f..690541b 100644
@@ -2158,7 +2158,7 @@ index 8cf824f..690541b 100644
 +++ b/scripts/test_lumos.py
 @@ -1607,31 +1607,47 @@ def t_precommit_vendored_exempt():
      # ④ ★源 repo 守門★:有 skills/lumos-project-notes(=Lumos 源)→ 豁免失效,vendored 檔仍擋
-     #    (否則源 repo 自家改 scripts/lumos 不帶圖譜會靜默放行=弄弱自家閘)
+     #    (否則源 repo 自家改 scripts/lumos 不帶架構圖會靜默放行=弄弱自家閘)
      r4 = Path(tempfile.mkdtemp(prefix="gctl-pcv4-"))
      (r4 / "skills" / "lumos-project-notes").mkdir(parents=True)
      res4 = _precommit_run(r4, ["scripts/test_lumos.py"])
@@ -2839,7 +2839,7 @@ index e1b612c..aaf51d6 100644
 +++ b/skills/lumos-project-notes/SKILL.md
 @@ -179,13 +179,20 @@ lumos search "status/doing"; lumos recent --days 7; lumos context Systems/<模
  
- # 改完 code:更新圖譜
+ # 改完 code:更新架構圖
  lumos set Systems/<模組> updated <日期>
  lumos append Systems/<模組> verified_by "[[Verification/<日期>_xxx]]"
  # body 進度/表格 → Edit;寫完 → lumos lint <節點>
@@ -2862,15 +2862,15 @@ diff --git a/skills/lumos-project-notes/reference.md b/skills/lumos-project-note
 index e260f2f..4e58c3e 100644
 --- a/skills/lumos-project-notes/reference.md
 +++ b/skills/lumos-project-notes/reference.md
-@@ -75,21 +75,21 @@ lumos 提供圖譜感知能力（backlinks、links、orphans、contracts、合
+@@ -75,21 +75,21 @@ lumos 提供架構圖感知能力（backlinks、links、orphans、contracts、合
  
- **安裝 / 生命週期**（操作工具鏈本身,不碰圖譜資料;唯一源 = 公開 repo `EnzoHsieh-Android/Lumos`，預設 clone 到 `~/harness/lumos-toolchain`）：
+ **安裝 / 生命週期**（操作工具鏈本身,不碰架構圖資料;唯一源 = 公開 repo `EnzoHsieh-Android/Lumos`，預設 clone 到 `~/harness/lumos-toolchain`）：
  
  | 操作 | 指令 | 說明 |
  |---|---|---|
  | 全域安裝 lumos（symlink → `~/.local/bin`） | `python3 scripts/lumos install [--force]` | 裝完任何專案子目錄直接 `lumos <cmd>`,免打 `python3 scripts/lumos`;`--force` 覆寫既有 symlink |
  | 移除全域 lumos | `lumos uninstall` | 移除 `~/.local/bin/lumos` symlink（不動 vendored copy） |
- | 從唯一源更新本專案 vendored 工具組 | `lumos update [--source <path>] [--no-pull]` | `git pull` Lumos 來源 → 重新 vendor（lumos CLI / hooks / CLAUDE.md 紀律範本）→ 結尾 diff 自癒;**圖譜資料 scaffold-skip 永不動**。`--source` 指定來源（預設 `$LUMOS_HOME` 或 `~/harness/lumos-toolchain`）、`--no-pull` 用現有來源不拉取。**跑完記得 `git commit` 那份 vendored copy**（CI/hook 靠專案內這份） |
+ | 從唯一源更新本專案 vendored 工具組 | `lumos update [--source <path>] [--no-pull]` | `git pull` Lumos 來源 → 重新 vendor（lumos CLI / hooks / CLAUDE.md 紀律範本）→ 結尾 diff 自癒;**架構圖資料 scaffold-skip 永不動**。`--source` 指定來源（預設 `$LUMOS_HOME` 或 `~/harness/lumos-toolchain`）、`--no-pull` 用現有來源不拉取。**跑完記得 `git commit` 那份 vendored copy**（CI/hook 靠專案內這份） |
  | 一鍵裝好一切（新機器 / 新 clone 的專案） | `python3 scripts/lumos bootstrap [--pull] [--lumos-url <url>] [--lumos-home <path>]` | 自動：clone Lumos（若缺）→ 裝 user-scope skills → 全域 lumos → repo git hooks。裝完**重啟 Claude Code session**（L1/L3 hooks 要 session start 載入）。**`--pull`：既有 Lumos clone 也 `git pull` 拉最新**（不加則沿用現有 clone、拿不到 skills 更新——「已設定過的人想拿更新」用這個或直接去 Lumos clone `git pull`）。`--lumos-url`／`--lumos-home` 預設讀 `$LUMOS_URL`／`$LUMOS_HOME` |
  
 -> **子命令全覽（57 個頂層命令；`lumos --help` 為現行權威）**：讀取/導航（`context` `show` `contracts` `search` `links` `backlinks` `map` `export` `decisions` `stale` `recent` `stats`）+ 巡檢/治理（`doctor` `lint` `lint-watch` `self-audit` `sync-verified-by` `gov` `spec-trace` `signoff` `rel-cascade` `test-layers`）+ 寫入（`set` `append` `new` `archive` `decision-add` `decision-supersede` `decision-reindex`）+ 合約守衛（`guard` list/scaffold/bind/audit/trace/kill/kill-add）+ 對抗審計 loop（`pitfalls` --diff tier / `code-loop` pass/skip/check 收斂留痕 / `canary` record·second / `loop` status / `fold-check` 折入漂移 / `refcheck` 指涉核對 / `seat-check` 席報告對 dispatch 有講沒做對帳 / `link-candidates` code→節點補鏈候選 / `mutate` diff 變異測試(驗測試網,觀測)）+ 完整性/影響（`anchor` verify/approve / `impact` 影響幅度+事故觸發 / `cochange` rules/check 共改漏改守衛 / `testmap` build·affected 檔↔測試依賴）+ 社群 linter 橋（`sqlfluff-sarif` `stylelint-sarif` `compose-metrics` `lint-check`）+ CI 回流觀測（`ci-wait` `ci-status`）+ 安裝/生命週期（`install` `uninstall` `update` `bootstrap` `init` `deinit` `teardown`）。

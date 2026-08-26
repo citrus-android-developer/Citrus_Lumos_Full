@@ -119,7 +119,7 @@ decisions:
 - `[S10]` 旁註門檻 framing（可辯護通用實踐、非品味）；不 gate，誤標由 refuter+人閘接住。
 
 ### refuter 預篩（A 層，自造留痕）
-- `[S11]` Claude 在場對 pending 派乾淨 refuter，**試駁不試證**。stale：翻 changelog→找到 screened／找不到 deferred。gap：①已涵蓋 ②純品味 ③**框架特定** 任一→駁倒。**「框架特定」判準**：可替換第三方庫選擇（Hilt/Koin…）→駁、進專案圖譜；核心語言/官方框架通用慣例（Coroutines/Flow/Compose…）→收（對齊三份文件「不裁框架庫」原則）。
+- `[S11]` Claude 在場對 pending 派乾淨 refuter，**試駁不試證**。stale：翻 changelog→找到 screened／找不到 deferred。gap：①已涵蓋 ②純品味 ③**框架特定** 任一→駁倒。**「框架特定」判準**：可替換第三方庫選擇（Hilt/Koin…）→駁、進專案架構圖；核心語言/官方框架通用慣例（Coroutines/Flow/Compose…）→收（對齊三份文件「不裁框架庫」原則）。
 - `[S12]` 駁不倒→screened；駁倒→rejected+理由（留池去重記憶）。**留痕自造**（候選 json `refuter_verdict`），**不借 canary-record**（收斂專用、會污染 `.canary-log`）。逾時/失敗→deferred+`retry_after`（指數退避、上限 N 次後 log 告警人工介入，不無限循環）。
 
 ### drain（M 機械半 + A 草案半）
@@ -146,7 +146,7 @@ decisions:
 
 ## 五、錯誤處理與天花板
 
-**錯誤處理**：refuter 誤駁→rejected 留池、`lumos idioms list --rejected`+`revive <id>`（附新 evidence 才重 pending）；併發→`O_CREAT|O_EXCL` 鎖檔 + 持鎖 check-then-act、殘留 tmp 啟動清理、死鎖檔 mtime 逾時判 stale；C1a 不漏＝游標讀 append-only seen.jsonl；stale 檢索失敗→deferred 非駁；gap 身分含 evidence_version→可重驗；drain 冪等（notified）不重發、staged 未放行不重產；N=0 靜默；當地慣例衝突→當地贏、記專案圖譜。
+**錯誤處理**：refuter 誤駁→rejected 留池、`lumos idioms list --rejected`+`revive <id>`（附新 evidence 才重 pending）；併發→`O_CREAT|O_EXCL` 鎖檔 + 持鎖 check-then-act、殘留 tmp 啟動清理、死鎖檔 mtime 逾時判 stale；C1a 不漏＝游標讀 append-only seen.jsonl；stale 檢索失敗→deferred 非駁；gap 身分含 evidence_version→可重驗；drain 冪等（notified）不重發、staged 未放行不重產；N=0 靜默；當地慣例衝突→當地贏、記專案架構圖。
 
 **天花板（誠實邊界）**：
 1. refuter 抓「版本沒變/已涵蓋/框架庫選擇」，抓不到「讀了但深層判錯」——降雜訊地板，非 oracle。

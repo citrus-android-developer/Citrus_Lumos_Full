@@ -100,7 +100,7 @@ PRIOR-ART: 借社群 curated list(awesome-analyzers / awesome-android-lint)+ 202
 | Vue/TS/JS | **dependency-cruiser**（依賴規則+循環+孤兒檔；深度分析）＋ eslint-plugin-boundaries（分層進 ESLint、編輯器即時紅線；社群建議兩者搭配） | `npm:dependency-cruiser`／`npm:eslint-plugin-boundaries` |
 | Swift | Harmonize（參考，本組合無 Swift 專案） | github:perrystreetsoftware/Harmonize |
 
-**lumos 接點（此品類最值錢處）**：架構規則＝可執行測試＝可被 `[test:]` 綁定——圖譜裡「分層邊界」等散文級合約可升格正式 invariant 走完整合約鏈（綁定→審計→Check T）。試點：Citrus_KDS **已完成**（2026-07-26，commit 16ee0ce）——5 條規則依其 MVVM架構 節點約定而寫；**首跑 3 紅全真訊號**：抓到真 DIP 違規（VM/UseCase 注入 Impl，修為介面+@Binds）＋ grep 漏看的第二處 GlobalScope（查證後文件化豁免）＋一次規則校準（sealed 結果型別）；已立 ★INVARIANT★ 四子規則各綁 [test:]、獨立審計 mutation 實測非稻草人。**結論：品類有效**。**第二試點 LandmarkMember 亦完成**（2026-07-26，commit 977744f5，前後端雙側）：後端 ArchUnitNET 四規則＋五處既有債入 baseline（★DEBT 記載）；前端 dependency-cruiser 首跑 0 error＋**抓到 5 個孤兒死檔**；獨立審計 mutation 通過、並揪出「raw SQL 唯一住所」過度宣稱（Services 層 PointsMall 四處直跑 Dapper→措辭修真＋候選未來規則）。**兩試點共同 pattern：首跑必抓到真東西**（KDS＝DIP 違規＋漏看的 GlobalScope；LM＝死檔＋敘述過寬）——品類轉正，四專案可依需擴。
+**lumos 接點（此品類最值錢處）**：架構規則＝可執行測試＝可被 `[test:]` 綁定——架構圖裡「分層邊界」等散文級合約可升格正式 invariant 走完整合約鏈（綁定→審計→Check T）。試點：Citrus_KDS **已完成**（2026-07-26，commit 16ee0ce）——5 條規則依其 MVVM架構 節點約定而寫；**首跑 3 紅全真訊號**：抓到真 DIP 違規（VM/UseCase 注入 Impl，修為介面+@Binds）＋ grep 漏看的第二處 GlobalScope（查證後文件化豁免）＋一次規則校準（sealed 結果型別）；已立 ★INVARIANT★ 四子規則各綁 [test:]、獨立審計 mutation 實測非稻草人。**結論：品類有效**。**第二試點 LandmarkMember 亦完成**（2026-07-26，commit 977744f5，前後端雙側）：後端 ArchUnitNET 四規則＋五處既有債入 baseline（★DEBT 記載）；前端 dependency-cruiser 首跑 0 error＋**抓到 5 個孤兒死檔**；獨立審計 mutation 通過、並揪出「raw SQL 唯一住所」過度宣稱（Services 層 PointsMall 四處直跑 Dapper→措辭修真＋候選未來規則）。**兩試點共同 pattern：首跑必抓到真東西**（KDS＝DIP 違規＋漏看的 GlobalScope；LM＝死檔＋敘述過寬）——品類轉正，四專案可依需擴。
 
 ## 跨語言：ast-grep（事故固化引擎；2026-07-26 補）
 

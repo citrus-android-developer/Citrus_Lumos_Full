@@ -120,17 +120,17 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 ### Task 2: 知識同步(方法論 tag/Check 體系 + lumos tag 說明)
 
 **Files:**
-- Modify: `docs/methodology/圖譜即合約.md`(Tag 體系補 ★COMBO★、Check 體系補 Check K)
-- Modify: `docs/methodology/圖譜即合約-對外論述.md`(白話補一句)
+- Modify: `docs/methodology/架構圖即合約.md`(Tag 體系補 ★COMBO★、Check 體系補 Check K)
+- Modify: `docs/methodology/架構圖即合約-對外論述.md`(白話補一句)
 - Modify: `scripts/lumos`(若有 Tag 說明/help 文字,補 ★COMBO★)
 
 - [ ] **Step 1: 方法論(技術)補 ★COMBO★ + Check K**
 
-在 `docs/methodology/圖譜即合約.md` Tag 體系處補第 5 個 tag `★COMBO★`(★INVARIANT★ 子修飾、必寫其後);Check 體系補 Check K(軟、只數 [test:] 標記、提醒補組合)。點出「驗證正確性 > AI 審計」主軸:CI 跑測試是錨點,Check K 只軟提醒「最重鐵則別只綁 1 個 happy-path」。
+在 `docs/methodology/架構圖即合約.md` Tag 體系處補第 5 個 tag `★COMBO★`(★INVARIANT★ 子修飾、必寫其後);Check 體系補 Check K(軟、只數 [test:] 標記、提醒補組合)。點出「驗證正確性 > AI 審計」主軸:CI 跑測試是錨點,Check K 只軟提醒「最重鐵則別只綁 1 個 happy-path」。
 
 - [ ] **Step 2: 對外論述補白話一句**
 
-在 `docs/methodology/圖譜即合約-對外論述.md` 補:最重的鐵則別只測一個順風案例,該測「各種情況湊一起」——lumos 軟提醒、不強制、不擋。
+在 `docs/methodology/架構圖即合約-對外論述.md` 補:最重的鐵則別只測一個順風案例,該測「各種情況湊一起」——lumos 軟提醒、不強制、不擋。
 
 - [ ] **Step 3: lumos tag 說明補 ★COMBO★(若有)**
 

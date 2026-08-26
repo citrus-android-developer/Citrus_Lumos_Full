@@ -1,9 +1,9 @@
-我會依 repo 的圖譜與合約規矩做唯讀稽核：先重建 v2 的評分基線，再逐條拆解 round3 自報，最後以程式碼、測試、歷史與 CI 證據交叉驗證；不把「誠實揭露未做」計為成果。
-基線已重建：v2 的 6.4 上限不是因為缺少功能，而是「證據寫入可假成功、oracle 只知紅不知因、強制面未閉合」。接下來我會先依圖譜入口查本輪新增合約，再拿 code 與 git 歷史反證；目前工作樹已有兩個 log 修改與 round3 未追蹤檔，我不會碰它們。
+我會依 repo 的架構圖與合約規矩做唯讀稽核：先重建 v2 的評分基線，再逐條拆解 round3 自報，最後以程式碼、測試、歷史與 CI 證據交叉驗證；不把「誠實揭露未做」計為成果。
+基線已重建：v2 的 6.4 上限不是因為缺少功能，而是「證據寫入可假成功、oracle 只知紅不知因、強制面未閉合」。接下來我會先依架構圖入口查本輪新增合約，再拿 code 與 git 歷史反證；目前工作樹已有兩個 log 修改與 round3 未追蹤檔，我不會碰它們。
 已找到第一個實質落差：`ci-wait` 的紅燈資料確實在 JSON payload 裡，但一般文字模式只印狀態／workflow／URL，沒有印自報與 skill 所稱的「失敗步驟＋log 尾段」。這不是措辭瑕疵，而是主使用路徑與文件合約不一致；我會在最終報告標成「維護方自報不實」。
 CI 的 remote-tracking ref 確實指向 `b75266c`，本機 `.ci-log.jsonl` 也記了 run `30439628699` success；但該帳正是受評系統自己寫的，不算獨立信任根。我正在嘗試以 GitHub 端資料另驗，若連線不可用，最終會明確把「已 push」與「CI 綠」分成不同證據等級。
-第二批反證更嚴重：新漂移守衛沒有守住它宣稱的「對稱」，而圖譜本身仍同時寫著舊六態、`timed_out` 算 killed、49 個命令，以及 CI 的 PR/tier/ship 測試矩陣；現碼則是七態、51 命令、direct-only。這正好擊中 Lumos 自己的核心承諾：不是文件小瑕疵，而是「圖譜是唯一真相」卻讓真相分裂。
-查證已完成到可下結論：這輪確有實質修補，但維護方把「局部防線」多次寫成「閉環已成立」。我正把每條自報分成已證實、部分屬實與「自報不實」，並將程式、測試、圖譜與實際 CI 的互相矛盾逐項對齊。
+第二批反證更嚴重：新漂移守衛沒有守住它宣稱的「對稱」，而架構圖本身仍同時寫著舊六態、`timed_out` 算 killed、49 個命令，以及 CI 的 PR/tier/ship 測試矩陣；現碼則是七態、51 命令、direct-only。這正好擊中 Lumos 自己的核心承諾：不是文件小瑕疵，而是「架構圖是唯一真相」卻讓真相分裂。
+查證已完成到可下結論：這輪確有實質修補，但維護方把「局部防線」多次寫成「閉環已成立」。我正把每條自報分成已證實、部分屬實與「自報不實」，並將程式、測試、架構圖與實際 CI 的互相矛盾逐項對齊。
 # Lumos Round 3 外部第三方重審
 
 ## 一、結論先行
@@ -25,7 +25,7 @@ CI 的 remote-tracking ref 確實指向 `b75266c`，本機 `.ci-log.jsonl` 也�
 3. `_kill_attribute()` 是文字鄰接啟發法，沒有 assertion 或行為歸因；預設文字輸出與治理帳甚至不保留歸因 excerpt。
 4. `ci-wait` 不是強制面，且含有完成但非明列紅色就判綠的邏輯；`cancelled`、`action_required` 等可被誤報為 green。
 
-因此，原先 6.4 的上限理由需要**收窄但不能撤銷**：普通的 fresh-token 即時讀回已修；廣義的證據帳完整性仍沒有成立，且本輪又增加了 CI 假綠與圖譜漂移。
+因此，原先 6.4 的上限理由需要**收窄但不能撤銷**：普通的 fresh-token 即時讀回已修；廣義的證據帳完整性仍沒有成立，且本輪又增加了 CI 假綠與架構圖漂移。
 
 ---
 
@@ -182,13 +182,13 @@ skill 寫了「累積五輪抽一輪」的流程規範，[code-loop skill](/User
 
 **判定：屬實，應計實質進步。**
 
-但圖譜仍保留舊的六態與 `timed_out` 視同 killed：
+但架構圖仍保留舊的六態與 `timed_out` 視同 killed：
 
 - [guard-kill system](/Users/enzo/harness/lumos-toolchain/docs/lumos-toolchain-knowledge/Systems/guard-kill.md:13)
 - [guard-kill system](/Users/enzo/harness/lumos-toolchain/docs/lumos-toolchain-knowledge/Systems/guard-kill.md:37)
 - 舊 Verification 仍為 `status: pass`，且重驗條件明列 state／rc 改變就應重驗。[舊 Verification](/Users/enzo/harness/lumos-toolchain/docs/lumos-toolchain-knowledge/Verification/2026-07-10_guard-kill整合測試.md:3)
 
-因此 code 修了，圖譜合約面沒有乾淨收斂。
+因此 code 修了，架構圖合約面沒有乾淨收斂。
 
 ---
 
@@ -253,7 +253,7 @@ README 與 skill 也跟著承諾了預設會印失敗步驟／log，但 code 沒
 - `action_required`
 - 未知／未來新增的 completed conclusion
 
-這也違反圖譜計劃自己列出的 conclusion 矩陣。[CI 計劃](/Users/enzo/harness/lumos-toolchain/docs/lumos-toolchain-knowledge/Projects/CI回流閉環_計劃.md:53)
+這也違反架構圖計劃自己列出的 conclusion 矩陣。[CI 計劃](/Users/enzo/harness/lumos-toolchain/docs/lumos-toolchain-knowledge/Projects/CI回流閉環_計劃.md:53)
 
 此外：
 
@@ -262,7 +262,7 @@ README 與 skill 也跟著承諾了預設會印失敗步驟／log，但 code 沒
 
 對後備通知工具可以接受；對「強制閉環」絕對不能接受。
 
-### 所謂「範圍手術」只在 code 成立，圖譜沒有真正動完
+### 所謂「範圍手術」只在 code 成立，架構圖沒有真正動完
 
 code 的確只做 direct SHA polling。
 
@@ -274,7 +274,7 @@ code 的確只做 direct SHA polling。
 - PR／auto-merge／ship 測試規劃。[CI 計劃](/Users/enzo/harness/lumos-toolchain/docs/lumos-toolchain-knowledge/Projects/CI回流閉環_計劃.md:129)
 - 「紅燈文字輸出 failure step/log」的預期。[CI 計劃](/Users/enzo/harness/lumos-toolchain/docs/lumos-toolchain-knowledge/Projects/CI回流閉環_計劃.md:135)
 
-**判定：程式 scope 收縮屬實；圖譜的 scope surgery 沒有收乾淨。**
+**判定：程式 scope 收縮屬實；架構圖的 scope surgery 沒有收乾淨。**
 
 ---
 
@@ -348,13 +348,13 @@ notesmd 下載仍是 curl 解壓，沒有 checksum 驗證。[fetch-notesmd.sh](/
 
 ### 認識論修正：仍未做
 
-圖譜與 code 衝突仍被規定為圖譜必勝：
+架構圖與 code 衝突仍被規定為架構圖必勝：
 
 - [CLAUDE.md](/Users/enzo/harness/lumos-toolchain/CLAUDE.md:17)
 - [README](/Users/enzo/harness/lumos-toolchain/README.md:31)
 - [project-notes skill](/Users/enzo/harness/lumos-toolchain/skills/lumos-project-notes/SKILL.md:10)
 
-本輪圖譜仍寫六態、code 寫七態，已再次示範為什麼這項認識論有害：若照「圖譜必勝」，新 code 反而會被宣判為錯。
+本輪架構圖仍寫六態、code 寫七態，已再次示範為什麼這項認識論有害：若照「架構圖必勝」，新 code 反而會被宣判為錯。
 
 ### dry-run 寫權隔離：仍未做
 
@@ -657,11 +657,11 @@ push → 同輪查詢 → agent 當輪修
 
 ---
 
-# 五、圖譜與實況的反證
+# 五、架構圖與實況的反證
 
-這輪最諷刺的結果是：repo 仍宣稱「圖譜衝突時圖譜必勝」，但 round3 自己製造了更多圖譜／code 衝突。
+這輪最諷刺的結果是：repo 仍宣稱「架構圖衝突時架構圖必勝」，但 round3 自己製造了更多架構圖／code 衝突。
 
-| 事項 | Code／實況 | 圖譜／文件 |
+| 事項 | Code／實況 | 架構圖／文件 |
 |---|---|---|
 | guard-kill state | 7 態，timeout weak | 仍寫六態、timeout killed |
 | guard-kill rc | 全弱 rc1 | 舊 Verification 寫 timeout killed rc0 |
@@ -670,7 +670,7 @@ push → 同輪查詢 → agent 當輪修
 | CI failure output | 預設不印 step/log | README、skills、計劃宣稱會印 |
 | 命令數 | 51 | AGENTS 44、reference 49 |
 
-這不是小型文案瑕疵；它直接推翻「圖譜必然代表真相」的認識論。
+這不是小型文案瑕疵；它直接推翻「架構圖必然代表真相」的認識論。
 
 更嚴重的是 CI 的 `doctor` 仍回 0 issues，代表現有機械檢查看不見這些衝突。新增四條 invariant 的數量，不能抵銷 invariant 所在文件本身互相矛盾。
 
@@ -698,7 +698,7 @@ push → 同輪查詢 → agent 當輪修
 
 不升原因：
 
-- 「圖譜必勝」沒有修。[CLAUDE.md](/Users/enzo/harness/lumos-toolchain/CLAUDE.md:17)
+- 「架構圖必勝」沒有修。[CLAUDE.md](/Users/enzo/harness/lumos-toolchain/CLAUDE.md:17)
 - capture-recapture 舊 hard veto 沒有砍。[design-loop skill](/Users/enzo/harness/lumos-toolchain/skills/lumos-design-loop/SKILL.md:68)
 - 本輪把 telemetry 稱為分權、文字鄰接稱為行為歸因、通知稱為閉環；概念精度反而不足。
 
@@ -718,7 +718,7 @@ push → 同輪查詢 → agent 當輪修
 - CI conclusion 判定含假綠。
 - human output、ledger、文件三者不一致。
 - 新 drift test 被描述為三方等價，實際只是 subset。
-- code 修成七態，圖譜與 Verification 還保留六態。
+- code 修成七態，架構圖與 Verification 還保留六態。
 - command-count guard 沒抓到 44／49／51 三個版本。
 
 因此不是「有新增測試就必須升」。新增程式也帶入新的 correctness debt。
@@ -742,7 +742,7 @@ push → 同輪查詢 → agent 當輪修
 - second judge 沒有 power separation，也沒有實績。
 - kill attribution 不是 causal attribution。
 - CI 是 fail-open observability。
-- 圖譜仍有大量活動中矛盾。
+- 架構圖仍有大量活動中矛盾。
 
 ## 6.4 可用性與採用門檻：5.5，不升
 

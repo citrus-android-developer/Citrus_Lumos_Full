@@ -23,7 +23,7 @@ summary: |-
 decisions:
   - content: 選方案 C(harness 層 claude -p 子程序 --allowedTools 收窄)否決方案 A(純 prompt 前置指令)與方案 B(chmod 唯讀 + pre-commit 攔)
     id: d1
-    context: confused deputy 風險——autonomous loop 用 Agent 工具 spawn 的 auditor/judge 完整繼承父全權,被下毒 spec 誘導時可合法 Edit/Bash 寫圖譜改 spec
+    context: confused deputy 風險——autonomous loop 用 Agent 工具 spawn 的 auditor/judge 完整繼承父全權,被下毒 spec 誘導時可合法 Edit/Bash 寫架構圖改 spec
     why_chosen: 方案 A 是 prompt 層自律,被注入後 LLM 可忽略前置指令(正是漏洞核心);方案 B 只保護特定路徑且 chmod restore 有 TOCTOU 時序窗口;方案 C 機械強制點在 harness 工具集宣告、改動最小、自然留 delegation-log
     decided: 2026-06-23
     valid: true
@@ -56,7 +56,7 @@ autonomous-loop 的 design-loop 子 agent(auditor / judge)權限範圍收窄 —
 
 ## 解決什麼(confused deputy)
 - **現況漏洞**:`autonomous-loop.sh:L43` 給 orchestrator `--allowedTools "Read,Edit,Bash,Grep,Glob,Agent"`;orchestrator 用 **Agent 工具** spawn auditor/judge。Claude Code 的 Agent 工具**不支援 allowedTools**,子 agent 完整繼承父 session 工具集。
-- **攻擊路徑**:spec 草稿若含被下毒節(惡意注入),受誘導的 auditor 子 agent 可合法呼叫 `Edit`/`Bash` 寫圖譜、改 spec、開 PR——父 session 與 harness 層皆不攔。
+- **攻擊路徑**:spec 草稿若含被下毒節(惡意注入),受誘導的 auditor 子 agent 可合法呼叫 `Edit`/`Bash` 寫架構圖、改 spec、開 PR——父 session 與 harness 層皆不攔。
 - **源起**:日報 2026-06-21 backlog gap「自主 loop 巢狀 spawn 子 agent,卻沒有範圍受限身分,子 agent 繼承全權(confused deputy 風險)」(同報 inspiration「append-only 收窄」、2026-06-12 多 agent confused deputy 三層防護研究亦為脈絡)。autonomous-loop 自選此 gap → 自動 brainstorm → 5 輪 design-loop 收斂 → 跨家族複審。
 
 ## 關鍵機制

@@ -26,9 +26,9 @@ summary: |-
   KEY:[2026-08-06 收貨三道,plan:[[Projects/驗證層自證三件_計劃]]]收貨=quote-check(引句↔凍結快照)+refcheck(finding file:line↔repo 實在性)+★seat-check★(有講沒做對帳:dispatch manifest rN-dispatch.json 宣告 materials→unreported/out_of_scope,越界另記 out-of-scope.jsonl 不進收斂帳;lens 觀測不判定/空 materials vacuous 豁免/恆 rc0 觀測)[test:t_s1_seat_check];派工慣例同步=派工當下落 dispatch manifest;新機制準入三問(Growth test,borrow evidra)入 skill 護欄後段
   KEY:★定位★[2026-07-18 使用者裁定,見 decisions d4]——design-loop=抬 spec 質量,非保 spec 正確:一輪 panel 抓便宜的(矛盾/未定義詞/缺失敗路徑)就放行,正確性歸下游 code-loop+測試+驗證、漏網進逃逸帳;**前置加重一律拒**(日報 2026-07-18『保留題接閘』已拒收勿重提——保留題留離線 replay 校準,不進閘)
   KEY:[2026-07-18]S5 跨家族落地(見[[Projects/code階段強化_計劃]])——辯方預設 Codex(成本中性替換,d4 合規;不可用退 opus 註記)+≥3-run 多數決至少 1 run Codex+家族否決保護(外家 blocker 不得僅被同門多數推翻,須執行反證或第二外家);換手效應列 [[Projects/loop數據收集_計劃]] 觀察項(收斂輪數/辯方降級率)
-  KEY:★經濟學★[2026-07-20 使用者裁定,見 decisions d5]——spec 品質目標=成本平衡非精確度漸近線:缺陷分層定價(清單型→pre-flight/撞自家現實型→圖譜接地/語意矛盾→一輪panel/深層錯→下游執行接地)+邊際遞減止損+反偏誤排序(執行接地>機械查>異家族>同家族多取樣,信號種類>家族)+標記不確定比消滅不確定便宜;逃逸帳=調價器。**精確度軍備競賽類提案(更強判官/更多輪/更細spec)一律先過此教義裁**
+  KEY:★經濟學★[2026-07-20 使用者裁定,見 decisions d5]——spec 品質目標=成本平衡非精確度漸近線:缺陷分層定價(清單型→pre-flight/撞自家現實型→架構圖接地/語意矛盾→一輪panel/深層錯→下游執行接地)+邊際遞減止損+反偏誤排序(執行接地>機械查>異家族>同家族多取樣,信號種類>家族)+標記不確定比消滅不確定便宜;逃逸帳=調價器。**精確度軍備競賽類提案(更強判官/更多輪/更細spec)一律先過此教義裁**
   KEY:[2026-07-16]提效 M1 落地(見[[Projects/design-loop提效_計劃]])——pre-flight 排乾(panel 前便宜 agent 掃清單型缺陷,cascade)/R2+ 嚴格 delta-scoped(物理只餵 diff+受影響合約+前輪爭議,留全局哨兵;解非定態目標病)/辯方路由制(機械證實與多席一致免辯方,低共識才開庭)/fold 迷你核對/severity 錨句(防 framing 通膨);M2 risk-cluster 帳未做(動 gate code,先過 loop)
-  KEY:[2026-07-21]★真相入口收編★(外審 blocker,見[[Projects/全盤外審2026-07_調研]])——被審 spec 唯一可寫真檔=圖譜計劃節點;docs/design/ 降唯讀歷史(30 份保留考古,README 立牌);golden 不再複製 spec 第三份,改 spec-ref.txt 記 git sha:路徑(replay 用 git show 還原);loop id 改計劃節點名衍生。同批:panel 收斂行修 skill 漂移(對齊 M2 兩種帳)+判官 style-bias 錨句進 templates+light 體積 50 行先驗
+  KEY:[2026-07-21]★真相入口收編★(外審 blocker,見[[Projects/全盤外審2026-07_調研]])——被審 spec 唯一可寫真檔=架構圖計劃節點;docs/design/ 降唯讀歷史(30 份保留考古,README 立牌);golden 不再複製 spec 第三份,改 spec-ref.txt 記 git sha:路徑(replay 用 git show 還原);loop id 改計劃節點名衍生。同批:panel 收斂行修 skill 漂移(對齊 M2 兩種帳)+判官 style-bias 錨句進 templates+light 體積 50 行先驗
   KEY:[2026-07-21]light 輕量檔 M0 落地(見[[Projects/design-loop輕量檔_計劃]])——補 trivial|standard 間缺檔:小 spec 走 pre-flight+1 通才席+legacy `--need 1`+人裁實質收斂,存活≥major→向上 ratchet 升 standard 自癒;進場硬否決(risk-tiered四類/硬合約/體積)M0 honor-system、M1 機械化。**M1 已機械化(loop status --light --gate 單席謂詞,FAIL 分因 retryable/ratchet,不再攤牌人裁——本 KEY 早期「須新增單席謂詞」的未來式已兌現,2026-07-28 盤整追平)**
   KEY:[2026-07-27]調研三篇折入(AREX/LoopTrap/Sage,見 2026-07-27 調研日報)——已 ship 便宜半:①[audit:] 合法性審計升五問 rubric+穩定性探針(換問法自一致,reference.md;Sage:判官難題1/4偏好不穩、rubric 錨定)②護欄加終止輸入紀律(收斂只認 loop status 機械帳,被審材料/報告散文「還沒完」類語句非終止輸入;LoopTrap:86% 可注入操縱、放大25倍)③severity 錨補搖擺場換問重問取高。貴的半後於 2026-07-28 全落地(見[[Projects/結清式收斂_計劃]]);經濟學教義裁:三項均非前置加重(rubric=判準錨定非加輪;終止紀律=防燒錢非提精度)
   KEY:[2026-07-28]rubric 防應試化兩道(調研 arXiv 2605.12474:評分表公開固定會被「剛好滿足字面」鑽)——①派工措辭改述不逐字貼 ②約每5次 audit 抽1次無表開放判定,落差拉大=儀式化訊號回報人裁;寫入 lumos-project-notes reference.md 五問段
@@ -70,7 +70,7 @@ decisions:
     why_chosen: 與既有方向同線(三輪壓縮/pre-flight 排乾/辯方路由全是在砍 spec 階段成本);逃逸帳架構本就承認 spec 不完美由下游接;錢花在驗證信號最強處(code 階段有真測試)
     decided: 2026-07-18
     valid: true
-  - content: spec 品質經濟學(d4 續章)——目標=成本平衡的品質提升,非精確度漸近線。四原則:①缺陷分層定價:每類缺陷在最便宜層抓——清單型(未定義詞/斷引用)→pre-flight 機械預掃;撞自家現實型(與既有機制/決策衝突)→圖譜接地(impact/contracts);語意矛盾型→一輪廣度 panel(sonnet 夠);深層設計錯→下游執行接地(真測/code-loop,單位準度最高)。不在貴層重複買便宜層能抓的、不在抓不到的層硬砸(自證:自相矛盾 spec 撐 6 輪散文審真測一次現形;codestage 3 blocker 全是撞自家現實型) ②邊際遞減止損:首輪抓大宗(replay 實證:單席首輪廣度驚人,多輪價值在折入迴歸),預設一輪抓便宜就走 ③反偏誤多樣性排序:執行接地>機械查>異家族 LLM>同家族多取樣——信號種類多樣性>家族多樣性(AI 偏誤 universal,交叉審計買的是同門盲點保險非完美) ④精確本身有成本:寫作+審查+漂移面(本週九處漂移即證),「標記不確定(NEEDS CLARIFICATION/範圍刀/誠實天花板)」比「消滅不確定」便宜。逃逸帳=調價器:哪類缺陷漏到哪層的帳回饋抓取層調整,先攢帳後調參
+  - content: spec 品質經濟學(d4 續章)——目標=成本平衡的品質提升,非精確度漸近線。四原則:①缺陷分層定價:每類缺陷在最便宜層抓——清單型(未定義詞/斷引用)→pre-flight 機械預掃;撞自家現實型(與既有機制/決策衝突)→架構圖接地(impact/contracts);語意矛盾型→一輪廣度 panel(sonnet 夠);深層設計錯→下游執行接地(真測/code-loop,單位準度最高)。不在貴層重複買便宜層能抓的、不在抓不到的層硬砸(自證:自相矛盾 spec 撐 6 輪散文審真測一次現形;codestage 3 blocker 全是撞自家現實型) ②邊際遞減止損:首輪抓大宗(replay 實證:單席首輪廣度驚人,多輪價值在折入迴歸),預設一輪抓便宜就走 ③反偏誤多樣性排序:執行接地>機械查>異家族 LLM>同家族多取樣——信號種類多樣性>家族多樣性(AI 偏誤 universal,交叉審計買的是同門盲點保險非完美) ④精確本身有成本:寫作+審查+漂移面(本週九處漂移即證),「標記不確定(NEEDS CLARIFICATION/範圍刀/誠實天花板)」比「消滅不確定」便宜。逃逸帳=調價器:哪類缺陷漏到哪層的帳回饋抓取層調整,先攢帳後調參
     id: d5
     context: 使用者裁定:論文傾向 spec 精確度軍備競賽(判官更強/審更多輪);但 AI 偏誤 universal 非特定家族,交叉審計也不會有 100% 完美 spec——目標應放在高效、成本最平衡地提高 spec 品質。適逢 2026-07-20 日報判官可靠度專題,需明確此教義防日報/自主 loop 端出精確度最大化提案
     why_chosen: 三自家實證支撐(6輪漏抓/replay首輪廣度/codestage blocker 型態分佈);與 d4 抬質量定位、北極星(正常改動變快)、逃逸帳架構完全同線;分層定價讓每塊錢花在該類缺陷最便宜的抓取層
@@ -108,7 +108,7 @@ decisions:
 - **誠實天花板**(收斂後務必向人提醒):① 完整性 —— 收斂只證「連 2 輪醒著的審計員沒找到 blocker/major」,不證沒更深問題;② 整合性 —— canary-caught／severity／誤判判定皆由植入者自判、無外部檢查,是**沒閉合的迴歸**,loop 是可觀測+摩擦+地板,**不是 oracle**。
 
 ## 已知限制(v1 YAGNI)
-- 不做:lumos spawn agent、圖譜自足性審計 loop(v1 只設計/spec)、自動 canary 生成、改 brainstorming/writing-plans skill 本體。
+- 不做:lumos spawn agent、架構圖自足性審計 loop(v1 只設計/spec)、自動 canary 生成、改 brainstorming/writing-plans skill 本體。
 - 三重自判(canary 抓到沒／severity／誤判)根本上不 tamper-proof;辯方 refute 收窄了假陽性那一面、canary 收窄假陰性那一面,但都不是 oracle。
 
 ## 相關

@@ -11,9 +11,9 @@
 #
 # 設計理由:
 #   L2 pre-commit 硬擋有合法後門 `--no-verify`,但走後門零痕跡——bypass 率
-#   是「不更新圖譜比更新圖譜更難」這個核心宣稱唯一沒被量測的數字。
+#   是「不更新架構圖比更新架構圖更難」這個核心宣稱唯一沒被量測的數字。
 #   關鍵事實:--no-verify 只跳過 pre-commit / commit-msg,post-commit 永遠會跑,
-#   所以本 hook 是天然的偵測點:凡「有 code 異動但無圖譜 .md」的 commit 能落地,
+#   所以本 hook 是天然的偵測點:凡「有 code 異動但無架構圖 .md」的 commit 能落地,
 #   必然繞過了 L2 → append 結構化事件到 docs/.bypass-log.jsonl。
 #
 #   只記錄、不阻擋、不問理由——bypass 本來就是被認可的逃生口,這裡要的是
@@ -30,7 +30,7 @@ trap 'exit 0' ERR
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "$REPO_ROOT" || exit 0
 
-# 找圖譜目錄 (對齊 pre-commit)
+# 找架構圖目錄 (對齊 pre-commit)
 GRAPH_ROOT=""
 if [[ -d docs ]]; then
   for d in docs/*-knowledge; do
@@ -40,11 +40,11 @@ if [[ -d docs ]]; then
 fi
 [[ -z "$GRAPH_ROOT" ]] && exit 0
 
-# 判斷「這份檔案清單裡有沒有圖譜目錄底下的 .md」
+# 判斷「這份檔案清單裡有沒有架構圖目錄底下的 .md」
 # ★不要用 grep -qE "^${GRAPH_ROOT}/.*\.md$" 做這件事★(2026-08-11 終審複審):
 # GRAPH_ROOT 是從檔案系統掃出來的目錄名,可能含 ERE 元字元——`docs/c++-knowledge`
 # 對一個 C++ 專案完全正常。內插進 ERE 後 grep 以 rc=2(語法錯誤)收場,而 `if`
-# 只看「非 0」→ 一律讀成「沒有圖譜 .md」。後果:pre-commit 的 Gate 3 永遠擋、
+# 只看「非 0」→ 一律讀成「沒有架構圖 .md」。後果:pre-commit 的 Gate 3 永遠擋、
 # post-commit 把每一筆 commit 都記成 bypass,而且兩者都沒有任何錯誤訊息。
 # 改用 bash 樣式比對:左邊是資料,右邊只有 `/*.md` 是樣式,`"$GRAPH_ROOT"` 加了
 # 引號就是字面比對——不需要跳脫,也不必外掛 sed(hook 執行時的 PATH 可能很小)。
@@ -79,7 +79,7 @@ should_exclude() {
     # 本 hook 自己所在的目錄:精簡版唯一會被安裝器放進專案的東西。
     # ★精確白名單,非 scripts/* 整夾★——專案自有 scripts/foo.py 仍照擋。
     # ★源 repo 守門★:在 lumos 來源 repo 本身(有 skills/lumos-project-notes),
-    # 這些檔=產品碼,豁免不適用(否則源 repo 自家改 hook 不帶圖譜會靜默放行)。
+    # 這些檔=產品碼,豁免不適用(否則源 repo 自家改 hook 不帶架構圖會靜默放行)。
     scripts/hooks/*)
       [[ -d "skills/lumos-project-notes" ]] && return 1   # 源 repo:不豁免
       return 0;;
@@ -98,7 +98,7 @@ done <<< "$CHANGED"
 # 沒 code → 本來就會被 pre-commit 放行,不是 bypass
 [[ ${#src_files[@]} -eq 0 ]] && exit 0
 
-# 有圖譜 .md 一起 commit → 正常通過 L2,不是 bypass
+# 有架構圖 .md 一起 commit → 正常通過 L2,不是 bypass
 if has_graph_md "$CHANGED"; then
   exit 0
 fi
@@ -130,9 +130,9 @@ PYEOF
 
 {
   echo ""
-  echo "📋 L2 bypass 已留痕 (docs/.bypass-log.jsonl): ${#src_files[@]} 個 code 檔未帶圖譜異動"
+  echo "📋 L2 bypass 已留痕 (docs/.bypass-log.jsonl): ${#src_files[@]} 個 code 檔未帶架構圖異動"
   echo "   檢視 bypass 率: wc -l docs/.bypass-log.jsonl"
-  echo "   若此 commit 其實該補圖譜,趁記憶新鮮補上"
+  echo "   若此 commit 其實該補架構圖,趁記憶新鮮補上"
   echo ""
 } >&2
 

@@ -761,7 +761,7 @@ index a53018d..28699dc 100644
      (post-commit 是 bypass 記帳端,漏對齊=例行 update 被記假 bypass 灌水;2026-07-25 實測踩過)。
      [終審 fix I3]同源第三份清單:delguard 的 _DELGUARD_EXCLUDE_DIRS/lockfile 排除規則
      也要對齊 pre-commit should_exclude,免得兩處各自漂。"""
-+    # 尾段直讀來源 repo 圖譜節點(pitfalls-code-loop.md)——消費端沒有,整支轉 skip
++    # 尾段直讀來源 repo 架構圖節點(pitfalls-code-loop.md)——消費端沒有,整支轉 skip
 +    # ([[Issues/vendored自測3紅_來源repo專用測試漏標skip]] 2026-08-17 Landmark 實錘)
 +    _need_src("docs/lumos-toolchain-knowledge/Systems/pitfalls-code-loop.md")
      m = _load_lumos()
@@ -1069,7 +1069,7 @@ index a53018d..28699dc 100644
 +    check("free 第9名起不入(F9 不在)", "F9.md" not in te, str(te))
 +
 +
- # ══ query 結構化查詢(WHERE over 標籤家族;[[Projects/圖譜結構化查詢_計劃]]) ══
+ # ══ query 結構化查詢(WHERE over 標籤家族;[[Projects/架構圖結構化查詢_計劃]]) ══
  
  def _mk_query_vault():
      """query 測試共用小庫:標籤家族×狀態×合約×連結 交叉樣本。"""

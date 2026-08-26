@@ -100,7 +100,7 @@ aliases:
 
 ## 範圍(v1)
 - **只做對抗設計/spec 審計**:被審的是你控制的文件,能乾淨地植入瑕疵再移除。
-- **不做圖譜自足性審計**(§795/§831):審計員讀真實圖譜,植 canary 會污染圖譜 → 延後。
+- **不做架構圖自足性審計**(§795/§831):審計員讀真實架構圖,植 canary 會污染架構圖 → 延後。
 - 形式 = skill 協議規則(主體)+ 極小 lumos helper(只記 log + 餵 gov);**lumos 不 spawn agent**,植入/判定留在對話/skill 層。
 
 ## 協議(寫進 skill 的規則,5 步)
@@ -130,7 +130,7 @@ aliases:
 程式現況含 `--loop` / `--severity` 欄位與 `lumos loop status`(收斂留痕,2026-06-19 另一設計、commit `7858ce7`):把每輪記成帶 loop 的 canary,`lumos loop status <slug> --need 2` 算「連 K 輪 caught 且 severity∈{clean,minor}」→ exit 0 綠燈進實作。本節點聚焦 canary-audit 本體;收斂留痕細節見其專屬節點/設計稿。
 
 ## v1 明確不做
-圖譜自足性 canary｜自動注入/判定工具｜`lumos canary` 擋任何東西(record-only)｜`lumos canary new`(已砍,record 自動補 token)｜非局部 canary 類型。
+架構圖自足性 canary｜自動注入/判定工具｜`lumos canary` 擋任何東西(record-only)｜`lumos canary new`(已砍,record 自動補 token)｜非局部 canary 類型。
 
 ## 相關
 - 設計稿:`docs/design/2026-06-19-canary-audit.md`(4 輪 Sonnet 對抗審計收斂)。

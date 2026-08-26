@@ -29,7 +29,7 @@ PASS, FAIL, SKIP = 0, 0, 0
 
 class _SrcOnly(Exception):
     """★這條測試需要「工具鏈來源 repo」才有的東西★(slim/ 交付包、get.sh、
-    docs/ 文件列舉、governance/golden/ 凍結語料、真圖譜事故…)。
+    docs/ 文件列舉、governance/golden/ 凍結語料、真架構圖事故…)。
 
     背景(2026-08-02 在 Landmark clone 上實測):本套件會被 `lumos update` vendored
     進消費端專案,但其中一大批測試驗的是★來源 repo 自己的產物★,在消費端必定紅。
@@ -519,7 +519,7 @@ def t_status_tag_drift_guard():
     r = run(v, "doctor")
     check("doctor: 漂移守衛抓到 Drift 節點",
           "Drift" in r.stdout and "漂移" in r.stdout, r.stdout)
-    check("doctor: 漂移計入 issues(非軟提醒)", "圖譜健康" not in r.stdout, r.stdout)
+    check("doctor: 漂移計入 issues(非軟提醒)", "架構圖健康" not in r.stdout, r.stdout)
 
 
 # ── append 全新 list(key 不存在) ──
@@ -1522,8 +1522,8 @@ def t_search():
     check("search --path 限定資料夾(Systems 命中被排除)", "Systems/A.md" not in r3.stdout, r3.stdout)
     r4 = run(v, "search", "Service.*代碼", "--regex", "--files-only", expect_rc=0)
     check("search --regex", "Systems/A.md" in r4.stdout, r4.stdout)
-    # ★圖譜先行注入(2026-08-14)★:有命中 → stderr 提醒「用 show 讀全文再下結論」。
-    # 防的失效模式=search 命中卻只掃摘要就判「圖譜沒記」(金鑰事故實證)。
+    # ★架構圖先行注入(2026-08-14)★:有命中 → stderr 提醒「用 show 讀全文再下結論」。
+    # 防的失效模式=search 命中卻只掃摘要就判「架構圖沒記」(金鑰事故實證)。
     r5 = run(v, "search", "ServiceType", expect_rc=0)
     check("search 有命中 → stderr 提醒 show 全文", "命中≠查完" in r5.stderr and "lumos show" in r5.stderr, r5.stderr)
     check("search 提醒走 stderr 不污染 stdout", "命中≠查完" not in r5.stdout, r5.stdout)
@@ -1657,7 +1657,7 @@ def t_gov_adversarial_increment():
     check("增量帳: 趨零判準語意在場", "趨零" in r.stdout, r.stdout[-500:])
 
 
-# ── pre-commit 閘:vendored 工具白名單豁免(lumos update 例行更新不該撞圖譜閘) ──
+# ── pre-commit 閘:vendored 工具白名單豁免(lumos update 例行更新不該撞架構圖閘) ──
 def _precommit_run(root, staged_rel):
     """fixture repo 內 stage 指定檔後跑 pre-commit hook,回 subprocess result。"""
     import subprocess, os
@@ -1675,7 +1675,7 @@ def _precommit_run(root, staged_rel):
 
 
 def t_precommit_vendored_exempt():
-    """vendored 工具檔(_VENDORED_TOOLKIT+兩夾)豁免圖譜閘;使用者自有 code 仍照擋。"""
+    """vendored 工具檔(_VENDORED_TOOLKIT+兩夾)豁免架構圖閘;使用者自有 code 仍照擋。"""
     import subprocess
     if not hasattr(__import__("os"), "setsid"):
         print("  - skip(非 POSIX)")
@@ -1686,17 +1686,17 @@ def t_precommit_vendored_exempt():
                                "scripts/hooks/claude/impact-hook.py"])
     check("precommit 豁免: vendored .py 更新放行", res1.returncode == 0,
           f"rc={res1.returncode} {res1.stderr[-150:]}{res1.stdout[-150:]}")
-    # ② 使用者自有 code(scripts/ 下非白名單)無圖譜 → 仍擋(rc1;豁免不能過寬)
+    # ② 使用者自有 code(scripts/ 下非白名單)無架構圖 → 仍擋(rc1;豁免不能過寬)
     r2 = Path(tempfile.mkdtemp(prefix="gctl-pcv2-"))
     res2 = _precommit_run(r2, ["scripts/my_tool.py"])
     check("precommit 豁免: 使用者 scripts/my_tool.py 仍被擋(不過寬)", res2.returncode != 0,
           f"rc={res2.returncode}")
-    # ③ 一般 src code 無圖譜 → 仍擋(既有行為迴歸)
+    # ③ 一般 src code 無架構圖 → 仍擋(既有行為迴歸)
     r3 = Path(tempfile.mkdtemp(prefix="gctl-pcv3-"))
     res3 = _precommit_run(r3, ["app/Main.kt"])
-    check("precommit 豁免: 一般 code 無圖譜仍擋(迴歸)", res3.returncode != 0, f"rc={res3.returncode}")
+    check("precommit 豁免: 一般 code 無架構圖仍擋(迴歸)", res3.returncode != 0, f"rc={res3.returncode}")
     # ④ ★源 repo 守門★:有 skills/lumos-project-notes(=Lumos 源)→ 豁免失效,vendored 檔仍擋
-    #    (否則源 repo 自家改 scripts/lumos 不帶圖譜會靜默放行=弄弱自家閘)
+    #    (否則源 repo 自家改 scripts/lumos 不帶架構圖會靜默放行=弄弱自家閘)
     r4 = Path(tempfile.mkdtemp(prefix="gctl-pcv4-"))
     (r4 / "skills" / "lumos-project-notes").mkdir(parents=True)
     res4 = _precommit_run(r4, ["scripts/test_lumos.py"])
@@ -1708,7 +1708,7 @@ def t_precommit_whitelist_drift_guard():
     (post-commit 是 bypass 記帳端,漏對齊=例行 update 被記假 bypass 灌水;2026-07-25 實測踩過)。
     [終審 fix I3]同源第三份清單:delguard 的 _DELGUARD_EXCLUDE_DIRS/lockfile 排除規則
     也要對齊 pre-commit should_exclude,免得兩處各自漂。"""
-    # 尾段直讀來源 repo 圖譜節點(pitfalls-code-loop.md)——消費端沒有,整支轉 skip
+    # 尾段直讀來源 repo 架構圖節點(pitfalls-code-loop.md)——消費端沒有,整支轉 skip
     # ([[Issues/vendored自測3紅_來源repo專用測試漏標skip]] 2026-08-17 Landmark 實錘)
     _need_src("docs/lumos-toolchain-knowledge/Systems/pitfalls-code-loop.md")
     m = _load_lumos()
@@ -1736,7 +1736,7 @@ def t_precommit_whitelist_drift_guard():
               lf in lock_line, lock_line)
 
     # delguard/UI 證據路徑同源(2026-08-11,Android UI 工作流 r2-F11):
-    # pitfalls --diff 的排除規則與圖譜節點寫的路徑必須是同一個字串前綴
+    # pitfalls --diff 的排除規則與架構圖節點寫的路徑必須是同一個字串前綴
     lumos_src = Path(GRAPHCTL).read_text(encoding="utf-8")
     excl = "governance/review-reports/"
     check("delguard 證據路徑排除規則仍在 scripts/lumos", excl in lumos_src, excl)
@@ -2601,11 +2601,11 @@ def t_resolve_test_refs():
 
 
 def t_multiplatform_guard_list():
-    """T4 跨 repo 多平台:圖譜在主 repo,invariant 綁前端 Kotlin(root=.)+ 後端 C#(root=../be)。
+    """T4 跨 repo 多平台:架構圖在主 repo,invariant 綁前端 Kotlin(root=.)+ 後端 C#(root=../be)。
     guard list 依平台各自 discover → 兩條都 real;未定義方法 → dangling。"""
     import shutil
     root = Path(tempfile.mkdtemp(prefix="gctl-mp-"))
-    main = root / "app"                       # 主 repo(圖譜所在)
+    main = root / "app"                       # 主 repo(架構圖所在)
     be = root / "backend"                     # 後端 sibling repo
     vault = main / "docs" / "demo-knowledge"
     for sub in ("Systems", "Verification", "Projects", "MOC"):
@@ -4239,7 +4239,7 @@ def t_deinit_strip_claude():
     # case A: 有自有段落 + 注入區塊 → 剝區塊、留自有段落、留檔
     root = Path(tempfile.mkdtemp(prefix="gctl-deinit-cm-a-"))
     (root / "CLAUDE.md").write_bytes(
-        ("# CLAUDE.md\n\n我的專案規則。\n\n" + START + "\n圖譜紀律內文\n" + END + "\n").encode("utf-8"))
+        ("# CLAUDE.md\n\n我的專案規則。\n\n" + START + "\n架構圖紀律內文\n" + END + "\n").encode("utf-8"))
     stripped = m._deinit_strip_claude(root)
     txt = (root / "CLAUDE.md").read_text(encoding="utf-8")
     check("deinit claude A: 回 True", stripped is True, f"got {stripped}")
@@ -4510,14 +4510,14 @@ def t_deinit_graph():
     check("deinit graph10: 鐵閘 rc0", r.returncode == 0, f"{r.returncode} {r.stderr}")
     check("deinit graph10: 印 standalone vault 警示", "standalone vault" in r.stderr, r.stderr)
     check("deinit graph10: repo 根仍在(絕無 rmtree)", (root / "important_note.md").exists(), "")
-    check("deinit graph10: MOC/ 圖譜仍在", (root / "MOC" / "index.md").exists(), "")
+    check("deinit graph10: MOC/ 架構圖仍在", (root / "MOC" / "index.md").exists(), "")
     hp = subprocess.run(["git", "-C", str(root), "config", "core.hooksPath"],
                         capture_output=True, text=True)
     check("deinit graph10: 其餘動作仍執行(hooksPath unset)", hp.stdout.strip() == "", f"{hp.stdout!r}")
     cm = (root / "CLAUDE.md").read_text(encoding="utf-8")
     check("deinit graph10: 其餘動作仍執行(claude 區塊剝)", "GRAPH-DISCIPLINE" not in cm, cm)
 
-    # case 3 拆閘有效:deinit 後 commit「改 code 不動圖譜」不被擋
+    # case 3 拆閘有效:deinit 後 commit「改 code 不動架構圖」不被擋
     root = _mk_installed_project(prefix="gctl-deinit-g3-")
     _deinit_run(root, "--keep-graph", "--yes")
     hp = subprocess.run(["git", "-C", str(root), "config", "core.hooksPath"],
@@ -4977,7 +4977,7 @@ def t_anchor():
 
 
 # ══ Check Y:被提及符號存在性(成因 D「寫的時候就錯」,2026-08-12)══
-# 與 delguard 分工:delguard 驗「被刪的符號圖譜還在講」(diff-based);Y 驗「圖譜提到的符號
+# 與 delguard 分工:delguard 驗「被刪的符號架構圖還在講」(diff-based);Y 驗「架構圖提到的符號
 # repo 有沒有」(全量)——★code 從沒變過也抓得到★,那正是 diff-based 結構上無效的那一類。
 
 def _y_repo(note_body, code, ntype="system"):
@@ -4997,7 +4997,7 @@ def _y_repo(note_body, code, ntype="system"):
 
 
 def t_checky_flags_missing_symbol():
-    """★首發實績的回歸★:圖譜寫 RegisterAsync、code 實為 SubmitRegistrationAsync。"""
+    """★首發實績的回歸★:架構圖寫 RegisterAsync、code 實為 SubmitRegistrationAsync。"""
     root, v = _y_repo("流程見 `ActivityService.RegisterAsync`。",
                       "public async Task SubmitRegistrationAsync() {}")
     r = run(v, "doctor")
@@ -5031,7 +5031,7 @@ def t_checky_deprecation_vocab_exempt():
 
 
 def _dh_repo():
-    """建一個有 git 歷史的假 repo:c1 有 OldAsync、c2 改名成 NewAsync 但圖譜沒跟上。"""
+    """建一個有 git 歷史的假 repo:c1 有 OldAsync、c2 改名成 NewAsync 但架構圖沒跟上。"""
     import subprocess as sp, tempfile
     root = Path(tempfile.mkdtemp(prefix="gctl-dh-"))
     v = root / "docs" / "x-knowledge"
@@ -5051,12 +5051,12 @@ def _dh_repo():
     (root / "src" / "a.cs").write_text("public async Task OldAsync() {}\n", encoding="utf-8")
     commit("c1")
     (root / "src" / "a.cs").write_text("public async Task NewAsync() {}\n", encoding="utf-8")
-    commit("c2 rename")          # ★code 改名、圖譜沒動 → 幽靈符號誕生★
+    commit("c2 rename")          # ★code 改名、架構圖沒動 → 幽靈符號誕生★
     return root, v
 
 
 def t_drift_history_detects_persisting_ghost():
-    """★核心牙齒★:code 改名後圖譜沒跟上 → 重放要看得到幽靈符號。"""
+    """★核心牙齒★:code 改名後架構圖沒跟上 → 重放要看得到幽靈符號。"""
     root, v = _dh_repo()
     r = run(v, "drift-history", "--every", "1")
     check("drift-history: 抓到改名後留下的幽靈符號",
@@ -5090,7 +5090,7 @@ def t_drift_history_needs_repo_layout():
 def t_checky_profile_switches_language():
     """★通用性的真憑證★:換 symbol_profile=python,snake_case 方法才進候選、
     PascalCase 不再被當方法。證明形狀規則是配置不是寫死。
-    (Enzo 2026-08-12 質疑:「只對這份圖譜適用嗎?」——這條測試就是答案)"""
+    (Enzo 2026-08-12 質疑:「只對這份架構圖適用嗎?」——這條測試就是答案)"""
     import json
     root, v = _y_repo("見 `mod.do_thing` 與 `SomeService.DoAsync`。",
                       "def do_thing(): pass\n")
@@ -5140,7 +5140,7 @@ def t_checky_systems_only():
 
 def t_checky_shape_filter_excludes_noise():
     """★防噪音關鍵★:環境變數/範例 ID/檔名不是方法符號,不該進候選。
-    實測動機:寬鬆抽法在真實圖譜 7% 未命中,抽樣多為 ADMIN_LOG_VIEWER_KEY 這類。"""
+    實測動機:寬鬆抽法在真實架構圖 7% 未命中,抽樣多為 ADMIN_LOG_VIEWER_KEY 這類。"""
     root, v = _y_repo("設定 `ADMIN_LOG_VIEWER_KEY`、會員 `LM00001226`、頁面 `MemberDisc.aspx`。",
                       "public class X {}")
     r = run(v, "doctor")
@@ -5258,7 +5258,7 @@ def t_checku_silent_on_debt():
 
 def t_checku_needs_all_three_signals():
     """★防噪音的關鍵斷言★:只有量詞、缺程式實體或義務語氣 → 不該吵。
-    實測動機:單看量詞在真實圖譜命中 17%,多為用詞規範(「對人一律說『校正』」)。"""
+    實測動機:單看量詞在真實架構圖命中 17%,多為用詞規範(「對人一律說『校正』」)。"""
     only_q = _u_vault("KEY:對人一律說「校正」,不說「自癒」")
     r1 = run(only_q, "lint", "S")
     check("Check U: 只有量詞(用詞規範)不吵", "Check U" not in r1.stdout, r1.stdout)
@@ -6400,7 +6400,7 @@ def t_impact_cli_skeleton():
     # 非 vault 目錄 → rc 3(vault 找不到)
     with tempfile.TemporaryDirectory() as d:
         rc = run_lumos(["impact", "--file", "x.py", "--repo", d, "--json"])
-        check("impact: 非圖譜應 rc3", rc == 3, f"非圖譜應 rc3, got {rc}")
+        check("impact: 非架構圖應 rc3", rc == 3, f"非架構圖應 rc3, got {rc}")
     # 缺 --file → argparse rc 2
     check("impact: 缺 --file 應 rc2", run_lumos(["impact", "--repo", "."]) == 2, "")
 
@@ -7133,8 +7133,8 @@ def t_impact_hook_filter_and_rc():
           extract_path({"tool_input": {"file_path": "x.py"}}) == "x.py",
           "expected 'x.py'")
 
-    # 2. 圖譜檔(.md 在 docs/*-knowledge/)→ 放行(None)
-    check("impact_hook: .md 圖譜路徑 → 放行 None",
+    # 2. 架構圖檔(.md 在 docs/*-knowledge/)→ 放行(None)
+    check("impact_hook: .md 架構圖路徑 → 放行 None",
           hook_decide({"tool_input": {"file_path": "docs/x-knowledge/a.md"}}) is None,
           "expected None for graph .md")
 
@@ -7772,10 +7772,10 @@ def t_impact_incidents_section():
 # ─── Task 4: e2e/回歸 + 補前輪 review 缺口 ────────────────────────────────────
 
 def t_impact_incidents_regression():
-    """真圖譜整合:impact --file scripts/lumos → incidents 正確撈到 pitfall_when 事故。
+    """真架構圖整合:impact --file scripts/lumos → incidents 正確撈到 pitfall_when 事故。
 
     本倉庫已 dogfood pitfall_when(Issues/init-force-slug誤用basename content:_slugify_vault
-    命中 scripts/lumos)。此測試證真圖譜上 incidents pipeline 有效 + 輸出良構。
+    命中 scripts/lumos)。此測試證真架構圖上 incidents pipeline 有效 + 輸出良構。
     (「無 pitfall_when → incidents 空」的不誤傷行為由 t_match_incident_triggers 隔離覆蓋。)
     """
     _need_src("docs/lumos-toolchain-knowledge")
@@ -7785,7 +7785,7 @@ def t_impact_incidents_regression():
     check("impact_incidents_regression: 頂層 incidents key 存在",
           "incidents" in d, f"keys={set(d)}")
     nodes = [i.get("node", "") for i in d["incidents"]]
-    check("impact_incidents_regression: 真圖譜撈到 init-force-slug 事故(pipeline 有效)",
+    check("impact_incidents_regression: 真架構圖撈到 init-force-slug 事故(pipeline 有效)",
           any("init-force-slug" in n for n in nodes),
           f"incidents nodes={nodes}")
     check("impact_incidents_regression: 每筆 incident 良構(有 node + matched_by)",
@@ -9544,7 +9544,7 @@ def t_reinject_no_template():
 def t_reinject_creates_when_absent():
     """CLAUDE.md 不存在 → created、檔被生成且含 block。"""
     import tempfile
-    TPL = "lumos 知識圖譜路徑:{{KG}}"
+    TPL = "lumos 知識架構圖路徑:{{KG}}"
     with tempfile.TemporaryDirectory() as td:
         root, mod = _make_reinject_root(td, tpl_content=TPL, claude_content=None)
         result = mod._reinject_claude_block(root, "myproj")
@@ -9570,7 +9570,7 @@ def t_reinject_creates_when_absent():
 def t_reinject_appends_when_no_sentinel():
     """有 CLAUDE.md 但無 sentinel → appended、原內容保留 + block 附加。"""
     import tempfile
-    TPL = "知識圖譜:{{KG}}"
+    TPL = "知識架構圖:{{KG}}"
     ORIGINAL = "# 既有 CLAUDE.md\n\n原始內容在這\n"
     with tempfile.TemporaryDirectory() as td:
         root, mod = _make_reinject_root(td, tpl_content=TPL, claude_content=ORIGINAL)
@@ -9625,7 +9625,7 @@ def t_reinject_updates_existing():
 def t_reinject_idempotent():
     """再跑一次 → unchanged + 檔案內容不變。"""
     import tempfile
-    TPL = "知識圖譜:{{KG}}"
+    TPL = "知識架構圖:{{KG}}"
     with tempfile.TemporaryDirectory() as td:
         root, mod = _make_reinject_root(td, tpl_content=TPL, claude_content=None)
         # 第一次: created
@@ -9648,7 +9648,7 @@ def t_reinject_idempotent():
 def t_reinject_preserves_outside():
     """sentinel 之外的內容 byte-equal 保留——前綴與後綴逐 byte 相同。"""
     import tempfile
-    TPL = "知識圖譜:{{KG}}"
+    TPL = "知識架構圖:{{KG}}"
     START = ("<!-- LUMOS:GRAPH-DISCIPLINE:START"
              " — 自動注入/更新,勿手改本區塊;改範本 scripts/templates/graph-discipline.md -->")
     END_SENTINEL = "<!-- LUMOS:GRAPH-DISCIPLINE:END -->"
@@ -9690,7 +9690,7 @@ def t_reinject_sentinel_broken():
     START = ("<!-- LUMOS:GRAPH-DISCIPLINE:START"
              " — 自動注入/更新,勿手改本區塊;改範本 scripts/templates/graph-discipline.md -->")
     BROKEN = "# CLAUDE.md\n\n" + START + "\nbody without end\n"
-    TPL = "知識圖譜:{{KG}}"
+    TPL = "知識架構圖:{{KG}}"
     with tempfile.TemporaryDirectory() as td:
         root, mod = _make_reinject_root(td, tpl_content=TPL,
                                         claude_content=BROKEN.encode("utf-8"))
@@ -9709,7 +9709,7 @@ def t_reinject_sentinel_broken():
 def t_reinject_bom_crlf_normalized():
     """BOM+CRLF 輸入 → 寫後無 BOM、LF、內容正確。"""
     import tempfile
-    TPL = "知識圖譜:{{KG}}"
+    TPL = "知識架構圖:{{KG}}"
     # 既有 CLAUDE.md 無 sentinel,帶 BOM + CRLF
     existing_crlf_bom = "\xef\xbb\xbf# CLAUDE.md\r\n\r\n既有內容\r\n".encode("utf-8")
     with tempfile.TemporaryDirectory() as td:
@@ -9753,7 +9753,7 @@ def t_scaffold_no_longer_injects():
         # 建 scripts/templates 讓範本存在(但 scaffold 不應碰它)
         tpl_dir = root / "scripts" / "templates"
         tpl_dir.mkdir(parents=True, exist_ok=True)
-        (tpl_dir / "graph-discipline.md").write_text("知識圖譜:{{KG}}", encoding="utf-8")
+        (tpl_dir / "graph-discipline.md").write_text("知識架構圖:{{KG}}", encoding="utf-8")
 
         mod = _load_lumos_mod("lumos_t3_scaffold")
         mod._scaffold_project(root, "myproj")
@@ -9795,7 +9795,7 @@ def t_update_resyncs_claude():
         (scripts_dir / "install-graph-toolchain.sh").write_text("#!/bin/sh\n", encoding="utf-8")
         tpl_dir = scripts_dir / "templates"
         tpl_dir.mkdir()
-        NEW_TPL = "新版知識圖譜紀律:{{KG}}"
+        NEW_TPL = "新版知識架構圖紀律:{{KG}}"
         (tpl_dir / "graph-discipline.md").write_text(NEW_TPL, encoding="utf-8")
         # hooks dir 需存在避免 rglob 報錯
         (scripts_dir / "hooks").mkdir()
@@ -10005,7 +10005,7 @@ def t_init_existing_no_pull():
         (scripts_dir / "install-graph-toolchain.sh").write_text("#!/bin/sh\n", encoding="utf-8")
         tpl_dir = scripts_dir / "templates"
         tpl_dir.mkdir()
-        NEW_TPL = "新版知識圖譜紀律(no-pull test):{{KG}}"
+        NEW_TPL = "新版知識架構圖紀律(no-pull test):{{KG}}"
         (tpl_dir / "graph-discipline.md").write_text(NEW_TPL, encoding="utf-8")
         (scripts_dir / "hooks").mkdir()
 
@@ -10193,11 +10193,11 @@ def t_claude_block_matches_template():
 def t_doctor_reports_drift():
     """CLAUDE.md block body 與範本不一致 → Check D 報漂移(issue≥1)。"""
     import tempfile
-    TPL = "知識圖譜路徑:{{KG}}\n\n這是圖譜紀律說明。"
+    TPL = "知識架構圖路徑:{{KG}}\n\n這是架構圖紀律說明。"
     SLUG = "myproj"
     block = _make_check_d_block(TPL, SLUG)
     # 人為把 CLAUDE.md 的 block body 改一行
-    tampered_block = block.replace("這是圖譜紀律說明。", "這是被人改過的說明。")
+    tampered_block = block.replace("這是架構圖紀律說明。", "這是被人改過的說明。")
     claude_content = "# CLAUDE.md\n\n前言\n\n" + tampered_block + "\n\n後記\n"
     with tempfile.TemporaryDirectory() as td:
         root, vault = _make_check_d_root(td, tpl_content=TPL,
@@ -10221,7 +10221,7 @@ def t_doctor_skip_no_template():
     """範本檔不存在 → Check D skip,不誤報、不計 issue。"""
     import tempfile
     SLUG = "myproj"
-    TPL = "知識圖譜:{{KG}}"
+    TPL = "知識架構圖:{{KG}}"
     block = _make_check_d_block(TPL, SLUG)
     # CLAUDE.md 有正常 sentinel
     claude_content = "# CLAUDE.md\n\n" + block + "\n"
@@ -10244,7 +10244,7 @@ def t_doctor_skip_no_template():
 def t_doctor_broken_reports():
     """CLAUDE.md 只 START 無 END(broken)→ Check D 報漂移、不 crash。"""
     import tempfile
-    TPL = "知識圖譜:{{KG}}"
+    TPL = "知識架構圖:{{KG}}"
     SLUG = "myproj"
     START = ("<!-- LUMOS:GRAPH-DISCIPLINE:START"
              " — 自動注入/更新,勿手改本區塊;改範本 scripts/templates/graph-discipline.md -->")
@@ -10389,7 +10389,7 @@ def t_version_bump_not_trigger_guard():
     """START 行帶舊版本(v0.9),body == 範本 → Check D 淨(0 漂移)。
     關鍵:版本戳在 START 行(body 外),bump 不觸發內容守衛。"""
     import tempfile
-    TPL = "知識圖譜路徑:{{KG}}\n\n這是圖譜紀律說明。"
+    TPL = "知識架構圖路徑:{{KG}}\n\n這是架構圖紀律說明。"
     SLUG = "myproj"
     body = TPL.replace("{{KG}}", f"docs/{SLUG}-knowledge/").strip()
     # START 行帶「舊版本」v0.9,但 body 完全符合範本
@@ -11766,7 +11766,7 @@ def t_doctor_flags_unclosed_frontmatter():
     索引★。實測後果有三:
 
       ① 該節點的 ★INVARIANT★ ★從 contracts 完全消失★(合約登記簿靜默少一條)
-      ② block scalar 裡的 `[[wikilink]]` 變成★真的圖譜邊★(frontmatter 鐵則 2 靜默失效)
+      ② block scalar 裡的 `[[wikilink]]` 變成★真的架構圖邊★(frontmatter 鐵則 2 靜默失效)
       ③ `doctor` 輸出★完全不提這個檔★——連 Check S 的清單都沒有它(讀不到 type)
 
     ★寫入端 `load_raw_for_edit` 對同一狀態明確 `raise ValueError("frontmatter 未閉合")`,
@@ -11807,7 +11807,7 @@ def t_doctor_flags_unclosed_frontmatter():
     check("★doctor 必須指名道姓點出未閉合的那一篇(不得靜默)★",
           "broken.md" in rd.stdout, rd.stdout)
     check("★而且要講清楚後果(不是只說格式錯)★",
-          "合約" in rd.stdout and "圖譜邊" in rd.stdout, rd.stdout)
+          "合約" in rd.stdout and "架構圖邊" in rd.stdout, rd.stdout)
     rci = lum("doctor", "--ci")
     check("★必須是硬 issue——pre-push 的 doctor --ci 要擋得下來★",
           rci.returncode != 0, f"rc={rci.returncode}\n{rci.stdout[-400:]}")
@@ -11871,7 +11871,7 @@ def t_unclosed_fence_never_leaks_into_graph_or_evidence():
     """★2026-08-03 code-loop r2 全局哨兵抓到的兩條既有 major★——同一個「未閉合 ``` 圍欄」
     的坑,原本散在四處實作,其中兩處後果比 search 嚴重得多:
 
-    ① `load_vault()`:未閉合圍欄裡的 `[[wikilink]]` 被當成★真的圖譜邊★索引進去
+    ① `load_vault()`:未閉合圍欄裡的 `[[wikilink]]` 被當成★真的架構圖邊★索引進去
        → 幽靈連結進入持久化的圖結構(`backlinks` 會多報一條)。
     ② `cmd_guard_trace()`:未閉合圍欄裡的測試名被當成★合約的真實佐證★
        → 污染 ★INVARIANT★→[test:]→Verification 證據鏈,打臉該指令自己的保證。
@@ -11907,7 +11907,7 @@ def t_unclosed_fence_never_leaks_into_graph_or_evidence():
     check("★前置★ 現場成立:leaky.md 真的有未閉合圍欄(奇數個 ``` 標記)",
           (v / "Systems/leaky.md").read_text(encoding="utf-8").count("```") % 2 == 1,
           (v / "Systems/leaky.md").read_text(encoding="utf-8"))
-    check("★① 未閉合圍欄裡的 [[wikilink]] 不得被當成真的圖譜邊(幽靈連結)★",
+    check("★① 未閉合圍欄裡的 [[wikilink]] 不得被當成真的架構圖邊(幽靈連結)★",
           "leaky" not in r.stdout, r.stdout)
 
     # ② guard trace:未閉合圍欄裡的測試名不得被當成合約佐證
@@ -12006,7 +12006,7 @@ def t_search_multiword_fallback_r1_three_majors():
     ①「全庫無命中」措辭自相矛盾(slot3 major / slot2 minor,依規矩取高):
       預檢刻意跳過 superseded(對的),但片語★只★在一篇作廢節點裡時,舊措辭印
       「整串片語全庫無命中」,緊接著又印「已隱藏 1 筆作廢結果」——★兩行打架★,
-      使用者只看第一行會斷定「圖譜沒這東西」→ 可能重造一個已存在的節點。
+      使用者只看第一行會斷定「架構圖沒這東西」→ 可能重造一個已存在的節點。
 
     ②未閉合 ``` 圍欄下,預檢與主迴圈判斷分岔(slot3,附實測):兩份實作——主迴圈逐行
       toggle(圍欄後全隱形)、預檢整段 regex(剝不掉懸空半段)。後果是★逐詞覆蓋虛報
@@ -12077,7 +12077,7 @@ def t_search_multiword_fallback_reports_per_term_coverage():
     印到 stderr。
 
     ★為什麼需要★:回退之後搜尋★幾乎不可能再回 0★——你永遠會拿到看起來合理的東西,
-    而那可能只是常見詞的噪音。今天「0 筆」至少有時候代表「這個概念不在圖譜裡」,
+    而那可能只是常見詞的噪音。今天「0 筆」至少有時候代表「這個概念不在架構圖裡」,
     回退把那個訊號吃掉了。實例:Landmark 上查「續會 門檻 計算」第一名是「停車折抵」,
     看起來像排序爛——其實是「續會」全庫 0 篇(我查詢用詞猜錯),剩下兩個常見詞
     (門檻 50/計算 35)把結果洗走。逐詞覆蓋一印就當場看穿。
@@ -12115,8 +12115,8 @@ def t_search_multiword_fallback_reports_per_term_coverage():
     # ② 0 命中的詞要標星 + 額外提示
     check("★② 全庫 0 命中的詞要標記出來(這是本功能的核心價值)★",
           "★庚:0★" in r.stderr, r.stderr)
-    check("★② 並提醒「多半是用詞不一致」,別把結果當「圖譜沒有」★",
-          "用詞與圖譜用語不一致" in r.stderr, r.stderr)
+    check("★② 並提醒「多半是用詞不一致」,別把結果當「架構圖沒有」★",
+          "用詞與架構圖用語不一致" in r.stderr, r.stderr)
     # ③ 走 stderr,不得污染 stdout
     check("★③ 覆蓋資訊只走 stderr,stdout 一個字都不能有★",
           "逐詞覆蓋" not in r.stdout and "多詞回退" not in r.stdout, r.stdout)
@@ -12674,7 +12674,7 @@ def t_new_verification_bidirectional():
 
 def t_search_aliases_field():
     """[檢索優化 2026-08-05]frontmatter `aliases` 進 BM25F 高權重欄——同義詞落空的最便宜解
-    (BM25 詞面比對:圖譜寫「沖銷」、使用者搜「作廢」即 miss;aliases 由寫入者一次性留同義詞)。
+    (BM25 詞面比對:架構圖寫「沖銷」、使用者搜「作廢」即 miss;aliases 由寫入者一次性留同義詞)。
     斷言:①aliases 命中=候選+高分(勝 body 單次提及)②無 aliases 節點行為不變。
     翻紅釘:把 aliases 欄從 _rank_fields 拿掉 → 排序斷言翻紅。"""
     import subprocess as sp
@@ -12940,7 +12940,7 @@ def t_impact_diff():
     (root / "src" / "svc.py").write_text("def save(x):\n    pass\n", encoding="utf-8")
     (root / "src" / "old.py").write_text("legacy = True\n", encoding="utf-8")
     g("add", "-A"); g("commit", "-qm", "init")
-    # 第二筆 commit:svc.py 引入 SQL(觸發事故 trigger)+ 新增無圖譜引用的 other.py + 動圖譜節點(排除)
+    # 第二筆 commit:svc.py 引入 SQL(觸發事故 trigger)+ 新增無架構圖引用的 other.py + 動架構圖節點(排除)
     # + 刪除被合約節點引用的 old.py(種子必須保留)+ governance 資料 json 與 README(必須排除)
     (root / "src" / "svc.py").write_text(
         "def save(x):\n    q = 'SELECT id FROM t'\n    return q\n", encoding="utf-8")
@@ -12961,7 +12961,7 @@ def t_impact_diff():
     d = json.loads(r.stdout.strip().splitlines()[-1])
     check("diff manifest 有 results/meta/files", set(d) >= {"results", "meta", "files"}, str(d)[:150])
     check("diff seed 含 code 檔", "src/svc.py" in d["files"] and "src/other.py" in d["files"], str(d["files"]))
-    check("diff seed 排除圖譜節點", not any(f.startswith("docs/") for f in d["files"]), str(d["files"]))
+    check("diff seed 排除架構圖節點", not any(f.startswith("docs/") for f in d["files"]), str(d["files"]))
     check("diff seed 保留已刪檔(合約反查)", "src/old.py" in d["files"], str(d["files"]))
     check("diff seed 排除 governance 資料 json 與 md",
           "governance/eval/data.json" not in d["files"] and "README.md" not in d["files"], str(d["files"]))
@@ -12970,7 +12970,7 @@ def t_impact_diff():
     check("CJK 檔名:code 檔進種子(quotePath 修)", "src/服務.py" in d["files"], str(d["files"]))
     check("CJK 檔名:無引號跳脫垃圾路徑(quotePath 生效)",
           not any(f2.startswith('"') or "\\" in f2 for f2 in d["files"]), str(d["files"]))
-    check("CJK 檔名:圖譜節點原始路徑被濾掉",
+    check("CJK 檔名:架構圖節點原始路徑被濾掉",
           "docs/z-knowledge/Systems/服務核心.md" not in d["files"], str(d["files"]))
     pinned = [x for x in d["results"] if x.get("pinned")]
     check("合約節點固定席(SvcCore)", any("SvcCore" in x["node"] for x in pinned), str(pinned)[:200])
@@ -15021,8 +15021,8 @@ def t_docs_enumeration_drift():
     kill_sec = ref[ref.index("lumos guard kill-add"):ref.index("lumos guard kill-add") + 2000]
     missing = sorted(v for v in verdicts if v not in kill_sec)
     check("kill verdict 值域:碼有的 reference.md 都列了", not missing, f"未列: {missing}")
-    # ②b **圖譜節點同受守衛**——只守 skill reference 的舊寫法,讓 Systems/guard-kill.md 一路留著
-    # 舊六態與「timed_out 歸 killed」,造出「圖譜錯、code 對」的活例(2026-07-29 外審實錘)。
+    # ②b **架構圖節點同受守衛**——只守 skill reference 的舊寫法,讓 Systems/guard-kill.md 一路留著
+    # 舊六態與「timed_out 歸 killed」,造出「架構圖錯、code 對」的活例(2026-07-29 外審實錘)。
     gk = root / "docs" / "lumos-toolchain-knowledge" / "Systems" / "guard-kill.md"
     if gk.exists():
         gk_text = gk.read_text(encoding="utf-8")
@@ -15068,7 +15068,7 @@ def t_docs_command_count():
     check("命令數真值取自 --help choices(非原始碼 regex)", actual > 40, f"actual={actual}")
     # 掃**全部活文件**而非手維護清單——固定三檔的舊寫法正是 AGENTS.md(44)與
     # skills/…/reference.md(49)同時漂移卻全綠的原因(2026-07-29 外審實錘)。
-    # 排除:外審歸檔(逐字歷史紀錄,不得回改)、圖譜(決策條目會引述當時數字)、.git。
+    # 排除:外審歸檔(逐字歷史紀錄,不得回改)、架構圖(決策條目會引述當時數字)、.git。
     # golden/ 是凍結語料(過去 loop 的 spec 快照,replay 校準用),與外審歸檔同性質:歷史不得回改。
     skip = ("governance/external-reviews/", "governance/golden/",
             "-knowledge/", "/.git/", "node_modules/")
@@ -17097,7 +17097,7 @@ def t_slim_uninstall_claude_md_write_failure_does_not_abort_remaining_steps():
     """★2026-08-02 對照實驗抓到的合約違反(不是 reviewer 抓到的——四席裡三席
     明確宣稱「各步互不阻擋、沒有任何一步會中止其他步驟」,而且講反了)★。
 
-    本檔 docstring 與圖譜宣告的 ★INVARIANT★ 是「五個步驟各自獨立、互不阻擋」。
+    本檔 docstring 與架構圖宣告的 ★INVARIANT★ 是「五個步驟各自獨立、互不阻擋」。
     但 `_restore_claude_md()`(步驟④)裡的 `unlink()`/`write_text()` 是裸呼叫,
     `main()` 呼叫它時也沒有 try——CLAUDE.md 唯讀/磁碟滿/檔案被鎖住時直接拋
     `PermissionError` 炸穿 `main()`,★排在它後面的步驟⑤(manifest)完全不會執行★,
@@ -17496,7 +17496,7 @@ def t_slim_ps1_real_parser_accepts_both_execution_paths():
     只有「Windows 磁碟執行時用系統 ANSI codepage 讀檔」才是真正 Windows-only。
     PowerShell 7 Core 可 `brew install powershell`,前兩者在 macOS 上就驗得到。
 
-    ★通則(值得記進圖譜)★:遇到「跨平台語言層行為」不要直接套用「沒有那個執行環境」
+    ★通則(值得記進架構圖)★:遇到「跨平台語言層行為」不要直接套用「沒有那個執行環境」
     這個免驗證通行證——★先問它到底是不是該平台獨有的行為★。
 
     本測試在有 `pwsh` 時做兩件真事:
@@ -17598,7 +17598,7 @@ def t_slim_ps1_ascii_only_no_bom():
 
     ★這條紀律組織內部早就有★:LandmarkMember 的 CLAUDE.md〈Deploy 腳本踩雷規則〉
     第 1 條「ASCII-only 規則」,理由一字不差,而且是踩了三輪 prod deploy 失敗才立的。
-    ★我設計這幾支檔案時沒有去查過——那正是 CLAUDE.md 第一條「圖譜先行」要防的。★
+    ★我設計這幾支檔案時沒有去查過——那正是 CLAUDE.md 第一條「架構圖先行」要防的。★
 
     ★本測試是機械完備的★:斷言「零個非 ASCII 位元組」直接消滅整個問題類別
     (不需要再模擬 DBCS 規則、也不需要判斷哪些字元危險)。"""
@@ -18025,13 +18025,13 @@ rel-cascade search set show stale stats sync-verified-by""".split())
     # 就是 exit 1,跟正常「發現 issue」的 rc=1 撞號;審查員注入
     # `_totally_undefined_helper()` 進 run_doctor,rc=1 + 完整 traceback 照樣被這條
     # 斷言收下。加兩道:①stderr 不得含 Traceback ②stdout 必須真的跑到收尾摘要行
-    # (「─────」分隔線後的「圖譜健康」或「發現 N 個 issue」)——這行只有 run_doctor
+    # (「─────」分隔線後的「架構圖健康」或「發現 N 個 issue」)——這行只有 run_doctor
     # 正常跑完全部檢查才會印,NameError 會在印到這裡前就整支炸掉,stdout 提早截斷。
     check("★正向 doctor 實跑★(不只 --help)",
           d.returncode in (0, 1) and "Traceback" not in d.stderr,
           d.stderr[:300])
     check("★正向 doctor 實跑★ stdout 真的跑到收尾摘要(未被例外提早截斷)",
-          ("圖譜健康" in d.stdout or "個 issue" in d.stdout) and "篇)" in d.stdout,
+          ("架構圖健康" in d.stdout or "個 issue" in d.stdout) and "篇)" in d.stdout,
           d.stdout[-300:] + "|STDERR|" + d.stderr[:300])
 
     # 第 3 道 等價:goldset search 30 條,完整版 vs 精簡版結果一致
@@ -18143,7 +18143,7 @@ def t_slim_gate_doctor_nameerror_counterfactual():
     check("★C3 反事實★ 注入 NameError 後確實 rc=1(前提成立)", d.returncode == 1,
           f"rc={d.returncode} stderr={d.stderr[:200]}")
     gate_ok = (d.returncode in (0, 1) and "Traceback" not in d.stderr
-               and (("圖譜健康" in d.stdout or "個 issue" in d.stdout) and "篇)" in d.stdout))
+               and (("架構圖健康" in d.stdout or "個 issue" in d.stdout) and "篇)" in d.stdout))
     check("★C3 反事實★ 注入 NameError 後,doctor 實跑閘必翻紅(不是被 rc in (0,1) 放行)",
           not gate_ok, f"stderr含Traceback={'Traceback' in d.stderr}, stdout尾={d.stdout[-200:]!r}")
 
@@ -19702,7 +19702,7 @@ def t_eval_scoring_llm_free_guard():
         check(f"計分路徑無 LLM 痕跡:{tok}", tok not in src, tok)
 
 
-# ══ query 結構化查詢(WHERE over 標籤家族;[[Projects/圖譜結構化查詢_計劃]]) ══
+# ══ query 結構化查詢(WHERE over 標籤家族;[[Projects/架構圖結構化查詢_計劃]]) ══
 
 def _mk_query_vault():
     """query 測試共用小庫:標籤家族×狀態×合約×連結 交叉樣本。"""

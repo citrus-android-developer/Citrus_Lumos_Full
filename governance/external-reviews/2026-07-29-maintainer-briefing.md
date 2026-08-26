@@ -14,16 +14,16 @@
 
 ## ② 你誤讀或漏讀的機制（附出處）
 
-1. **capture-recapture 已在 cluster 帳模式降為 advisory**：`skills/lumos-design-loop/SKILL.md` panel 節明文「cluster 帳=兩條合取：輪有效 ∧ fold 後無 disputed-major——capture-recapture 與新生 cluster 降 advisory（非定態目標下封閉族群前提偏弱，不當硬閘）」。你的統計批評（母體非封閉/審查員不獨立）與圖譜自記的天花板**一字不差**——機制設計者先於你到達同一結論。殘餘缺口=cluster 帳非預設（已列 backlog）。你的「作為 gate 是統計儀式」判詞對**非 cluster 預設路徑**仍成立。
+1. **capture-recapture 已在 cluster 帳模式降為 advisory**：`skills/lumos-design-loop/SKILL.md` panel 節明文「cluster 帳=兩條合取：輪有效 ∧ fold 後無 disputed-major——capture-recapture 與新生 cluster 降 advisory（非定態目標下封閉族群前提偏弱，不當硬閘）」。你的統計批評（母體非封閉/審查員不獨立）與架構圖自記的天花板**一字不差**——機制設計者先於你到達同一結論。殘餘缺口=cluster 帳非預設（已列 backlog）。你的「作為 gate 是統計儀式」判詞對**非 cluster 預設路徑**仍成立。
 2. **canary 的定位裁定（d4，2026-07-18 使用者裁定）**：「抬 spec 質量、非保 spec 正確——正確性歸下游 code-loop＋測試＋驗證，漏網進逃逸帳；前置加重一律拒」。你建議的「保留為 attention probe、不當正確性證明」＝現行明文定位，非你首創的修正。
-3. **INVARIANT 密度 2/172 的脈絡**：本 vault 是工具鏈自身的 meta-圖譜（機制筆記為主）；業務合約密度主戰場在消費 repo 的圖譜（如 LandmarkMember 有 contract-as-test 檔測試群綁 [test:]）。你的批評對本 repo 仍成立（已列 backlog 首位），但「最強鏈幾乎空載」如果被讀成生態級結論則過度。
-4. **「衝突以圖譜為準」的認識論批評——全盤接受**：你提的「意圖權威 vs 行為事實、衝突進 incident」已記入吸收計劃待辦，將改方法論正文。這是你這次評審最有價值的理論貢獻之一。
+3. **INVARIANT 密度 2/172 的脈絡**：本 vault 是工具鏈自身的 meta-架構圖（機制筆記為主）；業務合約密度主戰場在消費 repo 的架構圖（如 LandmarkMember 有 contract-as-test 檔測試群綁 [test:]）。你的批評對本 repo 仍成立（已列 backlog 首位），但「最強鏈幾乎空載」如果被讀成生態級結論則過度。
+4. **「衝突以架構圖為準」的認識論批評——全盤接受**：你提的「意圖權威 vs 行為事實、衝突進 incident」已記入吸收計劃待辦，將改方法論正文。這是你這次評審最有價值的理論貢獻之一。
 
 ## ③ 內部實證數據（你評審時只能靜態推測的部分）
 
 1. **canary 有真實鑑別力的一手數據**（2026-07-28 testmap spec 六輪 panel）：sonnet 席在前兩輪 6 席漏抓 4 席（帶滿加碼 framing 仍漏）；升 opus 後連續 12+ 席全中且能逐行 diff 定位植入段。→ canary 不是純儀式：它實際淘汰了不合格審查輪、並驅動了模型升級決策。另有 haiku 難度探針（植完先派 haiku 看切片，一眼抓到=太明顯重植，cap 2）防 caught 灌水。
 2. **負結果處決文化**：檢索 PPR＋共改邊權功能經預註冊考卷處決（train 網格全負，nDCG 0.9831 vs 0.9817/0.9668/0.9598，兩臂同分=邊權零貢獻→整包刪碼留墓碑）；更早 A3 in-degree 消融同款處決。→「機制只加不減」的推定不成立，但你的「治理熵」批評在 spec 散文層仍然打中（見下）。
-3. **design-loop 完整性天花板實證**（圖譜有記）：testmap spec 六輪 panel 折入約 120 缺陷後，major 產出源變成「補丁互打」——散文審計邊際遞減被我們自己量到；最終接住品質的是 25 項測試矩陣＋Landmark 金標考卷（雙層 recall 1.0 轉正）＋「還原 bug 必翻紅」釘子。→ 與你的「高保真參照物優於散文」判斷完全同構，且我們在你評審前已把此教訓寫進圖譜。
+3. **design-loop 完整性天花板實證**（架構圖有記）：testmap spec 六輪 panel 折入約 120 缺陷後，major 產出源變成「補丁互打」——散文審計邊際遞減被我們自己量到；最終接住品質的是 25 項測試矩陣＋Landmark 金標考卷（雙層 recall 1.0 轉正）＋「還原 bug 必翻紅」釘子。→ 與你的「高保真參照物優於散文」判斷完全同構，且我們在你評審前已把此教訓寫進架構圖。
 4. **code-loop 對抗審的實戰產出**（同一功能終審）：11 席 canary 10 中；真戰果=1 條真 bug（rstrip 順序害護欄變死碼）＋3 條「測試自己在空轉」（單元素排序恆真／大小寫不敏感 FS 撞檔／缺還原翻紅釘）——全靠對答案席與逐席實跑抓到，覆蓋率類機械指標對這四條全瞎（我們因此否決了 diff-coverage 閘提案）。
 
 ## ④ 維護方仍不同意你的地方（請正面回應或反駁）

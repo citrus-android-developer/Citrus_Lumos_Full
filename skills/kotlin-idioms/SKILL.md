@@ -1,13 +1,13 @@
 ---
 name: kotlin-idioms
-description: 寫或審 Kotlin（Coroutines/Flow/Compose）代碼前必讀——通用不變量層的慣例規則：並行等待、Flow 合成、協程紀律、Compose 重組。每條附壞例→好例與機檢對照。框架選擇（Hilt/Koin、Retrofit/Ktor 等）不在此裁——那是各專案自己的事，查該專案圖譜。
+description: 寫或審 Kotlin（Coroutines/Flow/Compose）代碼前必讀——通用不變量層的慣例規則：並行等待、Flow 合成、協程紀律、Compose 重組。每條附壞例→好例與機檢對照。框架選擇（Hilt/Koin、Retrofit/Ktor 等）不在此裁——那是各專案自己的事，查該專案架構圖。
 ---
 
 # Kotlin 慣例（通用不變量層）
 
 **這份文件治的病**：AI 寫出「正確但笨」的 Kotlin——能跑、測試會過，但串聯了本該並行的等待、巢狀了本該 combine 的流、吞了不該吞的取消例外。這些 bug 不炸在功能上，炸在效能、電量、和上線三個月後的詭異取消行為上。
 
-**分層原則（重要）**：本文件只寫「不隨框架選擇改變的原則」。用 Hilt 還是 Koin、Retrofit 還是 Ktor、MVI 還是 MVVM——那是各專案的當地選擇，**去讀該專案的知識圖譜和 CLAUDE.md**（`lumos search <關鍵字>` 起手）。本文件的規則以「可注入」「可替換」等能力措辭，不點名框架。
+**分層原則（重要）**：本文件只寫「不隨框架選擇改變的原則」。用 Hilt 還是 Koin、Retrofit 還是 Ktor、MVI 還是 MVVM——那是各專案的當地選擇，**去讀該專案的知識架構圖和 CLAUDE.md**（`lumos search <關鍵字>` 起手）。本文件的規則以「可注入」「可替換」等能力措辭，不點名框架。
 
 **機檢欄說明**：`detekt:規則名`＝有現成規則；`自訂`＝可寫 detekt/Semgrep 自訂規則；`不可機檢`＝只有本文件與審查鏡頭能守——這類規則排最前面，因為文件是唯一防線。
 
@@ -15,7 +15,7 @@ description: 寫或審 Kotlin（Coroutines/Flow/Compose）代碼前必讀——�
 
 ## 一、並行與 Flow（本文件存在的理由）
 
-> **審查時機管道**:本文標「⚠ 不可機檢」的效能/適用性條目,其載重問已由 lumos 效能檢核機制在三時機自動推送(動手前 impact hook 注入/push 前 pitfalls advisory/終審 code-loop 鏡頭;內容源=lumos-toolchain 圖譜 Systems/效能檢核目錄,雙向同步義務)——可機檢條目歸 linter/analyzer,勿靠人記。
+> **審查時機管道**:本文標「⚠ 不可機檢」的效能/適用性條目,其載重問已由 lumos 效能檢核機制在三時機自動推送(動手前 impact hook 注入/push 前 pitfalls advisory/終審 code-loop 鏡頭;內容源=lumos-toolchain 架構圖 Systems/效能檢核目錄,雙向同步義務)——可機檢條目歸 linter/analyzer,勿靠人記。
 
 ### R1. 互不依賴的等待必須並行 ⚠ 不可機檢，本文件頭號條款
 兩個以上 suspend 呼叫，彼此的輸入不依賴對方的輸出 → 必須 `coroutineScope { async }` 並行；串聯 await 只允許在真有資料依賴時。
@@ -153,5 +153,5 @@ style:
 
 1. 最重要的三條（R1 並行、R2 combine、R8 main-safe）恰好都不可機檢——「無依賴」「該不該合成」是語意判斷，這份文件＋審查鏡頭是唯一防線，這正是它存在的理由。
 2. 機檢規則抓形狀不抓意圖：過了 detekt 不代表寫得好。
-3. 本文件不裁框架。發現某條規則與專案當地慣例衝突時：當地慣例贏，但把衝突記進該專案圖譜（可能是當地的技術債，也可能是本文件該修）。
+3. 本文件不裁框架。發現某條規則與專案當地慣例衝突時：當地慣例贏，但把衝突記進該專案架構圖（可能是當地的技術債，也可能是本文件該修）。
 4. 飛輪：每次人工糾正 AI 一個醜寫法，回來加一條或補一個例——這份文件跟事故語料一樣，是越用越厚的。

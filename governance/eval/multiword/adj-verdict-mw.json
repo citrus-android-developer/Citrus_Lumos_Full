@@ -84,11 +84,11 @@
   "M06": {
     "Systems/autonomous-iteration-loop.md": {
       "final": 0,
-      "why": "篇中的「閘」是等人 merge 的放行閘,與圖譜同步無關,屬單字碰撞。"
+      "why": "篇中的「閘」是等人 merge 的放行閘,與架構圖同步無關,屬單字碰撞。"
     },
     "Issues/design-loop折入漂移_機械守衛.md": {
       "final": 1,
-      "why": "[查詢歧義]「圖譜同步閘」可指(a)pre-commit 強迫改 code 要碰圖譜的閘,也可指(b)文件/節點間同步漂移的機械守衛——本篇是(b)的問題陳述(鏡像段沒機械綁定會漂),機制與閘本體在折入守衛_計劃。"
+      "why": "[查詢歧義]「架構圖同步閘」可指(a)pre-commit 強迫改 code 要碰架構圖的閘,也可指(b)文件/節點間同步漂移的機械守衛——本篇是(b)的問題陳述(鏡像段沒機械綁定會漂),機制與閘本體在折入守衛_計劃。"
     },
     "Projects/design-loop折入守衛_計劃.md": {
       "final": 2,
@@ -96,7 +96,7 @@
     },
     "Projects/主動影響幅度偵測_計劃.md": {
       "final": 2,
-      "why": "★強衝突★[查詢歧義] 在(a)解讀下這是全庫對 pre-commit graph-sync gate 說得最清楚的一篇(§背景「機械閘:強迫你碰圖譜,但改完了才擋、且只判有沒有碰圖譜、不算波及面」),A 判 0 應是憑檔名以為只講 impact 演算法。"
+      "why": "★強衝突★[查詢歧義] 在(a)解讀下這是全庫對 pre-commit graph-sync gate 說得最清楚的一篇(§背景「機械閘:強迫你碰架構圖,但改完了才擋、且只判有沒有碰架構圖、不算波及面」),A 判 0 應是憑檔名以為只講 impact 演算法。"
     },
     "Systems/lumos-cli-lifecycle.md": {
       "final": 1,

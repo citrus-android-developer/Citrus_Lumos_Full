@@ -2,12 +2,12 @@
 
 - 日期:2026-06-30
 - 狀態:design-approved
-- 動機來源:2026-06-30 治理日報 gap G3「doctor 只抓孤兒筆記、不抓孤兒程式碼;圖譜×程式碼交叉審計只靠偶爾手動」。收窄後 v1 取「**B 失效認領**」:圖譜正文指向**已不存在**的檔路徑(碼被刪/改名,圖譜還指著)。
+- 動機來源:2026-06-30 治理日報 gap G3「doctor 只抓孤兒筆記、不抓孤兒程式碼;架構圖×程式碼交叉審計只靠偶爾手動」。收窄後 v1 取「**B 失效認領**」:架構圖正文指向**已不存在**的檔路徑(碼被刪/改名,架構圖還指著)。
 - loop_id:doctor-stale-file-claim
 
 ## 目標(一句話)
 
-`lumos doctor` 新增**軟性 Check P**:掃每個節點正文裡「指向 repo 內檔案的路徑引用」,**檔案不存在即軟提醒**——把「圖譜指向死碼」這類漂移從偶爾手動交叉審計,變成每次 doctor 都跑的確定性檢查。**不計 issues、不改 rc。**
+`lumos doctor` 新增**軟性 Check P**:掃每個節點正文裡「指向 repo 內檔案的路徑引用」,**檔案不存在即軟提醒**——把「架構圖指向死碼」這類漂移從偶爾手動交叉審計,變成每次 doctor 都跑的確定性檢查。**不計 issues、不改 rc。**
 
 ## 收窄決定(brainstorm,2026-06-30)
 
@@ -63,7 +63,7 @@ CLI subprocess 風格(`run(v, "doctor")` 斷言 stdout),`t_`-prefixed,`check()` 
 
 ## 知識同步影響
 
-- `docs/methodology/圖譜即合約.md` / `對外論述.md`:可在「commit-time 強制 / doctor 巡檢」相關段補一句「doctor 亦抓圖譜指向死碼的失效檔案認領(Check P)」;無對應段則略。
+- `docs/methodology/架構圖即合約.md` / `對外論述.md`:可在「commit-time 強制 / doctor 巡檢」相關段補一句「doctor 亦抓架構圖指向死碼的失效檔案認領(Check P)」;無對應段則略。
 - skills:`lumos-project-notes` 的 doctor 巡檢表(「健康巡檢一次到位」那段)補列 Check P;`lumos-design-loop` 無關。
 - KG:落地後於 `Systems/lumos-cli-read`(doctor 屬讀/巡檢原語)summary 補一句 Check P;或新增 doctor-checks 節點(非必須,v1 放行時順手)。
 
@@ -71,7 +71,7 @@ CLI subprocess 風格(`run(v, "doctor")` 斷言 stdout),`t_`-prefixed,`check()` 
 
 1. **死指針 ≠ 語義漂移**:Check P 只證「節點引用的檔還在」,證不了「節點對該檔的描述仍正確」(同 [test:]/[rollback:] 天花板)。
 2. **路徑抽取靠 inline-code + 頂層目錄錨定**:漏裸符號引用、整頂層目錄被刪;偶有偽陽性(故軟、不擋)。**`FENCE_RE` 的 `^```` 在 MULTILINE 下只匹配行首,縮排的 fenced block(list 內 code block)不被剝**(r2-m4)→ 縮排 fence 內的路徑可能漏剝;此為 codebase 既有 FENCE_RE 行為,v1 接受(warn_soft 兜底)。
-3. **B 不是 A**:Check P **不**保證「重要的碼都有節點認領」(那是 A,刻意不做);它只保證「圖譜既有的檔指針沒指空」。覆蓋率視角的「碼有沒有被記載」仍靠人 + 交叉審計(變體 B),未被本 spec 取代。
+3. **B 不是 A**:Check P **不**保證「重要的碼都有節點認領」(那是 A,刻意不做);它只保證「架構圖既有的檔指針沒指空」。覆蓋率視角的「碼有沒有被記載」仍靠人 + 交叉審計(變體 B),未被本 spec 取代。
 
 ## 審計修正紀錄(design-loop)
 

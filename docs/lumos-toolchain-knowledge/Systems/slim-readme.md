@@ -46,4 +46,4 @@ plan_refs:
 
 ★2026-07-31 Task 9(裁定第三次變更)★:〈會不會動我專案的 CLAUDE.md〉整節重寫——不再只是「附加一段教學句」,而是「有完整版紀律區塊就整段策展取代,原地換掉,先位元組級備份供 uninstall 還原;沒有就插檔首標題後」,細節與範圍刀見 [[Systems/slim-install-安裝器]]。Task 8 那句「本包不會注入或更新任何 CLAUDE.md」的說法(已在 Task 8 就被推翻)在本輪進一步被具體化。
 
-規格/設計脈絡見 `.superpowers/sdd/公開精簡版_實作計畫/task-4-brief.md`(SDD 產出,非圖譜路徑,依計畫落地於此)、Task 8/9 見對應 `task-8-report.md`/`task-9-report.md`。
+規格/設計脈絡見 `.superpowers/sdd/公開精簡版_實作計畫/task-4-brief.md`(SDD 產出,非架構圖路徑,依計畫落地於此)、Task 8/9 見對應 `task-8-report.md`/`task-9-report.md`。

@@ -27,7 +27,7 @@ PRIOR-ART: ① 最小解層級——主體是既有留痕與既有子命令(quot
 
 ### S3 Growth test 準入三問(borrow evidra scope boundaries)
 - 治理機制(新閘/新 detector/新 lint)提案前必答:①這 pattern 真造成過事故嗎(要能指到事故節點/日報)②是不是風格偏好類關切(出界)③既有機制小修蓋得住嗎。答不全=不准加。
-- **落點裁定(r1)**:寫進 **lumos-design-loop skill**(準入閘語意歸它;lumos-project-notes 不動);三問答案記在該提案的圖譜計劃節點 PRIOR-ART/緣起段(既有留痕位,無新帳)。
+- **落點裁定(r1)**:寫進 **lumos-design-loop skill**(準入閘語意歸它;lumos-project-notes 不動);三問答案記在該提案的架構圖計劃節點 PRIOR-ART/緣起段(既有留痕位,無新帳)。
 
 ## 射程聲明(borrow evidra 誠實文化)
 S1 測的是「報告與留痕的協議內一致性」,不是真實世界正確性——席若一致地說謊(引句自己編但格式對)抓不到;那層靠既有辯方+canary。S2 兩層皆有已知天花板:行為層 caught/missed 分不出「真醒」vs「知道被測所以演醒」([[Systems/canary-audit]] 已載)——低 SNR 可能是 eval-awareness 偽訊號,故換題恆人裁;樣本下限已裁定(型別層 15 筆沿 D 案閘、題層同題重跑≥3),未達下限一律「不裁決」。

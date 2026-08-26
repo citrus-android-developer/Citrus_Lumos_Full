@@ -42,7 +42,7 @@ PRIOR-ART: ① 最小解層級：既有 doctor Check D（discipline-block drift�
 ## 演算法規格（借 ROSE error-prevention regime）
 
 - **transaction** = 一個非 merge commit 的檔案集合（`git -c core.quotePath=off log --no-merges --pretty=format:%H --name-only`），排除改 >`max_changeset`（預設 20）檔的 commit（tangled/bulk 噪音，Herzig 學理）。
-  - **`core.quotePath=off` 必帶**（挖掘與 staged 讀取皆同）：git 預設對中文/non-ASCII 路徑輸出 octal 逃逸帶引號字串，而本守衛的主要目標檔（圖譜 .md）大多中文檔名——不關掉會把主目標全變垃圾 key。`scripts/hooks/pre-commit` 開頭已為同一 gotcha 設 `-c core.quotePath=off`（既有先例）。
+  - **`core.quotePath=off` 必帶**（挖掘與 staged 讀取皆同）：git 預設對中文/non-ASCII 路徑輸出 octal 逃逸帶引號字串，而本守衛的主要目標檔（架構圖 .md）大多中文檔名——不關掉會把主目標全變垃圾 key。`scripts/hooks/pre-commit` 開頭已為同一 gotcha 設 `-c core.quotePath=off`（既有先例）。
 - **規則**：`conf(A⇒B) = shared(A,B) / freq(A)`（非對稱條件機率，ROSE §5）；`support = shared(A,B)`（絕對次數，非比例）。
 - **告警門檻**（`.lumos/cochange.json` 可覆寫；缺檔/壞 JSON → 用預設值並印一行提示後繼續，fail-open 援引 `impact.json` 先例而非 lint-watch 的 rc2 硬錯——advisory 工具不因 config 手誤擋 commit）：`min_support: 3`、`min_confidence: 0.8`、`max_changeset: 20`。
   - 0.8 依據（消歧版）：ROSE 實測**把 confidence 門檻拉高超過 0.80** 之後 precision/feedback 反而雙降（高門檻只留過擬合訓練期的規則）；0.9 另有「小 repo 觸發過少」的稀疏問題。所以 0.8 是甜蜜點：**往上（>0.8）過擬合、往下（<0.8）誤報升**。config 覆寫不 clamp（使用者自由），文件明講兩個方向各自的風險。
@@ -83,7 +83,7 @@ PRIOR-ART: ① 最小解層級：既有 doctor Check D（discipline-block drift�
   - 用 **vendored 路徑 + python3→python fallback**（同 pre-push `:21-22` 的 `command -v python3 || command -v python`；GUI git 客戶端精簡 PATH 常只有 python），不用裸 `lumos`（consumer 多半沒做全域 install，裸命令會靜默失效）。
   - fail-open 但**不靜默**：缺依賴時 echo 一行再跳過（對齊 pre-push 實際行為，spec 原「靜默跳過」描述有誤）。
   - `|| true` 隔離 rc 2，兌現「恆不擋」；`2>/dev/null` 只吞 stderr 診斷（警告走 stdout，見 CLI 面 stream 釘死；版本偏斜的舊 vendored lumos argparse 錯也被吞 → 優雅降級為 no-op）。
-  - **Gate 0 限縮（documented debt）**：插入點在既有 Gate 0（無 `docs/*-knowledge` → `:34` exit 0）之後——無圖譜 vault 的 repo 不會跑到 Gate CC。實務上 hook 是 `lumos init` 裝的、init 必建 vault，此組合罕見；接受為 v1 已知限縮，不動 Gate 0 順序。
+  - **Gate 0 限縮（documented debt）**：插入點在既有 Gate 0（無 `docs/*-knowledge` → `:34` exit 0）之後——無架構圖 vault 的 repo 不會跑到 Gate CC。實務上 hook 是 `lumos init` 裝的、init 必建 vault，此組合罕見；接受為 v1 已知限縮，不動 Gate 0 順序。
 - **anchor 連動（實作 checklist）**：`scripts/hooks/pre-commit` 是 `ANCHOR_FILES` 成員（`scripts/lumos:4325`）——改完 hook 要 `lumos anchor approve --note "pre-commit 加 cochange 警告"`（本次實作同時會動 `scripts/test_lumos.py`，也是 anchor 檔，approve 一次重算全部）；否則 pre-push 擋。consumer 面免處理（baseline 是 opt-in、無自動建立路徑、錯誤訊息自導修復，2026-07-10 辯方查證）。
 - doctor check 不做（v1）：commit 時點才有「本次變更集」語意，doctor 巡檢無 changeset 可比。
 - 治理留痕不做（v1）：警告型無 gate 事件。
@@ -95,7 +95,7 @@ PRIOR-ART: ① 最小解層級：既有 doctor Check D（discipline-block drift�
 - `README.md:42`、`README.en.md:42`（"41 top-level commands"）。
 - `ARCHITECTURE.md:97`（H2 標題）、`:101`（mermaid 節點字串）、`:129`（「上面 41 是頂層命令數」）。
 - CLAUDE.md 速查表未逐列 vault-free 命令（已 grep 確認），預期免改、交付時再確認一次。
-- 圖譜：新增 `Systems/cochange-guard` 節點 + Verification + 本計劃 `plan_refs` 回指。
+- 架構圖：新增 `Systems/cochange-guard` 節點 + Verification + 本計劃 `plan_refs` 回指。
 - `lumos anchor approve`（見整合面）。
 
 ## 測試計畫（scripts/test_lumos.py）
@@ -111,7 +111,7 @@ PRIOR-ART: ① 最小解層級：既有 doctor Check D（discipline-block drift�
 
 - 本 repo 跑 `cochange rules`：應含高於門檻的已知真耦合對——README.en.md⇒README.md（conf 1.0）、`scripts/test_lumos.py`⇒`scripts/lumos`（conf ≈0.82）。注意方向：`scripts/lumos`⇒`scripts/test_lumos.py` 是 ≈0.795 **低於 0.8 不出現**（rules 預設套門檻）；`scripts/templates/graph-discipline.md`⇒`skills/lumos-project-notes/SKILL.md`（≈0.778，全路徑——遵守本 spec 的 repo-relative key 規則）同理只在 `--all` 可見。數字隨 commit 漂移，驗收以「對存在且方向正確」為準、不鎖死小數。
 - **方向性驗收（修正版）**：造「改 `README.en.md`、不改 `README.md`」的 staged 變更 → `check --staged` **應警告**（conf(en⇒主)=1.0 ≥0.8）；反向「改 `README.md` 不改 en」→ **不警告**（conf(主⇒en)=0.375 <0.8）。兩向都測，驗非對稱設計落地。
-- **consumer 真機驗收（Landmark）**：在 `/Users/enzo/backend/LandmarkMember`（1481 非 merge commits、C#+Vue、含 docs/landmark-knowledge 大圖譜）跑 `cochange rules`——驗規則品質（2026-07-10 原型：247 條、生成檔噪音 1.6%）、挖掘延遲（~0.5s）、interface⇄impl 與圖譜節點↔code 共改對浮現。2026-07-10 使用者指定此驗收場。
+- **consumer 真機驗收（Landmark）**：在 `/Users/enzo/backend/LandmarkMember`（1481 非 merge commits、C#+Vue、含 docs/landmark-knowledge 大架構圖）跑 `cochange rules`——驗規則品質（2026-07-10 原型：247 條、生成檔噪音 1.6%）、挖掘延遲（~0.5s）、interface⇄impl 與架構圖節點↔code 共改對浮現。2026-07-10 使用者指定此驗收場。
 
 ## PRIOR-ART 來源（2026-07-10 專項最佳實踐調查，Code Maat/CodeScene/Herzig 細節的出處）
 

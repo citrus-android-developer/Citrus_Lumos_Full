@@ -1,6 +1,6 @@
 # Lumos 公開精簡版
 
-這是知識圖譜工具 lumos 的**精簡版**——目的只有一個：讓接手的人能讀懂既有專案留下的知識圖譜（`docs/{project}-knowledge/`）。可讀是目標，可維護是加分，本包不設任何機械強制（不擋 commit、不擋 push、不裝任何 hook）。
+這是知識架構圖工具 lumos 的**精簡版**——目的只有一個：讓接手的人能讀懂既有專案留下的知識架構圖（`docs/{project}-knowledge/`）。可讀是目標，可維護是加分，本包不設任何機械強制（不擋 commit、不擋 push、不裝任何 hook）。
 
 ## 支援平台
 
@@ -31,7 +31,7 @@ irm https://raw.githubusercontent.com/citrus-android-developer/Citrus_Lumos/main
 | 項目 | 證據 |
 |---|---|
 | 一行安裝 `irm … \| iex` | v1.5 實測通過 |
-| `~\.local\bin\lumos` ＋ `lumos.cmd` shim 真的能被找到並執行 | 實測 `lumos stats` 讀到 275 篇圖譜、`lumos search` 排序正常 |
+| `~\.local\bin\lumos` ＋ `lumos.cmd` shim 真的能被找到並執行 | 實測 `lumos stats` 讀到 275 篇架構圖、`lumos search` 排序正常 |
 | `.ps1` 不再關掉呼叫端視窗、`return` 真的中止 | 錯誤路徑實測回 `rc=2`（會印訊息且不炸掉 session） |
 | `$LASTEXITCODE` 對呼叫端可見且型別正確 | 實測成功 `rc=[0]`、失敗 `rc=[2]`，皆 `Int32` |
 | `-ErrorAction Continue` 真的蓋過 `$ErrorActionPreference = "Stop"` | 錯誤路徑印得出訊息且流程繼續 → 反證它生效 |
@@ -53,7 +53,7 @@ irm https://raw.githubusercontent.com/citrus-android-developer/Citrus_Lumos/main
 
 ## 怎麼裝
 
-包裡有一支機器層安裝器，做三件事：①把 `lumos` 裝到 `~/.local/bin`（Windows 額外產生 `lumos.cmd` shim，見上方〈支援平台〉）②把技能說明實體複製到 `~/.claude/skills/lumos-project-notes/`（不是 symlink，交付包搬走／刪掉後 skill 仍在）③（★2026-07-31 裁定第三次變更，見下方〈會不會動我專案的 CLAUDE.md〉★）在**執行安裝器時所在的目錄**（你的專案根）的 `CLAUDE.md` 裡放一塊策展過的「怎麼解析圖譜標籤」精簡版紀律區塊——若專案原本就有完整版紀律區塊會被整段取代掉（原位置，不是搬到檔尾），沒有就插在檔首標題之後。
+包裡有一支機器層安裝器，做三件事：①把 `lumos` 裝到 `~/.local/bin`（Windows 額外產生 `lumos.cmd` shim，見上方〈支援平台〉）②把技能說明實體複製到 `~/.claude/skills/lumos-project-notes/`（不是 symlink，交付包搬走／刪掉後 skill 仍在）③（★2026-07-31 裁定第三次變更，見下方〈會不會動我專案的 CLAUDE.md〉★）在**執行安裝器時所在的目錄**（你的專案根）的 `CLAUDE.md` 裡放一塊策展過的「怎麼解析架構圖標籤」精簡版紀律區塊——若專案原本就有完整版紀律區塊會被整段取代掉（原位置，不是搬到檔尾），沒有就插在檔首標題之後。
 
 **一行安裝**（把交付包拉到固定落點 `~/.lumos-slim` 再自動執行安裝器）：
 
@@ -93,7 +93,7 @@ lumos --help
 2. **第二次（只准附加）**：開放在 `CLAUDE.md` 檔尾用專屬 sentinel 附加一段教學句，sentinel 以外一個位元組都不動；專案原本若有完整版 `LUMOS:GRAPH-DISCIPLINE` 紀律區塊，原封不動留著、兩套規則並存。
 3. **現在（可移除既有區塊並策展吸收）**：發現「兩套規則並存」本身就是問題——完整版那段開頭就自稱「優先級最高」「第一個工具呼叫必須是 `lumos`」，接手者的 Claude 會先讀到它、照著它引用的十幾處進階指令去撲空（那些指令本包都沒交付）。現在若專案已有完整版區塊，安裝器會**整段移除它**，換成精簡版區塊——但移除前**先把完整版原文位元組級備份**，`uninstall.sh` 能精確還原。
 
-**移除前會先策展**：完整版區塊裡仍然有效的內容（圖譜即唯一真相來源的核心原則、進場三步、summary 符號表、合約鏈 `★INVARIANT★`/`★DEBT★`/`[test:]`/`[audit:]`、可逆性標記 `★IRREVERSIBLE★`/`★CHECKPOINT★`/`[rollback:]`、regen 重生標記 `[src:]`/`[git:]`/`推測:`/`佚失:`、frontmatter 欄位）已經吸收進精簡版區塊（範本見本包隨附的 `claude-block.md`）；拿掉的只有依賴本包沒交付的指令才有意義的段落。
+**移除前會先策展**：完整版區塊裡仍然有效的內容（架構圖即唯一真相來源的核心原則、進場三步、summary 符號表、合約鏈 `★INVARIANT★`/`★DEBT★`/`[test:]`/`[audit:]`、可逆性標記 `★IRREVERSIBLE★`/`★CHECKPOINT★`/`[rollback:]`、regen 重生標記 `[src:]`/`[git:]`/`推測:`/`佚失:`、frontmatter 欄位）已經吸收進精簡版區塊（範本見本包隨附的 `claude-block.md`）；拿掉的只有依賴本包沒交付的指令才有意義的段落。
 
 **插入位置**：①專案原本有完整版區塊 → 精簡版區塊插在**它原本的位置**（不是搬到檔尾——那裡才顯眼）②沒有 → 插在檔首「# 標題」之後，沒有標題就插最前面 ③`CLAUDE.md` 不存在 → 建立，內容就是這個區塊。sentinel（`<!-- LUMOS-SLIM:START -->` … `<!-- LUMOS-SLIM:END -->`）以外的既有內容，一律 byte-equal 保留。
 
@@ -112,7 +112,7 @@ lumos --help
 
 安裝器會對「執行時所在的目錄」動手，這件事本身就有誤用風險——★真實事故發生過兩次★：有人忘記先 `cd` 進交付包的 clone，直接在別的專案（甚至 lumos 工具鏈自己的來源 repo）底下跑了 `install.sh`，當場改掉了那個目錄的 `CLAUDE.md`。兩次都當場發現、手動還原，但足以說明這支腳本本質上容易誤用。為此裝了三層守衛，**各擋不同的東西，別把它們當成同一件事**：
 
-1. **第一層：不像專案根就拒絕**——目標目錄要有 `.git`、或有 `docs/*-knowledge/`（lumos 圖譜專案）、或已有 `CLAUDE.md`，三項至少一項成立才放行；一項都沒有就拒絕（rc=2，`CLAUDE.md` 不會被建立）。特例：目標目錄等於你的 `$HOME` 一律硬擋，就算 `$HOME` 底下剛好有 `.git` 也一樣。這層擋的是「在 `~` 或隨便一個目錄下誤跑」。
+1. **第一層：不像專案根就拒絕**——目標目錄要有 `.git`、或有 `docs/*-knowledge/`（lumos 架構圖專案）、或已有 `CLAUDE.md`，三項至少一項成立才放行；一項都沒有就拒絕（rc=2，`CLAUDE.md` 不會被建立）。特例：目標目錄等於你的 `$HOME` 一律硬擋，就算 `$HOME` 底下剛好有 `.git` 也一樣。這層擋的是「在 `~` 或隨便一個目錄下誤跑」。
 2. **第二層：拒絕裝進 lumos 工具鏈的來源 repo**——★這層才是真正擋住上述兩次事故的那層★：事故發生的目錄本身就有 `.git`／`docs/*-knowledge/`／既有 `CLAUDE.md`，長得完全像個合理的專案根，第一層擋不住。這層改用更精確的判斷：目標目錄若同時具備 `skills/lumos-project-notes/`、`scripts/lumos`、`scripts/templates/graph-discipline.md` 三件套，就判定它是 lumos 工具鏈本身的原始碼 repo（不是要交接的消費端專案），拒絕（rc=2）。
 3. **第三層：把目標印大聲**——不管前兩層過不過，動手前一定先印出「目標專案」與「將修改」的絕對路徑。這是最後一道人眼防線：前兩層擋不住「在另一個合法專案根誤跑」（例如手滑跑錯專案），只有把目標印出來才有機會被看見。
 
@@ -162,7 +162,7 @@ curl -fsSL https://raw.githubusercontent.com/citrus-android-developer/Citrus_Lum
 
 ## 進場三步
 
-讀一個既有專案的圖譜，永遠先做這三步，再去翻程式碼：
+讀一個既有專案的架構圖，永遠先做這三步，再去翻程式碼：
 
 ```bash
 lumos search <關鍵字>      # 定位
@@ -174,10 +174,10 @@ lumos contracts <節點>     # 查硬合約
 
 ## Frontmatter 四條鐵則
 
-寫圖譜筆記時 frontmatter 有四條血換來的鐵則，違反會讓圖譜長出讀不到的 ghost 節點、甚至整篇 frontmatter 報廢（以下逐字轉錄自 `skills/lumos-project-notes/reference.md`）：
+寫架構圖筆記時 frontmatter 有四條血換來的鐵則，違反會讓架構圖長出讀不到的 ghost 節點、甚至整篇 frontmatter 報廢（以下逐字轉錄自 `skills/lumos-project-notes/reference.md`）：
 
-1. **多個 wikilink 必須是 YAML list，一項一連結**。❌ `verified_by: "[[A]], [[B]]"`（單一字串）→ Obsidian 把整串從第一個 `[[` 貪婪吃到最後一個 `]]` 當成**一個**超長連結 → 圖譜長出亂碼灰色 ghost 節點；在 Obsidian 點到該節點還會**自動建立含 `]], [[` 的垃圾檔案**（檔名中的 `/` 切成巢狀資料夾）。✅ 寫法見 `related` / `verified_by` 範例。
-2. **block scalar（`summary: |` 等）內的 wikilink 不會被索引**。寫在 summary 裡的 `[[X]]` 只是文字，不產生圖譜連結、不算 backlink——要建立關聯必須同時在內文（如「## 相關模組」）或 list 型 property 放一份，否則目標筆記可能變孤兒。
+1. **多個 wikilink 必須是 YAML list，一項一連結**。❌ `verified_by: "[[A]], [[B]]"`（單一字串）→ Obsidian 把整串從第一個 `[[` 貪婪吃到最後一個 `]]` 當成**一個**超長連結 → 架構圖長出亂碼灰色 ghost 節點；在 Obsidian 點到該節點還會**自動建立含 `]], [[` 的垃圾檔案**（檔名中的 `/` 切成巢狀資料夾）。✅ 寫法見 `related` / `verified_by` 範例。
+2. **block scalar（`summary: |` 等）內的 wikilink 不會被索引**。寫在 summary 裡的 `[[X]]` 只是文字，不產生架構圖連結、不算 backlink——要建立關聯必須同時在內文（如「## 相關模組」）或 list 型 property 放一份，否則目標筆記可能變孤兒。
 3. **含 `: `（冒號+空格）的長文必須用 block scalar 或引號**。❌ `- content: 處置 SQL: UPDATE ...`（未引號）→ YAML `mapping values are not allowed` → **整篇 frontmatter 解析失敗**，所有 property 查詢對此筆記隱性失效。✅ `- content: |-` 換行縮排放長文。
 4. **同一層級禁止重複鍵**。`decided:` / `valid:` 在同一個 decision item 出現兩次 → Obsidian 的 js-yaml 直接整篇 fail（CLI 的 ruby/libyaml 寬鬆放行，**用 CLI 驗過不代表 Obsidian 讀得到**）。
 
@@ -185,7 +185,7 @@ lumos contracts <節點>     # 查硬合約
 
 ## 合約鏈是什麼、doctor 為什麼會擋、怎麼解
 
-Systems 筆記記的是「現在長什麼樣」，天生分不出哪些是**合約**（改了算 breaking）、哪些是**偶然**（實作副產物，可以隨便改）。圖譜用 KEY 行的前綴聲明這件事：
+Systems 筆記記的是「現在長什麼樣」，天生分不出哪些是**合約**（改了算 breaking）、哪些是**偶然**（實作副產物，可以隨便改）。架構圖用 KEY 行的前綴聲明這件事：
 
 ```
 KEY:★INVARIANT★ <業務合約,改=breaking> [test:測試名] [audit:模型/日期]
@@ -208,7 +208,7 @@ KEY:★DEBT★ <已知偶然行為,可改不算 breaking>
 
 ### ⚠ 程式碼註解裡也會提到本包沒交付的檔案
 
-`scripts/lumos` 的註解是**刻意原樣保留**的（那是「當初為什麼這樣寫」的脈絡，砍掉就再也問不到人了）。但其中有些註解會指向完整版工具鏈才有的東西——圖譜節點路徑（`Projects/xxx_計劃`）、對抗審語料目錄（`governance/golden/...`）、或 `[code-loop rN]`／`[design-loop]` 這類流程標記。**這些檔案本包都沒交付，查不到是正常的，不是你漏拿了什麼**；註解本身要表達的意思（為什麼這行要這樣寫）是完整的，照著讀就好。
+`scripts/lumos` 的註解是**刻意原樣保留**的（那是「當初為什麼這樣寫」的脈絡，砍掉就再也問不到人了）。但其中有些註解會指向完整版工具鏈才有的東西——架構圖節點路徑（`Projects/xxx_計劃`）、對抗審語料目錄（`governance/golden/...`）、或 `[code-loop rN]`／`[design-loop]` 這類流程標記。**這些檔案本包都沒交付，查不到是正常的，不是你漏拿了什麼**；註解本身要表達的意思（為什麼這行要這樣寫）是完整的，照著讀就好。
 
 本包附的 `slim-scan` 掃描器只掃**指令名**的懸空引用，掃不到這種**路徑型**的——所以這裡也一樣不宣稱窮盡。
 
@@ -216,13 +216,13 @@ KEY:★DEBT★ <已知偶然行為,可改不算 breaking>
 
 ## 範圍聲明
 
-本包是**功能子集**：只保留維護圖譜本身要用的 26 支指令(另有 `lumos update` 為攔截式入口——★刻意不列在 `--help` 清單裡★,用 `--help` 核對裝沒裝到 update 會看不到,以〈更新方式〉節為準)（讀取／導航、寫入、健康巡檢 `doctor`/`lint`、合約守衛 `guard`、刪除傳播守衛 `delguard`）；不含反覆對抗審查、程式碼變更風險掃描、linter 版本追蹤、CI 狀態回拉、跨專案核心圖譜等進階治理功能。
+本包是**功能子集**：只保留維護架構圖本身要用的 26 支指令(另有 `lumos update` 為攔截式入口——★刻意不列在 `--help` 清單裡★,用 `--help` 核對裝沒裝到 update 會看不到,以〈更新方式〉節為準)（讀取／導航、寫入、健康巡檢 `doctor`/`lint`、合約守衛 `guard`、刪除傳播守衛 `delguard`）；不含反覆對抗審查、程式碼變更風險掃描、linter 版本追蹤、CI 狀態回拉、跨專案核心架構圖等進階治理功能。
 
 ★**移除的是入口不是全部程式碼**★——被砍的是那些功能對應的頂層指令入口；它們共用的底層程式碼（helper 函式）有些仍留在檔案裡供保留指令呼叫，**別誤讀成「功能其實還在,只是沒寫在說明裡」**。凡是這份 README 或技能說明沒教的操作，一律視為沒有。
 
-## 選配:把圖譜同步閘掛到你的專案(opt-in,安裝器不代勞)
+## 選配:把架構圖同步閘掛到你的專案(opt-in,安裝器不代勞)
 
-本包的 `hooks/` 目錄帶了兩支 git hook:**pre-commit**(擋「改了 code 卻不同步圖譜」的 commit)與 **post-commit**(有人用後門跳過時留一筆痕)。★安裝器刻意不裝、不設定——要用是你自己掛★,不掛也完全不影響讀圖譜。
+本包的 `hooks/` 目錄帶了兩支 git hook:**pre-commit**(擋「改了 code 卻不同步架構圖」的 commit)與 **post-commit**(有人用後門跳過時留一筆痕)。★安裝器刻意不裝、不設定——要用是你自己掛★,不掛也完全不影響讀架構圖。
 
 **三步接法**(在你想掛的那個專案根目錄下):
 
@@ -234,14 +234,14 @@ git clone https://github.com/citrus-android-developer/Citrus_Lumos ~/Citrus_Lumo
 cd /path/to/你的專案
 git config core.hooksPath ~/Citrus_Lumos/hooks
 
-# ③ 驗證:隨便改一個 code 檔 commit,應該被擋(或看到圖譜同步提示)
+# ③ 驗證:隨便改一個 code 檔 commit,應該被擋(或看到架構圖同步提示)
 ```
 
 想讓**全隊**都吃到閘,改用「入 repo」變體:把 `~/Citrus_Lumos/hooks/*` 複製進專案的 `scripts/hooks/`、commit 進版控,然後每人各跑一次 `git config core.hooksPath scripts/hooks`(相對路徑)。
 
 **掛之前要知道的五件事**:
 
-1. **沒圖譜=沉睡**。專案裡還沒有 `docs/*-knowledge/` 圖譜目錄之前,pre-commit 是**完全靜默的 no-op**——這是設計不是壞掉。第一批節點建出來之後閘才醒。
+1. **沒架構圖=沉睡**。專案裡還沒有 `docs/*-knowledge/` 架構圖目錄之前,pre-commit 是**完全靜默的 no-op**——這是設計不是壞掉。第一批節點建出來之後閘才醒。
 2. **hooksPath 是排他的**。`core.hooksPath` 一設,該專案 `.git/hooks/` 裡**原有的 hooks 全部停用**(git 不會合併兩邊)。專案本來就有 husky/自家 hooks 的話,別直接用上面的接法——把本包兩支 hook 的內容合併進你既有的 hooks 才對。
 3. **精簡版沒有 pre-push 閘**。完整版還有一道 push 前的硬擋,本包刻意不帶;這兩支只管 commit 面。
 4. **後門存在且會留痕**。`git commit --no-verify` 可跳過 pre-commit(業界標準做法),但 post-commit 永遠會跑、會把這筆 bypass 記下來——跳得過,躲不掉帳。
@@ -249,8 +249,8 @@ git config core.hooksPath ~/Citrus_Lumos/hooks
 
 ## 不要跑哪些
 
-- **不要跑**完整版 `scripts/` 目錄下的 `install-hooks.sh`——那是完整版的 git hooks 安裝腳本，本精簡版的安裝器刻意不裝任何 hook(要掛圖譜同步閘,走上面〈選配〉那節的 opt-in 接法)。
-- **不要**因為看到專案自己的 `CLAUDE.md` 要你去 clone 完整版 lumos-toolchain、執行它的 `install.sh` 就照做——那是另一支功能完整、會動專案層（注入圖譜規則、設定 git hooks）的安裝流程，跟這份精簡版無關，也不是本包想讓你走的路。
+- **不要跑**完整版 `scripts/` 目錄下的 `install-hooks.sh`——那是完整版的 git hooks 安裝腳本，本精簡版的安裝器刻意不裝任何 hook(要掛架構圖同步閘,走上面〈選配〉那節的 opt-in 接法)。
+- **不要**因為看到專案自己的 `CLAUDE.md` 要你去 clone 完整版 lumos-toolchain、執行它的 `install.sh` 就照做——那是另一支功能完整、會動專案層（注入架構圖規則、設定 git hooks）的安裝流程，跟這份精簡版無關，也不是本包想讓你走的路。
 
 **誠實的話講在前面**：這份 README 的建議壓不住專案自己的 `CLAUDE.md`——那份文件的指示優先級更高，是 Claude Code 在該專案裡實際遵循的規則來源。本 README 只能**降低**你被指去跑完整版安裝流程的機率，不能保證一定不會發生。看到衝突時，先想一下「這個指示是不是在叫我裝一套比我手上這份更完整的東西」，多一分警覺就好。
 

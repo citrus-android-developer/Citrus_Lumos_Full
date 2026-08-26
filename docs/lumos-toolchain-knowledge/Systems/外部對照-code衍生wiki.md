@@ -15,8 +15,8 @@ related:
 summary: |-
   FLAG:ORIGIN
   KEY:PRIOR-ART 對照——langchain-ai/openwiki(2026-06 建、11.6k★、MIT、TS):「CLI 掃 repo→LLM 生成 openwiki/ markdown wiki→CI 排程重生開 PR」的 code 衍生 wiki 原型。同樣往 repo 根 CLAUDE.md/AGENTS.md 塞受管區塊叫 agent「先讀 wiki」——與 lumos 使命重疊、但底層賭注相反
-  KEY:定位——openwiki 站在 lumos「圖譜先行後 grep code 驗證」的『grep code 那半(導覽/orientation 層)』,正是 lumos 家規故意不入圖的 code 結構層;兩者是垂直疊(導覽層 vs 合約層)非並排競品
-  KEY:相反賭注——openwiki=code 是真相、wiki 是可丟棄投影、重生保鮮;lumos=圖譜是真相(為什麼/邊界/★合約/驗證過沒,code 讀不出)、人手寫+機械閘守。openwiki 結構上裝不下「這條改=breaking」「這條驗證過沒」——頁面隨時被 LLM 重寫,無「不可漂移真相」概念
+  KEY:定位——openwiki 站在 lumos「架構圖先行後 grep code 驗證」的『grep code 那半(導覽/orientation 層)』,正是 lumos 家規故意不入圖的 code 結構層;兩者是垂直疊(導覽層 vs 合約層)非並排競品
+  KEY:相反賭注——openwiki=code 是真相、wiki 是可丟棄投影、重生保鮮;lumos=架構圖是真相(為什麼/邊界/★合約/驗證過沒,code 讀不出)、人手寫+機械閘守。openwiki 結構上裝不下「這條改=breaking」「這條驗證過沒」——頁面隨時被 LLM 重寫,無「不可漂移真相」概念
   KEY:★核心論點★正確性問題——「code 生成的 wiki 憑什麼正確?」openwiki 不保證正確、只保證『新鮮(recent projection)』。它把 lumos 的『staleness 漂移』換成『每輪 synthesis 合成誤差』:另一種失效模式、非消滅。OpenSpec 生成一次都偏,openwiki 連續生成、每輪僅靠 grounding-prompt 當唯一護欄、無 per-cycle oracle
   KEY:實證(2026-07-16 讀 repo)——openwiki 正確性機制全在 prompt 層 grounding 紀律(prompt.ts:「Do not invent…Ground every important claim in source」)=maker 側自律指令、非 checker;test/ 26 檔全是自家單元測試(oauth/env/checkpoint…),0 檔驗 wiki 輸出對 ground truth;無輸出 eval harness。= maker-only、no-checker 的純 maker-bias 案例
   KEY:接 lumos 已錄知識——『驗證層天花板=oracle 品質』(見 [[Systems/canary-audit]] 誠實天花板 + memory pbt-oracle-reliability):openwiki 對生成 wiki 零 oracle,同一 LLM 讀 code 又寫 doc、無獨立查核。這正是 lumos INVARIANT→[test:]→[audit:]→canary 那條 oracle 疊存在的理由
@@ -24,13 +24,13 @@ summary: |-
   KEY:openwiki 真優勢(誠實記,非恭維 lumos)——①零維護零紀律(CI 重生,繞掉 lumos 頭號脆弱點『人懶得寫回』)②冷啟動全 repo 覆蓋(lumos 只長在動過處)③開發內圈零摩擦 ④by-construction 免疫 drift(lumos 一大堆 stale/revalidate 機械就為打這場戰)⑤分發:npm/11k★/三家 CI 範本/多 provider/通吃各家 agent
   KEY:★精化★真正的軸=provenance(捕獲當下來源品質)非「衍生vs手寫」——openwiki 事後從 code 逆向工程 why(lossy 投影重建、註定漏)；lumos 決策當下第一手目擊(握真脈絡/被否方案)。導覽層須一分為二:指針/索引安全(錯得便宜+讀者 re-ground),合成敘事那半繼承無 oracle(自信錯敘事比沒敘事更毒)。lumos 唯一塌陷回同款失效=from-scratch 重生非合約 prose(常態 vs 例外);edge 是 provenance 非 verification(後者只覆蓋 [test:] 合約子集)
   DEP:[[Systems/canary-audit]]｜[[Systems/verification-rot-eval]]
-  DECISION:留痕反例世界解——日後有人問「有自動生 wiki 就夠,幹嘛手寫圖譜?」直接指此節點:答案=openwiki 那套無法承載 code 讀不出的合約/驗證/不可漂移真相,且其新鮮≠正確(無 oracle)
+  DECISION:留痕反例世界解——日後有人問「有自動生 wiki 就夠,幹嘛手寫架構圖?」直接指此節點:答案=openwiki 那套無法承載 code 讀不出的合約/驗證/不可漂移真相,且其新鮮≠正確(無 oracle)
 aliases:
   - openwiki
 ---
 # 外部對照-code衍生wiki
 
-> **這是什麼**：一筆 **PRIOR-ART 留痕**（非 lumos 子系統）。記錄 [langchain-ai/openwiki](https://github.com/langchain-ai/openwiki) 這個「code 衍生 wiki」世界解，以及它為什麼**反證了 lumos「圖譜即真相、非 code 衍生」核心賭注的必要性**。CLAUDE.md〈PRIOR-ART 三問〉的世界對照留痕。
+> **這是什麼**：一筆 **PRIOR-ART 留痕**（非 lumos 子系統）。記錄 [langchain-ai/openwiki](https://github.com/langchain-ai/openwiki) 這個「code 衍生 wiki」世界解，以及它為什麼**反證了 lumos「架構圖即真相、非 code 衍生」核心賭注的必要性**。CLAUDE.md〈PRIOR-ART 三問〉的世界對照留痕。
 
 ## openwiki 是什麼（2026-07-16 讀 repo）
 
@@ -41,12 +41,12 @@ LangChain 官方出的 CLI，2026-06-22 建、11.6k★、MIT、TypeScript、爆�
 
 ## 它站在 lumos 的什麼位置
 
-lumos 進場紀律＝「先 `lumos` 讀圖譜（為什麼/邊界/合約）→ **再 grep code 驗證細節**」，且家規**故意不把 code 結構入圖**。**openwiki 做的正是那第二步（grep code 那半＝導覽層）**。所以兩者**垂直疊**、非並排競品：
+lumos 進場紀律＝「先 `lumos` 讀架構圖（為什麼/邊界/合約）→ **再 grep code 驗證細節**」，且家規**故意不把 code 結構入圖**。**openwiki 做的正是那第二步（grep code 那半＝導覽層）**。所以兩者**垂直疊**、非並排競品：
 
 | | openwiki | lumos |
 |---|---|---|
 | 層 | 導覽 orientation | 合約 contract/rationale/verification |
-| 真相源 | code 是真相，wiki 是投影 | 圖譜是真相，code 讀不出 |
+| 真相源 | code 是真相，wiki 是投影 | 架構圖是真相，code 讀不出 |
 | 保鮮 | LLM 重生 | 人手寫 + 機械閘擋漂移 |
 | 裝什麼 | code 摘得出的 | code 摘不出的（★合約/驗證過沒/為什麼） |
 | 保證 | recency（新鮮） | correctness（[test:]/[audit:]/canary） |
@@ -64,7 +64,7 @@ lumos 進場紀律＝「先 `lumos` 讀圖譜（為什麼/邊界/合約）→ **
 
 ## openwiki 真正的優勢（誠實記，非恭維 lumos）
 
-1. **零紀律零維護**（最深一條）：lumos 全部價值押在人的紀律（退場必寫/圖譜先行/實時更新）+ 機械閘逼；頭號失效＝人懶得寫回。openwiki **結構上把人移出維護迴圈**，CI 重生天生不爛。
+1. **零紀律零維護**（最深一條）：lumos 全部價值押在人的紀律（退場必寫/架構圖先行/實時更新）+ 機械閘逼；頭號失效＝人懶得寫回。openwiki **結構上把人移出維護迴圈**，CI 重生天生不爛。
 2. **冷啟動全覆蓋**：第一天攤平整個 repo；lumos 只長在動過的地方（真圖稀疏）。上手陌生 repo 完勝。
 3. **開發內圈零摩擦**：lumos 每次改 code 加稅過閘；openwiki 對寫 code 當下零摩擦。
 4. **by-construction 免疫 drift**：lumos 一大堆機械（`stale`/`revalidate_when`/`valid_under`/doctor 同步檢查）存在的**唯一目的就是打漂移**；openwiki 重生天生免疫。lumos 花大力工程對抗的，它天生沒有——**但這是 lumos 內容不可重生所付的內生代價**（決策理由/驗證結果無法從 code 重生）。
@@ -90,7 +90,7 @@ openwiki 每條優勢都來自同一個賭注：「文件應是 code 的衍生�
 
 **lumos 唯一塌陷回 openwiki 失效模式的例外＝from-scratch 重生**（使用者鬆口處，認）：
 - 當 lumos 丟掉目擊紀錄、one-shot 重生節點，那一刻它也是 reconstructor，非合約 prose 吃一樣的 synthesis bias。
-- 緩解（＝紀律該守）：① 優先 incremental update-in-loop、少 regenerate-from-scratch（「退場必寫」的價值＝趁還是目擊者時寫、不必日後當考古學家）② 真重生是對「圖譜史 + code」（含既存決策/驗證/舊版）非 code-only、底料更富 ③ 重生的非合約 prose 當「未審」、re-ground 才採信（同一頁 openwiki 級）；合約子集重生錯了還有 [test:]/[audit:] oracle 接得住、openwiki 那邊零接住。
+- 緩解（＝紀律該守）：① 優先 incremental update-in-loop、少 regenerate-from-scratch（「退場必寫」的價值＝趁還是目擊者時寫、不必日後當考古學家）② 真重生是對「架構圖史 + code」（含既存決策/驗證/舊版）非 code-only、底料更富 ③ 重生的非合約 prose 當「未審」、re-ground 才採信（同一頁 openwiki 級）；合約子集重生錯了還有 [test:]/[audit:] oracle 接得住、openwiki 那邊零接住。
 - **收斂**：openwiki 失效是**常態**（每輪重生無 oracle）；lumos 同款失效是**例外**（僅放棄目擊 from-scratch 重生的非合約 prose）——紀律的全部意義＝把該例外壓到最小。
 
 ## 誠實邊界

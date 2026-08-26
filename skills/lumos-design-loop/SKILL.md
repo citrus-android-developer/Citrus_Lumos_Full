@@ -5,13 +5,13 @@ description: 設計 spec／計劃寫完、進實作前的對抗審計硬閘—�
 
 # lumos-design-loop:設計審計 loop(進實作前的硬閘)
 
-> ## ⛔ canary 協議已停用(2026-08-14,Enzo 裁;單源=圖譜 Systems/canary-audit d5)
+> ## ⛔ canary 協議已停用(2026-08-14,Enzo 裁;單源=架構圖 Systems/canary-audit d5)
 >
 > 植入/判定/抽樣分權/漏抓懲罰**全部停止**。理由:caught/missed 翻譯不出「認真與否」的結論(d4 非平穩性論證),其僅存的煙霧偵測角色(審計員沒讀/管線斷線)已被**引句錨定(quote-check)機械蓋掉**;prior-art 掃描確認業界同題 repo 對 loop 信任全押機械可重算閘、無人做注意力探針層。
 > **停用後的輪記帳**:`lumos canary record none --loop <id> ...`(kind=`none`=純處置帳載體;severity/findings/disposal 欄照記);panel 輪有效=記帳席 ≥2 且零 missed(工具已支援,歷史 caught/missed 帳原樣可回放)。`loop next` 若印植入指引(canary_type/record_cmd 的 caught|missed 樣板)**照跳過**——工具封存未拆。
 > 下文與 reference/templates 殘留的 canary 字樣=歷史帳判讀用,不再是動作指令。
 
-> **定位(d4;★2026-08-04 重設計修訂:閘便宜,審不淺★)**:抬 spec 質量,**非保 spec 正確**——「初篩網」指★放行門檻★(一輪處置全清即走),**不是審查深度**:★前提層錯誤(需求誤解/架構誤判/跨系統合約假設錯)明列本層職責——TDD/E2E 對「spec 的理解本身錯不錯」沒有 oracle★。行為層正確性歸下游 code-loop＋測試＋驗證,漏網進逃逸帳。**前置加重一律拒**。完整重設計見圖譜 [[Projects/design-loop重設計]]。
+> **定位(d4;★2026-08-04 重設計修訂:閘便宜,審不淺★)**:抬 spec 質量,**非保 spec 正確**——「初篩網」指★放行門檻★(一輪處置全清即走),**不是審查深度**:★前提層錯誤(需求誤解/架構誤判/跨系統合約假設錯)明列本層職責——TDD/E2E 對「spec 的理解本身錯不錯」沒有 oracle★。行為層正確性歸下游 code-loop＋測試＋驗證,漏網進逃逸帳。**前置加重一律拒**。完整重設計見架構圖 [[Projects/design-loop重設計]]。
 
 > ### ★收斂改走處置閘(2026-08-04 重設計;取代 K-streak/capture-recapture 硬閘)★
 > **一輪流程**:pre-flight 排乾 → 派 panel(派工含★錨定紀律★:每條 finding 必附逐字原文引句 ≥10 字;派工當下順手落 dispatch manifest,見留痕慣例) → **收貨三道**(2026-08-06 S1,plan:[[Projects/驗證層自證三件_計劃]]):①逐席 `lumos quote-check <席報告> --spec <凍結快照>`(錨不到的條目不採信;★比對對象=派工當下凍結快照,勿用現檔——折入後引句會自我成真★)②`lumos refcheck <席報告> --repo <root>`(finding 引的 file:line 機械驗存在/行號範圍——報告引了不實指涉當場現形)③`lumos seat-check <席報告> --dispatch <rN-dispatch.json> --ledger <out-of-scope.jsonl>`(有講沒做對帳:unreported/out_of_scope;觀測恆 rc0 不擋收貨,越界另記一本不進收斂帳) → 辯方(≥major) → 處置帳 record(`lumos loop next` 的 `disposal_cmd` 模板;★blocker 只能折不能放行★) → `lumos loop status <id> --disposal --spec <計劃節點> --repo <root>`(四條合取全讀側可重算:G3∧處置全清∧留痕 sha 重驗∧引句全錨定) → rc0 即收斂;cap=2,第二輪只給 delta。
@@ -36,7 +36,7 @@ description: 設計 spec／計劃寫完、進實作前的對抗審計硬閘—�
 
 ## 何時用 / 何時跳
 
-- **用**:brainstorming 產出 spec／設計 doc 後、進 writing-plans／實作**前**。對象＝設計／spec 的對抗審計(非圖譜自足性審計)。
+- **用**:brainstorming 產出 spec／設計 doc 後、進 writing-plans／實作**前**。對象＝設計／spec 的對抗審計(非架構圖自足性審計)。
 - **硬閘(紀律強制,非技術鎖)**:
   ```
   lumos loop status <id> --need 2 --gate --spec <計劃節點.md> --repo <repo根>
@@ -55,7 +55,7 @@ description: 設計 spec／計劃寫完、進實作前的對抗審計硬閘—�
   - 忘了判 → **預設走完整 loop**(fail-safe,永不更少)。
   - ⚠ 硬否決目前靠**你自核(honor-system)**,不比你誠實更可靠——**別當它已自動擋**。
   - 跑什麼見下方〈light 檔〉。設計脈絡 `[[design-loop輕量檔_計劃]]`。
-- **★真相入口★**:被審 spec 的**唯一可寫真檔＝圖譜計劃節點**(`docs/{project}-knowledge/Projects/<主題>_計劃.md`),與 CLAUDE.md「計劃／設計也歸圖譜」對齊。**`docs/design/` 已降唯讀歷史,不再新增、不再折入。** loop 全程:工作副本從計劃節點複製、折入只回寫計劃節點、gate `--spec` 指計劃節點路徑。
+- **★真相入口★**:被審 spec 的**唯一可寫真檔＝架構圖計劃節點**(`docs/{project}-knowledge/Projects/<主題>_計劃.md`),與 CLAUDE.md「計劃／設計也歸架構圖」對齊。**`docs/design/` 已降唯讀歷史,不再新增、不再折入。** loop 全程:工作副本從計劃節點複製、折入只回寫計劃節點、gate `--spec` 指計劃節點路徑。
 - **loop id** ＝ 計劃節點檔名去 `_計劃`／`_調研` 後綴、轉 kebab(`Projects/design-loop輕量檔_計劃.md` → `design-loop輕量檔`)。
 
 ## 每一輪(照做)
@@ -180,7 +180,7 @@ pitfalls 現在多一問「列出此功能碰哪些風險類」——**廣度靠
 2. **是不是風格偏好類關切?**——是 → 出界,不立機制(evidra 家規:detector 只收「造成過 production 傷害的 pattern」)。
 3. **既有機制小修蓋得住嗎?**——先 grep 自家(quote-check/refcheck/canary-stats/doctor Check 字母表…),小修蓋得住就不造新的(本 skill 的 loop 實錄:同一份 spec 曾兩處重造自家既有子命令,全靠審計抓回)。
 
-三問答案記在**該提案的圖譜計劃節點 PRIOR-ART/緣起段**(既有留痕位,無新帳)。機制總量本身也是成本——evidra 的錨:detector 超過 15 個=系統病了,本 skill 的對應嗅覺:護欄/閘的條數若一直只增不減,先懷疑是不是在補「沒人用」而不是「不夠用」。
+三問答案記在**該提案的架構圖計劃節點 PRIOR-ART/緣起段**(既有留痕位,無新帳)。機制總量本身也是成本——evidra 的錨:detector 超過 15 個=系統病了,本 skill 的對應嗅覺:護欄/閘的條數若一直只增不減,先懷疑是不是在補「沒人用」而不是「不夠用」。
 
 ## 平行 panel 模式(≤3 輪壓縮)
 

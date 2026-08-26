@@ -92,8 +92,8 @@ canary 流程、judge(步驟 4)、cross-family(§2.5)、lumos 原語、record/lo
 
 | 受影響文件 | 需同步什麼 |
 |---|---|
-| `docs/methodology/圖譜即合約.md` | 設計前審計 loop 段補:辯方階段(防假陽性)= canary(防假陰性)的對稱補位;檢察官/辯方雙向對抗 |
-| `docs/methodology/圖譜即合約-對外論述.md` | 白話:審查除了「檢察官挑毛病」,還配「辯護律師」反駁冤枉的指控(逼拿代碼證據) |
+| `docs/methodology/架構圖即合約.md` | 設計前審計 loop 段補:辯方階段(防假陽性)= canary(防假陰性)的對稱補位;檢察官/辯方雙向對抗 |
+| `docs/methodology/架構圖即合約-對外論述.md` | 白話:審查除了「檢察官挑毛病」,還配「辯護律師」反駁冤枉的指控(逼拿代碼證據) |
 | `skills/lumos-design-loop/SKILL.md` | 見上:步驟 4.5 辯方 + 步驟 4②/5 severity 改重算 |
 | `governance/autonomous_loop/orchestrator-prompt.md` | 見上:§2 步驟 4.5 辯方 |
 | memory `autonomous-iteration-loop` / `canary-loop-reliability-varies-by-spec` | 補:辯方階段防假陽性(canary 只防假陰性) |

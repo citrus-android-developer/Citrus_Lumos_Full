@@ -19,7 +19,7 @@ related:
 
 > ## ✅ 已結案(2026-08-17)— 兩處 skip 守衛補齊/修細,消費端模擬實證轉 skip
 >
-> ①`t_precommit_whitelist_drift_guard` 頂部補 `_need_src("docs/lumos-toolchain-knowledge/Systems/pitfalls-code-loop.md")`(尾段直讀來源 repo 圖譜節點);②`t_s2_snr_synthetic` 守衛從目錄粒度 `governance/eval` 修細到檔案粒度 `governance/eval/canary_snr.py`——Landmark 自己有 governance/eval(檢索考卷),目錄粒度會放行後炸,★判準粒度必須到「真正要用的檔」★。**實證**:新回歸釘 `t_vendored_consumer_srconly_skip_regression` 搭消費端模擬環境(scripts/ 有、docs/ 無、governance/eval 目錄在但腳本不在),修前重現 Landmark 三紅一字不差、修後兩支轉 skip 零 ✗;來源 repo 兩支照跑不跳(30+5 斷言),全量 2642 綠。
+> ①`t_precommit_whitelist_drift_guard` 頂部補 `_need_src("docs/lumos-toolchain-knowledge/Systems/pitfalls-code-loop.md")`(尾段直讀來源 repo 架構圖節點);②`t_s2_snr_synthetic` 守衛從目錄粒度 `governance/eval` 修細到檔案粒度 `governance/eval/canary_snr.py`——Landmark 自己有 governance/eval(檢索考卷),目錄粒度會放行後炸,★判準粒度必須到「真正要用的檔」★。**實證**:新回歸釘 `t_vendored_consumer_srconly_skip_regression` 搭消費端模擬環境(scripts/ 有、docs/ 無、governance/eval 目錄在但腳本不在),修前重現 Landmark 三紅一字不差、修後兩支轉 skip 零 ✗;來源 repo 兩支照跑不跳(30+5 斷言),全量 2642 綠。
 >
 > ⚠ 三紅實為兩支測試(②③是同一支的連鎖:check 翻紅後 json 解析再炸)。同類前案見 [[Issues/vendored測試套件在消費端假紅]](2026-08-02 立 _need_src 機制那案;本案=機制立了但兩支漏掛/掛太粗的復發)。
 >

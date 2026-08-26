@@ -26,7 +26,7 @@
          ②沒有 → 插在檔首「# 標題」之後,沒有標題就插最前面
          ③CLAUDE.md 不存在 → 建立,內容就是這個區塊
 ★冪等★:重跑只更新自己那塊(沿用既有備份標記,不重新編碼、不二次包裹)。
-★仍明確不做★:不 scaffold 圖譜、不 vendor 工具進專案、不設 core.hooksPath、
+★仍明確不做★:不 scaffold 架構圖、不 vendor 工具進專案、不設 core.hooksPath、
              不裝任何 Claude hook。
 
 ★注入目標守衛(三層)★——★真實事故已咬過兩次★:子代理驗證時忘記先 cd 進交付包
@@ -71,7 +71,7 @@ bug 不會再發生。
 WINDOWS=1` 環境變數注入(見 `IS_WIN` 定義)在 macOS/Linux 上跑同一段程式碼、斷言
 它做了「產生 .cmd shim / 不 chmod / Windows 版 PATH 提示」這些*程式邏輯*層級的
 事,測不到 mklink/真實 PATH 行為/檔案總管觀感等*真機*層級的事——這個限制在
-`slim/README.md` 與圖譜裡都有明講,不要誤讀成「Windows 已驗證」。
+`slim/README.md` 與架構圖裡都有明講,不要誤讀成「Windows 已驗證」。
 """
 import base64
 import hashlib

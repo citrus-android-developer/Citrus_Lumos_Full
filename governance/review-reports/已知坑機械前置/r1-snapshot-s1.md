@@ -18,7 +18,7 @@ summary: |
 > 緣起(2026-08-08,Enzo 一連串追問推導出的設計):事故記帳只接「已爆的坑」(先踩才有);世界已知坑(如 refresh-token→single-flight)不該等本專案上線爆才進帳,也不該賭「當下這顆 LLM 剛好熟」。核心洞見(Enzo)=**問題不是機器認不得語意(語意有在場 LLM 認),是判斷力不跨 session、有盲區**——庫的價值是給每顆會來的 LLM「一份不會忘的共同記憶」。分工:**機械寬召回(不漏)+ 在場 LLM 帶設計脈絡裁定(不濫)+ 裁定留痕(panel 兜底)**。
 > ★2026-08-08 Enzo 二次洞見(重切範圍)★:現有 pitfalls 只認寫死 4 風險類=太少;而「這功能碰哪些風險類」本身就是**語意分類**,不該 regex 猜——**直接反問在場 LLM**即可。分兩層:**廣度=反問 LLM 自我分類(catch 所有類別,便宜零碼)｜深度=策展庫注入類別內的世界已知具體坑(catch 這顆 LLM 不知道的,需碼)**。缺廣度=盲類、缺深度=盲坑。v1 只做廣度(S0),深度(S1 庫)延後——pre-flight 證庫要破 vault-free 邊界+新欄位,非「一根線」,值單獨一輪。
 
-PRIOR-ART: ① 最小解——★缺的只一根線★:`pitfall_when` 觸發機制(glob/content regex)已存在,但只 impact hook(改碼時)消費;`pitfalls --check`(design 時)只認寫死的 4 風險類(scripts/lumos:9282 PITFALL_CLASSES),不看圖譜坑節點。本案=把 pitfalls --check 接上 content-trigger 的坑節點(design 時彈)。② 世界解:已知坑=走既有 gapfill(網搜→refuter 駁→人放行)按需填,非預收全世界(噪音必死)。③ Growth test:事故=事故記帳的時間差窗(Enzo 追問實證);非風格;既有機制(pitfall_when/pitfalls/gapfill)接線即可,無新輪子。④ 裁定=borrow-design。
+PRIOR-ART: ① 最小解——★缺的只一根線★:`pitfall_when` 觸發機制(glob/content regex)已存在,但只 impact hook(改碼時)消費;`pitfalls --check`(design 時)只認寫死的 4 風險類(scripts/lumos:9282 PITFALL_CLASSES),不看架構圖坑節點。本案=把 pitfalls --check 接上 content-trigger 的坑節點(design 時彈)。② 世界解:已知坑=走既有 gapfill(網搜→refuter 駁→人放行)按需填,非預收全世界(噪音必死)。③ Growth test:事故=事故記帳的時間差窗(Enzo 追問實證);非風格;既有機制(pitfall_when/pitfalls/gapfill)接線即可,無新輪子。④ 裁定=borrow-design。
 
 ## 設計哲學(定調,防未來走偏)
 - **不蒐羅世界**——會死於噪音(蓋好沒人用)。庫=**快取**:第一次碰某高危 pattern 才 gapfill 填,之後免費彈,沒用的淘汰;大小由「本專案建過幾類 pattern」而非「世界有幾坑」決定。
@@ -40,12 +40,12 @@ PRIOR-ART: ① 最小解——★缺的只一根線★:`pitfall_when` 觸發機�
 
 ### S1(v2,深度層——延後,非本輪)pitfalls --check 接坑節點
 > ★pre-flight 勘誤:非「一根線」★——cmd_pitfalls 刻意 vault-free(scripts/lumos:13223 help+t_pitfalls_spec fixture 只有 .git 無 vault),接坑節點=新開「找 vault→Env→掃 env.notes」路徑+破 vault-free 邊界;且既有 pitfall_when 節點**無「提問」結構化欄位**(全庫 grep 零命中,現況是 summary KEY 自由文字),要新造欄位慣例;比對須吃 `_pitfall_strip_spec` 後的 corpus(非原始 text,否則重蹈假陽性)。**本輪不做,獨立計劃過審。**
-- `cmd_pitfalls` 的 spec 模式(--check 與提問路徑):除既有 PITFALL_CLASSES 4 類,**加掃圖譜中 `pitfall_when` 帶 `content:` trigger 的坑節點**,對 **spec 文本**(非 code 檔)比對——命中則把該坑的隱患提問攤進「命中類追問」。
+- `cmd_pitfalls` 的 spec 模式(--check 與提問路徑):除既有 PITFALL_CLASSES 4 類,**加掃架構圖中 `pitfall_when` 帶 `content:` trigger 的坑節點**,對 **spec 文本**(非 code 檔)比對——命中則把該坑的隱患提問攤進「命中類追問」。
   - 複用 `_match_incident_triggers` 的 content 比對分支(file_content=spec 文本;glob trigger 對 spec 不適用,只吃 content)。
   - 坑節點的提問文字:節點 summary 的隱患提問欄(欄名待 pre-flight 對齊既有事故節點慣例)。
 - **--check 語意不變**:仍只驗「命中類且有實務隱患節」→ rc;新增的是「命中的坑清單」多一個來源。
 
-### S2 known-pitfall 節點慣例(圖譜規範,skill 文本)
+### S2 known-pitfall 節點慣例(架構圖規範,skill 文本)
 - 世界已知坑=Systems/Issues 節點,帶 `pitfall_when: [content:<寬 regex>]` + **必附 `source:` 世界來源 URL**(區別於本專案事故節點:後者記已發生、前者記世界已知)+ 一句隱患提問。
 - 走既有 gapfill 填:第一次碰高危 pattern → 網搜→refuter 駁→人放行→建節點。**不自動生成採納**(maker bias 鐵則)。
 

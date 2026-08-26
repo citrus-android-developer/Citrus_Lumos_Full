@@ -27,7 +27,7 @@ summary: |-
 2026-08-11 在 LandmarkMember 跑五大節點交叉審計時，撞到兩件都做不了的事：
 
 1. **死背書**：14 條 `verified_by` 指向已 `superseded`/`stale` 的 Verification（`doctor [E1]` 報「死背書給假安心感，是關係層頭號腐爛之一」），要清就得移除 list 項
-2. **降格拆指針**：`custtransfer-semantics` 自核心圖譜降格回專案層後，專案節點的 `core_refs:` 指針該拆
+2. **降格拆指針**：`custtransfer-semantics` 自核心架構圖降格回專案層後，專案節點的 `core_refs:` 指針該拆
 
 而當時 T1 寫入層：`set` 只收 `SCALAR_KEYS`、`append` 只能加。唯一合法退路是 obsidian CLI 的 `processFrontMatter`，但那要 Obsidian 執行中——**實務上等於無路可走**。
 

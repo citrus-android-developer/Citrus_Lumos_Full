@@ -39,7 +39,7 @@ related:
 
 補 ★INVARIANT★→`[test:]` 合約鏈的最後一哩：Check T 只驗「綁的測試存在」、`[audit:]` 靠 agent 讀判「夠不夠格」——都沒有**真的打一拳**。新增 `lumos guard kill`：對綁定的測試，在隔離環境故意弄壞被守護的行為，測試必須翻紅；全綠＝綁定是稻草人（假證據），機械可證。
 
-PRIOR-ART: ① 最小解層級：既有 guard 家族加子命令 + config 加欄位，無新物種。② 世界解過（2026-07-10 專項調查，來源見文末）：pytest-mutagen（人宣告壞法、逐 mutant 期望翻紅——概念完全對口但綁死 python/pytest）、ISO 26262 fault injection（安全領域制度化的「宣告故障+期望防護翻紅」）、StrykerJS command runner / cosmic-ray test-command / universalmutator（「config 宣告任意測試指令、rc 判紅綠、工具不內建語言知識」的跨語言介面，ICSE 2018 實證）、cargo-mutants（baseline 前置 + timeout=baseline×5 下限 20s）、PIT/Stryker（四態判定 killed/survived/timeout/error 與增量失效）。③ 裁定 = **borrow-design**：「宣告式 kill 配方 × command-runner × 圖譜綁定」組合世界無既成品，各構件皆有先例背書；零依賴 stdlib 原生實作。
+PRIOR-ART: ① 最小解層級：既有 guard 家族加子命令 + config 加欄位，無新物種。② 世界解過（2026-07-10 專項調查，來源見文末）：pytest-mutagen（人宣告壞法、逐 mutant 期望翻紅——概念完全對口但綁死 python/pytest）、ISO 26262 fault injection（安全領域制度化的「宣告故障+期望防護翻紅」）、StrykerJS command runner / cosmic-ray test-command / universalmutator（「config 宣告任意測試指令、rc 判紅綠、工具不內建語言知識」的跨語言介面，ICSE 2018 實證）、cargo-mutants（baseline 前置 + timeout=baseline×5 下限 20s）、PIT/Stryker（四態判定 killed/survived/timeout/error 與增量失效）。③ 裁定 = **borrow-design**：「宣告式 kill 配方 × command-runner × 架構圖綁定」組合世界無既成品，各構件皆有先例背書；零依賴 stdlib 原生實作。
 
 ## 設計裁定（r1/r2 兩輪折入後修訂版）
 
@@ -59,7 +59,7 @@ PRIOR-ART: ① 最小解層級：既有 guard 家族加子命令 + config 加欄
 
 - `skills/lumos-project-notes/SKILL.md`：子命令全覽 guard 段 `list/scaffold/bind/audit/trace` → 補 `kill/kill-add`；`lumos guard` 指令區塊補用法。頂層命令計數 **42 不變**（guard 子命令非頂層）。
 - guard subparser help 文字補 kill。
-- 圖譜：`Systems/check-t-sentinel` 補 kill 機制段、Verification、本計劃 `plan_refs` 回指；related frontmatter 補齊與 body 相關模組一致（四節點）。
+- 架構圖：`Systems/check-t-sentinel` 補 kill 機制段、Verification、本計劃 `plan_refs` 回指；related frontmatter 補齊與 body 相關模組一致（四節點）。
 - guard-templates 無需動（kill 用配方非範本）。
 - 裁定 1 改動明列 ⑥⑦ 的三處硬編同步（cmd_gov/scaffold gitignore/cochange 排除）與 graph-discipline 欄位速查+t_marker_doc_sync 守衛——即本清單的程式面條目（明列與清單雙處記載，防漏）。
 

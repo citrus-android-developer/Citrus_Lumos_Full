@@ -92,7 +92,7 @@ def _compare_versions(current, latest):
 ```
 
 - [ ] **Step 4:** 跑 `t_lint_watch_semver` 全綠 + 全套件回歸(`python3 scripts/test_lumos.py`,既有測試不破)。
-- [ ] **Step 5:** commit `feat(lint-watch): semver 解析/prerelease/三態比較核心`(pre-commit KG gate 對 code-only 會擋,`--no-verify` 繞、Task 6 補圖譜)。
+- [ ] **Step 5:** commit `feat(lint-watch): semver 解析/prerelease/三態比較核心`(pre-commit KG gate 對 code-only 會擋,`--no-verify` 繞、Task 6 補架構圖)。
 
 ---
 
@@ -373,17 +373,17 @@ exit 0
 ```
 Expected:pending 檔生成、腳本 `exit 0`、無 token 時不噴錯(fail-open)。把實測指令與輸出記入 Task 5 report。
 - [ ] **Step 4:** Modify `governance/daily-governance.sh`:第 2 步(autonomous-loop)之後加第 3 步 `"$DIR/lint-watch-check.sh" >> "$DIR/logs/lint-watch.log" 2>&1 || true`(log 路徑對齊既有 logs 慣例;確認 `logs/` 存在或 `mkdir -p`);頭註補「第 3 步 lint-watch-check:每日查 linter 新版」。
-- [ ] **Step 5:** commit `feat(lint-watch): lint-watch-check.sh 排程 shell + 掛 daily wrapper 第 3 步`(此 commit 含 shell,pre-commit KG gate 對非圖譜改動仍會擋 → `--no-verify`,Task 6 補圖譜)。
+- [ ] **Step 5:** commit `feat(lint-watch): lint-watch-check.sh 排程 shell + 掛 daily wrapper 第 3 步`(此 commit 含 shell,pre-commit KG gate 對非架構圖改動仍會擋 → `--no-verify`,Task 6 補架構圖)。
 
 ---
 
-### Task 6: 知識同步 + 圖譜節點 + anchor 收尾(controller 自跑)
+### Task 6: 知識同步 + 架構圖節點 + anchor 收尾(controller 自跑)
 
-**Files:** Modify `skills/lumos-project-notes/SKILL.md`(指令表補 `lint-watch`)、`docs/methodology/圖譜即合約.md`(pitfalls 列補「版本偵測(lint-watch)」);Create `Systems/lint-version-watch.md` + `Verification/2026-07-04_lint-version-watch.md`;更新 `Projects/pitfalls-lint-integration_計劃`(②塊 done);merge 後 anchor approve。
+**Files:** Modify `skills/lumos-project-notes/SKILL.md`(指令表補 `lint-watch`)、`docs/methodology/架構圖即合約.md`(pitfalls 列補「版本偵測(lint-watch)」);Create `Systems/lint-version-watch.md` + `Verification/2026-07-04_lint-version-watch.md`;更新 `Projects/pitfalls-lint-integration_計劃`(②塊 done);merge 後 anchor approve。
 
 - [ ] **Step 1:** 知識同步兩檔(照 spec §知識同步影響表,grep 驗各 ≥1 命中)。
 - [ ] **Step 2:** KG Systems 節點(summary:FLOW=讀 watch→查 registry→semver 比較→候選 manifest→去重→暫存+LINE;KEY=只查版本不驗規則/純數字 tuple+等段數守衛/prerelease 過濾/Maven 數值 max+%22+timestamp sort/fixture seam/shell 零 JSON/fail-open;DEP=[[pitfalls-lint-adapter]][[pitfalls-code-loop]];TEST;VERIFY)+ Verification 節點(valid_under:registry 端點語意/`.lumos/lint-watch.json` schema;revalidate_when;TEST 記實際數)。`lumos lint` ×2 + `lumos doctor` 0 issues。
-- [ ] **Step 3:** 更新計劃節點 ②塊 status=done + verified_by 回指。commit(此 commit 純圖譜/docs,pre-commit gate 應放行)。
+- [ ] **Step 3:** 更新計劃節點 ②塊 status=done + verified_by 回指。commit(此 commit 純架構圖/docs,pre-commit gate 應放行)。
 - [ ] **Step 4(merge 收尾):** merge 回 main 後 push 前:`lumos anchor approve --note "lint-version-watch:test_lumos.py 新增 lint-watch 測試"` + baseline 同批 commit。
 
 ---

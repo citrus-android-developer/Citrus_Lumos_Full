@@ -230,7 +230,7 @@ def _scaffold_project(root: Path, slug: str):
     for d in _INIT_SUBDIRS_FULL:
         (kg / d).mkdir(parents=True, exist_ok=True)
     (kg / "MOC" / "index.md").write_text(
-        f"---\ntype: moc\nstatus: doing\n---\n# {slug} 知識圖譜總索引\n", encoding="utf-8")
+        f"---\ntype: moc\nstatus: doing\n---\n# {slug} 知識架構圖總索引\n", encoding="utf-8")
     (kg / ".gitignore").write_text(".bypass-log.jsonl\n.rot-queue.jsonl\n.governance-log.jsonl\n.canary-log.jsonl\n", encoding="utf-8")
     # CLAUDE.md 注入 graph-discipline 區塊(用既有範本,變數替換)
     tpl = root / "scripts" / "templates" / "graph-discipline.md"
@@ -626,7 +626,7 @@ Co-Authored-By: Claude Opus 4.8 (1M context) <noreply@anthropic.com>"
 - [ ] 3. `dir %USERPROFILE%\.claude\skills\lumos-project-notes` → 顯示 `<JUNCTION>`、內容指對(`type` 看得到檔)。
 - [ ] 4. `cd <新專案>; lumos init` → `docs\<slug>-knowledge\` **6 夾(含 Sessions)** + `MOC\index.md` + `.gitignore`;`git config core.hooksPath` == `scripts/hooks`;`%USERPROFILE%\.claude\hooks\check-graph-sync.py` 存在。
 - [ ] 5. `type %USERPROFILE%\.claude\settings.json` → hook command 是 `python3 ...` 或 `python ...`(resolved 直譯器);**每個 hook 只一筆**(無雙重註冊)。
-- [ ] 6. 改一個 .py 不更新圖譜 → `git commit` 被 **pre-commit 擋**(git-for-win 用自帶 bash 跑 hook)。若沒擋=hook 沒生效或 python 沒 on PATH。
+- [ ] 6. 改一個 .py 不更新架構圖 → `git commit` 被 **pre-commit 擋**(git-for-win 用自帶 bash 跑 hook)。若沒擋=hook 沒生效或 python 沒 on PATH。
 - [ ] 7. 重啟 Claude Code session → 動 code,L1 軟提醒出現(claude hook resolved-python 真跑);`lumos doctor` 綠。
 
 **回報**:哪幾步過、哪步壞(附錯誤訊息)。壞的折回 spec 改、重驗。

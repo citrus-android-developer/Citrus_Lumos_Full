@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-"""全域 Stop hook: 提醒「程式碼改了但圖譜沒同步」。
+"""全域 Stop hook: 提醒「程式碼改了但架構圖沒同步」。
 
 只在當前專案有 docs/*-knowledge/ 或 docs/knowledge/ 時作用,否則完全闭嘴。
 軟提醒 (stderr surface 給 Claude),不 block turn 結束。
 
 四層閘門:
-  0  圖譜不存在               → exit 0
+  0  架構圖不存在               → exit 0
   1  這 turn 沒改任何檔        → exit 0
   2  改的都是非原始碼/在 docs/ → exit 0
-  3  這 turn 已動過圖譜        → exit 0
+  3  這 turn 已動過架構圖        → exit 0
   否則                         → 印 stderr 提醒
 """
 from __future__ import annotations
@@ -36,7 +36,7 @@ CODE_EXTS = {
 
 # === 即使副檔名對也要排除的路徑/檔名 ===
 EXCLUDE_PATH_CONTAINS = (
-    "/docs/",            # 圖譜本身 + 一般文件 (.md 全排除靠這個 + 副檔名清單)
+    "/docs/",            # 架構圖本身 + 一般文件 (.md 全排除靠這個 + 副檔名清單)
     "/node_modules/",
     "/bin/", "/obj/",
     "/.git/",
@@ -50,8 +50,8 @@ EXCLUDE_FILENAMES = {
 EDIT_TOOLS = {"Edit", "Write", "MultiEdit"}
 
 # === #2 收緊 ===
-# obsidian CLI 子命令裡「真的會 mutate 圖譜」的清單。
-# Read-only 子命令 (search/backlinks/files/orphans/...) 不算「動過圖譜」,
+# obsidian CLI 子命令裡「真的會 mutate 架構圖」的清單。
+# Read-only 子命令 (search/backlinks/files/orphans/...) 不算「動過架構圖」,
 # 避免 `obsidian --help` / `cat ...lumos-project-notes...` 之類純查詢誤判靜音。
 OBSIDIAN_WRITE_SUBCMDS = {
     "create", "append", "prepend", "delete",
@@ -69,7 +69,7 @@ BASH_FILE_OPS_PATH_BEARING = {"rm", "mv", "cp", "git rm", "git mv"}
 
 
 def find_graph_root(project_root: Path) -> Path | None:
-    """找到此專案的圖譜目錄,沒有就回 None (代表沒用這套系統)。"""
+    """找到此專案的架構圖目錄,沒有就回 None (代表沒用這套系統)。"""
     docs = project_root / "docs"
     if not docs.is_dir():
         return None
@@ -163,7 +163,7 @@ def is_code_file(path: str, project_root: Path) -> bool:
 
 
 def is_graph_file(path: str, graph_root: Path) -> bool:
-    """檔案是否在圖譜資料夾底下 (任何 .md)。"""
+    """檔案是否在架構圖資料夾底下 (任何 .md)。"""
     p = Path(path)
     if p.suffix.lower() != ".md":
         return False
@@ -187,7 +187,7 @@ def _tokens_of(segment: str) -> list[str]:
 
 
 def touched_graph_via_cli(bash_commands: list[str]) -> bool:
-    """這 turn 是否真的「寫」過圖譜 (#2 收緊):
+    """這 turn 是否真的「寫」過架構圖 (#2 收緊):
        只有 obsidian CLI 用了 mutate 子命令 (create/append/property:set 等) 才算。
        Read-only 子命令 / `obsidian --help` / 路徑裡含 obsidian 字串的非 obsidian command 都不算。
     """
@@ -264,7 +264,7 @@ def extract_bash_file_paths(bash_commands: list[str], project_root: Path) -> lis
 
 
 def find_notes_mentioning(rel_paths: list[str], graph_root: Path) -> dict[str, list[str]]:
-    """#5: 用 obsidian CLI search 反查每個改的檔案在哪幾篇圖譜筆記出現。
+    """#5: 用 obsidian CLI search 反查每個改的檔案在哪幾篇架構圖筆記出現。
 
     搜尋以「檔名 stem」為 query (PointService.cs → 'PointService'),
     既捕捉檔名直接引用,也捕捉透過 class/symbol name 的提及。
@@ -401,16 +401,16 @@ def main() -> int:
         graph_rel = graph_root
 
     msg = [
-        f"⚠️  這個 turn 改了 {len(rel)} 個原始碼檔但沒看到對應的圖譜更新:",
+        f"⚠️  這個 turn 改了 {len(rel)} 個原始碼檔但沒看到對應的架構圖更新:",
         *[f"   • {r}" for r in rel],
         "",
-        f"圖譜位置: {graph_rel}/",
+        f"架構圖位置: {graph_rel}/",
     ]
 
     # #5: 反查改的檔案出現在哪幾篇筆記
     mentions = find_notes_mentioning(rel, graph_root)
     if mentions:
-        msg += ["", "以下圖譜筆記提到這些檔名/symbol (可能需要更新):"]
+        msg += ["", "以下架構圖筆記提到這些檔名/symbol (可能需要更新):"]
         for stem, notes in mentions.items():
             msg.append(f"   • {stem} → {', '.join(notes)}")
 

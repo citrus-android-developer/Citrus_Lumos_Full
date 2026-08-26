@@ -162,8 +162,8 @@ decisions:
 |---|---|---|---|
 | `scripts/templates/graph-discipline.md` | 速查表只提 `[rollback:]` | 加 `[guard:decisions]` 說明 | **必改(組件 8,同 commit)** |
 | `skills/lumos-project-notes/SKILL.md` | 若有 `[rollback:]` 寫入規則 | 加 `[guard:decisions]` 路徑說明 | **必改(組件 9,同 commit)** |
-| `docs/methodology/圖譜即合約.md` | 若有 Check R 提及 | 補 guard path 說明 | 視段落決定 |
-| `docs/methodology/圖譜即合約-對外論述.md` | 若提到 rollback 必填 | 補 guard 替代路徑 | 視段落決定 |
+| `docs/methodology/架構圖即合約.md` | 若有 Check R 提及 | 補 guard path 說明 | 視段落決定 |
+| `docs/methodology/架構圖即合約-對外論述.md` | 若提到 rollback 必填 | 補 guard 替代路徑 | 視段落決定 |
 
 ## 審計修正紀錄
 

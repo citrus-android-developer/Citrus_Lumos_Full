@@ -19,7 +19,7 @@ tags:
 ---
 # 驗證：關係層主網 M2——typed-edge 反向索引
 
-主網第二座（[[關係層主網_實作計畫]] M2/[P0]）。補圖譜「走圖層丟邊型」的洞（`Env.edges` 以 target 去重、不存來源欄位——r2 Codex 揭露的地基缺口）：`build_typed_index(env)` 從 frontmatter 具名欄位建正反向**帶型別**索引。
+主網第二座（[[關係層主網_實作計畫]] M2/[P0]）。補架構圖「走圖層丟邊型」的洞（`Env.edges` 以 target 去重、不存來源欄位——r2 Codex 揭露的地基缺口）：`build_typed_index(env)` 從 frontmatter 具名欄位建正反向**帶型別**索引。
 
 ## 變更範圍（scripts/lumos）
 - **`build_typed_index(env)`**（新，`TYPED_EDGE_FIELDS=(verified_by, plan_refs, related)`）：回 `{rev, fwd, ghosts, ambiguous, scalars}`。合約全釘：exact-wikilink only／scalar 進 warnings 不靜默納入／ghost 不靜默丟／同名歧義記候選清單嚴禁取首（by_stem 直查）／去重鍵 `(source, target字面, type)`／path 式 miss 即 ghost（不 fallback stem）。

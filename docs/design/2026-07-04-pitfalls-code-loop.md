@@ -12,7 +12,7 @@
 
 ## 核心判斷(brainstorm 收斂,2026-07-04)
 
-- **缺的不是知識是機制**:效能/冪等/併發的通用坑模型都知道,不會主動應用——mechanical not motivational,要機械關卡逼答,不是整理最佳實踐文檔(模型已知、整理即過時)。真正值得收集的是自家事故史與平台硬約束(**留 v2**:事故語料進圖譜+進場自動餵,需事故回填習慣先養起來)。
+- **缺的不是知識是機制**:效能/冪等/併發的通用坑模型都知道,不會主動應用——mechanical not motivational,要機械關卡逼答,不是整理最佳實踐文檔(模型已知、整理即過時)。真正值得收集的是自家事故史與平台硬約束(**留 v2**:事故語料進架構圖+進場自動餵,需事故回填習慣先養起來)。
 - **隱患分兩層、錨點不同**:設計決策級(冪等鍵/重試策略/一致性模型——等寫 code 才想就晚了)錨在 spec;代碼級(N+1/race/資源洩漏)只在真 diff 上看得見,錨在終審。
 - **代碼側需要醒著訊號**:code-loop 收斂=「連 K 輪沒挖到新東西」,無醒著驗證則蓋章 reviewer 連說兩次 LGTM 即收斂——r9(2026-07-04)連 opus 都漏抓 canary 的實證在前。
 - **代碼 canary 的污染風險比 spec 嚴重**(使用者質疑,成立):spec canary 是加法散文,代碼假 hunk 改變程式語意,reviewer 可能從它推導出衍生 findings(幻影)。→ 三道防污染(見組件 ③),外加 mutation 冒煙為零污染的測試層補充錨。
@@ -71,7 +71,7 @@ CLI:`lumos pitfalls <md檔> [--repo <root>] [--check] [--json]` 或 `lumos pitfa
    - **低耦合植入**:canary hunk 的 file:line 必須落在**真改動集之外**(合成新 hunk 於未被真 diff 觸及的檔/函數——r3-F3:此即 pillar-1「對不上真 diff 座標」機械保證的前提,兩者一致而非矛盾),且與真改動弱耦合,縮小衍生推理波及面。**載體明定**:reviewer 讀的是 review package(diff 文字檔,`git diff -U10` 產)的工作副本;植入=在其 Diff 段插入一段帶合法 `@@` 標頭的偽 hunk + token 註解。**座標權威=package 的 -U10 檔**(r4-F7:pitfalls --diff 預設 -U3,兩者 @@ 位移不同;pillar 判定為檔級不受 -U 影響,行級引用以 package 檔為準)。
    - **溯源排除**:判讀時,任何 finding 的推理鏈引用 canary hunk 的 file:line 或依賴其語意 → 連同 canary 一併排除、不折、不計 findings——排本體也排影子。
 3. 派乾淨 reviewer(不知情、refute framing「外部第三方投稿的 diff」、附 pitfalls --diff manifest 當鏡頭:「命中位置逐條判真隱患/誤報,真隱患必答對應提問」)。
-4. 判讀(caught=點出植入 bug 的性質)→ 辯方對 ≥major finding(file:line 反證,同 design-loop ④)→ 存活真 finding **修進真代碼**(fix commit,含必要的新測試)。**測試收口分兩級(r3-F5)**:隱患屬業務合約級 → 另寫圖譜 ★INVARIANT★ 並 [test:] 綁定(Check T 才掃得到——Check T 只掃圖譜合約綁定,不掃任意新測試);非合約級的實作測試進套件靠回歸守,不經 Check T、不硬掛。
+4. 判讀(caught=點出植入 bug 的性質)→ 辯方對 ≥major finding(file:line 反證,同 design-loop ④)→ 存活真 finding **修進真代碼**(fix commit,含必要的新測試)。**測試收口分兩級(r3-F5)**:隱患屬業務合約級 → 另寫架構圖 ★INVARIANT★ 並 [test:] 綁定(Check T 才掃得到——Check T 只掃架構圖合約綁定,不掃任意新測試);非合約級的實作測試進套件靠回歸守,不經 Check T、不硬掛。
 5. `canary record caught|missed --loop code-<topic> --severity <存活max> --findings <存活折入數> --auditor <模型>`;missed → 該輪不採信、不折,連 2 missed 升級模型(同 design-loop 護欄)。
 6. 收斂:`loop status code-<topic> --need 2 --gate --repo <root>`(無 --spec,G1 skip)→ K-streak ∧ G2 枯竭全過 → 終審收斂,進 finishing。
 7. **mutation 冒煙(可選機械錨,高風險分支建議)**:在隔離 worktree 對 diff 涉及模組機械植少量變異(運算子翻轉/邊界±1,3-5 個)→ 跑該模組測試 → 活下來的變異=測試沒接住的洞,列為 finding 回步驟 4。零污染(不經 reviewer、不碰真樹)。
@@ -90,7 +90,7 @@ CLI:`lumos pitfalls <md檔> [--repo <root>] [--check] [--json]` 或 `lumos pitfa
 
 ## 邊界 / 非目標(YAGNI)
 
-- ❌ **事故語料進圖譜+進場自動餵**(v2):需事故回填習慣先養起來;通用坑不收集(模型已知)。
+- ❌ **事故語料進架構圖+進場自動餵**(v2):需事故回填習慣先養起來;通用坑不收集(模型已知)。
 - ❌ **不做通用 mutation testing 基建**(mutmut/依賴):冒煙用 3-5 個手植變異+既有測試,零第三方依賴;全量 mutation 留給有 CI 之後。
 - ❌ **不動 difficulty.py / Check H / refcheck 既有代碼**:pitfalls 自帶詞表與 pattern 表;漂移守衛只釘**類名集合**(pattern 表是代碼形態 regex、difficulty 無對應物,不受守衛,r1-F5)。
 - ❌ **pattern 表不追全**:提示器定位,初版 6-8 條;誤報靠 reviewer 判、漏網靠 canary 紀律+測試。
@@ -133,8 +133,8 @@ CLI subprocess 風格(`scripts/test_lumos.py`,`run`/`check`/t_ 前綴);fixture �
 | `skills/lumos-design-loop/SKILL.md` | 審前 pitfalls --check 步 + 清單附審計員;**gate 措辭同步**(r6-F2:12/35 行現記 `--gate --spec` 必帶——組件 ② 後補註 code-loop 情境 `--spec` 可省、G1 skip) |
 | skills/lumos-code-loop/SKILL.md(新檔提案,散文書寫免 refcheck 誤報) | skill 本體(組件 ③) |
 | `skills/lumos-project-notes/SKILL.md` | 指令表加 `lumos pitfalls` 三模式;**gate 契約段同步**(r4-F4:收斂留痕段 ~899 行與指令表 ~92 行現記 `--gate --spec` 必帶、「引用壞座標不收斂」——組件 ② 上線後改記 `--spec` 可選、code-loop 走 G1 skip) |
-| `docs/methodology/圖譜即合約.md` | 強制力層表加「pitfalls 提問閘 + code-loop 終審對抗」;審計火力對齊敘事;**設計前審計 loop 節的 gate 描述同步 --spec 可選**(r4-F4) |
-| `docs/methodology/圖譜即合約-對外論述.md` | 白話:AI 寫代碼前被逼答「這樣做上線會出什麼事」,寫完的代碼跟設計稿一樣被「考官+辯方」輪番審 |
+| `docs/methodology/架構圖即合約.md` | 強制力層表加「pitfalls 提問閘 + code-loop 終審對抗」;審計火力對齊敘事;**設計前審計 loop 節的 gate 描述同步 --spec 可選**(r4-F4) |
+| `docs/methodology/架構圖即合約-對外論述.md` | 白話:AI 寫代碼前被逼答「這樣做上線會出什麼事」,寫完的代碼跟設計稿一樣被「考官+辯方」輪番審 |
 | memory `autonomous-iteration-loop` | 補:代碼側對抗紀律上線 |
 
 ## 審計修正紀錄(design-loop)
@@ -158,7 +158,7 @@ canary 被正確識別(明指無賦值、僅一處出現、skill 散文無常數
 - **F1 殘餘(折入)**:diff manifest `class` 明綁形態類軸(併發/效能/資源),逐 pattern 綁定,與 spec 模式詞表分立。
 - **F3(折入)**:pillar-2 明定 canary 座標必須在真改動集之外(與 pillar-1 一致而非矛盾)+ 載體明定(diff 文字檔工作副本、合法 @@ 偽 hunk)。
 - **F4(折入)**:天花板 1 補單行掃描能力邊界(跨行語境以小行窗啟發為限、做不到誠實不掃)。
-- **F5(折入)**:Check T 接線措辭修正(合約級才進圖譜綁定,實作測試靠套件回歸)。
+- **F5(折入)**:Check T 接線措辭修正(合約級才進架構圖綁定,實作測試靠套件回歸)。
 
 ### R4(2026-07-04,canary type d=憑空產物 pitfalls-scan-cache.json,opus,**CAUGHT**,辯方裁決後 severity=major,存活 findings=6)
 

@@ -14,7 +14,7 @@ summary: |-
   FLOW:doctor --ci → section("H") → [非 ci 印「互動模式略過」即跳]→ _scan_diff_for_irreversible_hints(str(env.vault)) → git diff --staged(優先)|HEAD~1..HEAD fallback → 逐 +行比對 7 條 pattern(跳 .md/.txt/.rst、測試檔、純注解)→ 有命中 warn_soft 提示「是否漏標 ★IRREVERSIBLE★」(hits[:8])|無命中 ok
   KEY:warn_soft 軟提示——不計 issues、不影響 rc;Check H 是「摩擦地板」提醒,不是合規守衛(NOPE hard block)
   KEY:只在 ci=True 跑;互動 lumos doctor 不掃 diff(減噪)
-  KEY:pattern 字面比對,不解析圖譜對應哪個 Systems 節點(跨 code→graph 映射 v1 成本>效益);不交 LLM 判可逆性(無形式保證)
+  KEY:pattern 字面比對,不解析架構圖對應哪個 Systems 節點(跨 code→graph 映射 v1 成本>效益);不交 LLM 判可逆性(無形式保證)
   KEY:與 Check R 互補——R 守「標了要合規」(scripts/lumos:619-642),H 提醒「沒標但可能需要」
   KEY:cwd=str(env.vault) 正確——git diff 無 pathspec 時範圍恆為全 repo,子目錄 cwd 不縮小範圍
   DEP:run_doctor(ci 旗標)｜warn_soft/ok/section(皆 nested in run_doctor)｜IRREVERSIBLE_HINT_PATTERNS 常數

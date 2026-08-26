@@ -19,7 +19,7 @@ TEST: python3 scripts/test_lumos.py 全套 ★2039 passed / 0 failed★(loop 起
 VERIFY: dist 端到端真跑:裝 → `search` 讀得懂 ★INVARIANT★/`KEY:` 標籤 → `set` 寫入 → 卸載;CLAUDE.md 位元組級還原 sha 一致、連卸兩次 rc 皆 0、家目錄零殘留(僅剩 `~/.local/bin`、`~/.local/share` 兩個共用空目錄,正確不動)
 DECISION: 達 cap 6 筆未收斂(K-streak 差最後一輪),★明確不開新 loop id 繞 cap★,攤給使用者 → 人裁放行
 FLAG: Windows 無真機驗證;`LUMOS_SLIM_SIMULATE_WINDOWS` 只切 `IS_WIN` 旗標,模擬不了 `os.linesep` 等 OS 屬性,此類換行轉譯缺陷在 macOS/Linux 跑測試★結構上看不見★
-DEP: [[Systems/slim-uninstall-一行卸載]]｜[[Systems/slim-install-安裝器]](canary-audit 與 slim-skill-修剪 本篇只是描述性提及、非驗證對象,故不連 wikilink——本圖譜裡 Verification→Systems 的連結語意就是「驗證了它」)
+DEP: [[Systems/slim-uninstall-一行卸載]]｜[[Systems/slim-install-安裝器]](canary-audit 與 slim-skill-修剪 本篇只是描述性提及、非驗證對象,故不連 wikilink——本架構圖裡 Verification→Systems 的連結語意就是「驗證了它」)
 
 ## 起點:測試套件看不見的殘留
 
@@ -49,7 +49,7 @@ canary（偷埋的假錯,驗審查員有沒有認真讀）六輪**全部 caught*
 **② 第十一次撞到「測試存在但沒在驗它宣稱要驗的」,而且是我自己剛寫的測試。** r3 的還原翻紅釘第一版:現場用「父目錄塞別的檔案讓它非空」→ 但那樣 `if ... and not any(parent.iterdir())` 直接判假,`rmdir()` **根本不會被執行**,例外路徑一次都沒跑到,把修法還原成共用 `try` 的突變照樣全綠。改成 `chmod ~/.local/share 0o500`（`unlink` 需 `lumos-slim/` 寫權限仍有、`rmdir` 需 `share/` 寫權限已無）才真的翻紅 3 條斷言。
 ★通則★:**要驗例外處理,現場必須真的讓那個呼叫拋例外,不能只是讓它不被執行。** 前十次的型態是「斷言寫得太鬆」,這次是「現場根本走不到被測分支」——後者更隱蔽,因為測試名稱、docstring、斷言看起來都對。
 
-**③ 每個「我枚舉了 N 種形態」的守衛都要假設有第 N+1 種。** `slim-scan.py` 掃五種指令名形態,但**掃不到路徑型懸空引用**（圖譜節點路徑、`governance/` 語料目錄）——r6 之外由人眼複閱補上一條(見 Systems/slim-skill-修剪,同上,描述性提及不連 wikilink)。不宣稱已窮盡。
+**③ 每個「我枚舉了 N 種形態」的守衛都要假設有第 N+1 種。** `slim-scan.py` 掃五種指令名形態,但**掃不到路徑型懸空引用**（架構圖節點路徑、`governance/` 語料目錄）——r6 之外由人眼複閱補上一條(見 Systems/slim-skill-修剪,同上,描述性提及不連 wikilink)。不宣稱已窮盡。
 
 ## 收斂判定與人裁
 

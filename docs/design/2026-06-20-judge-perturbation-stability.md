@@ -46,7 +46,7 @@ design-loop **關鍵輪**(要判 clean/minor 的收斂輪),把同一份 spec 換
 1. **只解「隨機不穩」子集、且只測收斂側(R1-F1)**:本 spec 把 gap「單一 judge 不可靠」窄化成「單一 judge **隨機**不穩」——擾動(同一 judge 換序審兩次)只抓「換排版就翻盤」的隨機不穩;**穩定的系統性偏見**(對某類 spec 一貫低估)兩次都偏、抓不到(換家族才解,$0 OAuth 做不到)。**且觸發不對稱**:只在第一次審 clean/minor 時測,防「假收斂」(clean 翻 major);第一次偏嚴(major)的「假不收斂」不測——接受偏嚴時多花幾輪、不增成本。只補一半,誠實標明。
 2. **擾動等價性已從「靠自律」升為「機械可驗證」(R1-F3 解)**:改機械 reorder 後,擾動是確定性程序(只換 findings/bullet 順序、內容逐字相同),等價性可機械驗證(diff 只有順序差)、無 agent 自證——原「orchestrator 自產自證」反模式已消除。
 3. **成本(R1-F5 量化)**:reorder 本身零成本(程序);多的是 judge 對亂序再審一次,只在 severity∈{clean,minor} 輪觸發。對齊 autonomous-loop「單日 ≤14 agent 調用」基線,收斂前至少 2 個 clean/minor 輪 → **最少 +2 judge 審/loop**。
-4. **judge 集中化因本改動加深(R1-F4)**:judge 同輪被呼兩次(原序+亂序),權重更集中於單一 judge——圖譜即合約 §自主迭代 loop 已命名的「judge 集中化」風險,本改動是「以抗隨機不穩換更深集中化」。
+4. **judge 集中化因本改動加深(R1-F4)**:judge 同輪被呼兩次(原序+亂序),權重更集中於單一 judge——架構圖即合約 §自主迭代 loop 已命名的「judge 集中化」風險,本改動是「以抗隨機不穩換更深集中化」。
 5. **自指**:本 spec 是用「現在這個單一 judge 的 design-loop」審的——用不可靠的單一評審,審「修單一評審不可靠」的方案。不可避免,放行的人是最後兜底。
 
 ## 測試策略
@@ -61,8 +61,8 @@ design-loop **關鍵輪**(要判 clean/minor 的收斂輪),把同一份 spec 換
 此改動若實作,需同步:
 - **`governance/autonomous_loop/orchestrator-prompt.md`**(主改):design-loop sub-step 加「關鍵輪擾動複審」。
 - **`docs/design/2026-06-20-autonomous-iteration-loop.md`** §組件3:judge 那條補「關鍵輪還要過擾動穩定度測試」。
-- **`docs/methodology/圖譜即合約.md`** §四「自主迭代 loop」節:judge 機制補「關鍵輪過機械 reorder 擾動測試」;「judge 集中化」註「已加抗隨機不穩,但同輪雙呼**加深**集中化、系統性偏未解(換家族才解、$0 OAuth 做不到)」。
-- **`docs/methodology/圖譜即合約-對外論述.md`**:白話段「派 AI 審設計」可補一句「同一份東西換個說法再審一次,判斷翻盤就代表這個 AI 沒看穩」。
+- **`docs/methodology/架構圖即合約.md`** §四「自主迭代 loop」節:judge 機制補「關鍵輪過機械 reorder 擾動測試」;「judge 集中化」註「已加抗隨機不穩,但同輪雙呼**加深**集中化、系統性偏未解(換家族才解、$0 OAuth 做不到)」。
+- **`docs/methodology/架構圖即合約-對外論述.md`**:白話段「派 AI 審設計」可補一句「同一份東西換個說法再審一次,判斷翻盤就代表這個 AI 沒看穩」。
 - skills:**無**(judge/擾動是 autonomous-loop 獨有;`lumos-design-loop` 手動 loop 人在場、不受影響)。
 
 ## 審計修正紀錄

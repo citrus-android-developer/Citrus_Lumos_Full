@@ -203,7 +203,7 @@ Run: `python3 scripts/test_lumos.py`
 Expected: `N passed, 0 failed`。
 
 Run: `./scripts/lumos doctor 2>&1 | grep -A2 "\[V\]"`
-Expected: 出現 `[V] valid_under 過期率 …` 段(真實 vault 多數節點 ≤90 天 → 0% 或少量),且 doctor 結尾仍 `✓ 圖譜健康 — 0 issues`(Check V 是軟提醒,不改 rc)。
+Expected: 出現 `[V] valid_under 過期率 …` 段(真實 vault 多數節點 ≤90 天 → 0% 或少量),且 doctor 結尾仍 `✓ 架構圖健康 — 0 issues`(Check V 是軟提醒,不改 rc)。
 
 - [ ] **Step 6: Commit**
 
@@ -216,14 +216,14 @@ git commit -m "feat(lumos): doctor 加 Check V — valid_under 過期率軟提�
 
 ### Task 3: 知識同步(過時 check 順序字串 + 方法論/skill 註記)
 
-實作改了 doctor 段尾順序與 context 行為 → 同步圖譜與方法論,把 drift 堵在放行這一刻(圖譜即合約套自己身上)。
+實作改了 doctor 段尾順序與 context 行為 → 同步架構圖與方法論,把 drift 堵在放行這一刻(架構圖即合約套自己身上)。
 
 **Files:**
 - Modify: `docs/lumos-toolchain-knowledge/Verification/2026-06-23_check-t-sentinel.md`(valid_under 過時順序字串)
 - Modify: `docs/lumos-toolchain-knowledge/Systems/check-t-sentinel.md`(FLOW 行 + decisions 內過時順序字串)
 - Modify: `skills/lumos-project-notes/SKILL.md`(valid_under 用法處補「context 會自動警示」)
 
-**Interfaces:** 無(純文件/圖譜字串同步)。
+**Interfaces:** 無(純文件/架構圖字串同步)。
 
 - [ ] **Step 1: 修過時的 doctor check 順序字串(3 處,`T→R→S→K` → `T→R→S→H→K→V`)**
 
@@ -239,7 +239,7 @@ grep -rn "T→R→S→K" docs/lumos-toolchain-knowledge/
 
 用 Edit 逐處替換(字串唯一、直接換)。
 
-- [ ] **Step 2: 驗證圖譜仍健康 + 字串已無殘留**
+- [ ] **Step 2: 驗證架構圖仍健康 + 字串已無殘留**
 
 ```bash
 grep -rn "T→R→S→K" docs/lumos-toolchain-knowledge/   # 應 0 命中
@@ -261,9 +261,9 @@ grep -n "valid_under" skills/lumos-project-notes/SKILL.md | head
 > 進場提示(2026-06-29 起):`lumos context` 讀節點時會在最上方自動顯示 `valid_under` 條件(>90 天未更新加紅標),並由 `lumos doctor` Check V 量全圖過期率——失效條件從「寫入時標記」變「進場主動提示」,不需 AI 自己去 `lumos stale` 查。
 ```
 
-`docs/methodology/圖譜即合約.md`:grep 是否有「staleness / valid_under / context 輸出」相關段:
+`docs/methodology/架構圖即合約.md`:grep 是否有「staleness / valid_under / context 輸出」相關段:
 ```bash
-grep -n "valid_under\|staleness\|context" docs/methodology/圖譜即合約.md | head
+grep -n "valid_under\|staleness\|context" docs/methodology/架構圖即合約.md | head
 ```
 - 有相關段 → 在該段補一句:`valid_under 自 2026-06-29 起於 lumos context 進場主動提示(非僅寫入標記)`。
 - 無相關段 → 跳過(不硬塞;此項在 spec §知識同步為「若有…否則」的選擇性同步),並在 commit message 註明「方法論無對應段,略」。
@@ -271,7 +271,7 @@ grep -n "valid_under\|staleness\|context" docs/methodology/圖譜即合約.md | 
 - [ ] **Step 4: Commit**
 
 ```bash
-git add docs/lumos-toolchain-knowledge/ skills/lumos-project-notes/SKILL.md docs/methodology/圖譜即合約.md
+git add docs/lumos-toolchain-knowledge/ skills/lumos-project-notes/SKILL.md docs/methodology/架構圖即合約.md
 git commit -m "docs(sync): valid_under 進場提示落地——更新 check 順序字串 T→R→S→H→K→V + skill/方法論註記"
 ```
 (若方法論無對應段未改,該檔不納入 `git add`。)

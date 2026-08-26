@@ -114,7 +114,7 @@ def _restore_claude_md(target: Path):
     對稱的移除/還原。回傳 (rc, message)——★不做 sys.exit★,呼叫端(main)彙總
     多步驟結果後才決定最終 rc,這是「步驟互不阻擋」的核心。"""
     if not target.exists():
-        return 0, f"  (未安裝: {target} 的 LUMOS-SLIM 圖譜標籤區塊 — 檔案不存在)"
+        return 0, f"  (未安裝: {target} 的 LUMOS-SLIM 架構圖標籤區塊 — 檔案不存在)"
 
     # ★讀也會失敗,而且漏掉讀比漏掉寫更容易(2026-08-02 複審抓到:第一版
     # 只把下面的 unlink()/write_text() 包起來,這一行 read_text() 留在 try 外面
@@ -136,7 +136,7 @@ def _restore_claude_md(target: Path):
     matches = list(pattern.finditer(current))
 
     if not matches:
-        return 0, f"  (未安裝: {target} 的 LUMOS-SLIM 圖譜標籤區塊)"
+        return 0, f"  (未安裝: {target} 的 LUMOS-SLIM 架構圖標籤區塊)"
 
     if len(matches) > 1:
         return 2, (f"⚠ {target} 內有多個 LUMOS-SLIM sentinel 區塊,拒絕自動移除"
@@ -160,19 +160,19 @@ def _restore_claude_md(target: Path):
     # ★這三處以前是裸呼叫(2026-08-02 補)★:寫/刪本身可能拋 OSError
     # (唯讀目錄、磁碟滿、Windows 檔案被別的程式鎖住),而 main() 呼叫本函式時
     # 也沒有 try——一拋就炸穿整支 main(),★後面的步驟⑤完全不會執行★,使用者
-    # 只看到 traceback。那正好違反本檔 docstring 與圖譜 ★INVARIANT★ 宣稱的
+    # 只看到 traceback。那正好違反本檔 docstring 與架構圖 ★INVARIANT★ 宣稱的
     # 「各步驟各自獨立、互不阻擋」。改成回 rc=2 讓 main() 彙總,與本函式其他
     # 錯誤路徑(多 sentinel、base64 解碼失敗)一致。
     try:
         if new == "":
             target.unlink()
-            return 0, f"✓ 已移除: {target} 的 LUMOS-SLIM 圖譜標籤區塊(內容變空,檔案本身一併移除)"
+            return 0, f"✓ 已移除: {target} 的 LUMOS-SLIM 架構圖標籤區塊(內容變空,檔案本身一併移除)"
         elif restore_text:
             target.write_text(new, encoding="utf-8")
             return 0, f"✓ 已還原: {target} 的完整版紀律區塊(位元組級還原自內建備份),LUMOS-SLIM 區塊已移除"
         else:
             target.write_text(new, encoding="utf-8")
-            return 0, f"✓ 已移除: {target} 的 LUMOS-SLIM 圖譜標籤區塊(其餘內容不變)"
+            return 0, f"✓ 已移除: {target} 的 LUMOS-SLIM 架構圖標籤區塊(其餘內容不變)"
     except OSError as e:
         return 2, (f"⚠ {target} 的 LUMOS-SLIM 區塊移除/還原失敗(檔案系統錯誤): {e}"
                    "——CLAUDE.md 未被修改,其餘步驟照跑;請手動處理或加 --force 重跑。")
@@ -326,7 +326,7 @@ def main(argv=None):
         # 舊寫法 `_unique_backup_path(skill)` 是「同目錄改名」,而 ~/.claude/skills/ 正是
         # Claude Code ★掃描 skill 的目錄★——往裡面放任何含 SKILL.md 的子目錄都會被載入。
         # 實測卸載後下一個 session 的 skill 清單真的多出:
-        #   - lumos-project-notes.bak.20260803102236: 維護專案知識圖譜…
+        #   - lumos-project-notes.bak.20260803102236: 維護專案知識架構圖…
         # ★也就是卸載沒有讓這個 skill 停止作用,只是換了個怪名字繼續生效★,
         # 而訊息還印「已備份並移除」——它根本沒離開那個目錄。
         # 落點選 ~/.local/share/lumos-slim/backups/:那裡已經是本安裝器放 manifest 的地方,

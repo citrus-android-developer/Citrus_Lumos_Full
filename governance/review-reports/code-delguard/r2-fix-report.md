@@ -1,7 +1,7 @@
 # code-loop r2 修復波報告（delguard）
 
 - 分支：`feat/delguard`
-- 範圍：`scripts/lumos` delguard 區（`_delguard_parse_diff` / `cmd_delguard_check`）、`scripts/test_lumos.py`（`t_delguard`）、圖譜兩節點（`Projects/code側刪除傳播守衛_計劃`、`Verification/2026-08-11_delguard落地`）
+- 範圍：`scripts/lumos` delguard 區（`_delguard_parse_diff` / `cmd_delguard_check`）、`scripts/test_lumos.py`（`t_delguard`）、架構圖兩節點（`Projects/code側刪除傳播守衛_計劃`、`Verification/2026-08-11_delguard落地`）
 - 目標測試：`t_delguard` + `t_precommit_whitelist_drift_guard` → **111 PASS / 0 FAIL**（較 r1 的 102 淨增 9：N1×2、N3②×3、N4×3、N5×1）
 - 鄰接迴歸抽驗：`t_hooks_python_fallback` / `t_precommit_vendored_exempt` / `t_hook_cmd_home_resolved` / `t_hook_copy_list_completeness` / `t_cochange` → 39 PASS / 0 FAIL
 - 全量套件由控制器跑（本波未跑，沿用 r1 慣例）
@@ -35,7 +35,7 @@
 
 **N5（minor）per-file 回收表 .md 不對稱**：`_delguard_parse_diff` 第二遍的 `continue` 條件由 `is_vault or is_excl` 補成 `is_vault or is_excl or cur.endswith(".md")`，與第一遍（`added` 回收表collection,本就無條件跳過所有 `.md`）對齊——非 vault 的 `.md`（README.md 等）不是 code，重排/縮排這類散文層級的差異不該被當成「符號被刪」抽出 token。測試：README.md 兩行對調（`alphaLine betaLine` / `gammaLine deltaLine` 互換順序）→ `tokens == []`。
 
-## 圖譜節點
+## 架構圖節點
 
 - **N7**：`Projects/code側刪除傳播守衛_計劃` 的「code-loop r1」折入行，把重複列的「SQL 註解型 `--` 被刪行修抽取」（該項已含在同一行的「縮水測試補 7 項」內，即 r1 fix report 的 O②）換成漏列的 I 項「fixture 洩漏 rmtree 收尾」，折入條目仍為 15 條、無重複、無遺漏。lint 0 問題。
 - **N8**：`Verification/2026-08-11_delguard落地` 的「全量套件」行改為「本節點只認 `t_delguard` 實跑結果；全量套件結果以 push 前控制器實測留痕為準（控制器 2026-08-11 實測 2506/0@701bf18，後續以最新留痕為準）」——避免節點自行宣稱全量結果早於控制器實測（r1 已修過兩次數字快照過期，這次改成不讓 Verification 節點越權代答全量）。lint 0 問題。

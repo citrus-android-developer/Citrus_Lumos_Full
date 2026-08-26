@@ -194,7 +194,7 @@ def t_deinit_strip_claude():
     # case A: 有自有段落 + 注入區塊 → 剝區塊、留自有段落、留檔
     root = Path(tempfile.mkdtemp(prefix="gctl-deinit-cm-a-"))
     (root / "CLAUDE.md").write_bytes(
-        ("# CLAUDE.md\n\n我的專案規則。\n\n" + START + "\n圖譜紀律內文\n" + END + "\n").encode("utf-8"))
+        ("# CLAUDE.md\n\n我的專案規則。\n\n" + START + "\n架構圖紀律內文\n" + END + "\n").encode("utf-8"))
     stripped = m._deinit_strip_claude(root)
     txt = (root / "CLAUDE.md").read_text(encoding="utf-8")
     check("deinit claude A: 回 True", stripped is True, f"got {stripped}")
@@ -536,7 +536,7 @@ Add to `scripts/lumos` immediately after `cmd_uninstall` (after line 3031). Note
 ```python
 def cmd_deinit(keep_graph=False, dry_run=False, yes=False, source=None):
     """專案層反安裝(對稱 cmd_init):拆本 repo 的 pre-commit 閘 / vendored 工具組 /
-    CLAUDE.md 注入區塊 /(預設)圖譜 vault。不碰機器共用項(~/.claude)。不自動 commit。"""
+    CLAUDE.md 注入區塊 /(預設)架構圖 vault。不碰機器共用項(~/.claude)。不自動 commit。"""
     import subprocess
     # root 走 git toplevel;非 git 目錄中止(不 fallback cwd——deinit 會刪檔)
     try:
@@ -561,7 +561,7 @@ def cmd_deinit(keep_graph=False, dry_run=False, yes=False, source=None):
     # ── 固定順序執行(pre-flight 已過)──
     _deinit_unbar_gate(root)                 # step 1 先拆閘
     _deinit_strip_claude(root)               # step 2 剝 CLAUDE.md 區塊
-    # step 3 刪圖譜 vault:Task 7 加入(此處暫不刪)
+    # step 3 刪架構圖 vault:Task 7 加入(此處暫不刪)
     _deinit_remove_vendored(root)            # step 4 最後移 vendored(可能含自己)
     print("✓ deinit 完成(專案層已移除)。檢視 `git diff` 後自行 commit。")
     return 0
@@ -572,8 +572,8 @@ def cmd_deinit(keep_graph=False, dry_run=False, yes=False, source=None):
 In `main()`, after the `init` subparser block (after `scripts/lumos:3477`), add:
 
 ```python
-    p = sub.add_parser("deinit", help="專案層反安裝(對稱 init):拆本 repo 的 hooks/工具組/CLAUDE.md 注入/圖譜")
-    p.add_argument("--keep-graph", action="store_true", help="保留圖譜 vault,其餘照拆")
+    p = sub.add_parser("deinit", help="專案層反安裝(對稱 init):拆本 repo 的 hooks/工具組/CLAUDE.md 注入/架構圖")
+    p.add_argument("--keep-graph", action="store_true", help="保留架構圖 vault,其餘照拆")
     p.add_argument("--dry-run", action="store_true", help="只印會動到什麼,不實際改動")
     p.add_argument("-y", "--yes", action="store_true", help="跳過互動確認(CI/非互動用)")
     p.add_argument("--source", help="Lumos 來源 repo 路徑(僅供自我保護比對)")
@@ -603,7 +603,7 @@ Expected: `N passed, 0 failed`.
 
 ```bash
 git add scripts/lumos scripts/test_lumos.py
-git commit -m "feat(lumos): cmd_deinit 骨架 + 分派(pre-flight 守衛 + 非破壞動作,圖譜待 Task7)"
+git commit -m "feat(lumos): cmd_deinit 骨架 + 分派(pre-flight 守衛 + 非破壞動作,架構圖待 Task7)"
 ```
 
 ---
@@ -670,14 +670,14 @@ def t_deinit_graph():
     r = _deinit_run(root, "--yes")
     check("deinit graph10: 鐵閘 rc0", r.returncode == 0, f"{r.returncode} {r.stderr}")
     check("deinit graph10: repo 根仍在(絕無 rmtree)", (root / "important_note.md").exists(), "")
-    check("deinit graph10: MOC/ 圖譜仍在", (root / "MOC" / "index.md").exists(), "")
+    check("deinit graph10: MOC/ 架構圖仍在", (root / "MOC" / "index.md").exists(), "")
     hp = subprocess.run(["git", "-C", str(root), "config", "core.hooksPath"],
                         capture_output=True, text=True)
     check("deinit graph10: 其餘動作仍執行(hooksPath unset)", hp.stdout.strip() == "", f"{hp.stdout!r}")
     cm = (root / "CLAUDE.md").read_text(encoding="utf-8")
     check("deinit graph10: 其餘動作仍執行(claude 區塊剝)", "GRAPH-DISCIPLINE" not in cm, cm)
 
-    # case 3 拆閘有效:deinit 後 commit「改 code 不動圖譜」不被擋
+    # case 3 拆閘有效:deinit 後 commit「改 code 不動架構圖」不被擋
     root = _mk_installed_project(prefix="gctl-deinit-g3-")
     _deinit_run(root, "--keep-graph", "--yes")
     hp = subprocess.run(["git", "-C", str(root), "config", "core.hooksPath"],
@@ -710,7 +710,7 @@ with the gate + computed flag:
     # pre-flight 守衛②:vault == root 鐵閘(防 rmtree 整個 repo)
     if vault is not None and vault.resolve() == root.resolve() and not keep_graph:
         keep_graph = True
-        print("⚠ 偵測到 standalone vault(圖譜=repo 根):強制保留圖譜,只拆其餘專案層。",
+        print("⚠ 偵測到 standalone vault(架構圖=repo 根):強制保留架構圖,只拆其餘專案層。",
               file=sys.stderr)
     will_delete_vault = (vault is not None) and (not keep_graph)
 ```
@@ -727,21 +727,21 @@ Then, **after** the idempotent short-circuit block and **before** the `_deinit_u
             print("  剝 CLAUDE.md graph-discipline 區塊")
         if will_delete_vault:
             n = len([f for f in vault.rglob("*") if f.is_file()])
-            print(f"  刪圖譜 vault: {vault}({n} 檔)")
+            print(f"  刪架構圖 vault: {vault}({n} 檔)")
         elif vault is not None:
-            print(f"  保留圖譜 vault: {vault}")
+            print(f"  保留架構圖 vault: {vault}")
         print("  移除 vendored 工具組(白名單:5 檔 + hooks/templates 兩夾)")
         return 0
     if will_delete_vault and not yes:
         if not sys.stdin.isatty():
-            print("ERROR: 非互動環境(stdin 非 tty)且未加 --yes,拒絕刪圖譜。加 --yes 確認。",
+            print("ERROR: 非互動環境(stdin 非 tty)且未加 --yes,拒絕刪架構圖。加 --yes 確認。",
                   file=sys.stderr)
             return 2
         files = [f for f in vault.rglob("*") if f.is_file()]
         dirty = subprocess.run(["git", "-C", str(root), "status", "--porcelain", str(vault)],
                                capture_output=True, text=True).stdout
         n_dirty = len([ln for ln in dirty.splitlines() if ln.strip()])
-        print(f"將刪除圖譜 vault: {vault}({len(files)} 檔)")
+        print(f"將刪除架構圖 vault: {vault}({len(files)} 檔)")
         if n_dirty:
             print(f"  ⚠ 其中 {n_dirty} 個未 commit — 刪了 git 救不回!")
         if input("確定刪除?輸入 y 繼續、其他取消: ").strip().lower() != "y":
@@ -752,13 +752,13 @@ Then, **after** the idempotent short-circuit block and **before** the `_deinit_u
 Finally, replace the step-3 placeholder comment:
 
 ```python
-    # step 3 刪圖譜 vault:Task 7 加入(此處暫不刪)
+    # step 3 刪架構圖 vault:Task 7 加入(此處暫不刪)
 ```
 
 with:
 
 ```python
-    if will_delete_vault:                    # step 3 刪圖譜(pre-flight + 安全網已過)
+    if will_delete_vault:                    # step 3 刪架構圖(pre-flight + 安全網已過)
         import shutil
         shutil.rmtree(vault)
 ```
@@ -788,7 +788,7 @@ Expected: prints the manifest, reads `n`, prints `已取消。`, vault still pre
 
 ```bash
 git add scripts/lumos scripts/test_lumos.py
-git commit -m "feat(lumos): deinit 圖譜刪除 + 三道安全網 + vault==root 鐵閘 + --dry-run"
+git commit -m "feat(lumos): deinit 架構圖刪除 + 三道安全網 + vault==root 鐵閘 + --dry-run"
 ```
 
 ---
@@ -816,13 +816,13 @@ In the section that currently documents `lumos uninstall`, add the two-layer dis
 
 Lumos 是兩層安裝,對應兩個指令:
 
-- **專案層**(本 repo 的 hooks/工具組/CLAUDE.md 注入/圖譜):在專案內跑
+- **專案層**(本 repo 的 hooks/工具組/CLAUDE.md 注入/架構圖):在專案內跑
   ```bash
-  lumos deinit            # 完整逆轉 init:拆閘 + 移工具組 + 剝 CLAUDE.md 區塊 + 刪圖譜(互動確認)
-  lumos deinit --keep-graph   # 保留圖譜,只拆其餘
+  lumos deinit            # 完整逆轉 init:拆閘 + 移工具組 + 剝 CLAUDE.md 區塊 + 刪架構圖(互動確認)
+  lumos deinit --keep-graph   # 保留架構圖,只拆其餘
   lumos deinit --dry-run      # 只預演,不改動
   ```
-  deinit 不自動 commit、不碰機器共用項;偵測到 standalone vault(圖譜=repo 根)會自動保留圖譜以防誤刪整個 repo。
+  deinit 不自動 commit、不碰機器共用項;偵測到 standalone vault(架構圖=repo 根)會自動保留架構圖以防誤刪整個 repo。
 - **機器層**(全域 `~/.local/bin/lumos`、user-scope skills):`lumos uninstall`。
 
 > 完整卸載 = 在每個專案跑 `lumos deinit`,最後 `lumos uninstall` + 視需要 `rm -rf ~/harness/lumos-toolchain`。

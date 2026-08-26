@@ -91,8 +91,8 @@ lumos stale、lumos search、lumos contracts、canary/judge/doctor rc 邏輯,rev
 
 改動若實作,需同步以下知識:
 
-1. **`docs/methodology/圖譜即合約.md`**:若有「lumos context 輸出格式說明」章節 → 補「valid_under 警示現在在 contracts 之前出現」;若無 → 在「節點讀取規範」相關段落補注。
-2. **`docs/methodology/圖譜即合約-對外論述.md`**:若有「staleness 如何處理」相關段落 → 更新描述從「passive 標記」改為「進場主動提示」;否則補一段說明設計哲學(valid_under 不只是寫入標記,也是進場守衛)。
+1. **`docs/methodology/架構圖即合約.md`**:若有「lumos context 輸出格式說明」章節 → 補「valid_under 警示現在在 contracts 之前出現」;若無 → 在「節點讀取規範」相關段落補注。
+2. **`docs/methodology/架構圖即合約-對外論述.md`**:若有「staleness 如何處理」相關段落 → 更新描述從「passive 標記」改為「進場主動提示」;否則補一段說明設計哲學(valid_under 不只是寫入標記,也是進場守衛)。
 3. **`lumos-project-notes` skill**:若有「valid_under 用法說明」→ 補「context 時會自動警示」;若無此欄 → 可在 CLAUDE.md 標籤規範表下方加備注。
 4. **`Verification/2026-06-23_check-t-sentinel.md`**:實作後更新此節點的 `valid_under` 中 "T→R→S→K" → "T→R→S→H→K→V"(字串已過時,Check H 早於本節點 authoring;需重驗跑 `t_check_k`)。
 

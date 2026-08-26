@@ -38,7 +38,7 @@ summary: |-
 
 ## 真因
 
-vendored 進消費端的 `test_lumos.py` 裡，有一大批測試驗的是**來源 repo 自己的產物**：`slim/` 交付包、`get.sh`、`docs/` 文件列舉、`governance/` 語料、來源 repo 自己的圖譜（`docs/lumos-toolchain-knowledge`）。消費端沒有這些東西，**必定紅**。
+vendored 進消費端的 `test_lumos.py` 裡，有一大批測試驗的是**來源 repo 自己的產物**：`slim/` 交付包、`get.sh`、`docs/` 文件列舉、`governance/` 語料、來源 repo 自己的架構圖（`docs/lumos-toolchain-knowledge`）。消費端沒有這些東西，**必定紅**。
 
 那 8 條舊的是同一類——**病本來就有，是本次精簡版工作讓它變成 10 倍**。
 

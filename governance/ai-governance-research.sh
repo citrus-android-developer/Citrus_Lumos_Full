@@ -1,5 +1,5 @@
 #!/bin/bash
-# AI 治理調研日報：搜集 AI 治理文章，以「圖譜即合約」方法論為透鏡綜合判斷，
+# AI 治理調研日報：搜集 AI 治理文章，以「架構圖即合約」方法論為透鏡綜合判斷，
 # 產出靈感與打磨建議，發送直式卡片到 LINE（Oreo AI 報報）
 # crontab: 30 9 * * * /Users/enzo/script/ai-governance-research.sh >> /Users/enzo/script/logs/governance.log 2>&1
 
@@ -17,8 +17,8 @@ REPORT_FILE="$OUT_DIR/governance-$TODAY.json"
 TOKEN_FILE="$HOME/.config/ai-daily/line_token_research"
 
 # 方法論筆記（每次現場重讀，筆記更新後調研透鏡自動跟上）
-NOTE_MAIN="/Users/enzo/harness/lumos-toolchain/docs/methodology/圖譜即合約.md"
-NOTE_ESSAY="/Users/enzo/harness/lumos-toolchain/docs/methodology/圖譜即合約-對外論述.md"
+NOTE_MAIN="/Users/enzo/harness/lumos-toolchain/docs/methodology/架構圖即合約.md"
+NOTE_ESSAY="/Users/enzo/harness/lumos-toolchain/docs/methodology/架構圖即合約-對外論述.md"
 
 # 累積觀點總帳（長期去重用）＋ 過去 3 天完整報告
 HISTORY_FILE="$OUT_DIR/governance-history.md"
@@ -35,23 +35,23 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 LUMOS_CAPS="$(python3 "$REPO_ROOT/scripts/lumos" --help 2>/dev/null | head -12 || true)"
 RECENT_SHIPPED="$( { cd "$REPO_ROOT" && git log --oneline --since='21 days ago' -- scripts/lumos skills 2>/dev/null; } | head -30 || true)"
 
-PROMPT="今天是 ${TODAY}。你是 AI 治理領域的調研主編，服務對象是「圖譜即合約（graph-as-contract）」方法論的設計者，
+PROMPT="今天是 ${TODAY}。你是 AI 治理領域的調研主編，服務對象是「架構圖即合約（graph-as-contract）」方法論的設計者，
 目標是幫助他不斷打磨這套 best practice 的不足之處。
 
 【第一步：建立分析透鏡】用 Read 工具完整閱讀以下兩個檔案，掌握方法論的設計、
-已知限制（§7 權衡、故意不做的事、L4 否決案）與核心圖譜 v1 已知盲區：
+已知限制（§7 權衡、故意不做的事、L4 否決案）與核心架構圖 v1 已知盲區：
 - ${NOTE_MAIN}
 - ${NOTE_ESSAY}
 這套方法論有多個面向。【主軸＝迴圈工程，尤其「驗證層自己可不可信」這一層】——其餘面向是支線，最終都回扣到一個問題：這對「自主／無人看顧的自我檢查 loop」有沒有用。可用的透鏡：
 - ★主透鏡★ 驗證層自身的可靠度（eval 的 eval）：LLM-as-judge、AI 自審、canary／test-the-tester 這類「驗證機制」本身會不會放水、會漏判多少、missed 率怎麼追蹤、adversarial verification 的極限、收斂條件可不可信。這是這套方法論目前最前沿、最沒解決的一層。
 - 迴圈工程（inner/outer loop、plan-execute-verify、自主迴圈、termination 與收斂、回饋品質、open-loop 風險）
-- 記憶治理（圖譜當跨 session 記憶、summary 漂移、固化與遺忘）
+- 記憶治理（架構圖當跨 session 記憶、summary 漂移、固化與遺忘）
 - 稽核與可追溯（留痕、bypass 率、agent 身分、可重跑驗證）
 - 多 agent 安全與權限（最小權限、共通節點保護、鏈式注入、越權）
 - 可逆性與回退（決策能否安全 undo、補償步驟）
 - 合約即測試 / SDD（★INVARIANT★ 綁測試、白話規格生測試、合格證明標準）
 切入點每天可輪替（避免連日只盯同一面向），但主軸不變：今天無論從哪個面向切入，最後都要回答一句「它對『驗證層／自主 loop 的可靠度』說了什麼」。
-參考：內迴圈是 invariant→test→CI 的 write-run-read-correct，外迴圈是圖譜跨 session 記憶＋valid_under 條件式有效期＋週彙整與 L4 自足性審計；這份調研本身也是一個迴圈（定目標→找料→綜合→去重記帳→影響明日）。
+參考：內迴圈是 invariant→test→CI 的 write-run-read-correct，外迴圈是架構圖跨 session 記憶＋valid_under 條件式有效期＋週彙整與 L4 自足性審計；這份調研本身也是一個迴圈（定目標→找料→綜合→去重記帳→影響明日）。
 
 【第一·五步：對齊 lumos『現行實作狀態』（權威現況，優先於散文與舊報告）】
 以下是 lumos 工具鏈【現在真的有的能力】與【近三週剛 ship 的東西】——這才是現況真相；方法論散文與舊日報只是輔助、可能落後於實作。
@@ -60,7 +60,7 @@ ${LUMOS_CAPS}
 · 近三週剛實作/上線（scripts/skills 的 commit）：
 ${RECENT_SHIPPED:-（近期無 scripts/skills 變更）}
 ⚠【防重提鐵則】凡上面清單已有的機制，一律視為【已解決】，不得在 gaps 裡當『缺這個功能』重提；舊日報若把它列為 gap，那是過期框架、別沿用。真要對它提 gap，必須具體說『現行實作為何仍不足』並附外部證據，而不是泛泛說『可以加 X』（X 已經有了）。
-⚠【參數要查現值，別憑印象或舊報告】要寫某機制的【具體參數／數值】（收斂輪數、K 值、閾值、panel 寬 W、cap 幾輪…）時，先用 Read 讀對應檔確認【現值】：收斂／canary／辯方相關 → ${REPO_ROOT}/skills/lumos-code-loop/reference.md 或 ${REPO_ROOT}/skills/lumos-design-loop/SKILL.md（頭版是精簡版、細節在同目錄 reference.md）；其餘機制查對應 skill 或圖譜。查不到就別寫死數字，改講定性（例：「有上限、連續乾淨才收斂」）。舊報告與方法論散文裡的具體數字可能已過期，不得直接沿用——【只有拿最新的 lumos 現值來比，這個比較才有意義】。
+⚠【參數要查現值，別憑印象或舊報告】要寫某機制的【具體參數／數值】（收斂輪數、K 值、閾值、panel 寬 W、cap 幾輪…）時，先用 Read 讀對應檔確認【現值】：收斂／canary／辯方相關 → ${REPO_ROOT}/skills/lumos-code-loop/reference.md 或 ${REPO_ROOT}/skills/lumos-design-loop/SKILL.md（頭版是精簡版、細節在同目錄 reference.md）；其餘機制查對應 skill 或架構圖。查不到就別寫死數字，改講定性（例：「有上限、連續乾淨才收斂」）。舊報告與方法論散文裡的具體數字可能已過期，不得直接沿用——【只有拿最新的 lumos 現值來比，這個比較才有意義】。
 
 【第二步：去重——文章與觀點兩個層級都要】
 1. 若存在，用 Read 讀取累積觀點總帳：${HISTORY_FILE}
@@ -92,10 +92,10 @@ ${RECENT_SHIPPED:-（近期無 scripts/skills 變更）}
 精選 3-5 篇，寧缺勿濫，標題黨或無實質內容的不收。
 
 【第四步：綜合判斷——一切以「打磨方法論」為目的】
-- 每篇文章的 relevance：這篇與圖譜即合約的對話——驗證了哪個設計？挑戰了哪個假設？可借鏡什麼？
+- 每篇文章的 relevance：這篇與架構圖即合約的對話——驗證了哪個設計？挑戰了哪個假設？可借鏡什麼？
 - 【對抗視角——不可省略，至少一條】每期至少有一條觀點是「打臉」而非「印證」：找外部證據挑戰 lumos 的某個核心假設、或顯示某個機制其實沒用／有更好的替代。只找印證你的＝maker 審自己＝確認偏誤，正是這套方法論在反對的東西。寧可指出一個真弱點，也不要湊一條恭維。這條打臉觀點放進 gaps。
   【逃生艙——優先於「不可省略」】若當日調研確實找不到有外部證據支持的反證，就明寫一條 gap「本期未找到有力反證」即可，【絕不為湊滿『至少一條』而捏造假打臉】——湊假打臉比沒有更糟，那正是另一種確認偏誤。
-- 多面向透鏡（擇優戴，不強制）：每篇問一句——它對圖譜即合約的哪個面向（記憶治理／稽核／安全權限／可逆性／合約即測試／迴圈工程……）說了什麼？
+- 多面向透鏡（擇優戴，不強制）：每篇問一句——它對架構圖即合約的哪個面向（記憶治理／稽核／安全權限／可逆性／合約即測試／迴圈工程……）說了什麼？
   驗證了哪個設計？挑戰了哪個假設？可借鏡什麼？哪個面向最切題就從哪個切入，不必每天都套迴圈工程。
   整體上 inspirations 與 gaps 合計盡量涵蓋 2 個以上不同面向，避免一份報告所有觀點都擠在同一面向。
 - inspirations：可具體落地的靈感（可加進四道強制力的機制、可寫進 skill 的規範、frontmatter 設計改進等），要具體可行動，不要空話

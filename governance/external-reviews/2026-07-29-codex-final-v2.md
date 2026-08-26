@@ -8,7 +8,7 @@ Lumos 已經越過「單人概念實驗」門檻，成為一套有真實 CI、�
 
 | 面向 | 初審 | 今日 | 變動主因 |
 |---|---:|---:|---|
-| 問題定位與方法論 | 7.0 | **7.5** | 負結果處決、真實消費端考卷與對抗審戰果獲證；仍扣「圖譜必勝」認識論未落地修正 |
+| 問題定位與方法論 | 7.0 | **7.5** | 負結果處決、真實消費端考卷與對抗審戰果獲證；仍扣「架構圖必勝」認識論未落地修正 |
 | 架構與代碼品質 | 5.0 | **6.0** | CI、SyntaxWarning 閘、schema lint、文件漂移守衛已落地；仍有 11.5k 行 god module、非 hermetic 測試與 doctor 覆蓋缺口 |
 | 治理機制設計 | 6.0 | **7.5** | canary 鑑別力與 code-loop 真戰果成立；仍扣自判帳、未落盤事故、舊 capture-recapture veto |
 | 可用性與採用門檻 | 4.0 | **5.5** | 文件與常駐上下文已明顯改善；仍有 49 命令、厚重操作規約與 Claude 鎖定成本 |
@@ -38,13 +38,13 @@ Lumos 不是只加機制、不殺機制。PPR／共改邊權經預註冊考卷�
 
 **我維持異議的部分：**
 
-「圖譜與 code 衝突，以圖譜為準」仍寫在 [CLAUDE.md](/Users/enzo/harness/lumos-toolchain/CLAUDE.md:17) 與 [README.md](/Users/enzo/harness/lumos-toolchain/README.md:31)。維護方已接受理論修正，但尚未落地，因此不能計完成分。
+「架構圖與 code 衝突，以架構圖為準」仍寫在 [CLAUDE.md](/Users/enzo/harness/lumos-toolchain/CLAUDE.md:17) 與 [README.md](/Users/enzo/harness/lumos-toolchain/README.md:31)。維護方已接受理論修正，但尚未落地，因此不能計完成分。
 
 正確分層仍應是：
 
-- 圖譜是規範性意圖與宣告合約的權威。
+- 架構圖是規範性意圖與宣告合約的權威。
 - 測試、執行系統與 production observation 是行為事實。
-- 兩者衝突時立 incident，不自動宣判圖譜為真。
+- 兩者衝突時立 incident，不自動宣判架構圖為真。
 
 ### 2. 架構與代碼品質：6.0/10
 
@@ -171,7 +171,7 @@ P0 的工程實作面已清：CI、警告閘、壞節點守衛、主要文件修
 
 ## 給潛在採用者的誠實建議
 
-若你是 AI-heavy、長生命週期、單人或小團隊專案，且願意維護合約與驗證紀錄，Lumos 已值得試用；優先採用圖譜、INVARIANT→test→audit、CI 與反事實測試這幾個核心，不要第一天全開所有 loop。
+若你是 AI-heavy、長生命週期、單人或小團隊專案，且願意維護合約與驗證紀錄，Lumos 已值得試用；優先採用架構圖、INVARIANT→test→audit、CI 與反事實測試這幾個核心，不要第一天全開所有 loop。
 
 若你需要的是受監管稽核、多人組織強制或惡意行為者下的安全控制，現在還不該把 Lumos 當合規平台。至少先自行補上 required checks、不可竄改外部紀錄、供應鏈 pin、權限隔離與本專案的合約密度基線。
 

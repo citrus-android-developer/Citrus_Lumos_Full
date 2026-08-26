@@ -34,4 +34,4 @@ related:
 
 公開精簡版交付前的文字掃描器。掃描 README/SKILL.md/reference.md 等要交給離職接手者的文件,找出還在教「精簡版已移除的指令」或「不交付的 skill」的句子,列成候選清單交人逐條裁決是否需要改寫。詳見 [[Projects/公開精簡版_實作計畫]] Task 1。
 
-規格/設計脈絡見 `.superpowers/sdd/公開精簡版_實作計畫/task-1-brief.md`(SDD 產出,非圖譜路徑,依計畫落地於此)。
+規格/設計脈絡見 `.superpowers/sdd/公開精簡版_實作計畫/task-1-brief.md`(SDD 產出,非架構圖路徑,依計畫落地於此)。

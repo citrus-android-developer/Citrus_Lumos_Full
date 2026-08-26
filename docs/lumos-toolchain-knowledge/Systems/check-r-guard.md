@@ -80,7 +80,7 @@ Check R(可逆性閘)擴展:對 `★IRREVERSIBLE★` 動作新增 `[guard:decisi
 - 不廢棄 `[rollback:]`(DB 補償交易場景仍多);不新增 external tag;不驗 guard 已在 code 實作。
 
 ## 知識同步(與本機制同 commit)
-`scripts/templates/graph-discipline.md`、`skills/lumos-project-notes/SKILL.md`、`docs/methodology/圖譜即合約.md` 已補 `[guard:decisions]` 說明;`t_marker_doc_sync` tuple 含 `"[guard:"` 作漂移守衛(`scripts/test_lumos.py:1204`)。
+`scripts/templates/graph-discipline.md`、`skills/lumos-project-notes/SKILL.md`、`docs/methodology/架構圖即合約.md` 已補 `[guard:decisions]` 說明;`t_marker_doc_sync` tuple 含 `"[guard:"` 作漂移守衛(`scripts/test_lumos.py:1204`)。
 
 ## 相關
 - 設計稿:`docs/design/2026-06-24-check-r-pre-execution-guard.md`(design-loop 收斂 3 輪,canary 3/3 全中,跨家族複核 2 輪 endorsed)。

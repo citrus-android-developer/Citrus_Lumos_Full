@@ -173,7 +173,7 @@ prerelease 過濾在 `_registry_latest` 內做(回 `(None, reason)`),不到 `_co
 | 受影響文件 | 需同步什麼 |
 |---|---|
 | `skills/lumos-project-notes/SKILL.md` | 指令表補 `lint-watch`(vault-free 版本偵測、rc 語意、`.lumos/lint-watch.json` 宣告) |
-| `docs/methodology/圖譜即合約.md` | pitfalls 列補「版本偵測(lint-watch)——機械盯 registry 新穩定版」 |
+| `docs/methodology/架構圖即合約.md` | pitfalls 列補「版本偵測(lint-watch)——機械盯 registry 新穩定版」 |
 | `Projects/pitfalls-lint-integration_計劃` | 第②塊 status → done + verified_by 回指落地 Verification |
 | `governance/daily-governance.sh` 頭註 | 補第 3 步 lint-watch-check |
 

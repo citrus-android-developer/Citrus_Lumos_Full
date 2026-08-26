@@ -529,7 +529,7 @@ frontmatter(對齊既有 lumos-* skill 格式):`name: lumos-code-loop`;`descript
 - 觸發:`pitfalls --diff <merge-base>..HEAD` → tier standard 走現行單 reviewer、tier high 走本 skill(K=2)。
 - 每輪 N 步驟 1-7(spec §組件 ③ 逐字):review-package **或等價 `git diff -U10 BASE..HEAD`** 產 diff 文字檔 → 複製**該 diff 文字檔**為工作副本 → 植 bug canary hunk(四型輪替 `[(N−1) mod 4]`:邊界/資源未釋放/例外路徑/冪等併發破壞,插入帶合法 `@@` 標頭的偽 hunk + token)。
 - **三道防污染(不可違反,逐字)**:① 真代碼永不含(fix 錨真 diff file:line、canary hunk 不在真 diff);② 低耦合植入(canary file:line 落真改動集之外、弱耦合);③ 溯源排除(finding 推理鏈引用 canary file:line 或依賴其語意、含間接聯想幻影 → 連同 canary 排除、不折、不計)。
-- 派 reviewer(refute framing、附 pitfalls --diff manifest 鏡頭)→ 判讀(caught=點出植入 bug 性質)→ 辯方對 ≥major(file:line 反證)→ 存活真 finding 修進真代碼(fix commit,合約級隱患另寫圖譜 ★INVARIANT★ + [test:]、非合約級進套件回歸)。
+- 派 reviewer(refute framing、附 pitfalls --diff manifest 鏡頭)→ 判讀(caught=點出植入 bug 性質)→ 辯方對 ≥major(file:line 反證)→ 存活真 finding 修進真代碼(fix commit,合約級隱患另寫架構圖 ★INVARIANT★ + [test:]、非合約級進套件回歸)。
 - `canary record caught|missed --loop code-<topic> --severity <max> --findings <存活數> --auditor <模型>`;missed 該輪不採信、連 2 missed 升模型。
 - 收斂:`loop status code-<topic> --need 2 --gate --repo <root>`(無 --spec → G1 skip,K-streak∧G2 決定)→ GATE PASS 進 finishing。
 - mutation 冒煙(可選機械錨、高風險建議):隔離 worktree 植 3-5 個變異跑該模組測試,活變異=測試缺口 → finding;零污染。
@@ -587,11 +587,11 @@ git commit -m "feat(wiring): pitfalls/code-loop 接線——orchestrator 步驟1
 
 ---
 
-### Task 6: methodology ×2 + 圖譜節點 + anchor 收尾(controller 自跑)
+### Task 6: methodology ×2 + 架構圖節點 + anchor 收尾(controller 自跑)
 
 **Files:**
-- Modify: `docs/methodology/圖譜即合約.md`(強制力層表加 pitfalls/code-loop 列 + 審計火力對齊敘事)
-- Modify: `docs/methodology/圖譜即合約-對外論述.md`(白話段:AI 寫代碼前被逼答隱患、寫完的代碼跟設計稿一樣被考官+辯方輪審)
+- Modify: `docs/methodology/架構圖即合約.md`(強制力層表加 pitfalls/code-loop 列 + 審計火力對齊敘事)
+- Modify: `docs/methodology/架構圖即合約-對外論述.md`(白話段:AI 寫代碼前被逼答隱患、寫完的代碼跟設計稿一樣被考官+辯方輪審)
 - Create: `docs/lumos-toolchain-knowledge/Systems/pitfalls-code-loop.md`、`Verification/2026-07-04_pitfalls-code-loop.md`
 - Modify(收尾): `governance/anchor-baseline.json`
 

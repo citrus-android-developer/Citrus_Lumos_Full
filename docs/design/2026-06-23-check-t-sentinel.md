@@ -80,8 +80,8 @@ doctor 掃節點
 
 | 受影響文件 | 需同步什麼 |
 |---|---|
-| `docs/methodology/圖譜即合約.md` | Tag 體系補第 5 個 `★COMBO★`(★INVARIANT★ 子修飾);Check 體系補 Check K(組合覆蓋軟提醒);點出「驗證正確性 > AI 審計」主軸——CI 跑測試是錨點,lumos 軟提醒補組合 |
-| `docs/methodology/圖譜即合約-對外論述.md` | 對外白話:最重的鐵則別只測一個順風案例,該測「各種情況湊一起」——lumos 軟提醒、不強制 |
+| `docs/methodology/架構圖即合約.md` | Tag 體系補第 5 個 `★COMBO★`(★INVARIANT★ 子修飾);Check 體系補 Check K(組合覆蓋軟提醒);點出「驗證正確性 > AI 審計」主軸——CI 跑測試是錨點,lumos 軟提醒補組合 |
+| `docs/methodology/架構圖即合約-對外論述.md` | 對外白話:最重的鐵則別只測一個順風案例,該測「各種情況湊一起」——lumos 軟提醒、不強制 |
 | `scripts/lumos`(本體) | 新增 section("K") + ★COMBO★ 子字串檢測;Tag 說明/help 補 ★COMBO★ |
 | `lumos-*` skills | 確認有無 Tag 教學 skill 需補 ★COMBO★(design-loop 查) |
 

@@ -1,16 +1,16 @@
 ---
 name: lumos-project-notes
-description: 維護專案知識圖譜（docs/{project}-knowledge/）— 追蹤進行中/待辦工作、系統關聯、Issue、會話交接。當專案工作開始、結束、遇到 issue、或需要掌握現況時觸發。
+description: 維護專案知識架構圖（docs/{project}-knowledge/）— 追蹤進行中/待辦工作、系統關聯、Issue、會話交接。當專案工作開始、結束、遇到 issue、或需要掌握現況時觸發。
 ---
 
-# 專案知識圖譜系統（lumos）
+# 專案知識架構圖系統（lumos）
 
 ## 一眼看懂
 
-- **金科玉律**:所有改動/調研/計畫都**同一次工作內**同步進圖譜。查知識**優先讀圖譜**;與其他文件/記憶/臆測衝突以圖譜為準、向人確認。**但與行為事實(測試結果/實際執行/生產觀測)衝突時不自動判圖譜為真**——那是有東西壞了,查清哪邊錯並立事故節點(2026-07-29 外審吸收)。
+- **金科玉律**:所有改動/調研/計畫都**同一次工作內**同步進架構圖。查知識**優先讀架構圖**;與其他文件/記憶/臆測衝突以架構圖為準、向人確認。**但與行為事實(測試結果/實際執行/生產觀測)衝突時不自動判架構圖為真**——那是有東西壞了,查清哪邊錯並立事故節點(2026-07-29 外審吸收)。
 - **主工具 = `lumos`**(python3 零依賴,`find_vault` 自動鎖定 `docs/*-knowledge/`)。**禁止**用 Grep/Read/Edit/Write 直接碰 vault 的 .md——繞過寫後自驗與鐵則防護。需讀節點**完整 body**(決策全文/章節內文)→ `lumos show <節點> [--body-only]`(2026-07-21 新增,補「context 只給 summary 索引」的全文讀取缺口);context 仍是進場導航首選。
 - **進場三步**:`lumos search <關鍵字>` 定位 → `lumos context <節點>` 掃脈絡(頭部攤 ⚠ 合約) → `lumos contracts <節點>` 查硬合約。**然後**才 grep code / 查 DB 驗證。
-- **★命中≠查完★**:search 只給索引——命中節點要 `lumos show` 讀**全文**才准下結論;拿摘要判「圖譜沒記」是實證過的破口(2026-08-14 金鑰事故:值在節點第 64 行,靠摘要判成沒有)。★「只是查個值/查個狀態」不是跳過圖譜的理由,是最該查的情境★;每個**子任務**進場都重新觸發圖譜先行,不是 session 開頭一次。
+- **★命中≠查完★**:search 只給索引——命中節點要 `lumos show` 讀**全文**才准下結論;拿摘要判「架構圖沒記」是實證過的破口(2026-08-14 金鑰事故:值在節點第 64 行,靠摘要判成沒有)。★「只是查個值/查個狀態」不是跳過架構圖的理由,是最該查的情境★;每個**子任務**進場都重新觸發架構圖先行,不是 session 開頭一次。
 - **寫完一個節點**:`lumos lint <節點>`(單檔快檢) → 收尾 `lumos doctor`(全圖)。
 - **push 後拉回 CI 結論（僅當專案 `.lumos/config.json` 宣告 `ci` 區塊時；未宣告＝此條不存在）**：`lumos ci-wait` → 綠且 `verdict=green` 才收工；**rc1（紅）＝當輪修**（讀它印的失敗步驟＋log 尾段 → 修 → 推 → 再等，上限 2 次，仍紅則寫 Issue 攤給人）；rc0 但 verdict 是 `timeout`/`no-run`/`unavailable`/`undetermined` **不算綠**（分別是：還沒跑完要手動查／此 sha 沒觸發任何 workflow／環境缺 gh／跑完了但結論既非成功也非失敗——`cancelled`·`action_required`·`stale`，要人判）。**紅燈不過夜**：修不完也要在收尾報告明講「main 上有紅燈未解」，不得靜默收工。⚠ **這是觀測不是強制**：`ci-wait` 擋不了 push、也擋不了 merge，工具缺席／config 壞損一律 fail-open rc0；要「紅燈進不了 main」得在 GitHub 設 branch protection required check（本工具不碰 GitHub 設定）。
 - **rich 節點** = Write/Edit 內文 + `summary` block;**純量/list/decisions 一律走 `lumos set`/`append`/`decision-add`**(別手改 frontmatter)。
@@ -23,7 +23,7 @@ description: 維護專案知識圖譜（docs/{project}-knowledge/）— 追蹤�
 > | 綁合約 `[test:]`/`[audit:]`/`[kill:]`、跑 `lumos guard` scaffold/bind/kill、或不確定會不會**帶風向** | 「合約鏈深規 + guard 工作流 + 防帶風向鐵則」段 |
 > | 寫**重大決策**要填 ADR 四欄、或某欄不知怎麼填 | 「decisions ADR 完整版」段 |
 > | 建/改 Verification（`valid_under`/`revalidate_when`/雙向 `verified_by` 細節） | 「Verification 完整規格」段 |
-> | 跑**自足性審計**要 prompt 模板 / 無主脈絡時的交叉審計變體 B | 「圖譜更新後審計」段 |
+> | 跑**自足性審計**要 prompt 模板 / 無主脈絡時的交叉審計變體 B | 「架構圖更新後審計」段 |
 > | 查某 lumos 子命令的**完整旗標** | 「操作方式」段(或 `lumos <cmd> --help`) |
 > | 需要 Obsidian GUI / 權威解析驗證 / File Recovery（少數場景） | 「Obsidian CLI」段 |
 >
@@ -38,11 +38,11 @@ ls -d docs/*-knowledge/Projects/ 2>/dev/null   # 已存在? 存在即 lumos doct
 lumos init                                       # 不存在 → 建 5 資料夾 + hooks(改 code 沒更圖被擋);--name 自訂 / --no-hooks 輕量
 ```
 vault 名 = 資料夾 basename,lumos 自動解析。**全程無需 Obsidian**(僅 obsidian-only 功能才註冊,見 `reference.md`)。
-> `lumos init` = 專案層(圖譜+該 repo hooks);`lumos bootstrap` = 機器層(clone/skills/全域 lumos,一輩子一次)。
+> `lumos init` = 專案層(架構圖+該 repo hooks);`lumos bootstrap` = 機器層(clone/skills/全域 lumos,一輩子一次)。
 
-## 核心圖譜接點(core-knowledge)
+## 核心架構圖接點(core-knowledge)
 
-看到 frontmatter `core_refs:` 或 summary `CORE:` 行 → **該主題權威在核心圖譜,專案筆記殘留描述不可當權威**(疑似快照 = drift 該清);語意異動改核心節點(走 `lumos-core-knowledge` skill),不在專案筆記改。
+看到 frontmatter `core_refs:` 或 summary `CORE:` 行 → **該主題權威在核心架構圖,專案筆記殘留描述不可當權威**(疑似快照 = drift 該清);語意異動改核心節點(走 `lumos-core-knowledge` skill),不在專案筆記改。
 
 ## 跨 session 傳訊的形狀(2026-08-14 拍板)
 
@@ -50,12 +50,12 @@ vault 名 = 資料夾 basename,lumos 自動解析。**全程無需 Obsidian**(�
 
 > ★鐵則★ **訊息只傳「指標＋觸發」,不傳「內容本身」。**
 
-理由:訊息內容只活在對造那個 session 的記憶裡,視窗一關即蒸發;把協同結論當訊息送過去就算數 = 在圖譜之外長出第二個沒人維護的真相源。
+理由:訊息內容只活在對造那個 session 的記憶裡,視窗一關即蒸發;把協同結論當訊息送過去就算數 = 在架構圖之外長出第二個沒人維護的真相源。
 
-三步形狀:①先把改動寫進圖譜(跨專案規則走核心圖譜升格) ②訊息只說「我動了哪一條/去讀哪個節點/你那邊要跟什麼」 ③明確要求對造把跟進結果也寫回它自己的圖譜。
+三步形狀:①先把改動寫進架構圖(跨專案規則走核心架構圖升格) ②訊息只說「我動了哪一條/去讀哪個節點/你那邊要跟什麼」 ③明確要求對造把跟進結果也寫回它自己的架構圖。
 
-⛔ **禁止**:拿傳訊當「問規則的捷徑」(規則權威在圖譜,不在誰的 session 記憶)、拿 peer session 當審計獨立席次(脈絡髒於全新子代理且更貴)、以及**把本 session 被閘擋下的動作轉請 peer 執行**(權限洗白;同機確實存在跳權限確認的 session,此條純自律無機械守衛)。
-> ⚠ 本節目前**沒有任何機械檢查**在守——對造沒把跟進寫回圖譜,工具不會知道。
+⛔ **禁止**:拿傳訊當「問規則的捷徑」(規則權威在架構圖,不在誰的 session 記憶)、拿 peer session 當審計獨立席次(脈絡髒於全新子代理且更貴)、以及**把本 session 被閘擋下的動作轉請 peer 執行**(權限洗白;同機確實存在跳權限確認的 session,此條純自律無機械守衛)。
+> ⚠ 本節目前**沒有任何機械檢查**在守——對造沒把跟進寫回架構圖,工具不會知道。
 
 ---
 
@@ -208,14 +208,14 @@ KEY:★CHECKPOINT★   <改了難救>                                     # 建�
 - **重大決策**(架構/技術/流程/安全選型)`decisions[]` 必填四欄:`context`/`alternatives_considered`(≥2)/`why_chosen`/`trade_offs`——**缺資訊就問人,不可編造**污染學習資產。翻盤:舊條 `valid:false`+`superseded_by`+`ended`,新條重填完整四欄。
 - **Verification** 必填 `valid_under`(有效條件:版本/規模/schema)+ `revalidate_when`(重驗觸發)。建 Verification **同步**把 wikilink 加進相關 Systems 的 `verified_by`(雙向,缺一不可;漏寫 `lumos sync-verified-by --apply` 補)。
 - **plan_refs**:落地某計劃的 Verification(含後續迭代)填 `plan_refs` 反指計劃節點(意圖鏈,doctor Check 4 把關)。
-- **計劃/設計一律寫圖譜計劃節點**(`Projects/<主題>_計劃`,`type:project`),**不寫 `docs/superpowers/specs/`、`openspec/` 等 repo 路徑**——覆寫任何 SDD 工具的預設落點。
+- **計劃/設計一律寫架構圖計劃節點**(`Projects/<主題>_計劃`,`type:project`),**不寫 `docs/superpowers/specs/`、`openspec/` 等 repo 路徑**——覆寫任何 SDD 工具的預設落點。
 
 ---
 
-## 自足性審計(圖譜實質更新後必做)
+## 自足性審計(架構圖實質更新後必做)
 
-派**乾淨 sonnet agent 只讀圖譜**還原脈絡 → 主對話比對「還原結果 vs 腦中現存脈絡」:有出入 = 圖譜當下不健全,補缺後**重審到一致**。純格式修正可豁免。審過留痕:`lumos self-audit <node>`(doctor Check S 軟提醒未審/過期)。
-> 無主對話脈絡時(定期巡檢/接手陌生專案)→ 改用「圖譜×程式碼交叉審計」(以 code 為真值),做法見 `reference.md`。
+派**乾淨 sonnet agent 只讀架構圖**還原脈絡 → 主對話比對「還原結果 vs 腦中現存脈絡」:有出入 = 架構圖當下不健全,補缺後**重審到一致**。純格式修正可豁免。審過留痕:`lumos self-audit <node>`(doctor Check S 軟提醒未審/過期)。
+> 無主對話脈絡時(定期巡檢/接手陌生專案)→ 改用「架構圖×程式碼交叉審計」(以 code 為真值),做法見 `reference.md`。
 > 對抗**設計稿**審計(乾淨 agent 逐輪找洞+引句錨定收貨)→ 走 `lumos-design-loop` skill,不在此。
 
 ---
@@ -226,7 +226,7 @@ KEY:★CHECKPOINT★   <改了難救>                                     # 建�
 # 開工:掌握現況
 lumos query --tag status/doing; lumos recent --days 7; lumos context Systems/<模組>
 
-# 改完 code:更新圖譜
+# 改完 code:更新架構圖
 lumos set Systems/<模組> updated <日期>
 lumos append Systems/<模組> verified_by "[[Verification/<日期>_xxx]]"
 # body 進度/表格 → Edit;寫完 → lumos lint <節點>
@@ -242,7 +242,7 @@ lumos stale --match "<變更關鍵字>"
 3. 逐句判：改動後這句還成立嗎？成立→一句話為什麼；不成立→**現在改掉或標作廢**。
 4. **這次有動到使用者看得到的畫面嗎？**（Android／web UI 都算）
    有 → 除了單元測試，補一支**可重放的 UI flow 檔**（Android＝maestro `.maestro/*.yaml`），
-   並用 `[test:<平台>:<flow名>]` 綁回該功能的圖譜節點。
+   並用 `[test:<平台>:<flow名>]` 綁回該功能的架構圖節點。
    ★斷言必須含「畫面上出現什麼字」★——只斷言「有沒有被擋」等於白做（實例：折扣超過 100%
    確實被擋，但畫面顯示的是登入頁的「請輸入員工編號!」，單元測試結構上測不到）。
    寫法與七個坑見 `reference.md` 的〈產 maestro UI flow 的派工要求〉。

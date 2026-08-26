@@ -2,7 +2,7 @@
 
 ## 摘要（人話）
 
-這份 changeset 只做一件事：把「對帳假差異自癒」背景服務的排程時間，從晚上 10:30 再往後挪 30 分到晚上 11:00。commit message 自稱「純 config,不碰自癒邏輯/合約」——我逐檔核對過，這句話是真的：實際的自癒判斷邏輯（`ReconciliationSelfHealService.cs`、`ReconciliationRepository.cs`）一行都沒動，只動了 config 數值、一則 SchedulerHeartbeat 顯示註解、跟兩篇知識圖譜文件。
+這份 changeset 只做一件事：把「對帳假差異自癒」背景服務的排程時間，從晚上 10:30 再往後挪 30 分到晚上 11:00。commit message 自稱「純 config,不碰自癒邏輯/合約」——我逐檔核對過，這句話是真的：實際的自癒判斷邏輯（`ReconciliationSelfHealService.cs`、`ReconciliationRepository.cs`）一行都沒動，只動了 config 數值、一則 SchedulerHeartbeat 顯示註解、跟兩篇知識架構圖文件。
 
 JSON 改法本身是對的（我驗證過 `appsettings.json` 改完仍是合法 JSON，數值 `Hour:23/Minute:0` 正確落地），也沒有其他 `appsettings.*.json` 覆寫這個區塊去打架。23:00 這個時間點本身不會撞到午夜跨日或其他排程服務的邊界，风险很低。
 
@@ -55,7 +55,7 @@ var hour = Clamp(_configuration.GetValue("ReconSelfHeal:Hour", 22), 0, 23, 22, "
 這些檔案這次 changeset 完全沒動，字面值都還停在「22:00」（其實連上一輪 22:00→22:30 的改動都沒同步到，這次 22:30→23:00 也一樣沒同步，等於同一處註解已經連續兩輪排程調整都沒更新，跟實際值差到 1 小時）。
 
 **具體失敗場景（兩層）**：
-1. 文件層：日後工程師只讀程式碼（不查 `appsettings.json` 或圖譜文件）想確認自癒服務何時跑，會被 XML doc 註解誤導成「22:00」，實際上是 23:00，可能因此誤判「對帳晚於 22:00 完成的差異當晚翻不到」而去查一個已經在上一輪修過的假問題。
+1. 文件層：日後工程師只讀程式碼（不查 `appsettings.json` 或架構圖文件）想確認自癒服務何時跑，會被 XML doc 註解誤導成「22:00」，實際上是 23:00，可能因此誤判「對帳晚於 22:00 完成的差異當晚翻不到」而去查一個已經在上一輪修過的假問題。
 2. 行為層（低機率但真實）：`GetValue("ReconSelfHeal:Hour", 22)` 的第二參數 `22` 是「config 讀不到該鍵時」的 fallback。目前 `appsettings.json` 確實有設 `Hour:23`，所以正常部署不會走到這個 fallback。但若未來有任何環境（例如 IIS 上被覆寫的機碼、或部署腳本誤刪該區塊）造成 `ReconSelfHeal:Hour` 這個 key 在執行當下讀不到，服務會**靜默退回 22:00**（Clamp 邏輯不會報錯、只會寫一則 warning 心跳），等於這次「改到 23:00」的產品決策在該情境下被悄悄復原，而維運不容易從行為直接看出「用的是 fallback 值不是 config 值」。
 
 以上兩項都判 minor：不是這次 patch 引入的邏輯錯誤（patch 承諾「不碰自癒邏輯」也確實沒碰），純粹是文件精度／註解未隨 config 變動同步更新，正常部署路徑下行為是對的。

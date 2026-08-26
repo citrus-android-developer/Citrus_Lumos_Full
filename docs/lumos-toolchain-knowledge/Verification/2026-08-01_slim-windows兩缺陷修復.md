@@ -62,7 +62,7 @@ summary: |-
 - `python3 scripts/test_lumos.py -k slim`:272 checks 全綠。
 - ①②兩條均實測「紅→綠」:`git stash push -- slim/install.py` 只還原該檔、重跑對應測試確認翻紅,`git stash pop` 拿回修復後版本確認轉綠。
 - `scripts/slim-gen.py` 重新生成 `dist/`,確認 10 個入口檔(`install.{sh,py,ps1}`/`uninstall.{sh,py,ps1}`/`get.{sh,ps1}`/`README.md`/`claude-block.md`)全在、三支 `.sh` 保留可執行位元。
-- 圖譜同步:[[Systems/slim-install-安裝器]]、[[Systems/slim-uninstall-一行卸載]] 補上對應 ★INVARIANT★/KEY 行與 verified_by。
+- 架構圖同步:[[Systems/slim-install-安裝器]]、[[Systems/slim-uninstall-一行卸載]] 補上對應 ★INVARIANT★/KEY 行與 verified_by。
 
 ## 仍未在真機驗證 / 已知殘留風險
 

@@ -112,7 +112,7 @@ J-a:regen+★INVARIANT★ 無證據擋/有 [src:] 過/非 regen 節點不受影�
 
 - **宣告制繞過**：不標 `regen` 就完全繞過 Check J——這是 opt-in 閘的結構性限制（同 ★IRREVERSIBLE★「未標=可逆」）。緩解＝紀律 + review;不假裝機械能抓。**r1 補**:此繞過無 governance/bypass 留痕、無 Check H 式軟提醒對應——類比 ★IRREVERSIBLE★ 的緩解力度不對等,誠實記;自動偵測「疑似重生未標」留未來(不進 M1)。
 - **假 Tier A（幻覺證據）**：編一個真實存在的 path 但內容根本不支持該 claim——J-c 只驗「指針可解析」,不驗「內容真支持 claim」（那是語意判斷,機械做不到;誠實記天花板,語意層靠 M2 對抗審）。
-- **self-governance 循環**：Check J 由 lumos 自驗 lumos 圖譜——lint 規則本身錯了會系統性放行/誤擋;緩解＝Check J 測試逐條對齊合約（測試策略節）+ anchor 基線護測試不被偷改。
+- **self-governance 循環**：Check J 由 lumos 自驗 lumos 架構圖——lint 規則本身錯了會系統性放行/誤擋;緩解＝Check J 測試逐條對齊合約（測試策略節）+ anchor 基線護測試不被偷改。
 - **標記語法與既有解析（r1 已查證收斂;r2 影響面列全）**：`[test:]` 族皆具名閉括號,`SRC_REF_RE`/`GIT_REF_RE` 命名空間**不撞**(Codex 驗訖);但 `INV_TAG_RE`(scripts/lumos:1397)清洗族**須同步擴 `src|git`**——影響面共 11 處行號、8 類呼叫點(r2 Codex 列全,非只 contracts 顯示;計數精確化 r3):Check T 乾淨宣稱(660)/contracts(1787)/lint 裸合約訊息(1844)/guard 分類·list·trace(2419/2445/3150)/guard scaffold 子字串選取(2547)/kill-add 定位+寫後驗(2724/2793)/guard audit 定位+寫後驗(3069/3091)。**行為後果明記**:guard 定位對「正文相同、只差指針」的兩條合約改為多重命中→要求更精確正文——這**符合**「指針非宣稱正文」語意,非退化;`[test:]` 抽取不受影響(strip_test_refs 另走 invariant_test_refs,1621)。
 - **`推測:`/`佚失:` 疊放**（r1 已釘死）：`KEY:推測:` 第二層前綴、只掃 summary、raw 行獨立偵測——見宣告制節與不對稱接線節。
 

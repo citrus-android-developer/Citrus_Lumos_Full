@@ -2,25 +2,25 @@
 
 > 這是 SKILL.md（167 行頭版）的**完整細節版**。頭版給「做什麼 + 紀律」並用觸發表指你來讀對應段;此處放深規/模板/完整規格/邊角。**金科玉律 / vault 偵測 / 進場三步 / frontmatter 鐵則 / 合約標記快規等基礎已在頭版,不重複。**
 
-## 跨專案核心圖譜接點(core-knowledge)
+## 跨專案核心架構圖接點(core-knowledge)
 
-部分業務規則已**升格**到跨專案核心圖譜(`$CORE_KNOWLEDGE_ROOT` = `$CORE_KNOWLEDGE_ROOT`,詳 `lumos-core-knowledge` skill)。專案層的最小閱讀規則:
+部分業務規則已**升格**到跨專案核心架構圖(`$CORE_KNOWLEDGE_ROOT` = `$CORE_KNOWLEDGE_ROOT`,詳 `lumos-core-knowledge` skill)。專案層的最小閱讀規則:
 
-1. **看到筆記 frontmatter `core_refs:` 或 summary `CORE:` 行** → 該主題權威在核心圖譜,專案筆記殘留描述**不可當權威**(紀律上不留快照,看到疑似快照 = drift 該清)
+1. **看到筆記 frontmatter `core_refs:` 或 summary `CORE:` 行** → 該主題權威在核心架構圖,專案筆記殘留描述**不可當權威**(紀律上不留快照,看到疑似快照 = drift 該清)
 2. **語意/規則異動** → 改核心節點(不在專案筆記改),走 `lumos-core-knowledge` skill
-3. **自足性審計**的 agent 可讀範圍要涵蓋已掛載的核心 repo,否則升格後的規則會被誤判為圖譜缺漏
+3. **自足性審計**的 agent 可讀範圍要涵蓋已掛載的核心 repo,否則升格後的規則會被誤判為架構圖缺漏
 4. **雙向核對**:專案筆記 `core_refs` ↔ 核心 facet(`projects/{專案}.md`)的 `implements` 要對得上,巡檢時檢查
 
 ## 操作方式
 
 ### 主要工具：lumos（讀 / 寫 / 巡檢 / 歸檔一律優先）
 
-repo 內的 `scripts/lumos`（python3 標準庫，零 Obsidian 依賴）是**日常操作圖譜的主要工具**。讀取、寫入、巡檢、歸檔一律先用 lumos；Obsidian CLI 只保留給 lumos 沒有的少數場景（見下節）。
+repo 內的 `scripts/lumos`（python3 標準庫，零 Obsidian 依賴）是**日常操作架構圖的主要工具**。讀取、寫入、巡檢、歸檔一律先用 lumos；Obsidian CLI 只保留給 lumos 沒有的少數場景（見下節）。
 
 > **全域安裝**：`python3 scripts/lumos install` 後 `lumos` 上 `~/.local/bin`，任何專案子目錄直接打 `lumos <cmd>`（find_vault 從 cwd 往上找 docs/*-knowledge，或 standalone vault root 如核心 repo）。下表指令前綴 `python3 scripts/lumos` 與全域 `lumos` 等價。
 
 **禁止用 Grep/Glob/Read/Edit/Write 直接操作 `docs/{vault-name}/` 下的 .md 檔案。**
-lumos 提供圖譜感知能力（backlinks、links、orphans、contracts、合約測試綁定），是單純讀寫檔案做不到的；直接編輯也繞過寫後自驗與鐵則防護。
+lumos 提供架構圖感知能力（backlinks、links、orphans、contracts、合約測試綁定），是單純讀寫檔案做不到的；直接編輯也繞過寫後自驗與鐵則防護。
 
 **讀取 / 巡檢**：
 
@@ -31,7 +31,7 @@ lumos 提供圖譜感知能力（backlinks、links、orphans、contracts、合�
 | **lint 宣告健康檢查（宣告了跑不動的 linter 抓出來）** | `python3 scripts/lumos lint-check [--repo R] [--smoke]` — 靜態格式校驗+--smoke 真跑冒煙;rc 0健康/1有問題/2非JSON |
 | 治理事件帳（某節點歷來被哪幾道閘攔過） | `python3 scripts/lumos gov [<筆記名>] [--since N]` — 唯讀彙整 bypass/rot/governance-log;本機可見性 |
 | **設計 spec 進實作前打磨**（對抗審計 loop 到收斂;canary 協議 2026-08-14 已停用） | 調用 **`lumos-design-loop`** skill;原語 `lumos canary record --loop/--severity/--findings` + `lumos loop status <id> --need 2 --gate --spec <md> --repo <root>`(證據閘:K-streak ∧ 引用座標 refcheck ∧ 發現枯竭)。收斂另有三模式:`--gate --panel`(不吃 --need)/`--light`/`--gate --spec --settle <清單.json>`(結清,互斥群 rc2);輔助原語 `loop next`(settle 不支援)/`loop compress`/`loop verify-progress`——詳 design-loop skill |
-| 健康巡檢（orphans / unresolved / verified_by 同步 / plan_refs 意圖鏈 / 同名守衛 / 鐵則 lint / ★INVARIANT★→測試綁定 + 獨立合法性審計；Check P 失效檔案認領(節點正文 inline-code 路徑指向已不存在的 repo 檔 → 軟提醒「圖譜指向死碼」)） | `python3 scripts/lumos doctor [--ci]` |
+| 健康巡檢（orphans / unresolved / verified_by 同步 / plan_refs 意圖鏈 / 同名守衛 / 鐵則 lint / ★INVARIANT★→測試綁定 + 獨立合法性審計；Check P 失效檔案認領(節點正文 inline-code 路徑指向已不存在的 repo 檔 → 軟提醒「架構圖指向死碼」)） | `python3 scripts/lumos doctor [--ci]` |
 | 讀單篇 decisions | `python3 scripts/lumos decisions <筆記名>` |
 | 全 vault 掃被推翻決策 | `python3 scripts/lumos decisions --superseded` |
 | 環境變更掃 valid_under / revalidate_when 命中 | `python3 scripts/lumos stale --match "<條件字串>"` |
@@ -53,7 +53,7 @@ lumos 提供圖譜感知能力（backlinks、links、orphans、contracts、合�
 | **linter→SARIF 橋接(vault-free)** | `lumos sqlfluff-sarif`(T-SQL,吃 `sqlfluff … --format json`)/ `lumos stylelint-sarif`(CSS/SCSS/.vue,吃 `stylelint … --formatter json`)—— 這兩款無原生 SARIF,轉 SARIF v2.1 進 lint-adapter(專案 `.lumos/lint.json` 對應棧 pipe;`... | python3 scripts/lumos <bridge> --out {LINT_SARIF_OUT}`)。**原生吐 SARIF 的不用橋接**:detekt/Roslyn(dotnet ErrorLog)/**ESLint(`@microsoft/eslint-formatter-sarif`)** 直接接。Landmark 真機:sqlfluff 65 .sql、ESLint 148 .vue 都驗過。盲區:Dapper 寫在 C# 字串的 SQL 非 .sql 檔 |
 | **linter 版本偵測(vault-free)** | `lumos lint-watch [--repo <root>] [--json]` — 讀專案 `.lumos/lint-watch.json`(`[{name,registry,current}]`,registry=`pypi:`/`npm:`/`maven:g:a`/`google-maven:g:a`(Android/AGP/AndroidX,dl.google.com)/`nuget:PackageId`(C#/.NET)/`github:o/r`),機械查各 registry 最新**穩定**版 vs 鎖定版 → 落後產候選 manifest(`{candidates,checked,failed}`)。純數字 tuple 比較 + 等段數守衛、prerelease 一律排除、fail-open(網路失敗不升 rc)。rc:成功=0(含缺/空清單)/清單格式壞=2。治理排程 `governance/lint-watch-check.sh`(掛 daily wrapper 第3步)吃它 → seen-ledger 去重 → 新候選暫存 `governance/lint-upgrades/` + LINE 通知 → 人放行(bump `current`) |
 | **Compose 重組效能(vault-free)** | `lumos compose-metrics [--repo <root>] [--json] [--update-baseline] [--audit]` — 讀專案 `.lumos/compose-metrics.json`(宣告 metrics/reports 目錄)+ `.lumos/compose-baseline.json`,比對 Compose Compiler Metrics(專案 build 產出)現況 vs baseline → 退步 manifest(新增 non-skippable composable + skippable 比率退步/unstable 上升)。`--update-baseline`=放行(只寫成功解析模組)。**`--audit`=盤點模式:無視 baseline、列出當下全部 non-skippable composable(+unstable 原因)——初次採用/看既有問題點全景(補 delta-only 看不到既有債的洞)**。baseline+delta(metrics 整模組快照無 file:line)。rc:成功=0/宣告壞=2。**⚠ metrics 要用完整 build(非 incremental——incremental 只出部分檔)**;需專案 build 時給 Compose 編譯器 `metricsDestination`/`reportsDestination` 旗標(lumos 只讀不 build) |
-| **影響幅度偵測(關聯節點自動修復地基,vault-free)** | `lumos impact --file <code路徑> [--repo <root>] [--json] [--depth N]` — 算「改這支 code 波及哪些圖譜節點」:①直接(body inline-code 反查,不掃 core_refs)②間接(多源 BFS hop 1..depth,related/verified_by/plan_refs/body-wikilink 雙向,cycle guard)③相關事故(節點 `pitfall_when` glob/content-regex 命中被碰檔;去重:既結構又 trigger 命中只列 incidents)。標 direction/contract/combo。**已掛 PreToolUse hook(v1.1 降噪版,2026-07-11 goldset §6 全過轉正)**:Claude Edit/Write/MultiEdit code 時動手前自動注入「必看(合約/事故固定席)+相關 top-8(帶分數,改動內容當查詢詞)」——從全量 40+ 行縮到數行;TTL 20min 冷卻窗內走 `--incidents-only` 快速路(事故安全面每次看)。據此判受影響節點需不需同步。rc:0/3(vault 缺)。**`lumos impact --diff <base>..HEAD [--json]`(2026-07-11 橋接)**:聚合整段 diff 各改動檔的 ranked impact(query=該檔 hunk)成受影響功能面 manifest(固定席全保+非固定 top-8+來源檔標注)——code-loop 派 reviewer 前跑、當第二鏡頭(advisory 人判;--diff 聚合版不接 hook——單檔版已轉正接 hook,見 impact 行)。**`--sync-check`(落成核對)**:同 range 的預期受影響節點 vs 實際動過節點 → 未同步清單(code-loop 收斂後、pass 留痕前跑) |
+| **影響幅度偵測(關聯節點自動修復地基,vault-free)** | `lumos impact --file <code路徑> [--repo <root>] [--json] [--depth N]` — 算「改這支 code 波及哪些架構圖節點」:①直接(body inline-code 反查,不掃 core_refs)②間接(多源 BFS hop 1..depth,related/verified_by/plan_refs/body-wikilink 雙向,cycle guard)③相關事故(節點 `pitfall_when` glob/content-regex 命中被碰檔;去重:既結構又 trigger 命中只列 incidents)。標 direction/contract/combo。**已掛 PreToolUse hook(v1.1 降噪版,2026-07-11 goldset §6 全過轉正)**:Claude Edit/Write/MultiEdit code 時動手前自動注入「必看(合約/事故固定席)+相關 top-8(帶分數,改動內容當查詢詞)」——從全量 40+ 行縮到數行;TTL 20min 冷卻窗內走 `--incidents-only` 快速路(事故安全面每次看)。據此判受影響節點需不需同步。rc:0/3(vault 缺)。**`lumos impact --diff <base>..HEAD [--json]`(2026-07-11 橋接)**:聚合整段 diff 各改動檔的 ranked impact(query=該檔 hunk)成受影響功能面 manifest(固定席全保+非固定 top-8+來源檔標注)——code-loop 派 reviewer 前跑、當第二鏡頭(advisory 人判;--diff 聚合版不接 hook——單檔版已轉正接 hook,見 impact 行)。**`--sync-check`(落成核對)**:同 range 的預期受影響節點 vs 實際動過節點 → 未同步清單(code-loop 收斂後、pass 留痕前跑) |
 | **共改漏改守衛(知識同步散落的機械守衛,vault-free)** | `lumos cochange rules [--all] [--repo] [--json]` / `lumos cochange check [--staged\|--diff <A..B>] [--repo] [--json]` — git 歷史挖「改 A 歷史 X% 同改 B」規則(ROSE 非對稱 confidence,conf≥0.8/support≥3/排>20檔 commit/預設排除治理帳與生成檔),check 對變更集列漏改警告。**pre-commit Gate CC 已接線(advisory 恆不擋)**:改了機制文件漏掉歷史上總同改的列舉表會在 commit 時提醒。rc:正常 0(含空/zero-commit)/git 失敗 2。設計見 `Projects/cochange守衛_計劃` |
 | **折入漂移守衛(design-loop 折入後查一致性)** | `lumos fold-check <spec路徑> [--json]` — 列鏡像段(summary/json fence/審計紀錄/天花板)逼逐段複查 + value-drift(全文域同識別詞不同值,如 `2..depth` vs `1..depth`)+ reverse-omission(高訊號 token `--flag`/★MARKER★/檔名 某段缺)。**design-loop skill step7 折入後強制跑**;排除審計紀錄段/placeholder/FENCE。rc:有 flag=1(訊號非 abort)/無=0 |
 | 鄰域樹狀展開／畫圖 | `map <筆記名> --depth 2`／`export --folders Systems Projects` |
@@ -74,13 +74,13 @@ lumos 提供圖譜感知能力（backlinks、links、orphans、contracts、合�
 - **decisions 翻盤/新增** → `lumos decision-supersede` / `decision-add`（surgical 巢狀;**非 ruamel**——ruamel round-trip 會 reflow、破壞最小 diff）
 - **白名單外的 frontmatter 寫入**（`summary` block 改某行、`alternatives_considered` 子清單編輯）→ lumos 目前無對應,走下節 obsidian `processFrontMatter` eval 或手動 Edit
 
-**安裝 / 生命週期**（操作工具鏈本身,不碰圖譜資料;唯一源 = 公開 repo `citrus-android-developer/Citrus_Lumos_Full`，預設 clone 到 `~/harness/lumos-toolchain`）：
+**安裝 / 生命週期**（操作工具鏈本身,不碰架構圖資料;唯一源 = 公開 repo `citrus-android-developer/Citrus_Lumos_Full`，預設 clone 到 `~/harness/lumos-toolchain`）：
 
 | 操作 | 指令 | 說明 |
 |---|---|---|
 | 全域安裝 lumos（symlink → `~/.local/bin`） | `python3 scripts/lumos install [--force]` | 裝完任何專案子目錄直接 `lumos <cmd>`,免打 `python3 scripts/lumos`;`--force` 覆寫既有 symlink |
 | 移除全域 lumos | `lumos uninstall` | 移除 `~/.local/bin/lumos` symlink（不動 vendored copy） |
-| 從唯一源更新本專案 vendored 工具組 | `lumos update [--source <path>] [--no-pull]` | `git pull` Lumos 來源 → 重新 vendor（lumos CLI / hooks / CLAUDE.md 紀律範本）→ 結尾 diff 自癒;**圖譜資料 scaffold-skip 永不動**。`--source` 指定來源（預設 `$LUMOS_HOME` 或 `~/harness/lumos-toolchain`）、`--no-pull` 用現有來源不拉取。**跑完記得 `git commit` 那份 vendored copy**（CI/hook 靠專案內這份） |
+| 從唯一源更新本專案 vendored 工具組 | `lumos update [--source <path>] [--no-pull]` | `git pull` Lumos 來源 → 重新 vendor（lumos CLI / hooks / CLAUDE.md 紀律範本）→ 結尾 diff 自癒;**架構圖資料 scaffold-skip 永不動**。`--source` 指定來源（預設 `$LUMOS_HOME` 或 `~/harness/lumos-toolchain`）、`--no-pull` 用現有來源不拉取。**跑完記得 `git commit` 那份 vendored copy**（CI/hook 靠專案內這份） |
 | 一鍵裝好一切（新機器 / 新 clone 的專案） | `python3 scripts/lumos bootstrap [--pull] [--lumos-url <url>] [--lumos-home <path>]` | 自動：clone Lumos（若缺）→ 裝 user-scope skills → 全域 lumos → repo git hooks。裝完**重啟 Claude Code session**（L1/L3 hooks 要 session start 載入）。**`--pull`：既有 Lumos clone 也 `git pull` 拉最新**（不加則沿用現有 clone、拿不到 skills 更新——「已設定過的人想拿更新」用這個或直接去 Lumos clone `git pull`）。`--lumos-url`／`--lumos-home` 預設讀 `$LUMOS_URL`／`$LUMOS_HOME` |
 
 > **子命令全覽（61 個頂層命令；`lumos --help` 為現行權威）**：讀取/導航（`context` `show` `contracts` `search` `query` `links` `backlinks` `map` `export` `decisions` `stale` `recent` `stats`）+ 巡檢/治理（`doctor` `lint` `lint-watch` `self-audit` `sync-verified-by` `gov` `spec-trace` `signoff` `rel-cascade` `test-layers`）+ 寫入（`set` `append` `remove` `new` `archive` `decision-add` `decision-supersede` `decision-reindex`）+ 合約守衛（`guard` list/scaffold/bind/audit/trace/kill/kill-add）+ 對抗審計 loop（`pitfalls` --diff tier / `code-loop` pass/skip/check 收斂留痕 / `canary` record·second / `loop` status / `fold-check` 折入漂移 / `refcheck` 指涉核對 / `seat-check` 席報告對 dispatch 有講沒做對帳 / `link-candidates` code→節點補鏈候選 / `mutate` diff 變異測試(驗測試網,觀測)）+ 完整性/影響（`anchor` verify/approve / `impact` 影響幅度+事故觸發 / `cochange` rules/check 共改漏改守衛 / `delguard` code 側刪除傳播守衛(staged 被刪符號→grep vault 指名過期原句) / `testmap` build·affected 檔↔測試依賴）+ 社群 linter 橋（`sqlfluff-sarif` `stylelint-sarif` `compose-metrics` `lint-check`）+ CI 回流觀測（`ci-wait` `ci-status`）+ 安裝/生命週期（`install` `uninstall` `update` `bootstrap` `init` `deinit` `teardown`）。
@@ -184,12 +184,12 @@ pitfall_when:
 - **caveat**:`content:` 避嵌套量詞(`(a+)+$` 對大檔 catastrophic backtracking、python re 無 timeout);`glob:**/x` **不** match 根層檔(要蓋根層用 `glob:*x*` 或兩條)。
 - 天花板:trigger 人寫(GIGO)、regex 假陽假陰、命中=「可能相關」非定論(Claude 動手前判)。詳見 `Projects/pitfalls事故觸發_計劃`。
 
-### Frontmatter 鐵則（違反 = 圖譜長 ghost 節點或整篇 frontmatter 報廢）
+### Frontmatter 鐵則（違反 = 架構圖長 ghost 節點或整篇 frontmatter 報廢）
 
-2026-06-10 MyApp 圖譜健檢實際踩雷總結，四條鐵則：
+2026-06-10 MyApp 架構圖健檢實際踩雷總結，四條鐵則：
 
-1. **多個 wikilink 必須是 YAML list，一項一連結**。❌ `verified_by: "[[A]], [[B]]"`（單一字串）→ Obsidian 把整串從第一個 `[[` 貪婪吃到最後一個 `]]` 當成**一個**超長連結 → 圖譜長出亂碼灰色 ghost 節點；在 Obsidian 點到該節點還會**自動建立含 `]], [[` 的垃圾檔案**（檔名中的 `/` 切成巢狀資料夾）。✅ 寫法見上方 `related` / `verified_by` 範例。
-2. **block scalar（`summary: |` 等）內的 wikilink 不會被索引**。寫在 summary 裡的 `[[X]]` 只是文字，不產生圖譜連結、不算 backlink——要建立關聯必須同時在內文（如「## 相關模組」）或 list 型 property 放一份，否則目標筆記可能變孤兒。
+1. **多個 wikilink 必須是 YAML list，一項一連結**。❌ `verified_by: "[[A]], [[B]]"`（單一字串）→ Obsidian 把整串從第一個 `[[` 貪婪吃到最後一個 `]]` 當成**一個**超長連結 → 架構圖長出亂碼灰色 ghost 節點；在 Obsidian 點到該節點還會**自動建立含 `]], [[` 的垃圾檔案**（檔名中的 `/` 切成巢狀資料夾）。✅ 寫法見上方 `related` / `verified_by` 範例。
+2. **block scalar（`summary: |` 等）內的 wikilink 不會被索引**。寫在 summary 裡的 `[[X]]` 只是文字，不產生架構圖連結、不算 backlink——要建立關聯必須同時在內文（如「## 相關模組」）或 list 型 property 放一份，否則目標筆記可能變孤兒。
 3. **含 `: `（冒號+空格）的長文必須用 block scalar 或引號**。❌ `- content: 處置 SQL: UPDATE ...`（未引號）→ YAML `mapping values are not allowed` → **整篇 frontmatter 解析失敗**，所有 property 查詢對此筆記隱性失效。✅ `- content: |-` 換行縮排放長文。
 4. **同一層級禁止重複鍵**。`decided:` / `valid:` 在同一個 decision item 出現兩次 → Obsidian 的 js-yaml 直接整篇 fail（CLI 的 ruby/libyaml 寬鬆放行，**用 CLI 驗過不代表 Obsidian 讀得到**）。
 
@@ -260,7 +260,7 @@ KEY:★INVARIANT★ 點數不足 → INSUFFICIENT_POINTS,在扣點/寫 Registrat
   | 情境 | 綁法 |
   |------|------|
   | 同 repo 單技術棧(多數專案) | 裸 `[test:名]`(現況) |
-  | **單一圖譜記錄的系統橫跨多技術棧 / 多 repo**(前端 App 一個 repo、後端 API 另一個 repo,共用同一圖譜) | `.lumos/config.json` 用 `platforms` map(各平台指 profile + root),綁 **`[test:平台:名]`**、`guard bind/scaffold --platform <平台>`。合約講**哪一端的行為就綁那一端的測試**(如後端合約 → `[test:<後端平台名>:…]`),別把它硬綁到另一端的測試(會變偽證據/套套邏輯) |
+  | **單一架構圖記錄的系統橫跨多技術棧 / 多 repo**(前端 App 一個 repo、後端 API 另一個 repo,共用同一架構圖) | `.lumos/config.json` 用 `platforms` map(各平台指 profile + root),綁 **`[test:平台:名]`**、`guard bind/scaffold --platform <平台>`。合約講**哪一端的行為就綁那一端的測試**(如後端合約 → `[test:<後端平台名>:…]`),別把它硬綁到另一端的測試(會變偽證據/套套邏輯) |
   | 合約由 **UI E2E** 驗(點擊流程/跨畫面/真機或瀏覽器,非單元) | 該平台 profile 用 **`maestro`**(mobile)/**`playwright`**(web),綁 flow `name:` / `test('id')`(見文末 test_profile 段) |
   - 判不準測試在哪個平台就**別亂綁**——先確認測試真的在哪、config 有沒有該平台(缺就先補 `platforms`)。詳見 [[Systems/test-profile-multiplatform]]。
 - **② 三種 guard（在選定平台內,選最能「驗到真」的那種,別寫套套邏輯）**：
@@ -298,10 +298,10 @@ KEY:★INVARIANT★ 點數不足 → INSUFFICIENT_POINTS,扣點前擋下 ... [te
 
 **「乾淨」與「範圍」兩條件(缺一不算第三方驗證)**:
 
-1. **乾淨脈絡**:審計 agent **只拿到圖譜 + 程式**,**不餵你的結論、不餵你的理由、prompt 必須中立(用「試圖反駁」而非「請確認這條合法」**——後者是帶風向,等於自己改自己的考卷)。它若繼承了 maker 的框架,只是換個分身蓋章,不算外人。
+1. **乾淨脈絡**:審計 agent **只拿到架構圖 + 程式**,**不餵你的結論、不餵你的理由、prompt 必須中立(用「試圖反駁」而非「請確認這條合法」**——後者是帶風向,等於自己改自己的考卷)。它若繼承了 maker 的框架,只是換個分身蓋章,不算外人。
 2. **範圍=五問 rubric,逐條打勾**(2026-07-27 升級,borrow Sage arXiv 2512.16041:判官難題約 1/4 偏好前後不一、無明確準則時同模型因情境飄移——rubric 錨定把「情境偏好」變準則判斷。原兩問保留為 ②③):
    - ① **意圖證據**:decisions[]/緣起讀得到「這是刻意設計」嗎?讀不到意圖=候選不合格(可能是 code 反推)。
-   - ② **合約 vs 偶然**:只讀圖譜,這是『不可改的合約』還是『現在剛好這樣實作』被誤標?
+   - ② **合約 vs 偶然**:只讀架構圖,這是『不可改的合約』還是『現在剛好這樣實作』被誤標?
    - ③ **測試夠格**:構造一個違反這條保證、但綁的測試**仍會過**的情形——構造得出=同源/套套邏輯,不合格。**必須實際去看測試碰了什麼**,不能只讀。
    - ④ **可證偽性**:宣稱有沒有可觀測的「違反長什麼樣」?「應該要好/要穩」型散文=不合格。
    - ⑤ **爆炸半徑**:改掉它,說得出具體 breaking 什麼下游(誰依賴這個行為)?說不出=可能不是合約。
@@ -312,7 +312,7 @@ KEY:★INVARIANT★ 點數不足 → INSUFFICIENT_POINTS,扣點前擋下 ... [te
 
 **天花板(再乾淨也跨不過)**:`[audit:]` 只買到 verification 那一半;它**證不了 validation**——「這條金流規則**現在還符不符合真實業務**」要對著業務現實的人來確認(見下節 `decisions`/最高層鐵則的『上次對業務確認』)。**別讓「乾淨 agent 過了」被誤讀成「業務上也對」**;不可逆動作與業務正確性,該擋的閘仍留給人。
 
-**模型選擇**:預設 `sonnet`(`--model` 可改)。刻意用較弱模型是為了讓它**不腦補補洞**——圖譜真的自我解釋得通、測試真的擋得住,才過得了關;強模型太會「替你圓場」。
+**模型選擇**:預設 `sonnet`(`--model` 可改)。刻意用較弱模型是為了讓它**不腦補補洞**——架構圖真的自我解釋得通、測試真的擋得住,才過得了關;強模型太會「替你圓場」。
 
 **留痕**:`lumos guard audit <node> "<KEY 行子字串>" [--model sonnet] [--date YYYY-MM-DD]`(寫後自驗,重審覆蓋舊日期)。**工具只記留痕,不證明審計真的乾淨**——那靠上面兩條件的誠實自律,同 §「防帶風向鐵則」。
 
@@ -368,9 +368,9 @@ lumos sync-verified-by --apply    # 真寫(T1 atomic append,自帶 dedup,冪等)
 > // 單平台:Android 專案 .lumos/config.json
 > { "test_profile": "kotlin-junit" }
 > ```
-> **多平台(單一圖譜跨平台綁測試,見 [[Systems/test-profile-multiplatform]])**:圖譜記錄橫跨前後端的系統時,用 `platforms` 多根多 profile map,讓 `[test:平台:方法]` 綁到不同 repo 的測試。`default_platform` 給無前綴裸 ref 的歸屬(多平台缺省即報錯)。`load_platforms`/`resolve_test_refs` 以「config 有無 `platforms` 鍵」為 legacy 信號,舊 `test_profile`/裸 ref 照舊。`guard bind/scaffold --platform` 指定平台(`--method` 維持識別字、平台另帶,bind 寫 `[test:平台:方法]`)。Check T/`classify_invariants`/`cmd_archive` 各 ref 對其平台的 root+profile 判定(跨 repo)。
+> **多平台(單一架構圖跨平台綁測試,見 [[Systems/test-profile-multiplatform]])**:架構圖記錄橫跨前後端的系統時,用 `platforms` 多根多 profile map,讓 `[test:平台:方法]` 綁到不同 repo 的測試。`default_platform` 給無前綴裸 ref 的歸屬(多平台缺省即報錯)。`load_platforms`/`resolve_test_refs` 以「config 有無 `platforms` 鍵」為 legacy 信號,舊 `test_profile`/裸 ref 照舊。`guard bind/scaffold --platform` 指定平台(`--method` 維持識別字、平台另帶,bind 寫 `[test:平台:方法]`)。Check T/`classify_invariants`/`cmd_archive` 各 ref 對其平台的 root+profile 判定(跨 repo)。
 > ```json
-> // 多平台:<圖譜所在 repo>/.lumos/config.json(平台名/profile/root 依專案自訂)
+> // 多平台:<架構圖所在 repo>/.lumos/config.json(平台名/profile/root 依專案自訂)
 > { "default_platform": "app",
 >   "platforms": {
 >     "app":     {"profile": "kotlin-junit", "root": "."},          // 前端 App(同 repo)
@@ -444,7 +444,7 @@ decisions:
 - 流程變更（三階段流程 / 工作流順序 / API 契約版本）
 - 安全/合規方案（加密方式 / 授權策略 / 個資處理）
 
-**Claude 的填寫義務**（在更新圖譜時主動完善這些欄位）：
+**Claude 的填寫義務**（在更新架構圖時主動完善這些欄位）：
 
 1. **建立新筆記寫第一筆決策時**：判定是否「重大決策」→ 是 → **主動 ASK USER** 取得 `context` / `alternatives_considered` / `why_chosen` / `trade_offs`，**不可省略只填 content+valid**
 2. **讀到舊筆記只有 content+valid 但內容是重大決策**：標記為「ADR 不完整」，**主動詢問使用者**是否補上四欄位（不可自行編造，缺資訊就問）
@@ -499,7 +499,7 @@ python3 scripts/lumos append Systems/OrderService verified_by "[[Verification/20
 python3 scripts/lumos context Systems/OrderService --brief
 ```
 
-> ⚠️ **絕不要用 obsidian `property:set` 塞逗號串接的多個 wikilink**（`value="[[A]], [[B]]" type="list"`）——實測存成**單一字串**而非 YAML list，圖譜長出亂碼 ghost 節點(2026-06-10 踩雷 14 篇)。`lumos append` 天生用安全 list 格式,沒有這個雷;真要走 obsidian 則用 `processFrontMatter` 陣列操作,別用 property:set。
+> ⚠️ **絕不要用 obsidian `property:set` 塞逗號串接的多個 wikilink**（`value="[[A]], [[B]]" type="list"`）——實測存成**單一字串**而非 YAML list，架構圖長出亂碼 ghost 節點(2026-06-10 踩雷 14 篇)。`lumos append` 天生用安全 list 格式,沒有這個雷;真要走 obsidian 則用 `processFrontMatter` 陣列操作,別用 property:set。
 
 **自動同步檢查** → `lumos doctor`（巡檢用,Check 3「verified_by 雙向同步」直接掃出漏寫的 Systems,不必再寫 eval）：
 
@@ -528,11 +528,11 @@ plan_refs:
 1. **需求討論跨超過一個 session → 預設寫**（session 數客觀可判，「大改造」主觀不可判）
 2. 動工前需要跨人 / 跨團隊共識（如服務台豁免案的後台分工）
 3. 變更跨多個 Systems 節點（計劃沒有單一宿主可住）
-4. **任何工具產出「設計 / spec」→ 一律寫計劃節點**（brainstorming、writing-plans、OpenSpec、其他 SDD / spec-driven 框架皆同；既然有正式設計產出，它就該住圖譜，不是散在 repo 檔）
+4. **任何工具產出「設計 / spec」→ 一律寫計劃節點**（brainstorming、writing-plans、OpenSpec、其他 SDD / spec-driven 框架皆同；既然有正式設計產出，它就該住架構圖，不是散在 repo 檔）
 
 其餘變更**不寫計劃**：節點 `decisions[]` 一條 + Verification 即可——一條 decision 就是微型計劃（superseded 條目自帶意圖凍結語意）。常態工作流維持「對話敲定 → 依當下脈絡開發 → 事後沉澱」，計劃節點是大型變更的 opt-in，不是進場義務。
 
-> **⚠ 橋接任何 spec/SDD 工具的預設輸出路徑（必讀）**：各家工具都有自己的 spec 落點——`superpowers:brainstorming` → `docs/superpowers/specs/YYYY-MM-DD-*.md`、`writing-plans` 有自己的落點、`OpenSpec` → `openspec/`、其他 SDD / spec-driven 框架亦各有目錄——**在本紀律下一律覆寫成 lumos 計劃節點**（`Projects/<主題>_計劃.md`，`type: project`），**不另存 `docs/superpowers/specs/`、`openspec/` 或任何 repo 路徑**。理由:「圖譜即唯一真相」涵蓋計劃/設計,不只 code;spec 散在 repo 檔 = 圖譜外的第二真相源,必 drift。多數此類工具也明示「user/專案偏好可覆寫預設 spec 路徑」,本紀律即該覆寫。落地的 Verification 用 `plan_refs` 回指該計劃節點。
+> **⚠ 橋接任何 spec/SDD 工具的預設輸出路徑（必讀）**：各家工具都有自己的 spec 落點——`superpowers:brainstorming` → `docs/superpowers/specs/YYYY-MM-DD-*.md`、`writing-plans` 有自己的落點、`OpenSpec` → `openspec/`、其他 SDD / spec-driven 框架亦各有目錄——**在本紀律下一律覆寫成 lumos 計劃節點**（`Projects/<主題>_計劃.md`，`type: project`），**不另存 `docs/superpowers/specs/`、`openspec/` 或任何 repo 路徑**。理由:「架構圖即唯一真相」涵蓋計劃/設計,不只 code;spec 散在 repo 檔 = 架構圖外的第二真相源,必 drift。多數此類工具也明示「user/專案偏好可覆寫預設 spec 路徑」,本紀律即該覆寫。落地的 Verification 用 `plan_refs` 回指該計劃節點。
 
 **條款級追溯（opt-in，2026-07-10）**：計劃的規格 bullet 可標 `[S1]`/`[S2]`…；落地的 Verification（有 plan_refs 回指）在 body 提及 `[SN]` 即認領；`lumos spec-trace <計劃節點>` 掃未認領（rc1）。大計劃建議標，小計劃不用。一篇 Verification 盡量只回指一個計劃（條款 ID 無計劃域，多計劃回指會交叉記帳）。
 
@@ -560,7 +560,7 @@ python3 scripts/lumos context Systems/OrderService --brief
 
 > fallback(無 lumos 的舊專案):obsidian `eval` 讀 `getFileCache(f).frontmatter.decisions` 自己 map,或 `property:read name="summary"`。
 
-### 更新圖譜時的 summary / decisions / verification 維護規則
+### 更新架構圖時的 summary / decisions / verification 維護規則
 
 1. **新增功能/模組** → 建立筆記時同時寫 summary
 2. **修改功能** → 更新 summary 中受影響的行（FLOW/KEY/TEST 等）
@@ -582,13 +582,13 @@ obsidian vault="{vault}" property:set path="Projects/xxx.md" name="tags" value="
 ## Obsidian（僅 GUI 檢視;指令參考已刪）
 
 日常讀寫巡檢**全用 lumos**(見上方速查表)。Obsidian 只當**檢視器**,且只在這幾件 lumos 做不到時用(做法查 `obsidian --help`,不列指令):
-- 在 App 開圖譜關係圖 / 開筆記或搜尋視圖給人看
+- 在 App 開架構圖關係圖 / 開筆記或搜尋視圖給人看
 - **權威解析驗證**(「這篇 Obsidian 到底讀不讀得到」最終判定) · **File Recovery** 版本比較 · 白名單外 frontmatter 的 `processFrontMatter` 寫入
 > vault 有 `.obsidian/` = 會被 App 開 → frontmatter 四鐵則(頭版)因此是活的。若已純 headless 不開 Obsidian,連本節都可刪。
 
 ## 實戰範例（lumos 為主；body 編輯走 Edit）
 
-> 分工提醒:**讀取 / 巡檢 / frontmatter 寫入 → lumos**;**body 內容(進度段落、checkbox、表格)→ Edit**(lumos T1 只管 frontmatter);**版本歷史 → git**(圖譜同 repo 版控)。
+> 分工提醒:**讀取 / 巡檢 / frontmatter 寫入 → lumos**;**body 內容(進度段落、checkbox、表格)→ Edit**(lumos T1 只管 frontmatter);**版本歷史 → git**(架構圖同 repo 版控)。
 
 ### 開工前：掌握現況
 ```bash
@@ -603,7 +603,7 @@ python3 scripts/lumos recent --days 7
 python3 scripts/lumos context Systems/Billing
 ```
 
-### 改完程式碼後：更新圖譜
+### 改完程式碼後：更新架構圖
 ```bash
 # 更新 updated 日期(frontmatter 純量 → lumos)
 python3 scripts/lumos set Systems/Billing updated 2026-03-27
@@ -625,7 +625,7 @@ python3 scripts/lumos search "贈獎"
 
 ### 追溯變更
 ```bash
-# 圖譜同 repo 版控 → 直接用 git 看歷史 / diff
+# 架構圖同 repo 版控 → 直接用 git 看歷史 / diff
 git log --oneline -- docs/myapp-knowledge/Systems/Billing.md
 git diff -- docs/myapp-knowledge/Systems/Billing.md
 ```
@@ -642,7 +642,7 @@ python3 scripts/lumos recent --days 7
 ```
 > lumos doctor 涵蓋了舊 obsidian `orphans`/`unresolved` 等;deadends 等 obsidian-only 巡檢才回頭用 obsidian(見上節)。
 
-## 同步規則（何時更新知識圖譜）
+## 同步規則（何時更新知識架構圖）
 
 ### 程式碼變更後（必做）
 更新對應 Systems 筆記：
@@ -654,47 +654,47 @@ python3 scripts/lumos recent --days 7
 ### 更新筆記後（必做）
 `lumos backlinks <剛改的節點>` 看誰引用它 → `lumos search <相關關鍵字>` 逐一確認是否過時。
 
-### 圖譜更新後：Sonnet agent 自足性審計（必做）
+### 架構圖更新後：Sonnet agent 自足性審計（必做）
 
-**原理**：圖譜的存在目的是讓「沒有主對話脈絡的下一個 session」能單靠圖譜還原現況。所以驗收方式就是模擬這件事——派一個**乾淨的 Sonnet agent**（沒有主對話上下文）只讀圖譜還原脈絡，主對話比對它的還原結果與自己腦中的現存脈絡：**有出入 = 圖譜當下不健全，需補足缺漏後重審**。
+**原理**：架構圖的存在目的是讓「沒有主對話脈絡的下一個 session」能單靠架構圖還原現況。所以驗收方式就是模擬這件事——派一個**乾淨的 Sonnet agent**（沒有主對話上下文）只讀架構圖還原脈絡，主對話比對它的還原結果與自己腦中的現存脈絡：**有出入 = 架構圖當下不健全，需補足缺漏後重審**。
 
-**時機**：每次對圖譜的**實質內容更新**完成後（新增/修改 Systems、Issues、Verification、decisions、summary）。純格式修正（typo、缺欄位補登、連結修復）可豁免，但修完建議至少跑一次健康巡檢。
+**時機**：每次對架構圖的**實質內容更新**完成後（新增/修改 Systems、Issues、Verification、decisions、summary）。純格式修正（typo、缺欄位補登、連結修復）可豁免，但修完建議至少跑一次健康巡檢。
 
 **做法**：用 Agent tool 派出 subagent，`model: sonnet`，prompt 模板：
 
 ```
-你是知識圖譜審計員。只允許讀 docs/{vault-name}/ 下的筆記（唯讀；優先用 obsidian CLI，
+你是知識架構圖審計員。只允許讀 docs/{vault-name}/ 下的筆記（唯讀；優先用 obsidian CLI，
 帶 leading vault="{vault-name}"，查詢指令見 search/backlinks/property:read/eval），
-禁止讀程式碼、git log、其他文件——模擬「只有圖譜」的新 session。
+禁止讀程式碼、git log、其他文件——模擬「只有架構圖」的新 session。
 
-請基於圖譜還原以下脈絡，據實回答，圖譜裡找不到的就明說「圖譜未記載」不要腦補：
+請基於架構圖還原以下脈絡，據實回答，架構圖裡找不到的就明說「架構圖未記載」不要腦補：
 1. {本次更新涉及的模組} 的現況：核心流程、關鍵欄位、現行有效的決策
 2. 最近一次對 {模組} 的變更做了什麼、為什麼做、驗證狀態如何
 3. 有哪些進行中(doing)/被阻擋(blocked)的工作與未決問題
 4. 哪些決策已被推翻、被什麼取代
 
-輸出：條列還原結果 + 末尾列出你覺得圖譜記載模糊或互相矛盾的地方。
+輸出：條列還原結果 + 末尾列出你覺得架構圖記載模糊或互相矛盾的地方。
 ```
 
 **判定與處置**（主對話執行）：
 
 | Agent 還原結果 vs 主對話脈絡 | 判定 | 處置 |
 |---|---|---|
-| 一致，無模糊點 | ✅ 圖譜自足 | 記錄審計 PASS（commit message 或 Verification 註記）|
-| 缺漏（主對話知道但 agent 還原不出來）| ❌ 圖譜不健全 | 把缺的脈絡補進對應筆記（summary/decisions/內文）→ **重派 agent 直到一致** |
-| 誤讀（agent 還原出與現實相反的結論）| ❌ 圖譜誤導 | 通常是過時決策沒標 superseded、summary 沒更新、或 frontmatter 解析失敗讓 property 隱性消失 → 修正後重審 |
+| 一致，無模糊點 | ✅ 架構圖自足 | 記錄審計 PASS（commit message 或 Verification 註記）|
+| 缺漏（主對話知道但 agent 還原不出來）| ❌ 架構圖不健全 | 把缺的脈絡補進對應筆記（summary/decisions/內文）→ **重派 agent 直到一致** |
+| 誤讀（agent 還原出與現實相反的結論）| ❌ 架構圖誤導 | 通常是過時決策沒標 superseded、summary 沒更新、或 frontmatter 解析失敗讓 property 隱性消失 → 修正後重審 |
 | agent 自己回報「模糊/矛盾」| ⚠️ 視同缺漏 | 逐條釐清補寫 |
 
 **注意**：
-- 審計 agent 與主對話相同，優先用 obsidian CLI 查詢（圖譜感知能力：backlinks/property:read/eval）；CLI 不可用時才降級 Read/Grep（唯讀豁免）
+- 審計 agent 與主對話相同，優先用 obsidian CLI 查詢（架構圖感知能力：backlinks/property:read/eval）；CLI 不可用時才降級 Read/Grep（唯讀豁免）
 - 主對話**不可把自己的脈絡餵給 agent**（污染測試），prompt 只給「審哪些模組」的範圍
-- 比對時注意 agent 還原不出來的東西，到底是「圖譜缺漏」還是「本來就不該進圖譜」（如一次性對話細節）——後者不用補
+- 比對時注意 agent 還原不出來的東西，到底是「架構圖缺漏」還是「本來就不該進架構圖」（如一次性對話細節）——後者不用補
 
 **留痕（2026-06-23）**：審過且補到一致後，`lumos self-audit <node> [--model sonnet] [--date YYYY-MM-DD]` 蓋 `self_audit: <model>/<date>` 戳記到該節點 frontmatter（純量、走 T1 寫入）。語意：「這整篇被無脈絡乾淨 agent 還原審過」——**節點級**戳記，有別於 ★INVARIANT★ 軸的行級 `[audit:]`（驗單條合約合法性），兩軸獨立。**工具只記留痕，不證明審計真乾淨**（同 guard audit 的 maker/checker 誠實前提）。
 - **doctor Check S（軟提醒、不擋）**：`type=system` 節點**無 `self_audit`** → 列「從未跑 L4」；`self_audit` 日期 **< `updated`** → 列「節點更新後未重審（過期）」。用 `warn_soft`、不計 issues、`doctor --ci` 仍 exit 0，是摩擦地板不是 gate（真實性機器驗不了）。
 - `[H]` 漏標可逆性提醒（`doctor --ci` 才跑）:掃 diff 碰 prod/外部 API/寄送 → 軟提醒「是否漏標 ★IRREVERSIBLE★」。只提醒、不擋。
 
-### 變體 B：圖譜×程式碼交叉審計（無主對話脈絡時用，以 code 為真值）
+### 變體 B：架構圖×程式碼交叉審計（無主對話脈絡時用，以 code 為真值）
 
 標準自足性審計需要「主對話脈絡」當比對基準。**沒有脈絡時**（定期巡檢、接手陌生專案、審很久沒動的大節點），改用程式碼當真值，兩階段、每節點各派一個乾淨 Sonnet agent：
 
@@ -708,7 +708,7 @@ python3 scripts/lumos recent --days 7
 - ✅ 一致（附 file:line 證據）／❌ 不一致（說明 code 實際）／❓ 找不到（說明搜過哪裡）
 - 多節點時兩階段都可並行（一節點一 agent）
 
-**判定與處置**（主對話執行）：❌ = 圖譜腐爛 → 修筆記（過時決策標 superseded、錯誤描述更正並註明「YYYY-MM-DD 程式碼實證」）→ 建 Verification 紀錄審計結果 → 相關 Systems 的 `verified_by` 雙向同步。**修正一律以 code 為準**——除非 code 本身是 bug（那就開 Issue，不改筆記遷就）。
+**判定與處置**（主對話執行）：❌ = 架構圖腐爛 → 修筆記（過時決策標 superseded、錯誤描述更正並註明「YYYY-MM-DD 程式碼實證」）→ 建 Verification 紀錄審計結果 → 相關 Systems 的 `verified_by` 雙向同步。**修正一律以 code 為準**——除非 code 本身是 bug（那就開 Issue，不改筆記遷就）。
 
 **實戰教訓（2026-06-10 四大節點首跑，60 主張 85% 一致）**：
 1. 最高頻腐爛型態 = 「**決策在別篇筆記被推翻、本篇沒跟上**」——hooks 抓不到（改 code 時只同步了主筆記），交叉審計是目前唯一掃得出它的機制
@@ -834,7 +834,7 @@ obsidian vault="{vault}" create path="Verification/{日期}_{功能名稱}" cont
 
 ### Verification 健康檢查（巡檢時必做）
 
-開工前、commit 圖譜更新前、重大環境變動後，用 lumos 掃 Verification：
+開工前、commit 架構圖更新前、重大環境變動後，用 lumos 掃 Verification：
 
 ```bash
 # status: stale 的驗證(需重跑)
@@ -875,19 +875,19 @@ MOC 是索引筆記，彙整某個主題下的所有相關筆記。
 7. **更新 updated**：每次修改筆記後，更新 `updated` property
 8. **中文檔名**：可直接使用
 9. **隨 git 版控**：所有變更被 git 追蹤，commit 時一起提交
-10. **衝突處理**：知識圖譜 vs Memory vs Session 有出入時，向使用者確認
+10. **衝突處理**：知識架構圖 vs Memory vs Session 有出入時，向使用者確認
 11. **vault 動態取得**：不要硬寫 vault 名稱，每次用 `obsidian vaults` 確認
 12. **複製輸出**：任何命令加 `--copy` 可複製結果到剪貼簿
 13. **Obsidian 必須執行中**：CLI 需要連接正在運行的 Obsidian App
 14. **Verification 豁免**：Verification 筆記不需要 `summary` 和 `updated` 欄位（有 `feature` + `date` 已足夠），**但 `valid_under` + `revalidate_when` 是必填**
 15. **避免假 Tag**：內文中的 `#` 會被 Obsidian 解析為 tag，顏色值用 backtick 包裹（如 `` `#FFF3E0` ``），編號用 `1~3` 不要用 `#1-3`
 16. **ADR 不可編造**：`decisions` 的 `context` / `alternatives_considered` / `why_chosen` / `trade_offs` 若無法從對話/code/commit 推得，**問使用者**，不可生成似是而非的內容污染學習資產
-17. **Verification 巡檢時機**：開工前、commit 圖譜更新前、重大環境/依賴/schema 變更後，跑健康檢查 eval 指令掃 `status: stale` 和過期 `valid_until`
+17. **Verification 巡檢時機**：開工前、commit 架構圖更新前、重大環境/依賴/schema 變更後，跑健康檢查 eval 指令掃 `status: stale` 和過期 `valid_until`
 18. **verified_by 雙向同步**：新增/廢棄 Verification 時，**必須同步**更新對應 Systems 的 `verified_by`；改 Systems 時優先讀 `verified_by` 而非跑 backlinks（backlinks 含 Issues/Sessions 雜訊）
 
 ## 產 maestro UI flow 的派工要求（Android UI 驗收）
 
-> 設計脈絡在 **lumos-toolchain 的** `Projects/Android側UI測試綁圖譜工作流_計劃`（本節是跨專案通用摘要；消費端專案的圖譜查不到那個節點是正常的）。
+> 設計脈絡在 **lumos-toolchain 的** `Projects/Android側UI測試綁架構圖工作流_計劃`（本節是跨專案通用摘要；消費端專案的架構圖查不到那個節點是正常的）。
 
 派 agent 產 flow 時，prompt 必須含下列全部：
 

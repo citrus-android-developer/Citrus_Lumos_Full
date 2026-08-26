@@ -14,8 +14,8 @@ plan_refs:
   - "[[pitfalls-lint-integration_計劃]]"
 summary: |-
   FLAG:DECISION
-  KEY:pitfalls-lint-integration ③ 網搜補漏(邊角)——linter 未收錄的新坑,Claude WebSearch 找→反證預篩(駁倒即丟)→駁不倒進候選(非定論)→人輕量放行→進圖譜
-  KEY:形態=on-demand lumos-* skill(源 lumos-toolchain repo symlink,像 lumos-design-loop);Claude 編排(WebSearch+反證)、人放行、圖譜存放;**無 lumos 新碼**(只用既有 new issue/append/search)
+  KEY:pitfalls-lint-integration ③ 網搜補漏(邊角)——linter 未收錄的新坑,Claude WebSearch 找→反證預篩(駁倒即丟)→駁不倒進候選(非定論)→人輕量放行→進架構圖
+  KEY:形態=on-demand lumos-* skill(源 lumos-toolchain repo symlink,像 lumos-design-loop);Claude 編排(WebSearch+反證)、人放行、架構圖存放;**無 lumos 新碼**(只用既有 new issue/append/search)
   FLOW:調用 skill → 讀該專案 linter-gap Issue 兩段(已採納/已評估駁回)去重 → 對 stack(從 .lumos/lint.json 得已覆蓋範圍)WebSearch 新坑 → 反證預篩(default-refute 附來源/file:line,駁倒即丟)→ 駁不倒候選 → 人放行 → 進〈已採納〉/駁回進〈已評估駁回〉(節點自去重)
   KEY:放行落 Issues/linter-gap實務隱患.md(每專案一個,兩段;與 ④ 事故語料同居、可被 pitfalls 進場餵)
   KEY:誠實天花板(計劃明載,skill 複述)=無機械 oracle(舉不了反證≠真:缺席證明謬誤+反證者能力上限,同 canary/[audit:])、人閘省不掉、量少邊角別過度跑
@@ -27,13 +27,13 @@ verified_by:
 ---
 # pitfalls 網搜補漏_計劃(block ③)
 
-> 解 [[pitfalls-lint-integration_計劃]] 的 ③ 網搜補漏(邊角)。**極輕**:一個 skill + 純圖譜,無 lumos 新碼。原「自建網搜迭代包」已於 pitfalls-lint brainstorm 推翻改吃 linter,③ 是殘留邊角。
+> 解 [[pitfalls-lint-integration_計劃]] 的 ③ 網搜補漏(邊角)。**極輕**:一個 skill + 純架構圖,無 lumos 新碼。原「自建網搜迭代包」已於 pitfalls-lint brainstorm 推翻改吃 linter,③ 是殘留邊角。
 
 ## §1 形態與分工
 一個 **on-demand lumos-* skill**(源在 lumos-toolchain repo `skills/`、symlink 進 `~/.claude/skills/`,同 lumos-design-loop)。
 - **Claude 編排**:WebSearch 找新坑 + 反證預篩(派 refuter,借鏡 [[finding-refute]])。
 - **人放行**:候選非定論,人輕量放行(無 oracle,省不掉)。
-- **圖譜存放**:放行的坑進圖譜節點。
+- **架構圖存放**:放行的坑進架構圖節點。
 - **無 lumos 新碼**:skill 只用既有 `lumos new issue`/`append`/`search`/`context` 讀寫節點。
 
 ## §2 skill workflow(寫 spec / code-loop 遇某 stack 時主動調用)
@@ -43,7 +43,7 @@ verified_by:
 4. **候選(非定論)**:駁不倒的,連來源 + 反證嘗試,呈**人輕量放行**。
 5. **落地**:人放行 → 〈已採納〉段(附觸發條件/來源);人駁回 → 〈已評估駁回〉段(下次跳過)。節點自去重。
 
-## §3 圖譜節點
+## §3 架構圖節點
 `Issues/linter-gap實務隱患.md`(每專案一個,type issue),兩段:
 - **〈已採納〉**:放行的 gotcha + 觸發條件 + 來源。可被 pitfalls 進場餵(像 refcheck manifest,同 ④)。
 - **〈已評估駁回〉**:駁回的 gotcha + 反證,供 step 1 去重跳過。

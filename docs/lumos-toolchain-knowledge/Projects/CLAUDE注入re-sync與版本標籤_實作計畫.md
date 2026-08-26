@@ -13,7 +13,7 @@ plan_refs:
 summary: |-
   FLAG:DECISION
   KEY:「CLAUDE 注入 re-sync + 版本標籤」TDD 實作計畫(設計權威=[[CLAUDE注入re-sync與版本標籤_計劃]],已過 design-loop 3 輪、架構折穩、glue 細節交 TDD);6 task
-  KEY:T1 marker常數+_extract_claude_block_span 三態→ T2 _reinject_claude_block(5-status+diff+半壞+BOM)→ T3 解耦_scaffold+接線_vendor_toolchain/cmd_init→ T4 doctor Check D 漂移守衛→ T5 LUMOS_VERSION+版本戳+nudge→ T6 圖譜回填+回歸+anchor
+  KEY:T1 marker常數+_extract_claude_block_span 三態→ T2 _reinject_claude_block(5-status+diff+半壞+BOM)→ T3 解耦_scaffold+接線_vendor_toolchain/cmd_init→ T4 doctor Check D 漂移守衛→ T5 LUMOS_VERSION+版本戳+nudge→ T6 架構圖回填+回歸+anchor
   DECISION:subagent-driven TDD;基線=先跑 test_lumos.py 取
   DEP:[[CLAUDE注入re-sync與版本標籤_計劃]]
   TEST:T1 DONE — 16 checks green(t_extract_span_found/absent/broken);全量 752 passed(基線 736)|T2 DONE — 37 checks green(t_reinject_updates_existing/idempotent/creates_when_absent/appends_when_no_sentinel/preserves_outside/sentinel_broken/bom_crlf_normalized/no_template);全量 789 passed|T3 DONE — 9 checks green(t_scaffold_no_longer_injects/t_update_resyncs_claude/t_init_existing_resyncs);全量 798 passed|T3-review DONE — I-1既有vault非force只reinject不pull+I-2移除重複_install_hooks_py;新增t_init_existing_no_pull(4 checks);全量 802 passed|T4 DONE — Check D(字母D)+_expected_claude_body helper;4 tests 11 checks;全量 813 passed;本repo doctor 0 issues|T5 DONE — LUMOS_VERSION=v1.0+_START_TEMPLATE版本插值+_parse_sentinel_version+_version_nudge(dev-machine advisory)+Check N soft;5 tests 13 checks;826 passed;本repo doctor 0 issues Check D 0漂移;修復_make_check_d_block/_make_block停止內聯START常數
@@ -24,7 +24,7 @@ summary: |-
 
 **Goal:** 讓 `lumos update`/`init` 真正刷新既有專案 CLAUDE.md 紀律區塊(覆蓋 sentinel 之間 + diff)+ 內容比對漂移守衛 + 版本標籤/nudge。
 
-**Architecture:** 解耦「注入 CLAUDE.md」與「scaffold 圖譜資料」;`_extract_claude_block_span`(三態單一源)+ `_reinject_claude_block`(ReInjectResult 5-status)+ doctor Check D + `LUMOS_VERSION` 標籤。
+**Architecture:** 解耦「注入 CLAUDE.md」與「scaffold 架構圖資料」;`_extract_claude_block_span`(三態單一源)+ `_reinject_claude_block`(ReInjectResult 5-status)+ doctor Check D + `LUMOS_VERSION` 標籤。
 
 **Tech Stack:** python3 stdlib(collections.namedtuple、difflib);既有 `_deinit_strip_claude`(marker 尋找)、`_vendor_toolchain`/`cmd_init`/`_scaffold_project`/`_lumos_src`/`_write_lf`。
 
@@ -107,7 +107,7 @@ summary: |-
 
 ---
 
-### Task 6: 圖譜回填 + 回歸 + anchor
+### Task 6: 架構圖回填 + 回歸 + anchor
 
 **Files:** `Verification/2026-..._CLAUDE注入re-sync`;`Systems/lumos-cli-lifecycle`(KEY 更新 + ★INVARIANT★);anchor。
 

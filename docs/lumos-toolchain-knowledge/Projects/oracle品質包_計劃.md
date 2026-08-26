@@ -14,7 +14,7 @@ related:
 summary: |-
   FLAG:TECHNICAL
   KEY:P1-1 oracle 品質包(外審對話收斂的最高投資序)——讓每盞綠燈答得出兩問:證據真的落盤了嗎(S1 record 寫後讀回自驗)/紅燈真的是那條規則咬住的嗎(S3 guard-kill 歸因);加 S2 canary 第二判者抽查(植入者≠判定者的抽樣分權)
-  KEY:出身——2026-07-29 Codex 外審對話三輪:它抓到 record 回報成功未落盤真事故([[Issues/canary-record未落盤事件]])+「guard-kill 只知紅不知為何紅」+「caught/missed 無第二判者」;與我方圖譜舊結論「驗證層天花板=oracle 品質」合流
+  KEY:出身——2026-07-29 Codex 外審對話三輪:它抓到 record 回報成功未落盤真事故([[Issues/canary-record未落盤事件]])+「guard-kill 只知紅不知為何紅」+「caught/missed 無第二判者」;與我方架構圖舊結論「驗證層天花板=oracle 品質」合流
   DEP:[[Systems/canary-audit]]
   DEP:[[Systems/guard-kill]]
 verified_by:

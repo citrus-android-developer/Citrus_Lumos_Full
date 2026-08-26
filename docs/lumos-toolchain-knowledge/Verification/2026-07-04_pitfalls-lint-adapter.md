@@ -33,4 +33,4 @@ pitfalls-lint-adapter(pitfalls-lint-integration 計劃第 ① 塊)實作驗證�
 ## 已知限制 / 天花板
 - 只驗「lint 有無真跑到 + SARIF 有無正確解析合併」,不驗規則對錯(規則正確性是社群 linter 的事)。
 - 座標系對齊靠 heuristic(右端 ref==HEAD + 乾淨工作區);非對齊降級全收=寧噪音不漏。
-- implementer 多次 `--no-verify` 繞 KG pre-commit gate(code-only task,Task5 補圖譜);merge 後測試 runner=anchor 須 approve 重簽。
+- implementer 多次 `--no-verify` 繞 KG pre-commit gate(code-only task,Task5 補架構圖);merge 後測試 runner=anchor 須 approve 重簽。

@@ -11,7 +11,7 @@ related:
 plan_refs:
   - "[[test-layers軟提醒_計劃]]"
 summary: |-
-  KEY:test-layers 軟提醒 TDD 實作計畫(設計權威=[[test-layers軟提醒_計劃]]);4 task=T1 純函式(config 載入+棧命中)/T2 cmd_test_layers 子命令+argparse/T3 pre-push advisory 段+anchor approve/T4 code-loop skill 鏡頭併入+圖譜收尾
+  KEY:test-layers 軟提醒 TDD 實作計畫(設計權威=[[test-layers軟提醒_計劃]]);4 task=T1 純函式(config 載入+棧命中)/T2 cmd_test_layers 子命令+argparse/T3 pre-push advisory 段+anchor approve/T4 code-loop skill 鏡頭併入+架構圖收尾
   KEY:鐵則——恆 rc 0(advisory 不得變硬:無宣告檔靜默/解析失敗 fail-open/git 失敗 stderr 診斷+rc0);pre-push 呼叫 `|| true` 雙保險;唯一 rc 2=缺 --diff 參數(用法錯誤)
   KEY:復用錨點——config 載入鏡像 _lint_load_config(scripts/lumos:6521)/棧命中鏡像 _lint_stacks_for_diff 的「副檔名 lstrip('.') 對 key」語意(:6534)/argparse 註冊區 :9203/dispatch :9287/測試 t_* 自動收集(test_lumos.py main :9040)
   KEY:pre-push 是 anchor 保護檔——T3 改完必 `lumos anchor approve --note`,否則自己擋自己
@@ -135,7 +135,7 @@ Expected: 全綠含 `✓ t_testlayers_units`
 git add scripts/lumos scripts/test_lumos.py
 git commit -m "feat(lumos): test-layers 純函式——宣告檔 fail-open 載入+棧命中去重保序"
 ```
-(pre-commit 會要圖譜同步:本 task 屬計畫執行中,末 task 統一收圖譜——先 `git commit --no-verify` 或把本實作計畫節點 status 改動一併 add;**建議每 commit 都帶上本節點勾選進度,天然滿足 gate**)
+(pre-commit 會要架構圖同步:本 task 屬計畫執行中,末 task 統一收架構圖——先 `git commit --no-verify` 或把本實作計畫節點 status 改動一併 add;**建議每 commit 都帶上本節點勾選進度,天然滿足 gate**)
 
 ---
 
@@ -332,7 +332,7 @@ git commit -m "feat(hooks): pre-push 追加 test-layers 軟提醒段(恆 rc0,|| 
 
 ---
 
-### Task 4: code-loop skill 鏡頭併入 + 圖譜收尾
+### Task 4: code-loop skill 鏡頭併入 + 架構圖收尾
 
 **Files:**
 - Modify: `skills/lumos-code-loop/SKILL.md`(步驟 3「impact 鏡頭」段後)
@@ -367,7 +367,7 @@ Expected: lint 0 問題、doctor 0 issues
 ```bash
 python3 scripts/lumos pitfalls --diff main..HEAD --no-lint   # 看尾行 tier
 # tier=high → 跑 lumos-code-loop;standard → 單 reviewer 審過即可
-git add -A && git commit -m "feat(skill): code-loop 併入 test-layers 鏡頭+圖譜收尾"
+git add -A && git commit -m "feat(skill): code-loop 併入 test-layers 鏡頭+架構圖收尾"
 ```
 
 ---

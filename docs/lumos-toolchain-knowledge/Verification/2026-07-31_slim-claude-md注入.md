@@ -18,7 +18,7 @@ summary: |-
 ---
 # 2026-07-31_slim-claude-md注入
 
-驗證對象:[[Projects/公開精簡版_實作計畫]] Task 8 —— 推翻 [S3] 原裁定「不注入/更新任何 CLAUDE.md」,改為 append-only 附加圖譜標籤教學。實作見 [[Systems/slim-install-安裝器]](install.sh 第③步)、[[Systems/slim-uninstall-一行卸載]](uninstall.sh 第④步)。
+驗證對象:[[Projects/公開精簡版_實作計畫]] Task 8 —— 推翻 [S3] 原裁定「不注入/更新任何 CLAUDE.md」,改為 append-only 附加架構圖標籤教學。實作見 [[Systems/slim-install-安裝器]](install.sh 第③步)、[[Systems/slim-uninstall-一行卸載]](uninstall.sh 第④步)。
 
 ## 裁定變更摘要
 

@@ -8,11 +8,11 @@ status: design-approved
 
 ## 1. 定位與語義
 
-與 `lumos init`(專案層裝)對稱的**專案層卸載**。完全逆轉 `init` 在「本 repo」與「本專案圖譜」留下的東西;**不碰機器共用項**(`~/.claude/hooks/`、`~/.claude/settings.json` 註冊),那些留給機器層的 `lumos uninstall` 處理。
+與 `lumos init`(專案層裝)對稱的**專案層卸載**。完全逆轉 `init` 在「本 repo」與「本專案架構圖」留下的東西;**不碰機器共用項**(`~/.claude/hooks/`、`~/.claude/settings.json` 註冊),那些留給機器層的 `lumos uninstall` 處理。
 
 分工:
 - `lumos uninstall` = 機器層(全域 `~/.local/bin/lumos`、user-scope skills)— 已存在。
-- `lumos deinit` = 專案層(本 repo 的 hooks/工具組/CLAUDE.md 注入/圖譜)— 本 spec 新增。
+- `lumos deinit` = 專案層(本 repo 的 hooks/工具組/CLAUDE.md 注入/架構圖)— 本 spec 新增。
 
 ### 安裝 / 反安裝對照表
 
@@ -21,7 +21,7 @@ status: design-approved
 | `git config core.hooksPath scripts/hooks`(`_install_hooks_py`) | ✅ `git config --unset core.hooksPath` |
 | vendored 工具組:`scripts/lumos`、`scripts/test_lumos.py`、`scripts/merge-claude-settings.py`、`scripts/graph-rename.sh`、`scripts/fetch-notesmd.sh`、`scripts/hooks/`、`scripts/templates/`(`_vendor_toolchain` 的 toolkit 清單)| ✅ 逐檔/逐夾移除(白名單;只動 lumos-owned) |
 | `CLAUDE.md` 的 `LUMOS:GRAPH-DISCIPLINE:START/END` 區塊(`_scaffold_project`)| ✅ 只剝這段,其餘內容原封不動 |
-| `docs/<slug>-knowledge/` 圖譜(`_scaffold_project`)| ✅ **預設刪**(走 §4 安全網);`--keep-graph` 可保留 |
+| `docs/<slug>-knowledge/` 架構圖(`_scaffold_project`)| ✅ **預設刪**(走 §4 安全網);`--keep-graph` 可保留 |
 | `~/.claude/hooks/check-graph-sync.py`、`verification-rot-check.py`(`_install_hooks_py`)| ❌ 不動(跨專案共用) |
 | `~/.claude/settings.json` hook 註冊(`merge-claude-settings.py`)| ❌ 不動(跨專案共用) |
 
@@ -33,8 +33,8 @@ lumos deinit [--keep-graph] [--dry-run] [-y/--yes] [--source <path>]
 
 | Flag | 作用 |
 |---|---|
-| (無) | 完整逆轉:拆閘 + 移 vendored 工具組 + 剝 CLAUDE.md 區塊 + **刪圖譜**;互動確認 |
-| `--keep-graph` | 保留圖譜 vault,其餘照拆 |
+| (無) | 完整逆轉:拆閘 + 移 vendored 工具組 + 剝 CLAUDE.md 區塊 + **刪架構圖**;互動確認 |
+| `--keep-graph` | 保留架構圖 vault,其餘照拆 |
 | `--dry-run` | 只印「會動到什麼」,不實際改動(預演)。**唯讀,完全不觸發確認機制**(§4 第 1 條的互動確認與非互動中止皆豁免);CI 非 tty 下無需 `--yes` 即可預演 |
 | `-y` / `--yes` | 跳過互動確認(CI / 非互動環境用) |
 | `--source <path>` | 指定 Lumos 來源(預設 `_lumos_src()`),**僅供 §4 第 3 條 `root == _lumos_src()` 自我保護比對用**;vendored 白名單是 hardcoded 常數(見 §5),不隨 source 變動 |
@@ -53,16 +53,16 @@ pre-commit 閘由 `core.hooksPath → scripts/hooks/` 驅動,而這兩者正是 
 
 1. **先拆閘** — `git config --unset core.hooksPath`(立即生效)+ 稍後移除 `scripts/hooks/`(雙保險:就算 config 未拆淨,hook 腳本不在 = git 找不到 = 不執行)。`--unset` 採 **best-effort**:rc 5(不存在的 key = 本來就沒設 = 拆閘目標已達成)與 rc 0 都視為成功;**其他非 0 rc(如 git 環境異常 rc 128)印 warning 後繼續**,不中止(真正的保險是「缺 hook 檔 git 直接放行不報錯」這條 git 語義——實機驗證:`core.hooksPath` 指向已刪目錄時 commit 仍 rc 0,故 step 4 移除 `scripts/hooks/` 後即便 config 殘留也無害)。
 2. 移除 `CLAUDE.md` 的 graph-discipline 區塊。
-3. 移除圖譜 vault(走 §4 安全網)。**`--keep-graph`、或 §4 第 4 條的 `vault == root` 鐵閘命中時,整個 step 3 跳過**(連 §4 第 1 條三道關卡都不進)。
+3. 移除架構圖 vault(走 §4 安全網)。**`--keep-graph`、或 §4 第 4 條的 `vault == root` 鐵閘命中時,整個 step 3 跳過**(連 §4 第 1 條三道關卡都不進)。
 4. **最後**移除其餘 vendored 工具組(含 `scripts/hooks/`、`scripts/templates/`、`scripts/lumos` 自己)。
 
 > 把 vendored 檔移除放最後,是為了「`python3 scripts/lumos deinit` 刪到自己」的穩妥性:POSIX 上已載入記憶體的腳本被刪不影響執行,但流程其餘步驟此時都已完成。用全域 `lumos`(symlink 到來源)執行則無此顧慮。
 
-事後 `git add -A && git commit` 時閘已不存在 → 刪光圖譜的 commit 暢通。手動路徑(自行 `git config --unset core.hooksPath` 再刪)亦同理成立;deinit 只是把它連同清理一次做好。
+事後 `git add -A && git commit` 時閘已不存在 → 刪光架構圖的 commit 暢通。手動路徑(自行 `git config --unset core.hooksPath` 再刪)亦同理成立;deinit 只是把它連同清理一次做好。
 
-## 4. 安全網(防誤刪圖譜)
+## 4. 安全網(防誤刪架構圖)
 
-1. **刪圖譜前三道關卡:**
+1. **刪架構圖前三道關卡:**
    - **印清單**:列 vault 路徑 + 檔案數,以及「其中 N 個未 commit(刪了 git 救不回)」,用 `git status --porcelain <vault>` 偵測未追蹤/已修改檔。
    - **互動確認**:預設需打 `y`;`--yes` 跳過。若偵測到未 commit 檔且非 `--yes`,確認語句特別警示。
    - **非互動防呆**:stdin 非 tty(管線/CI)又沒 `-y` → 中止並提示加 `--yes`,絕不默默刪。
@@ -70,7 +70,7 @@ pre-commit 閘由 `core.hooksPath → scripts/hooks/` 驅動,而這兩者正是 
    - vendored 移除走**白名單**:① `_vendor_toolchain` 的固定 5 檔(`scripts/lumos`、`scripts/test_lumos.py`、`scripts/merge-claude-settings.py`、`scripts/graph-rename.sh`、`scripts/fetch-notesmd.sh`,全帶 `scripts/` 前綴,與 `scripts/lumos:3064-3065` 一致);② `scripts/hooks/`、`scripts/templates/` **整夾遞迴刪**(這兩夾整個是 Lumos-owned,直接刪目錄即可,**不需依賴 src 列舉**——故 `--source` 不可用時 deinit 照樣移得乾淨)。`scripts/` 底下使用者自有檔一律不碰;`scripts/` 空了才 `rmdir`,否則保留。
    - `CLAUDE.md` 只依 `LUMOS:GRAPH-DISCIPLINE:START/END` 標記剝該段;其餘內容、甚至整個檔(若還有別的內容)都留。若剝完僅剩 `# CLAUDE.md` 樣板殼,仍保留檔案(不臆測使用者意圖)。**找不到 START 標記(含 CLAUDE.md 不存在,例如 `init --no-hooks` 或模板缺致 `_scaffold_project:3167` 的 `if tpl.exists()` 未注入)→ 該步 no-op,不報錯**(注入端 `scripts/lumos:3175` 即以 `"…START" not in` 做存在性 gating,剝端對稱)。
 3. **來源 repo 自我保護**:若 `root == _lumos_src()`(站在 Lumos 來源本身),**拒絕執行 + 印 stderr + `return 2`**,否則會把 Lumos 工具組自己刪了。對齊的是 **`cmd_update` 的 root==src 模式**(`scripts/lumos:3099-3101`:`print("ERROR…", file=sys.stderr); return 2`),**不是 `cmd_init`** —— cmd_init 的 root==src 只跳過 vendor/hooks、仍繼續 scaffold 且 rc 0(`scripts/lumos:3273-3274`),語義相反,deinit 套它會變成「在來源 repo 只跳部分動作、仍刪別的」,正好違反本條安全網。
-4. **`vault == root` 鐵閘(防 rmtree 整個 repo)**:`_vault_in(root)` 對 **standalone vault**(根目錄有 `MOC/` + `Verification/` 或 `Systems/`,`scripts/lumos:3303-3305`)回傳 **`root` 本身**——不只 Lumos 源,**使用者自建純知識庫 repo、跨專案 core-knowledge repo 都符合**。此時 `vault.resolve() == root.resolve()`,若照預設刪 vault 就是 `rmtree(整個 repo)`。**故刪 vault 前必過此閘**:偵測到 `vault.resolve() == root.resolve()` →**絕不刪 vault**(強制等同 `--keep-graph`)、印明顯警示說明「偵測到 standalone vault,圖譜=repo 根,已保留;如確要清空請自行手動處理」,deinit 其餘專案層動作(拆閘/剝 CLAUDE.md/移 vendored)仍照常。此閘獨立於 §4 第 3 條的 `_lumos_src()` 比對(那條只擋 Lumos 源這一個 standalone repo,擋不住其他)。
+4. **`vault == root` 鐵閘(防 rmtree 整個 repo)**:`_vault_in(root)` 對 **standalone vault**(根目錄有 `MOC/` + `Verification/` 或 `Systems/`,`scripts/lumos:3303-3305`)回傳 **`root` 本身**——不只 Lumos 源,**使用者自建純知識庫 repo、跨專案 core-knowledge repo 都符合**。此時 `vault.resolve() == root.resolve()`,若照預設刪 vault 就是 `rmtree(整個 repo)`。**故刪 vault 前必過此閘**:偵測到 `vault.resolve() == root.resolve()` →**絕不刪 vault**(強制等同 `--keep-graph`)、印明顯警示說明「偵測到 standalone vault,架構圖=repo 根,已保留;如確要清空請自行手動處理」,deinit 其餘專案層動作(拆閘/剝 CLAUDE.md/移 vendored)仍照常。此閘獨立於 §4 第 3 條的 `_lumos_src()` 比對(那條只擋 Lumos 源這一個 standalone repo,擋不住其他)。
 5. **拆閘優先**:見 §3 step 1。
 
 ## 5. 實作落點
@@ -86,14 +86,14 @@ pre-commit 閘由 `core.hooksPath → scripts/hooks/` 驅動,而這兩者正是 
 需覆蓋的案例:
 1. **完整 deinit**:init 一個 repo → `deinit --yes` → 斷言 `core.hooksPath` 已 unset、vendored 工具組消失、`CLAUDE.md` 區塊被剝、vault 不存在。
 2. **`--keep-graph`**:vault 仍在,其餘皆拆。
-3. **拆閘有效**(規範斷言,非二選一):deinit 後斷言 `core.hooksPath` 為空 **且** `scripts/hooks/` 不存在 **且** 一個「改 code 不動圖譜」的 commit 能成功(rc 0,不被擋)——三者全驗,涵蓋 config 與檔案兩層。
+3. **拆閘有效**(規範斷言,非二選一):deinit 後斷言 `core.hooksPath` 為空 **且** `scripts/hooks/` 不存在 **且** 一個「改 code 不動架構圖」的 commit 能成功(rc 0,不被擋)——三者全驗,涵蓋 config 與檔案兩層。
 4. **冪等**:對沒裝過的 repo 跑 `deinit` → return 0、印「未安裝」、無副作用。
 5. **白名單**:`scripts/` 內預先放一個使用者自有檔 → deinit 後該檔仍在。
 6. **CLAUDE.md 保留**:CLAUDE.md 內含使用者自有段落 + 注入區塊 → deinit 後自有段落完整、區塊消失。
 7. **來源自我保護**:於 `_lumos_src()` 路徑跑 → 拒絕、return 非 0、無副作用。
 8. **`--dry-run`**:印清單但檔案/config 全無改動。
 9. **非互動防呆**:非 tty 無 `--yes` → 中止、return 非 0、無副作用。
-10. **`vault == root` 鐵閘**(§4 第 4 條):造一個 standalone vault repo(根目錄 `MOC/` + `Systems/`,**非 `_lumos_src()` 路徑**),**並預先塞 `core.hooksPath` + 一段 CLAUDE.md 注入區塊**(讓「其餘動作」有東西可驗)→ `deinit --yes` → 斷言 **repo 根目錄與圖譜全數仍在**(絕無 rmtree)、印警示、**且 `core.hooksPath` 已 unset、CLAUDE.md 區塊已剝**(證其餘專案層動作確實執行)。這是防「刪整個 repo」的回歸測試。
+10. **`vault == root` 鐵閘**(§4 第 4 條):造一個 standalone vault repo(根目錄 `MOC/` + `Systems/`,**非 `_lumos_src()` 路徑**),**並預先塞 `core.hooksPath` + 一段 CLAUDE.md 注入區塊**(讓「其餘動作」有東西可驗)→ `deinit --yes` → 斷言 **repo 根目錄與架構圖全數仍在**(絕無 rmtree)、印警示、**且 `core.hooksPath` 已 unset、CLAUDE.md 區塊已剝**(證其餘專案層動作確實執行)。這是防「刪整個 repo」的回歸測試。
 11. **CLAUDE.md 退化 no-op**:CLAUDE.md 不存在、或存在但無 `LUMOS:GRAPH-DISCIPLINE` 標記 → `deinit --yes` 該步 no-op、不報錯、其餘步驟照常。
 
 ## 7. 文件

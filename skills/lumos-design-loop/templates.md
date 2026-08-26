@@ -118,7 +118,7 @@ nice-to-have 轉化成的 fix。
 補充脈絡與慣例：
 1. TDD：先寫測試跑紅 → 實作 → 綠。{測試指令、環境變數、harness 模式指引}
 2. {環境細節：PATH、連線字串來源}
-3. **commit 慣例（pre-commit gate 硬擋 code 無圖譜 commit）**：把計劃節點
+3. **commit 慣例（pre-commit gate 硬擋 code 無架構圖 commit）**：把計劃節點
    {路徑} 的 Task {N} checkbox 勾成 [x] 同 commit 進。message 照 brief。
    不要 --no-verify。{branch} 直接 commit。
 

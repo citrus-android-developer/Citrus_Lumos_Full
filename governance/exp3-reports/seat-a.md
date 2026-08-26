@@ -4,7 +4,7 @@
 
 這份 changeset 宣稱「純 config,不碰自癒邏輯/合約」。實際比對後：改動的 4 個檔案裡，
 真正的執行邏輯（`ReconciliationSelfHealService.cs`、`ReconciliationRepository.cs`）
-確實一行都沒碰，只動了 config 值、一行 dictionary 註解、和兩份圖譜文件。這個定性是準確的。
+確實一行都沒碰，只動了 config 值、一行 dictionary 註解、和兩份架構圖文件。這個定性是準確的。
 
 驗過幾條可能被時間值變動牽動的側路，結論都是安全：
 - `appsettings.Production.json` / `appsettings.Local.json.template` 都沒有 `ReconSelfHeal` 區段，
@@ -34,7 +34,7 @@
   已經寫成 23:00。
 - **具體失敗場景**：日後任何人（人或 AI）只看這份計劃文件「配套」或「關鍵決策」段落找目前排程值
   （而不是往上翻到 summary），會得到「Hour=22」的錯誤資訊，與 `appsettings.json` 實際值 23 不符。
-  commit message 宣稱「圖譜同步」，但同步做得不完整，留下一份自相矛盾的節點。
+  commit message 宣稱「架構圖同步」，但同步做得不完整，留下一份自相矛盾的節點。
 
 ### F2（minor）— dictionary 註解的變更歷史敘述失真（沿用既有措辭，非本次新增）
 - **file:line**：`LandmarkMember.Server/Repositories/Implementations/SchedulerHeartbeatRepository.cs:24`
@@ -67,5 +67,5 @@
 ## 總結
 
 這是一個範圍很小、風險很低的 config-only 變更，核心邏輯完全沒動，且對可能受影響的下游（IIS 分層
-config、STALE 偵測門檻、掃描窗口 SQL）都驗證過沒有副作用。問題全部集中在「圖譜/文件/註解沒有徹底
+config、STALE 偵測門檻、掃描窗口 SQL）都驗證過沒有副作用。問題全部集中在「架構圖/文件/註解沒有徹底
 跟著新值傳播」這一類，沒有發現會導致錯誤執行行為的 major/blocker 問題。

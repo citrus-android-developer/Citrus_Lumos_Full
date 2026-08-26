@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** `lumos doctor` 新增軟性 Check P:掃節點正文 inline-code 路徑引用,指向已不存在的 repo 檔即軟提醒(圖譜指向死碼),不計 issues、不改 rc。
+**Goal:** `lumos doctor` 新增軟性 Check P:掃節點正文 inline-code 路徑引用,指向已不存在的 repo 檔即軟提醒(架構圖指向死碼),不計 issues、不改 rc。
 
 **Architecture:** 在 `run_doctor`(`scripts/lumos`)Check V 之後、`if ci:` 之前插入一段 Check P;重用 Check C 已推導的 `repo_root` 區域變數;路徑抽取 = 剝 fenced block → inline-code findall → strip 反引號 → 剝行號 → 含`/` → 頂層目錄錨定 → 存在檢查。純讀 `os.path.exists`、無 subprocess。知識同步另一任務。
 
@@ -120,7 +120,7 @@ Expected: FAIL — doctor 尚無 `[P]` 段(`"[P]" in r.stdout` 等斷言全失�
                     stale_claims.append(f"{loc} → {token}(已不存在)")
         if stale_claims:
             warn_soft(stale_claims,
-                      f"{len(stale_claims)} 個節點引用指向已不存在的 repo 路徑(圖譜指向死碼?):",
+                      f"{len(stale_claims)} 個節點引用指向已不存在的 repo 路徑(架構圖指向死碼?):",
                       "碼被刪/改名?更新節點正文的路徑引用,或補對應節點")
         else:
             ok("無失效檔案認領 (節點引用的 repo 路徑都存在)")
@@ -140,7 +140,7 @@ Run: `python3 scripts/test_lumos.py`
 Expected: `N passed, 0 failed`。
 
 Run: `./scripts/lumos doctor 2>&1 | grep -A3 "\[P\]"`
-Expected: 出現 `[P] 失效檔案認領 …` 段;本 repo 圖譜節點引用的路徑都存在 → 印 `✓ 無失效檔案認領`(若報出某些,逐一查證是真死指針還是抽取偽陽性);doctor 結尾仍 `✓ 圖譜健康 — 0 issues`(Check P 軟、不改 rc)。
+Expected: 出現 `[P] 失效檔案認領 …` 段;本 repo 架構圖節點引用的路徑都存在 → 印 `✓ 無失效檔案認領`(若報出某些,逐一查證是真死指針還是抽取偽陽性);doctor 結尾仍 `✓ 架構圖健康 — 0 issues`(Check P 軟、不改 rc)。
 
 - [ ] **Step 6: Commit**
 
@@ -154,30 +154,30 @@ git commit -m "feat(lumos): doctor Check P — 失效檔案認領(節點 inline-
 ### Task 2: 知識同步(方法論 + skill doctor 表 + KG)
 
 **Files:**
-- Modify: `docs/methodology/圖譜即合約.md`(若有 doctor 巡檢/commit-time 段)
+- Modify: `docs/methodology/架構圖即合約.md`(若有 doctor 巡檢/commit-time 段)
 - Modify: `skills/lumos-project-notes/SKILL.md`(doctor 巡檢說明)
 - Modify: `docs/lumos-toolchain-knowledge/Systems/lumos-cli-read.md`(summary 補 Check P)
 
-**Interfaces:** 無(文件/圖譜同步)。
+**Interfaces:** 無(文件/架構圖同步)。
 
 - [ ] **Step 1: skill doctor 巡檢說明補 Check P**
 
 `grep -n "doctor" skills/lumos-project-notes/SKILL.md | head` 定位 doctor 巡檢描述(「健康巡檢」「orphans / 破連結 / verified_by 同步…」那段)。用 Edit 在該段的 check 列舉處補一句:
 ```
-；Check P 失效檔案認領(節點正文 inline-code 路徑指向已不存在的 repo 檔 → 軟提醒「圖譜指向死碼」)
+；Check P 失效檔案認領(節點正文 inline-code 路徑指向已不存在的 repo 檔 → 軟提醒「架構圖指向死碼」)
 ```
 
 - [ ] **Step 2: 方法論補一句(有對應段才補)**
 
-`grep -n "commit-time\|doctor\|巡檢\|腐爛\|死碼" docs/methodology/圖譜即合約.md | head`。
-- 有「doctor 巡檢 / commit-time 強制」相關段 → Edit 補一句:`doctor 亦抓「圖譜正文指向已不存在檔路徑」的失效認領(Check P,軟提醒)`。
+`grep -n "commit-time\|doctor\|巡檢\|腐爛\|死碼" docs/methodology/架構圖即合約.md | head`。
+- 有「doctor 巡檢 / commit-time 強制」相關段 → Edit 補一句:`doctor 亦抓「架構圖正文指向已不存在檔路徑」的失效認領(Check P,軟提醒)`。
 - 無對應段 → 跳過,commit message 註明「方法論無對應段,略」。
 
 - [ ] **Step 3: KG Systems/lumos-cli-read summary 補 Check P**
 
 doctor 屬讀/巡檢原語,記在 `Systems/lumos-cli-read`。**不可用 Write/Edit 改 frontmatter 純量/list**,但 summary block 屬 rich 內文、且本任務只加描述句 → 用 Edit 在該節點 summary 的 doctor 相關 KEY 行末或內文補:`Check P 失效檔案認領(inline-code 路徑指死碼)`。**不動 `created`/`updated`/`self_audit` 三欄**(保 L4 戳記)。改完 `./scripts/lumos lint lumos-cli-read` 須 0 問題。
 
-- [ ] **Step 4: 驗證圖譜健康**
+- [ ] **Step 4: 驗證架構圖健康**
 
 ```bash
 cd /Users/enzo/harness/lumos-toolchain
@@ -189,7 +189,7 @@ Expected: doctor 0 issues、lint 0 問題。
 - [ ] **Step 5: Commit**
 
 ```bash
-git add docs/methodology/圖譜即合約.md skills/lumos-project-notes/SKILL.md docs/lumos-toolchain-knowledge/Systems/lumos-cli-read.md
+git add docs/methodology/架構圖即合約.md skills/lumos-project-notes/SKILL.md docs/lumos-toolchain-knowledge/Systems/lumos-cli-read.md
 git commit -m "docs(sync): Check P 失效檔案認領落地——skill doctor 表 + 方法論 + KG cli-read 註記"
 ```
 (方法論若無對應段未改,該檔不納入 git add。)

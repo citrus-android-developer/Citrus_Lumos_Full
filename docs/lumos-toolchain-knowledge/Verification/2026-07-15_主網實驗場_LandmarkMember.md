@@ -6,7 +6,7 @@ commit: 待填
 date: 2026-07-15
 valid_under:
   - "唯讀檢查跑真 vault(installed lumos=symlink 至本 repo,新 code 即生效);全鏈翻案戲跑 scratchpad 沙盒副本(不動生產資料)"
-  - "LandmarkMember 圖譜慣例:verified_by 指向 Verification、plan_refs 指向 Projects(與本 repo 同)"
+  - "LandmarkMember 架構圖慣例:verified_by 指向 Verification、plan_refs 指向 Projects(與本 repo 同)"
 revalidate_when:
   - "LandmarkMember 真 vault 上實際採用(live 翻案/decision_refs 回填)後回饋"
   - "判斷閘 AI 分級在真實工作流的採用率/誤判率觀察"
