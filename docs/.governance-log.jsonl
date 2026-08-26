@@ -20281,3 +20281,4 @@
 {"ts": "2026-08-26T13:35:27+08:00", "commit": "a36141a", "gate": "check-s", "kind": "warned", "hard": false, "nodes": ["診斷迴圈先行"]}
 {"ts": "2026-08-26T13:35:27+08:00", "commit": "a36141a", "gate": "check-s", "kind": "warned", "hard": false, "nodes": ["開發工作流總覽"]}
 {"ts": "2026-08-26T13:35:27+08:00", "commit": "a36141a", "gate": "check-e1", "kind": "warned", "hard": false, "nodes": ["guard-kill"]}
+{"ts": "2026-08-26T13:40:08+08:00", "commit": "86cd4f5", "gate": "anchor-approve", "kind": "approved", "hard": false, "nodes": ["scripts/test_lumos.py"], "note": "decision-add 四欄位擴充:新增 4 支測試(t_decision_add_four_field_adr / _alternatives_parse_back / _four_field_no_existing_decisions / _four_field_lint_clean)共 15 條斷言,全套 2851→2866 全綠。純新增測試,未刪改既有斷言;紅→綠→還原翻紅釘三段皆實測(植入巢狀縮排 sub+2→sub 壞法由寫後自驗攔下 rc=2 原檔零變動)。詳 Verification/2026-08-26_decision-add四欄位ADR"}
