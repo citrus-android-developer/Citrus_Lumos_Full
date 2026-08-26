@@ -10701,6 +10701,36 @@ def _mk_delguard_headcount_repo():
     return root, "docs/kg-knowledge"
 
 
+def _mk_delguard_bookkeeping_repo():
+    """[2026-08-26]簿記檔(.jsonl 帳本 / anchor-baseline.json)的刪除行不得被抽成 token。
+    這些檔的內容是**紀錄**不是宣告,刪掉一行從來不代表「某個符號沒了」;不排除的話
+    治理帳的欄位名(commit/gate/kind/nodes…)會被當成被刪符號拿去 git grep 全 repo,
+    輸出爆量再逐行配 40 個 regex——實測 2 檔/63 刪除行的 commit 因此跑逾 5 分鐘未完成。
+    fixture 讓帳本刪除行帶一個在 vault 有提及的獨特符號,排除生效則零命中。"""
+    import subprocess as sp
+    root = Path(tempfile.mkdtemp(prefix="gctl-delg-bk-"))
+    sp.run(["git", "-C", str(root), "init", "-q"], capture_output=True)
+    sp.run(["git", "-C", str(root), "config", "user.email", "t@t.t"], capture_output=True)
+    sp.run(["git", "-C", str(root), "config", "user.name", "t"], capture_output=True)
+    gr = root / "docs" / "kg-knowledge"
+    (gr / "Systems").mkdir(parents=True)
+    (root / "governance").mkdir()
+    (root / "docs" / ".governance-log.jsonl").write_text(
+        '{"gate": "check-s", "nodes": ["zzLedgerTok"]}\n'
+        '{"gate": "check-e1", "nodes": ["zzLedgerTok"]}\n', encoding="utf-8")
+    (root / "governance" / "anchor-baseline.json").write_text(
+        '{"scripts/zzBaselineTok.py": "abc123"}\n', encoding="utf-8")
+    (gr / "Systems" / "sys.md").write_text(
+        "---\ntype: system\n---\n# sys\n講 zzLedgerTok 也講 zzBaselineTok。\n", encoding="utf-8")
+    sp.run(["git", "-C", str(root), "add", "-A"], capture_output=True)
+    sp.run(["git", "-C", str(root), "commit", "-qm", "init"], capture_output=True)
+    # staged 刪除:帳本與 baseline 各清空 → 兩個獨特符號都「消失」了
+    (root / "docs" / ".governance-log.jsonl").write_text("", encoding="utf-8")
+    (root / "governance" / "anchor-baseline.json").write_text("{}\n", encoding="utf-8")
+    sp.run(["git", "-C", str(root), "add", "-A"], capture_output=True)
+    return root, "docs/kg-knowledge"
+
+
 def _mk_delguard_capflood_repo():
     """delguard 終審 fix I2 fixture:staged 刪除 45 個獨特符號(超 DELGUARD_TOKEN_CAP=40),
     僅 capTok0 在 vault 有命中,但**分佈在 12 個節點**(> DELGUARD_TOP_N=10)——
@@ -10941,6 +10971,16 @@ diff --git a/docs/lumos-toolchain-knowledge/Systems/pay.md b/docs/lumos-toolchai
         r = dg("--staged", env=_env)
         check(f"delguard 降級輸出自陳未實際守衛({list(_env)[0]}={list(_env.values())[0]})",
               "未實際守衛" in r.stdout, r.stdout[:300])
+
+    # [2026-08-26]★簿記檔不抽 token★:帳本/baseline 的刪除行是紀錄不是宣告
+    root_bk, _gr_bk = _mk_delguard_bookkeeping_repo()
+    r = sp.run([sys.executable, GRAPHCTL, "delguard", "--staged", "--json"],
+               capture_output=True, text=True, cwd=str(root_bk))
+    d_bk = json.loads(r.stdout.strip().splitlines()[-1])
+    check("delguard 簿記檔 .jsonl/baseline 刪除行不抽 token", d_bk["tokens"] == 0, str(d_bk)[:400])
+    check("delguard 簿記檔零命中(不誤報 vault 提及)", d_bk["hits"] == [], str(d_bk)[:400])
+    check("delguard 簿記檔案例未降級(排除後成本低,跑得完)",
+          d_bk.get("degraded") is False, str(d_bk)[:400])
 
     # [delguard fix r1] 標頭行計數=實際命中的 distinct 符號數,不是被刪符號總數
     root_hc, _gr_hc = _mk_delguard_headcount_repo()

@@ -11325,6 +11325,16 @@ _DELGUARD_STOP = frozenset("if else for while return import class def val var fu
 _DELGUARD_EXCLUDE_DIRS = ("node_modules/", "bin/", "obj/", "dist/", "build/", "__pycache__/", ".git/")
 # 與 pre-commit should_exclude 的 lock 排除規則對齊(`*package-lock.json|*yarn.lock|*pnpm-lock.yaml`)
 _DELGUARD_EXCLUDE_LOCKFILES = ("package-lock.json", "yarn.lock", "pnpm-lock.yaml")
+# ★簿記/資料檔不抽 token★(2026-08-26):這些檔的內容是**紀錄**不是宣告,
+# 刪掉一行從來不代表「某個符號沒了」。不排除的話,治理帳 JSONL 的欄位名
+# (commit/gate/kind/nodes/hard…)與 sha/時間戳碎片會被當成被刪符號,拿去
+# git grep 全 repo → 輸出爆量,py 側再對每行配 40 個 regex。
+# 量測(本 repo,2 檔/63 刪除行的 commit):git diff 0.02s / parse 0.00s /
+# **_delguard_confidence 159.97s** / vault_scan 0.21s——成本 99.9% 全在那段,
+# 且全是被垃圾 token 餵出來的。副作用不只是慢:帳本一動就報「code 側刪除傳播」,
+# 是純假陽性。
+_DELGUARD_EXCLUDE_DATA_SUFFIXES = (".jsonl",)
+_DELGUARD_EXCLUDE_DATA_BASENAMES = frozenset(["anchor-baseline.json"])
 DELGUARD_TOKEN_CAP = 40  # staged diff 抽出 token 數上限,超額截斷(dropped 計入輸出提示)
 DELGUARD_TOP_N = 10  # CLI 文字輸出逐條列出上限,其餘併入「另有 K 處命中」統計行
 
@@ -11345,7 +11355,8 @@ def _delguard_parse_diff(diff_text, graph_root):
     2026-08-11 code-loop r1 C);stopword 表剔除;
     vault 與排除路徑(node_modules/ bin/ obj/ dist/ build/ __pycache__/ .git/,
     ★路徑段比對★:`src/robin/` 不得撞 `bin/`)、
-    以及 lockfile(package-lock.json/yarn.lock/pnpm-lock.yaml,與 pre-commit should_exclude 對齊)的檔案不抽 token,
+    以及 lockfile(package-lock.json/yarn.lock/pnpm-lock.yaml,與 pre-commit should_exclude 對齊)
+    與簿記/資料檔(*.jsonl 帳本、anchor-baseline.json)的檔案不抽 token,
     vault .md 的 diff 行另收進 vault_diffs 供 S2 純連結欄位判定用。
     回 {"tokens": [str...]  # 依出現序去重,cap 前不截
         ,"vault_diffs": {path: [line...]}}"""
@@ -11361,7 +11372,9 @@ def _delguard_parse_diff(diff_text, graph_root):
         vault = bool(c) and (c == graph_root or c.startswith(graph_root + "/")) and c.endswith(".md")
         excl = bool(c) and (any(c.startswith(seg) or ("/" + seg) in c
                                 for seg in _DELGUARD_EXCLUDE_DIRS)
-                            or c.endswith(_DELGUARD_EXCLUDE_LOCKFILES))
+                            or c.endswith(_DELGUARD_EXCLUDE_LOCKFILES)
+                            or c.endswith(_DELGUARD_EXCLUDE_DATA_SUFFIXES)
+                            or c.rsplit("/", 1)[-1] in _DELGUARD_EXCLUDE_DATA_BASENAMES)
         return c, vault, excl
 
     lines = diff_text.splitlines()
