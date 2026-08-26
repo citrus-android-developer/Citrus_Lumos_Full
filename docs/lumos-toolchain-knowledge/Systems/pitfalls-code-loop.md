@@ -14,6 +14,7 @@ verified_by:
   - "[[Verification/2026-07-10_合約鏈補強234]]"
   - "[[Verification/2026-08-05_panel-K2與抽查落地]]"
   - "[[Verification/2026-08-14_canary協議停用none制落地]]"
+  - "[[Verification/2026-08-26_全repo術語統一為架構圖]]"
 summary: |-
   KEY:★[2026-08-14]canary 協議停用(單源=[[Systems/canary-audit]] d5)★——植入/三道防污染/判定/missed 懲罰全停;輪記帳改 `canary record none`;panel 輪有效=記帳席≥2(Landmark r5「單席 caught<2 白跑」型不再發生);repro triage 觸發改「可疑席(引句錨不到/通用回應)」;落地驗證=[[Verification/2026-08-14_canary協議停用none制落地]]
   KEY:[2026-08-05]UI 層驗收慣例(MCP 接驗證層,Enzo 靈感;立慣例不綁案)——test-layers 宣告 layer 含「UI 驗收」的棧被 diff 命中時,終審驗收=agent 以 Playwright MCP(乾淨瀏覽器)/claude-in-chrome(真登入態)真開頁執行驗收條款,截圖+console 證據存 governance/review-reports/<loop-id>/ui-evidence/ 由 Verification 引用(哲學同 quote-check:證據可重放非口頭);起不了環境=明記未驗+原因不得靜默跳;Landmark .lumos/test-layers.json 已宣告 vue/html/js→UI 驗收、cs→dotnet test;首用=下一個天然帶 UI 面的工作(RSNO 暫緩,人裁);★Android 通道(2026-08-11,[[Projects/Android側UI測試綁架構圖工作流_計劃]])★=maestro MCP list_devices→inspect_screen→run,與 Playwright/chrome 並列;★前置:只准對「已標可自動且測試門店已確認」的 flow 自動跑★(否則會在真裝置真後端開真單),未達條件的 flow 一律僅手動、終審走 lumos code-loop skip --note 留痕

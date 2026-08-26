@@ -10,6 +10,7 @@ tags:
   - risk/守衛面
 verified_by:
   - "[[Verification/2026-07-02_anchor-integrity]]"
+  - "[[Verification/2026-08-26_全repo術語統一為架構圖]]"
 summary: |-
   FLOW:anchor approve --note→5錨點(runner×2+hooks×3) sha256→anchor-baseline.json(checked-in)+治理帳 anchor-approve 事件｜anchor verify→逐錨點比對→mismatch/缺檔 rc1(pre-push 擋、自主 loop 每輪入口硬擋含 missing baseline)
   KEY:守「驗證器本身被悄悄改成一律通過」——測試綠/hook 放行的前提(批改程式沒被動過)從盲信變成可機械核對宣稱;外部實證=八大評測被 conftest 鉤子破
