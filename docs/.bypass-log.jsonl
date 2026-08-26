@@ -59,3 +59,4 @@
 {"ts": "2026-08-03T02:06:20+08:00", "commit": "a226fc5", "branch": "main", "subject": "fix(search): code-loop r1 三條 major——訊息自相矛盾/覆蓋虛報/對照臂失效", "code_file_count": 2, "code_files": ["governance/eval/retrieval_eval_multiword.py", "scripts/test_lumos.py"]}
 {"ts": "2026-08-03T03:11:25+08:00", "commit": "43f6665", "branch": "main", "subject": "fix(search): code-loop r3——第四維度 --code + 兩條「我自己宣稱過強」的更正", "code_file_count": 1, "code_files": ["scripts/test_lumos.py"]}
 {"ts": "2026-08-04T18:53:24+08:00", "commit": "27a3811", "branch": "main", "subject": "fix(test): docstring 非法逃逸序列 \\.git(註解級,CI SyntaxWarning 歸零閘紅燈當輪修)+anchor baseline+治理帳", "code_file_count": 1, "code_files": ["scripts/test_lumos.py"]}
+{"ts": "2026-08-26T14:45:42+08:00", "commit": "eddbb4b", "branch": "main", "subject": "chore(hooks): impact-hook.py 補上執行權限——與其餘三支 hook 一致", "code_file_count": 1, "code_files": ["scripts/hooks/claude/impact-hook.py"]}
