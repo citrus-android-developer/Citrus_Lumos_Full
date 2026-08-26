@@ -10916,6 +10916,32 @@ diff --git a/docs/lumos-toolchain-knowledge/Systems/pay.md b/docs/lumos-toolchai
     check("delguard 內部錯誤 --json 形狀完整(tokens/hits/fake_sync)",
           isinstance(dj.get("tokens"), int) and dj.get("hits") == [] and dj.get("fake_sync") == [], str(dj))
 
+    # [2026-08-26]★超時必須落 reason=timeout,不得混進 error★
+    # 現場實例:358 檔 commit 的 pre-commit 兩次都印「內部錯誤(TimeoutExpired),放行」——
+    # subprocess 逾時(git diff / _delguard_confidence 的 git grep)拋 TimeoutExpired,
+    # 原本落進通用 except → --json reason="error"、文字說「內部錯誤」。這既違反本函式自己
+    # 宣告的 reason:"timeout"|"error" 契約,也讓「這道閘沒跑完」讀起來像「程式壞了」。
+    r = dg("--staged", "--json", env={"LUMOS_DELGUARD_RAISE": "timeout"})
+    check("delguard TimeoutExpired --json rc0", r.returncode == 0, str(r.returncode))
+    dj = json.loads(r.stdout.strip().splitlines()[-1])
+    check("delguard TimeoutExpired --json reason=timeout(非 error)",
+          dj.get("reason") == "timeout", str(dj))
+    check("delguard TimeoutExpired --json degraded=True", dj.get("degraded") is True, str(dj))
+    r = dg("--staged", env={"LUMOS_DELGUARD_RAISE": "timeout"})
+    check("delguard TimeoutExpired 文字不得說「內部錯誤」",
+          "內部錯誤" not in r.stdout, r.stdout[:300])
+    check("delguard TimeoutExpired 文字歸類為超時降級",
+          "超時降級" in r.stdout, r.stdout[:300])
+
+    # ★降級輸出必須自陳「這輪沒守」★:原文字僅「…放行;本輪掃描不完整」,
+    # 與正常通過(靜默)混在一起看不出差別,實測被誤讀為正常通過。
+    for _env in ({"LUMOS_DELGUARD_DEADLINE": "0"},
+                 {"LUMOS_DELGUARD_RAISE": "timeout"},
+                 {"LUMOS_DELGUARD_RAISE": "1"}):
+        r = dg("--staged", env=_env)
+        check(f"delguard 降級輸出自陳未實際守衛({list(_env)[0]}={list(_env.values())[0]})",
+              "未實際守衛" in r.stdout, r.stdout[:300])
+
     # [delguard fix r1] 標頭行計數=實際命中的 distinct 符號數,不是被刪符號總數
     root_hc, _gr_hc = _mk_delguard_headcount_repo()
     r = sp.run([sys.executable, GRAPHCTL, "delguard", "--staged"],

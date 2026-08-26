@@ -11513,6 +11513,8 @@ def _delguard_purelink(diff_lines):
 def cmd_delguard_check(repo=None, as_json=False):
     """code 側刪除傳播守衛(advisory):staged diff 抽被刪 token → 兩檔信心 → grep vault 指名過期原句。
     恆 rc0(內部錯誤/超時皆 fail-open 放行;唯一輸出差異是訊息)。
+    ★降級輸出一律自陳「本輪未實際守衛」★——降級與正常通過都不擋 commit,訊息是唯一區別,
+    講得像雜訊就會被當成通過(2026-08-26 實例)。TimeoutExpired 走專屬 except 歸 reason=timeout。
     vault-free repo(找不到 graph root)→ 靜默 rc0,不掃。
     --json 降級契約(超時/內部錯誤皆同款):單行合法 JSON
     {"tokens": int, "hits": [], "fake_sync": [], "degraded": true, "reason": "timeout"|"error"},rc0。"""
@@ -11530,6 +11532,9 @@ def cmd_delguard_check(repo=None, as_json=False):
     tokens = []
     try:
         if os.environ.get("LUMOS_DELGUARD_RAISE"):
+            # =timeout → 走 TimeoutExpired 分類路徑;其餘值 → 通用內部錯誤路徑
+            if os.environ["LUMOS_DELGUARD_RAISE"] == "timeout":
+                raise subprocess.TimeoutExpired(cmd="test hook", timeout=0.0)
             raise RuntimeError("test hook")
         root = str(_cochange_repo_root(repo) or os.getcwd())
         gr = find_vault(Path(root))  # 既有 vault 偵測 helper;找不到→靜默 rc0(vault-free repo 不掃)
@@ -11560,7 +11565,8 @@ def cmd_delguard_check(repo=None, as_json=False):
             if as_json:
                 _degraded_json("timeout", len(tokens))
             else:
-                print(f"delguard: 超時降級({deadline}s),放行;本輪掃描不完整")
+                print(f"⚠ delguard: 超時降級({deadline}s)——★本輪掃描不完整,未實際守衛★,放行"
+                      f";要完整掃描: LUMOS_DELGUARD_DEADLINE=<秒> lumos delguard --staged")
             return 0
         rem = max(0.1, deadline - (time.monotonic() - t0))
         conf = _delguard_confidence(tokens, root, gr_rel, timeout=rem)
@@ -11568,7 +11574,8 @@ def cmd_delguard_check(repo=None, as_json=False):
             if as_json:
                 _degraded_json("timeout", len(tokens))
             else:
-                print(f"delguard: 超時降級({deadline}s),放行;本輪掃描不完整")
+                print(f"⚠ delguard: 超時降級({deadline}s)——★本輪掃描不完整,未實際守衛★,放行"
+                      f";要完整掃描: LUMOS_DELGUARD_DEADLINE=<秒> lumos delguard --staged")
             return 0
         hits = _delguard_vault_scan(tokens, conf, gr, deadline_check=lambda: time.monotonic() - t0 > deadline)
         fake = []
@@ -11597,11 +11604,25 @@ def cmd_delguard_check(repo=None, as_json=False):
         print("  退場前自問: 1) 這次拿掉/反轉了什麼? 2) 上列原句逐句判:改動後還成立嗎?")
         print("  3) 還成立→一句話為什麼;不成立→現在改掉或標作廢。新增 verified_by/related 連結不算同步。")
         return 0
+    except subprocess.TimeoutExpired:
+        # ★超時歸 timeout,不得混進 error★(2026-08-26)
+        # subprocess 逾時(git diff 或 _delguard_confidence 的 git grep)拋 TimeoutExpired,
+        # 原本落進下面的通用 except:--json 給 reason="error"、文字印「內部錯誤(TimeoutExpired)」。
+        # 兩個問題:①與本函式 docstring 自己宣告的 reason:"timeout"|"error" 契約相牴觸;
+        # ②「這道閘沒跑完」被講成「程式壞了」,現場實例=358 檔 commit 的 pre-commit 連兩次
+        # 印內部錯誤,閘實際空轉卻讀起來像雜訊。注意 rem=max(0.1, …) 的下限保證了預算耗盡時
+        # 仍會餵一個過小的 timeout 給子程序,所以這條路徑是常態而非邊角。
+        if as_json:
+            _degraded_json("timeout", len(tokens))
+        else:
+            print(f"⚠ delguard: 超時降級({deadline}s)——★本輪未實際守衛★,放行"
+                  f";要完整掃描: LUMOS_DELGUARD_DEADLINE=<秒> lumos delguard --staged")
+        return 0
     except Exception as e:
         if as_json:
             _degraded_json("error", len(tokens))
         else:
-            print(f"delguard: 內部錯誤({e.__class__.__name__}),放行")
+            print(f"⚠ delguard: 內部錯誤({e.__class__.__name__})——★本輪未實際守衛★,放行")
         return 0
 
 
