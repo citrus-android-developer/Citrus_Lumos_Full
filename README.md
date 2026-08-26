@@ -328,3 +328,15 @@ Lumos 只放**通用的圖譜工具組**。各專案**自己的東西不進這�
 - 上手細節:[ONBOARDING.md](ONBOARDING.md)
 - 架構全景:[ARCHITECTURE.md](ARCHITECTURE.md)(唯一源→兩種 scope→消費端、生命週期指令、子命令、強制力管線)
 - 與 SDD 的差異:[SDD-vs-Lumos.md](SDD-vs-Lumos.md)
+
+---
+
+## 著作權與授權
+
+Copyright © 2026 **CITRUS SOLUTIONS CO., LTD 思圖股份有限公司**。保留所有權利。
+
+本專案為專有軟體,未經本公司事前書面同意,不得使用、重製、修改或散布。
+本儲存庫之公開可見性不構成任何授權。完整條款見 [LICENSE](LICENSE)。
+
+> 版本控制歷史中的作者資訊識別各次變更的個別貢獻者,屬歷史事實;
+> 著作權歸屬於本公司,不因該等紀錄而改變。

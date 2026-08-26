@@ -313,3 +313,18 @@ Lumos holds only the **generic graph toolset**. A project's own things stay out:
 - Onboarding details: [ONBOARDING.md](ONBOARDING.md)
 - Full architecture: [ARCHITECTURE.md](ARCHITECTURE.md) (single source → two scopes → consumers, lifecycle commands, subcommands, enforcement pipeline)
 - Difference vs SDD: [SDD-vs-Lumos.md](SDD-vs-Lumos.md)
+
+---
+
+## Copyright & License
+
+Copyright © 2026 **CITRUS SOLUTIONS CO., LTD**. All Rights Reserved.
+
+This is proprietary software. No use, reproduction, modification, or
+distribution is permitted without the prior written consent of the Company.
+Public visibility of this repository does not constitute a grant of any license.
+See [LICENSE](LICENSE) for the full terms.
+
+> Authorship recorded in the version control history identifies the individual
+> contributors of each change and is historical fact; it does not affect the
+> ownership of copyright, which vests in the Company.
