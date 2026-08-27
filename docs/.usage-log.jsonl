@@ -194,3 +194,5 @@
 {"ts": "2026-08-27T11:10:25", "node": "Projects/code側刪除傳播守衛_實作計畫.md", "cmd": "show"}
 {"ts": "2026-08-27T11:11:14", "node": "Issues/連鎖佇列開了沒人跟完.md", "cmd": "show"}
 {"ts": "2026-08-27T11:11:20", "node": "Verification/2026-08-26_全repo術語統一為架構圖.md", "cmd": "show"}
+{"ts": "2026-08-27T11:38:21", "node": "Systems/verification-rot-eval.md", "cmd": "context"}
+{"ts": "2026-08-27T11:38:23", "node": "Systems/check-n-recomputable.md", "cmd": "context"}

@@ -15,6 +15,7 @@ related:
   - "[[code側刪除傳播守衛_實作計畫]]"
   - "[[Systems/cochange-guard]]"
   - "[[Issues/delguard抽詞把散文當符號]]"
+  - "[[Issues/量測快照過期無守衛]]"
 summary: |-
   FLOW:pre-commit Gate DG(Gate CC 旁)→`lumos delguard --staged`→S1 staged diff `-` 行抽被刪識別字(per-file 回收表/stopword/排除域路徑段+lockfile/.md/簿記檔 不抽)→**逐 token 各跑一次** git grep --cached 判兩檔信心(全域消失=high/呼叫點殘存=low)→三件套 regex 掃 vault 指名「還在講它」的節點+原句(型別只排序不壓低,Systems 排前)→S2 純連結編輯(LINK_KEYS 子集)∧S1 命中=假同步嫌疑→S3 退場三問(stdout)
   KEY:advisory 恆 rc0——crash(`|| true`+except Exception)/timeout(python 內建 deadline,env LUMOS_DELGUARD_DEADLINE,預設 2.0s)/git diff rc≠0 皆降級放行,降級訊息走 stdout;--json 含 tokens/hits/fake_sync/degraded/reason
