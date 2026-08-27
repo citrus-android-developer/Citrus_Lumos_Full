@@ -1,12 +1,12 @@
 {
   "version": 1,
   "anchors": {
-    "scripts/test_lumos.py": "e9e97a5b288d200039372c8bcec66ea2e9497ee70b66690a610f733c5a1bac2a",
+    "scripts/test_lumos.py": "fabe1561bd6cbc159ec4c1a93a1ceb5da38f60a55e552701efab732200fdcafd",
     "scripts/test_autonomous_loop.py": "9b6938e2d1ea2af9a411060524d9ff3b8e30eaaad97d0f78cafa18220f1ebbaf",
     "scripts/hooks/pre-commit": "b40132f441db6e4114a219250d0cd0df72747c5bfb2e3624a4162db287eb65dd",
     "scripts/hooks/pre-push": "29a30ebe5c170e21ab68ff10cb84be7668c3976c18e114f2452b0f4ec624cf85",
     "scripts/hooks/post-commit": "640440f062e7bcfb95dbc6139f9b3ebc994452d6e7ebdad6bc466ef41b70b1ed"
   },
-  "approved_at": "2026-08-26T15:37:33+08:00",
-  "note": "delguard 超時分類修復 25fe31e 的 TDD 新增:t_delguard +8 條(TimeoutExpired 歸 reason=timeout、三條降級路徑須自陳未實際守衛)。屬擴充非弱化——既有 85 條一條未動、一條未放寬;全量 2874 passed/0 failed(基線 2866+8)。先紅後綠已補證。"
+  "approved_at": "2026-08-27T10:51:40+08:00",
+  "note": "逐 token grep 052e3c6 的 TDD 新增:t_delguard +7 條(呼叫次數/單一 -e/每 token 各查一次、總預算耗盡拋 TimeoutExpired、中途逾時不回部分結果、10 個常見 token <5s、常見 token 仍判 low)+ benchmark 門檻 1s→2s。全量 2884/0"
 }

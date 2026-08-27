@@ -20781,3 +20781,4 @@
 {"ts": "2026-08-27T10:47:47+08:00", "commit": "6b5b0ec", "gate": "check-s", "kind": "warned", "hard": false, "nodes": ["診斷迴圈先行"]}
 {"ts": "2026-08-27T10:47:47+08:00", "commit": "6b5b0ec", "gate": "check-s", "kind": "warned", "hard": false, "nodes": ["開發工作流總覽"]}
 {"ts": "2026-08-27T10:47:47+08:00", "commit": "6b5b0ec", "gate": "check-e1", "kind": "warned", "hard": false, "nodes": ["guard-kill"]}
+{"ts": "2026-08-27T10:51:40+08:00", "commit": "052e3c6", "gate": "anchor-approve", "kind": "approved", "hard": false, "nodes": ["scripts/test_lumos.py"], "note": "逐 token grep 052e3c6 的 TDD 新增:t_delguard +7 條(呼叫次數/單一 -e/每 token 各查一次、總預算耗盡拋 TimeoutExpired、中途逾時不回部分結果、10 個常見 token <5s、常見 token 仍判 low)+ benchmark 門檻 1s→2s。全量 2884/0"}
