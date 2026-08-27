@@ -14,10 +14,11 @@ tags:
 related:
   - "[[Systems/delguard]]"
   - "[[code側刪除傳播守衛_計劃]]"
+  - "[[Verification/2026-08-27_delguard逐token-grep]]"
 summary: |-
   FLAG:TECHNICAL
   KEY:★S1 抽詞只擋程式關鍵字,不擋散文英文字★——`_DELGUARD_STOP` 收的是 if/else/fun/val/class 這類 keyword,`and`/`items`/`Exception` 一律放行。刪掉一段 **docstring 或註解**(裡面是中英文散文)時,散文詞會被當成「被刪符號」拿去 grep 全 repo
-  KEY:實測(2026-08-27,本次逐 token grep 改法自己的 commit):5 個 token 打出 **90 筆命中,高信心 0**,逐條列的前十筆全部由 `and` 一個字帶出,命中的是「global workspace in LLMs」「skippable=="0" and restartable」這類與刪除毫無關係的句子
+  KEY:實測(2026-08-27,逐 token grep 改法自己的 commit):同一批 5 個 token,**只 stage 兩支 code 檔時 90 筆命中、連架構圖更新一起 stage 的完整 commit 99 筆**,兩次都是**高信心 0**;逐條列的前十筆全部由 `and` 一個字帶出,命中的是「global workspace in LLMs」「skippable=="0" and restartable」這類與刪除毫無關係的句子。★命中數會隨 vault 內容浮動,固定的是「高信心 0、全是散文」這個形狀★
   KEY:★這是舊缺陷、不是新退化★——一直都在,只是先前 `_delguard_confidence` 必定超時 fail-open,閘根本沒跑完,所以沒人看到輸出。2026-08-27 成本修好、閘真的跑起來後才浮出
   KEY:危害=與 2026-08-26 簿記檔那條同型:假陽性訓練人忽略這道閘。差別在簿記檔那次是「內容是紀錄不是宣告」,這次是「內容是散文不是宣告」
   KEY:候選解(未評估、未實作):①擴 stopword 到常見英文散文詞 ②只從**看起來像宣告的行**抽詞(def/fun/class/val/const 等左側),不從註解與 docstring 抽 ③per-token 長度/大小寫啟發式(全小寫短詞降權) ④低信心且命中數爆量時整批不報。★選哪條要先看誤報帳,不是憑直覺挑★
@@ -60,3 +61,5 @@ S1 從 staged diff 的 `-` 行抽識別字時只拿這份清單過濾。被刪�
 ## 處置
 
 見 summary 的候選解四條與 DECISION。選型前應先累積誤報帳（[[Systems/delguard]] 已知殘項節提到誤報帳目前是人工記錄）。
+
+★與既有待辦的關係★：[[code側刪除傳播守衛_計劃]] 從 2026-08-10 就有一條未勾的「S1 的識別字抽取規則細化（哪些 token 值得抽、**怎麼避開字串與註解**；cap=40/top-10 為先驗值）」。本 Issue **是那條總待辦底下一個已實證的具體破口**，不是另一件事，也不是重複記錄——那條是規則面的方向，本篇是可重現的症狀與數據。兩者一起清或分開清都行，但別各自為政。

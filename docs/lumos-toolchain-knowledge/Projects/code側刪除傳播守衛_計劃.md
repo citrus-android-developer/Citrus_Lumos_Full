@@ -16,6 +16,7 @@ tags:
   - status/todo
   - scope/governance
 summary: |-
+  KEY:★`status: todo` 指的是**未排期的 v2 待辦**,不是「delguard 還沒做」★——v1 已於 2026-08-11 落地上線並由 5 篇 Verification 驗證,[[Systems/delguard]] 是 `status: done`。只看本節點 frontmatter 會誤判整個守衛沒做(2026-08-27 自足性審計抓出)
   FLOW:code diff 的 `-` 行抽出被刪識別字→grep 架構圖內文→列出「還在講它」的節點與原句→逐句問「這句還成立嗎」→改掉或標作廢
   KEY:★這是兩個既有守衛之間的接縫,不是新問題面★—[[關係層傳播守衛_計劃]] 自己寫明「pre-commit 只保證 code↔架構圖同次有動(檔案級存在性),保證不了決策翻案→下游校正(跨節點語意傳播)——不同顆粒度、不重疊」,把 code↔節點 這個方向劃給 pre-commit;而 pre-commit Gate 3 實際只判「有沒有任何一個架構圖 .md 進 staged」。兩邊各自以為對方管了
   KEY:★真實失守實錄(mOrangePos commit aff2329,2026-08-03)★—該 commit 移除登入自動撈 2C2P 憑證。它**有**帶架構圖更新、五個檔,Gate 3 放行;但其中三個 Systems 節點各自只改 1 行,而那一行是 `+  - "[[Verification/2026-08-03_...]]"`。★只掛連結,被推翻的敘述一個字沒改★。七天後(2026-08-10)排查時才發現六個節點+四處 code 註解仍在講「登入時 GetPaywayCredential 撈一次」,其中一個節點還拿這個不存在的前提當設計理由
@@ -264,7 +265,7 @@ isStock = prefs.isStock
 | S2 子集守衛 | 斷言 `LINK_KEYS ⊆ LIST_KEYS ∪ {core_refs}`（防子集漂移） |
 | S2 觸發合取 | 純連結 ∧ S1 命中 → 報；純連結 ∧ 無 S1 命中 → 不報 |
 | S2 邊界 | YAML 重排／縮排／scalar↔list 正規化 → 判「有動內容」（保守不報） |
-| 效能 benchmark | ⛔【2026-08-27 已翻盤，見本節點 decisions d2】 254 檔 vault、40 識別字 → 總時 ~~<1s~~ **<2s**（正常量級，寬鬆時限；staged-index 掃描一併計時，不得只測 vault 掃）。門檻放寬的理由與新增的鑑別力測試見 [[Verification/2026-08-27_delguard逐token-grep]] |
+| 效能 benchmark | ⛔【2026-08-27 已翻盤，見本節點 decisions d2】 254 檔 vault、40 識別字 → 總時 ~~<1s~~ **<2s**（正常量級，寬鬆時限；staged-index 掃描一併計時，不得只測 vault 掃）。**★放寬不等於失去鑑別力★**：40 個死 token 是逐 token 改法唯一變慢的一格（0.02s→0.62s，加 vault_scan 共 ≈0.83s，壓在 1s 上會假紅），同時**新增**「10 個常見 token <5s」一條頂上——那條離修後值 0.25s 有 20 倍餘裕、離修前值 39s 有 8 倍差距，才是真正的鑑別力來源。詳 [[Verification/2026-08-27_delguard逐token-grep]] |
 | timeout fail-open | 注入可控 hang（或極短 deadline）→ deadline 後偵測器自行終止、rc0、降級訊息出現在 **stdout**（斷言輸出流；與 benchmark 分開測，小 fixture 觸發不了真 timeout） |
 | fail-open | 偵測器自身拋錯 → commit 不被擋（`\|\| true` 隔離） |
 
@@ -362,7 +363,11 @@ round(v, scale)
 
 - [x] ~~決定放哪一層~~ → **已裁定：`pre-commit` 的 Gate CC 旁**（advisory，與 cochange 同級；ADR 見 decisions）。r1 Codex 席把這題從「傾向」升到裁定：兩入口**輸入不等價**——Gate CC 直接讀 staged index，`impact --sync-check` 是 branch-range 模式（`scripts/lumos:13253-13254` 配 `--diff`），放後者則 pre-commit 時 range 未定義（initial commit／detached HEAD／amend 全懸空）
 - [ ] S1 的識別字抽取規則細化（哪些 token 值得抽、怎麼避開字串與註解；cap=40/top-10 為先驗值，replay 校準後以數據取代）
-- [ ] S2 的「純 list 欄位 diff」判定實作（讀 `LIST_KEYS` 常數，行級 diff 邊界照 S2 節定義）
+  - ★2026-08-27★ 這條的「怎麼避開字串與註解」已經有具體症狀落地成獨立 Issue：[[Issues/delguard抽詞把散文當符號]]（`and`/`items`/`Exception` 從 docstring 被抽走）。**兩者是同一組問題的粗細兩層**，不是重複記錄——本條是規則面的總待辦，Issue 是其中一個已實證的破口。
+  - cap=40／top-10 自 2026-08-10 落地至今**仍是未校準的先驗值**，校準前提是下一條的誤報帳，而誤報帳未落地 → 這條實際上被那條擋著，不是被遺忘。
+- [x] S2 的「純連結欄位 diff」判定實作（讀 **`LINK_KEYS`** 子集常數，行級 diff 邊界照 S2 節定義）— 2026-08-11 v1 落地
+  ★本條原文寫的是 `LIST_KEYS` 整包方案，已於 r2 折入時撤案★：改採明確子集 `LINK_KEYS={verified_by,plan_refs,related,core_refs}`＋`⊆ LIST_KEYS ∪ {core_refs}` 斷言守衛（理由見本節點 r2 折入第③條與〈S2〉節）。實作見 [[Verification/2026-08-11_delguard落地]]、[[Systems/delguard]] 的 FLOW。
+  ⚠ **教訓**：這條的 checkbox 字面錯了兩週半（方案已撤、實作已完成，字面仍寫舊常數且未勾），2026-08-27 才被自足性審計掃出來。★待辦清單的字面必須自己就是對的，不能靠底下的附註更正★——只掃 checkbox 不讀附註的讀者（與未來的機械掃描器）看不到更正。
 - [ ] 誤報樣本蒐集方式（v1 人工記錄；格式傾向 append-only jsonl；有數字再談升級硬擋）
 - [x] S3 問句落點——**已裁定（2026-08-10 Enzo）：`lumos-project-notes` skill 退場段**（user-scope 跨專案生效、symlink 分發下 pull 即吃到；CLAUDE.md 方案落選＝覆蓋面只到有裝專案且要逐專案重跑安裝）。落地歸 [[code側刪除傳播守衛_實作計畫]] Task 8；此項仍是 v1 交付的一部分
 - [ ] **v2 候選：死碼判定**（「宣告處以外零引用＝死碼＝架構圖講它很可能過期」，補 S1 的死碼盲區——見天花板節能力邊界表；比存在性強一階，v1 不做）

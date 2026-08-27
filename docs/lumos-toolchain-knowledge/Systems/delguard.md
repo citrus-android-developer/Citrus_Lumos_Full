@@ -4,6 +4,7 @@ status: done
 created: 2026-08-11
 updated: 2026-08-27
 aliases: []
+self_audit: sonnet/2026-08-27
 tags:
   - type/system
   - status/done
