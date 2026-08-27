@@ -2,13 +2,14 @@
 type: project
 status: done
 created: 2026-08-10
-updated: 2026-08-11
+updated: 2026-08-27
 tags:
   - type/project
   - status/done
   - scope/governance
 related:
   - "[[code側刪除傳播守衛_計劃]]"
+  - "[[Verification/2026-08-27_delguard逐token-grep]]"
 summary: |-
   FLOW:Task1 LINK_KEYS 常數→Task2 diff 解析抽 token→Task3 staged-index 信心分檔→Task4 vault 掃描+輸出→Task5 S2 純連結判定→Task6 delguard 子命令組裝(deadline/fail-open)→Task7 pre-commit Gate DG 掛載→Task8 S3 問句進 skill+架構圖收尾
   KEY:spec 單源=[[code側刪除傳播守衛_計劃]](design-loop 已收斂,golden@governance/golden/code側刪除傳播守衛/);本節點只管「怎麼落地」,行為合約以 spec 為準
@@ -35,7 +36,7 @@ verified_by:
 - **所有 git 呼叫帶 `-c core.quotePath=off`**（CJK 路徑坑，pre-commit:36-39 前例）。
 - **快照契約＝staged index**：判定一律 `--cached`，嚴禁 grep working tree 或 HEAD。
 - **regex 三件套**：`re.compile(r"\b(?:" + "|".join(map(re.escape, tokens)) + r")\b", re.ASCII)`——`re.escape`＋`\b`＋`re.ASCII` 缺一不可。
-- **單掃紀律**：vault 掃＝單條 alternation 一次過；staged-index 掃＝**單次** `git grep --cached` 多 `-e`，嚴禁每 token 一個子行程。
+- **單掃紀律**：vault 掃＝單條 alternation 一次過；staged-index 掃＝⛔【2026-08-27 已翻盤，見本節點 decisions d2】~~**單次** `git grep --cached` 多 `-e`，嚴禁每 token 一個子行程~~ → 現行為**逐 token 各跑一次**（vault 掃那半仍成立，只有 staged-index 這半被翻）。
 - 先驗值：`DELGUARD_TOKEN_CAP=40`、`DELGUARD_TOP_N=10`、deadline `2.0s`（`LUMOS_DELGUARD_DEADLINE` 覆寫）。
 - 型別只排序不壓低：全五型別（Systems/Projects/Verification/Issues/MOC）都報，Systems 排前；信心檔位＝符號維度（全域消失=高／僅呼叫點消失=低）。
 - 測試跑法：`python3 scripts/test_lumos.py`（全量，尾行 summary 判綠）。
@@ -171,7 +172,9 @@ def _delguard_parse_diff(diff_text, graph_root):
 - [x] Step 4 跑綠
 - [x] Step 5 commit＋勾 Task2 `feat(delguard): staged diff 解析——被刪 token 抽取+vault diff 分流`
 
-### Task 3：`_delguard_confidence` — staged-index 兩檔信心（單次 git grep）
+### Task 3：`_delguard_confidence` — staged-index 兩檔信心（~~單次~~ **逐 token** git grep）
+
+> ⛔【2026-08-27 已翻盤，見本節點 decisions d2】 本節以下描述的是 2026-08-11 落地時的形狀。現行實作見 [[Systems/delguard]] 與 [[Verification/2026-08-27_delguard逐token-grep]]。
 
 **Files:** Modify `scripts/lumos`；Test `scripts/test_lumos.py`（新 fixture `_mk_delguard_repo`）
 **Interfaces / Produces:**

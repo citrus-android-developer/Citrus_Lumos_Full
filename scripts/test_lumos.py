@@ -10892,10 +10892,14 @@ diff --git a/docs/lumos-toolchain-knowledge/Systems/pay.md b/docs/lumos-toolchai
     # 內部錯誤 fail-open:env 注入測試鉤子
     r = dg("--staged", env={"LUMOS_DELGUARD_RAISE": "1"})
     check("delguard 內部錯誤 fail-open rc0+訊息", r.returncode == 0 and "內部錯誤" in r.stdout, r.stdout[:200])
-    # 效能 benchmark:<1s(254 檔級 vault 用本 repo 真 vault 跑,40 token;
-    # 一併連 _delguard_confidence 計時,合計仍要 <1s——單看 vault_scan 會漏掉 git grep 那段成本)
+    # 效能 benchmark:<2s(254 檔級 vault 用本 repo 真 vault 跑,40 token=cap 上限的最壞情況;
+    # 一併連 _delguard_confidence 計時——單看 vault_scan 會漏掉 git grep 那段成本)
     # [code-loop r1 K]git grep 也改對**真 repo** 的 staged index 跑:原本打在 3 檔玩具 repo 上,
     # 量級與現場差幾個數量級,等於沒量到 confidence 這段成本
+    # ★2026-08-27 門檻由 1s 放寬到 2s★:逐 token grep 改法讓**這一格**變慢——40 個死 token
+    # 合併 grep 只要 0.02s(零命中,一次掃完),逐個跑要 0.62s(其中 0.22s 純 subprocess 生成)。
+    # 這是明知的取捨,不是退化失控:換來的是常見 token 那格從 39s 掉到 0.25s(見下面翻紅釘)。
+    # 40 死 token 0.62 + vault_scan 0.21 ≈ 0.83s,壓在 1s 門檻上會在忙碌機器上假紅,故放寬。
     import time as _t
     toks = [f"zzNoSuchTok{i}" for i in range(40)]
     real_root = str(Path(GRAPHCTL).parent.parent)
@@ -10903,7 +10907,19 @@ diff --git a/docs/lumos-toolchain-knowledge/Systems/pay.md b/docs/lumos-toolchai
     t0 = _t.monotonic()
     mod._delguard_confidence(toks, real_root, "docs/lumos-toolchain-knowledge")
     mod._delguard_vault_scan(toks, {}, real_gr)
-    check("delguard benchmark(confidence+vault 掃)<1s", _t.monotonic() - t0 < 1.0, f"{_t.monotonic()-t0:.2f}s")
+    check("delguard benchmark(confidence+vault 掃)<2s", _t.monotonic() - t0 < 2.0, f"{_t.monotonic()-t0:.2f}s")
+
+    # ★逐 token grep 翻紅釘(2026-08-27)★:多 pattern 退化是本次修法的唯一目的,沒有這條
+    # 就是「改了但沒證明有效」。10 個**常見** token 打真 repo staged index——
+    # 合併版實測 39.00s(2026-08-26 另一組 token 為 83.71s),逐 token 版 0.25s。
+    # 門檻取 5s:離修後值 20 倍餘裕、離修前值 8 倍差距,兩邊都不會假紅/假綠。
+    common = ["node", "path", "line", "check", "root", "text", "name", "type", "value", "token"]
+    t0 = _t.monotonic()
+    conf_common = mod._delguard_confidence(common, real_root, "docs/lumos-toolchain-knowledge")
+    dt_common = _t.monotonic() - t0
+    check("delguard 多 pattern 退化已解:10 個常見 token <5s(修前 39s)", dt_common < 5.0, f"{dt_common:.2f}s")
+    check("delguard 常見 token 仍判 low(快不是靠少掃)",
+          all(v == "low" for v in conf_common.values()), str(conf_common))
 
     # [終審 fix I1]subprocess timeout 契約:_delguard_confidence 傳極小 timeout 應拋例外(fail-open 前提)
     ok = False
@@ -10912,6 +10928,61 @@ diff --git a/docs/lumos-toolchain-knowledge/Systems/pay.md b/docs/lumos-toolchai
     except Exception:
         ok = True
     check("delguard _delguard_confidence timeout= 逾時拋例外", ok, "no exception raised")
+
+    # ── 逐 token grep(2026-08-27):形狀與預算契約 ──
+    # [機械 oracle]N 個 token = N 次 subprocess,且每次 argv 只帶一個 -e——
+    # 只量時間會被機器快慢牽著走,這條直接釘「真的拆開跑了」,合併版必翻紅(1 次呼叫)。
+    import subprocess as _sp
+    _calls = []
+    _real_run = _sp.run
+    def _spy_run(cmd, *a, **kw):
+        if isinstance(cmd, list) and "grep" in cmd:
+            _calls.append(list(cmd))
+        return _real_run(cmd, *a, **kw)
+    _sp.run = _spy_run
+    try:
+        mod._delguard_confidence(["refreshPaywayCredentials", "helperStillUsed", "zzNoSuchTokX"],
+                                 str(root), gr)
+    finally:
+        _sp.run = _real_run
+    check("delguard 逐 token:3 個 token 跑 3 次 git grep", len(_calls) == 3, f"{len(_calls)} 次")
+    check("delguard 逐 token:每次 argv 只帶一個 -e",
+          all(c.count("-e") == 1 for c in _calls), str([c.count("-e") for c in _calls]))
+    check("delguard 逐 token:每個 token 各被查一次",
+          sorted(c[c.index("-e") + 1] for c in _calls)
+          == sorted(["refreshPaywayCredentials", "helperStillUsed", "zzNoSuchTokX"]),
+          str([c[c.index("-e") + 1] for c in _calls]))
+
+    # timeout 是**全部 N 次的總預算**,不是每次的上限:給 3 個 token 與極小總預算,
+    # 不得靠「每次都重新拿滿額」把總耗時撐成 N 倍。
+    ok_budget = False
+    try:
+        mod._delguard_confidence(["refreshPaywayCredentials", "helperStillUsed", "zzNoSuchTokX"],
+                                 str(root), gr, timeout=0.000001)
+    except _sp.TimeoutExpired:
+        ok_budget = True
+    check("delguard 逐 token:總預算耗盡拋 TimeoutExpired(非 RuntimeError)", ok_budget,
+          "no TimeoutExpired")
+
+    # ★不得回傳部分結果★:未掃到的 token 預設會被判 high(=全域消失)=假警報,比漏報更毒。
+    # 預算中途耗盡時必須拋例外,讓上層降級成「本輪未實際守衛」,不得回一個看起來正常的 dict。
+    _partial = []
+    _real_run2 = _sp.run
+    def _slow_run(cmd, *a, **kw):
+        if isinstance(cmd, list) and "grep" in cmd:
+            _partial.append(1)
+            if len(_partial) >= 2:  # 第二次起吃掉全部預算
+                raise _sp.TimeoutExpired(cmd=cmd, timeout=kw.get("timeout") or 0.0)
+        return _real_run2(cmd, *a, **kw)
+    _sp.run = _slow_run
+    got_partial = None
+    try:
+        got_partial = mod._delguard_confidence(["aTok", "bTok", "cTok"], str(root), gr, timeout=5.0)
+    except _sp.TimeoutExpired:
+        got_partial = "raised"
+    finally:
+        _sp.run = _real_run2
+    check("delguard 逐 token:中途逾時拋例外而非回部分結果", got_partial == "raised", str(got_partial))
 
     # [終審 fix I2]刷屏降級:45 個獨特被刪符號(超 cap=40)→ --json dropped>0;文字模式印「超 cap」統計行、
     # 逐條列出不超過 top-10

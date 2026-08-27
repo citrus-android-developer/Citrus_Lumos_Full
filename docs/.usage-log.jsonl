@@ -157,3 +157,11 @@
 {"ts": "2026-08-18T23:39:17", "node": "Systems/slim-gen-生成器.md", "cmd": "context"}
 {"ts": "2026-08-26T13:23:05", "node": "Systems/lumos-cli-write.md", "cmd": "show"}
 {"ts": "2026-08-26T15:10:59", "node": "Verification/2026-08-16_架構圖結構化查詢query落地.md", "cmd": "show"}
+{"ts": "2026-08-27T10:23:56", "node": "Verification/2026-08-26_delguard簿記檔排除與成本根因定位.md", "cmd": "context"}
+{"ts": "2026-08-27T10:23:56", "node": "Verification/2026-08-26_delguard超時分類與降級訊息修復.md", "cmd": "context"}
+{"ts": "2026-08-27T10:23:56", "node": "Verification/2026-08-26_全repo術語統一為架構圖.md", "cmd": "context"}
+{"ts": "2026-08-27T10:23:57", "node": "Verification/2026-08-26_decision-add四欄位ADR.md", "cmd": "context"}
+{"ts": "2026-08-27T10:24:06", "node": "Projects/code側刪除傳播守衛_計劃.md", "cmd": "context"}
+{"ts": "2026-08-27T10:24:06", "node": "Projects/授權與著作權宣告_計劃.md", "cmd": "context"}
+{"ts": "2026-08-27T10:24:13", "node": "Verification/2026-08-26_delguard簿記檔排除與成本根因定位.md", "cmd": "show"}
+{"ts": "2026-08-27T10:28:20", "node": "Systems/delguard.md", "cmd": "context"}

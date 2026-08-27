@@ -2,7 +2,7 @@
 type: project
 status: todo
 created: 2026-08-10
-updated: 2026-08-12
+updated: 2026-08-27
 self_audit: sonnet/2026-08-10
 related:
   - "[[關係層傳播守衛_計劃]]"
@@ -10,6 +10,7 @@ related:
   - "[[Systems/cochange-guard]]"
   - "[[Systems/delguard]]"
   - "[[Systems/check-y-symbol-existence]]"
+  - "[[Verification/2026-08-27_delguard逐token-grep]]"
 tags:
   - type/project
   - status/todo
@@ -55,6 +56,18 @@ decisions:
       impact hook 在編輯當下的即時推播不帶本守衛訊號;接受——刪除在編輯當下未必成形,commit 時點才是刪除的定案點。
       日常 commit 頻率高於 code-loop 終審,advisory 曝光面反而更大
     decided: 2026-08-10
+    valid: true
+  - content: 翻掉 r2 的「嚴禁 cap 次子行程」紀律:_delguard_confidence 改為逐 token 各跑一次 git grep(單次多 -e 合併作廢)
+    id: d2
+    context: r2(2026-08-10)折入時定的效能紀律是「staged-index 掃描＝單次 git grep --cached 帶多 -e,嚴禁 cap 次子行程」,理由寫明「40 個子行程各自展開整個 index,Android 級 repo 必超預算」。2026-08-26 量測推翻這個前提:成本瓶頸不是子行程生成,是 git grep 對多 pattern 的退化——同一組檔案 1 個常見 token 0.04s、10 個 39.00s。該紀律直接造成閘每次都超時 fail-open,等於這道守衛長期沒跑。
+    alternatives_considered:
+      - 維持單次多 -e,改調高 LUMOS_DELGUARD_DEADLINE 預設值——被否:39s 級的等待放不進 pre-commit,且只是把 fail-open 換成卡住
+      - 維持單次多 -e,改縮 DELGUARD_TOKEN_CAP(例如 40→5)——被否:退化與 token 數超線性,5 個常見 token 仍在秒級;且縮 cap 直接砍掉守衛覆蓋率
+      - 逐 token 各跑一次 grep(採用)——實測 10 個常見 token 0.25s
+      - 逐 token + thread pool 併發(估 ~0.15s)——暫不做:為 0.5s 在 pre-commit 路徑引入併發不划算,現況已在 deadline 內
+    why_chosen: r2 紀律所擔心的成本(N 次子行程生成)實測為 0.22s/40 次,而它換掉的成本(多 pattern 退化)是 39s——兩者差兩個數量級。一道結構上必定超時 fail-open 的守衛等於不存在,這比子行程開銷嚴重得多。
+    trade_offs: 零命中那格變慢:40 個死 token 由合併 0.02s 變逐個 0.62s(其中 0.22s 純子行程生成),benchmark 門檻同步由 <1s 放寬到 <2s。r2 對 Android 級大 repo 的擔心★本次未實測反駁★——量測只在本 repo(304 篇 vault)做,大 repo 上 N 次 index 展開是否仍便宜,要等現場數據;若翻車,thread pool 是下一手。
+    decided: 2026-08-27
     valid: true
 verified_by:
   - "[[Verification/2026-08-11_delguard落地]]"
@@ -219,7 +232,7 @@ isStock = prefs.isStock
 **此功能碰到的風險類**：self-governance（守衛面）、效能（pre-commit 熱路徑）、輸入健壯性／可攜性（r1 補）。逐類答：
 
 - **self-governance／誤擋的逃生口**：v1 是 advisory、恆 rc0，不存在誤擋。實作上必須比照 Gate CC 用 `|| true` 隔離——偵測器自己出 bug 也不准擋 commit（fail-open）。若日後憑誤報數據升硬擋，逃生口＝`--no-verify`（沿用 Gate 1 既有慣例，錯誤訊息裡印出來）；**繞過留痕已有現成機制**——`scripts/hooks/post-commit` 整支就是 bypass 偵測（`--no-verify` 跳不過 post-commit，事件落 `docs/.bypass-log.jsonl`，實存有真實資料），v1 直接沿用，不新造（r1 訂正：原稿誤寫「目前無留痕」）。
-- **效能（熱路徑）**：pre-commit 每次 commit 都跑。前例教訓：Env vault 掃描曾低估到 4.7 秒被判 blocker。上限設計：①識別字抽取只吃 `--cached` diff 的 `-` 行（量小）②grep vault 不做 N 個符號 N 次掃，合成單條 alternation regex（逐 token `re.escape`）一次掃 254 檔③識別字 cap 先驗 40，超 cap 保留高信心 top-10、其餘壓一行統計④兩檔信心的 staged-index 掃描＝**單次 `git grep --cached` 帶多 `-e` pattern（fixed-string），嚴禁 cap 次子行程**（r2 折入：40 個子行程各自展開整個 index，Android 級 repo 必超預算——「Env vault 4.7s」同型低估；與②的單掃紀律同一條原則）⑤總預算目標 <1 秒。
+- **效能（熱路徑）**：pre-commit 每次 commit 都跑。前例教訓：Env vault 掃描曾低估到 4.7 秒被判 blocker。上限設計：①識別字抽取只吃 `--cached` diff 的 `-` 行（量小）②grep vault 不做 N 個符號 N 次掃，合成單條 alternation regex（逐 token `re.escape`）一次掃 254 檔③識別字 cap 先驗 40，超 cap 保留高信心 top-10、其餘壓一行統計④⛔【2026-08-27 已翻盤，見本節點 decisions d2】兩檔信心的 staged-index 掃描＝~~**單次 `git grep --cached` 帶多 `-e` pattern（fixed-string），嚴禁 cap 次子行程**~~（現行＝逐 token 各跑一次；擔心的子行程成本實測 0.22s/40 次，被否掉的多 pattern 退化實測 39s）（r2 折入：40 個子行程各自展開整個 index，Android 級 repo 必超預算——「Env vault 4.7s」同型低估；與②的單掃紀律同一條原則）⑤總預算目標 <1 秒。
 - **超時的實作契約（`|| true` 兜不住 hang）**：`|| true` 只吞非零 rc，偵測器卡死時 commit 會無限等待。故偵測器主體＝**python3 內建 deadline**（`time.monotonic` 檢查點＋`subprocess.run(timeout=)` 包外部命令），到點自行輸出降級訊息、rc0 退出；不依賴 GNU `timeout`（macOS 無、零依賴家規）。bash 端 `|| true` 只兜 crash，不兜 hang——hang 由 python 內部 deadline 兜。**降級訊息走 stdout**（r2 折入：Gate CC 的呼叫是 `... 2>/dev/null || true`、其 :45 註解明寫「警告走 stdout」——照抄呼叫慣例時若降級訊息走 stderr 會被吞成靜默，advisory 靜默失效正是本守衛最不該有的失敗型）。
 - **輸入健壯性／可攜性**：所有 git diff 呼叫帶 `-c core.quotePath=off`（CJK vault 檔名不加會被 git 引號包裹、路徑比對失敗——`scripts/hooks/pre-commit:36-39` 踩過的坑）；偵測邏輯全在 python3（不用 shell grep，避 BSD/GNU 方言）；binary diff 跳過；`-`/`---` diff 標頭行不得當內容抽取。
 - **併發**：無——hook 每次 commit 單進程、對 vault 只讀不寫，無共享資源競態。**前提＝誤報帳不屬 v1 runtime**（見下），偵測器全程零寫入。
@@ -251,7 +264,7 @@ isStock = prefs.isStock
 | S2 子集守衛 | 斷言 `LINK_KEYS ⊆ LIST_KEYS ∪ {core_refs}`（防子集漂移） |
 | S2 觸發合取 | 純連結 ∧ S1 命中 → 報；純連結 ∧ 無 S1 命中 → 不報 |
 | S2 邊界 | YAML 重排／縮排／scalar↔list 正規化 → 判「有動內容」（保守不報） |
-| 效能 benchmark | 254 檔 vault、40 識別字 → 總時 <1s（正常量級，寬鬆時限；**含單次 `git grep --cached` 多 `-e` 的 staged-index 掃描一併計時**，不得只測 vault 掃） |
+| 效能 benchmark | ⛔【2026-08-27 已翻盤，見本節點 decisions d2】 254 檔 vault、40 識別字 → 總時 ~~<1s~~ **<2s**（正常量級，寬鬆時限；staged-index 掃描一併計時，不得只測 vault 掃）。門檻放寬的理由與新增的鑑別力測試見 [[Verification/2026-08-27_delguard逐token-grep]] |
 | timeout fail-open | 注入可控 hang（或極短 deadline）→ deadline 後偵測器自行終止、rc0、降級訊息出現在 **stdout**（斷言輸出流；與 benchmark 分開測，小 fixture 觸發不了真 timeout） |
 | fail-open | 偵測器自身拋錯 → commit 不被擋（`\|\| true` 隔離） |
 

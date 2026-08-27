@@ -11425,37 +11425,52 @@ def _delguard_parse_diff(diff_text, graph_root):
 
 def _delguard_confidence(tokens, repo_root, graph_root, timeout=None):
     """回 {token: "high"|"low"}。high=staged index 全域消失(排除 vault/排除域後零命中)。
-    單次 git -c core.quotePath=off grep --cached -n -I -w -F -e t1 -e t2 ... --
+    ★逐 token 各跑一次 git grep★(2026-08-27 改;原為單次多 -e 合併):
+    git -c core.quotePath=off grep --cached -n -I -w -F -e <單一 token> --
     . ':(exclude)<graph_root>' ':(exclude)node_modules' ...;rc>1 視為失敗丟 RuntimeError(上層 fail-open)。
-    命中歸屬在 python 端做:對 grep 輸出每行,用 Task 4 同款三件套 regex 判哪些 token 出現
+    ★為什麼不合併★:git grep 對**多 pattern** 會退化,與掃描量/旗標無關——2026-08-26/27 同一組檔案量測
+    1 個常見 token 0.03~0.04s、10 個 39~84s;拿掉 -w 更慢、排除 717KB 壓縮 JS 無效,已逐一推翻
+    「掃描量太大」「vendor 是元凶」「早退才是關鍵」「-w 造成退化」四個假設(見
+    [[Verification/2026-08-26_delguard簿記檔排除與成本根因定位]])。N 次 subprocess 生成的代價
+    (死 token 40 個:合併 0.02s vs 逐個 0.2s)遠小於多 pattern 退化,故換方向。
+    命中歸屬在 python 端做:對 grep 輸出每行,用 Task 4 同款三件套 regex 判該 token 是否出現
     (`-w` 是 git 側粗篩,py 側再精配)。快照契約:讀 staged index(--cached),worktree 未 add 的改動不影響結果。
-    timeout: 選用秒數上限,轉傳 subprocess.run;逾時拋 subprocess.TimeoutExpired,
-    落進呼叫端 cmd_delguard_check 既有 except Exception → 降級 rc0(行為契約自動成立)。"""
-    import re, subprocess
+    timeout: 選用秒數上限,★是本函式全部 N 次 grep 的總預算★(不是每次的上限)——每次以「剩餘預算」
+    轉傳 subprocess.run;預算在下一個 token 開跑前就耗盡則直接拋 subprocess.TimeoutExpired。
+    ★不得回傳部分結果★:未掃到的 token 預設會被判成 high(=全域消失),那是比漏報更毒的假警報,
+    故一律拋例外落進 cmd_delguard_check 的 except subprocess.TimeoutExpired → 降級 rc0。"""
+    import re, subprocess, time
     if not tokens:
         return {}
-    cmd = ["git", "-c", "core.quotePath=off", "grep", "--cached", "-n", "-I", "-w", "-F"]
-    for t in tokens:
-        cmd += ["-e", t]
-    cmd += ["--", ".", f":(exclude){graph_root}"]
+    base = ["git", "-c", "core.quotePath=off", "grep", "--cached", "-n", "-I", "-w", "-F"]
+    pathspec = ["--", ".", f":(exclude){graph_root}"]
     for d in _DELGUARD_EXCLUDE_DIRS:
-        cmd += [f":(exclude){d.rstrip('/')}"]
-    r = subprocess.run(cmd, capture_output=True, text=True, cwd=repo_root, timeout=timeout)
-    if r.returncode > 1:
-        raise RuntimeError(f"git grep rc={r.returncode}: {r.stderr.strip()[:200]}")
+        pathspec += [f":(exclude){d.rstrip('/')}"]
+    t0 = time.monotonic()
     alive = set()
-    pats = {t: re.compile(r"\b" + re.escape(t) + r"\b", re.ASCII) for t in tokens}
-    for line in r.stdout.splitlines():
-        # ★只對內容域配 token★:git grep 輸出是 `path:lineno:content`,連路徑一起配
-        # 會被檔名撞名誤降級(刪掉 Login() → app/Login.kt 這個路徑本身讓 Login 判 low,
-        # 2026-08-11 code-loop r1 B)。len<3 的行(如 `Binary file … matches`)直接丟。
-        parts = line.split(":", 2)
-        if len(parts) < 3:
+    for t in tokens:
+        rem = None
+        if timeout is not None:
+            rem = timeout - (time.monotonic() - t0)
+            if rem <= 0:
+                raise subprocess.TimeoutExpired(cmd=base + ["-e", t] + pathspec, timeout=timeout)
+        r = subprocess.run(base + ["-e", t] + pathspec, capture_output=True, text=True,
+                           cwd=repo_root, timeout=rem)
+        if r.returncode > 1:
+            raise RuntimeError(f"git grep rc={r.returncode}: {r.stderr.strip()[:200]}")
+        if r.returncode == 1:  # 零命中 = 全域消失,連輸出都不用配
             continue
-        content = parts[2]
-        for t, p in pats.items():
-            if t not in alive and p.search(content):
+        p = re.compile(r"\b" + re.escape(t) + r"\b", re.ASCII)
+        for line in r.stdout.splitlines():
+            # ★只對內容域配 token★:git grep 輸出是 `path:lineno:content`,連路徑一起配
+            # 會被檔名撞名誤降級(刪掉 Login() → app/Login.kt 這個路徑本身讓 Login 判 low,
+            # 2026-08-11 code-loop r1 B)。len<3 的行(如 `Binary file … matches`)直接丟。
+            parts = line.split(":", 2)
+            if len(parts) < 3:
+                continue
+            if p.search(parts[2]):
                 alive.add(t)
+                break
     return {t: ("low" if t in alive else "high") for t in tokens}
 
 
